@@ -1,0 +1,274 @@
+ /**
+ * Created by Janaka Liyanage on 16/12/2014.
+ */
+var utilScriptPath = $("script[src]").last().attr("src").split('?')[0].split('/').slice(0, -1).join('/')+'/';
+
+function loadXmlDoc(filename, func) {
+    var args = arguments;
+    return $.ajax({
+        url: utilScriptPath + '../' + filename,
+        type: "GET",
+        dataType: "xml",
+        success: function (data, _1, _2) {
+            func(data, args[2], args[3], args[4]);
+        },
+        error: function (_1, status, textError) {
+            alert(status + ": " + textError);
+        }
+    });
+}
+// this is only used in misc scripts - todo make a general function
+function loadTextDoc(filename, func) {
+    var args = arguments;
+    return $.ajax({
+        url: utilScriptPath + '../' + filename,
+        type: "GET",
+        dataType: "text",
+        success: function (data, _1, _2) {
+            func(data, args[2], args[3], args[4]);
+        },
+        error: function (_1, status, textError) {
+            alert(status + ": " + textError);
+        }
+    });
+}
+
+function saveXmlDoc(filename, data, password) {
+    var docRoot = '../../'; // relative to the write_file.php
+    return $.ajax({
+        url: utilScriptPath + '../' + 'dev/php/write_file.php',
+        type: "POST",
+        data: {
+            file_name: docRoot + filename,
+            password: password,
+            file_contents: data
+        },
+        dataType: "text",
+        error: function (_1, status, textError) {
+            alert(status + ": " + textError);
+        }
+    });
+}
+
+function downloadFile(filename, xml) {
+    var a = window.document.createElement('a');
+    a.href = window.URL.createObjectURL(new Blob([xml], {type: 'text/xml'}));
+    a.download = filename.split("/").pop();
+
+    // Append anchor to body.
+    document.body.appendChild(a);
+    a.click();
+
+    // Remove anchor from body
+    document.body.removeChild(a)
+}
+
+function UrlExists(filename) {
+    var http = new XMLHttpRequest();
+    http.open('HEAD', utilScriptPath + '../' + filename, false);
+    http.send();
+    return http.status != 404;
+}
+
+function prepareXmlOutput(root) {
+    var output = root.html().replace(/xmlns=\"http\:\/\/www\.w3\.org\/1999\/xhtml\" /g, '');
+    output = output.replace(/–/g, '\u002D');
+    output = output.replace(/…/g, '...');
+    output = output.replace(/‚/g, ',');
+    output = output.replace(/´/g, '’');
+    output = output.replace(/\u200C/g, '');
+    output = output.replace(/\u200D\u0DCA\u200D\u0DBB/g, '\u0DCA\u200D\u0DBB'); //rakar fixing
+
+    return vkbeautify.xml(output.trim());
+}
+
+function prepareXmlTextSave(output) {
+    output = output.replace(/style="[^"]*"/g, ""); //style attr
+    output = output.replace(/data\-span_id="[^"]*"/g, ""); // data_span-id attr
+    return output.replace(/sc_collapsed/g, ""); // collapsed class
+}
+
+function prepareJsonOutput(jsonObj) {
+    return vkbeautify.json(JSON.stringify(jsonObj).replace(/\u200C/g, ''));
+}
+
+function escapeRE(str) {
+    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+}
+
+function getParameterByName(name, defVal) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? defVal : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+
+var CollectionsList = {
+    'pali-cs': { short: 'cs', medium: 'Chatta S', long: 'Chattha (Sixth) Sangayana Pali'},
+    'sinh-aps': { short: 'aps', medium: 'A P Soysa', long: 'A.P. de Soyza Sinhala' },
+    'sinh-kg': { short: 'kg', medium: 'K Gnanananda', long: 'Kiribathgoda Gnanananda Thero Sinhala'},
+    'sinh-bj': { short: 'bj', medium: 'B Jayanthi', long: 'Buddha Jayanthi Tripitaka Sinhala'}
+};
+
+var UrlParamNames = {
+    EDITING: 'editing',
+    ADMIN_EDITING: 'adminediting',
+    NODE: 'node',
+    PARA: 'para',
+    COLL: 'coll'
+};
+// e.g. location url pitaka.lk/15111/12/cs,kk
+// url rewritten pitaka.lk/?node=15111&para=12&coll=cs,kk
+function getStartupLocation() {
+    var nodeId = getParameterByName(UrlParamNames.NODE, 0),
+        paragraphId = getParameterByName(UrlParamNames.PARA, 0),
+        colls = getParameterByName(UrlParamNames.COLL, "");
+    colls = colls ? colls.split(',') : ['cs', 'aps'];
+    var collNames = [];
+    $.each(colls, function(_1, coll) {
+       for (var collName in CollectionsList) {
+           if (CollectionsList[collName].short == coll) {
+               collNames.push(collName);
+           }
+       }
+    });
+    if (!$.isNumeric(paragraphId)) {
+        paragraphId = 0;
+    }
+    if (!nodeId || !$.isNumeric(nodeId) || (+nodeId) < 1000) {
+        return false
+    }
+    return createLocationObj(nodeId, collNames, paragraphId);
+}
+
+function createLocationObj(nodeId, colls, paragraphId) {
+    var bookId = nodeId.substr(0, 2), vaggaId = nodeId.length >= 4 ? nodeId.substr(0, 4) : (bookId + '10'); // select the first vagga of  the book if node==book
+    return { bookId: +(bookId), vaggaId: +(vaggaId), nodeId: +(nodeId), paragraphId: +(paragraphId), collection: colls };
+}
+
+function pitakaLkOpenLocation(location, origin) {
+    console.log(location);
+    $('#main-tree').pitakaTreeOpenBranch(location.bookId);
+    $('#main-tabs').pitakaTabsOpenSutta(origin, location);
+}
+
+// get the list of columns/collections in a tab
+function getCurrentColumns(tabId) {
+    var textDivs = $('.text-section', $(tabId)), columns = [];
+    $.each(textDivs, function(i, div){
+        columns.push($(div).attr('collection'));
+    });
+    return columns;
+}
+
+
+ /**
+  * DIALOG RELATED CODE
+  */
+ var DialogNames = {
+    LINK_REPORT: 'dialog_link_report',
+    STATIC: 'dialog_static',
+    SELECT_BOOK: 'dialog_select_book'
+};
+var dialogSettings = {}; // way to pass setting in to dialog html files
+function repositionDialog() {
+    // get the screen height and width
+    var maskHeight = Math.min($(document).height(), $(window).height());
+    var maskWidth = $(window).width();
+
+    // calculate the values for center alignment
+    var dialogTop =  (maskHeight/3) - ($('#dialog-box').height()/3);
+    var dialogLeft = (maskWidth/2) - ($('#dialog-box').width()/2);
+
+    // assign values to the overlay and dialog box
+    $('#dialog-overlay').css({height:maskHeight, width:maskWidth});
+    $('#dialog-box').css({top:dialogTop, left:dialogLeft});
+}
+
+//Popup dialog
+function showDialog(dialogName, type) {
+    dialogSettings.type = type; // pass in to the dialog
+    $('#dialog-message').load(utilScriptPath + '../dialog/' + dialogName + '.html', function() {
+        repositionDialog();
+        $('#dialog-overlay').fadeIn('fast');
+        $('#dialog-box').slideDown('fast');
+    });
+}
+
+function closeDialog() {
+    $('#dialog-overlay').fadeOut('fast');
+    $('#dialog-box').slideUp('fast', function() {
+        $('#dialog-message').html('');
+    });
+}
+
+
+/**
+ * TOOLTIP Related code
+ * when names are mouseover'ed show the value in the tip attr as the tooltip
+ */
+var toolTipDelay = 1000, toolTipTimeoutConst;
+function showToolTip() {
+    toolTipTimeoutConst = setTimeout(_.bind(function () {
+        var tipText = $(this).attr('tip');
+        $(this).after('<span class="tooltip">' + tipText + '</span>');
+
+        // position
+        var left = $(this).position().left + $(this).width() + 10;
+        var top = $(this).position().top;
+        $(this).next().css('left', left).css('top', top).fadeIn(400);
+    }, $(this)), toolTipDelay);
+}
+
+// Remove the tooltip on abbreviation mouseout
+function hideToolTip() {
+    clearTimeout(toolTipTimeoutConst);
+    $(this).next('.tooltip').remove();
+}
+
+
+ // todo consider moving these to pitakaTabs.js
+function getTabHeader(tabId) {
+    return $('[id="' + tabId + '"]', $('#main-tabs'));
+}
+function setTabHeader(tabId, html) {
+    getTabHeader(tabId).children('a').html(html);
+}
+function getTabHeadingFromText(tabId) {
+    var parts = $(tabId).find('span.chapter').first().text().split('.');
+    return parts[parts.length - 1].trim();
+}
+function setTabHeaderError(tabId) {
+    var html = '<i class="fa fa-minus-circle" style="color: #cb4040"></i>&nbsp;&nbsp;' + 'දෝෂයක් සිදු වුණා';
+    setTabHeader(tabId, html);
+}
+var BusyTab = {
+    typeNames : {loading: 'Loading...', saving: 'Saving...', opening: 'අරිමින් ...'},
+    data : {},
+    add : function(type, tabId) {
+        var curVal = this.get(type, tabId);
+        this.data[tabId][type] = curVal + 1;
+        console.log(this.typeNames[type]);
+        var html = '<i class="fa fa-refresh fa-spin" style="color: blue"></i>&nbsp;&nbsp;' + this.typeNames[type];
+        setTabHeader(tabId, html);
+        console.log(this.data);
+    },
+    remove : function (type, tabId) {
+        var curVal = this.get(type, tabId);
+        if (curVal > 0) {
+            if ((--this.data[tabId][type]) == 0) {
+                var html = '<i class="fa fa-file-text-o" style="color: green"></i>&nbsp;&nbsp;' + getTabHeadingFromText(tabId);
+                setTabHeader(tabId, html);
+            }
+        }
+        // todo remove empty values
+    },
+    get : function (type, tabId) {
+        if (!(tabId in this.data)) {
+            console.log('adding');
+            this.data[tabId] = {saving: 0, loading: 0, opening: 0};
+        }
+        return this.data[tabId][type];
+    }
+};

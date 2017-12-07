@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="3q30uQ1_gO_dEVjUO6EsTgpovt8MHTyY75774HmTSb0" />
+    <title>Buddha Jayanthi Tripitaka</title>
+    <meta name="description" content="බුද්ධ ජයන්ති ත්‍රිපිටකය Buddha Jayanthi Tripitaka">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="../styles/common_styles.css" />
+    <link rel="stylesheet" href="../styles/tree_style.css" />
+    <link rel="stylesheet" href="../styles/font-awesome.css"/>
+    <link rel="stylesheet" href="../styles/search.css"/>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="../dialog/multi-select.css"/>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-46817481-7', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+</head>
+<body>
+
+<div align="center" style="width: 100%; margin: 0pt auto;">
+    
+        <div align="center" id="header" style="display: block; margin: 0pt;">
+            <img class="header-logo-img" src="../images/chakra.png" />
+            <a class="header-logo-text" href="http://pitaka.lk/bjt">බුද්ධ ජයන්ති ත්‍රිපිටකය</a>
+            <ul class="header-menu-list">
+                <li><a class="header-menu-item" href="intro.html#about" target="_blank"><i class="fa fa-user fa-fw"></i> අප ගැන</a></li>
+                <li><a class="header-menu-item" href="intro.html#instructions" target="_blank"><i class="fa fa-info-circle fa-fw"></i> භාවිතයට උපදෙස්</a></li>
+                <li><a class="header-menu-item" href="intro.html#download" target="_blank"><i class="fa fa-download fa-fw"></i> භාගත කරන්න</a></li>
+            </ul>
+        </div>
+        
+        <div class="toolbar" id="right-toolbar" align="center">
+            <a id="toggle-tree" class="button" tip="නාමාවලිය අරින්න-වහන්න"><i class="fa fa-sitemap fa-lg"></i> නාමාවලිය</a>
+            <i class="fa fa-search fa-lg"></i>
+            <input class="search-bar" type="text" placeholder="සොයන්න">
+
+            <a id="search-settings-button" class="button" tip="සෙවුම පොත් කිහිපයකට සීමා කරන්න" onclick="showBookSelectDialog(SF.name)"><i class="fa fa-wrench fa-lg"></i></a>
+            <a id="search-results-button" class="button" tip="කලින් සෙවුමේ ප්‍රතිපල පෙන්වන්න"><i class="fa fa-table fa-lg"></i> සෙවුම</a>
+            <a class="button" href="https://www.facebook.com/pitaka.lk" target="_blank" style="color: blue;" tip="අපගේ FACEBOOK පිටුවට..."><i class="fa fa-facebook fa-lg"></i> පිටුව</a>
+            <a id="toggle-header" class="button" tip="උඩ තීරුව අරින්න-වසන්න"><i class="fa fa-arrow-up fa-lg"></i><i class="fa fa-arrow-down fa-lg" style="display: none;"></i></a>
+        </div>
+        <div id="contents-area">
+            <!--this tree would be populated by the entries in searchIndex-->
+            <div id="tree-window" style="display: none;" align="left">
+                <div id="left-tree" class="pitaka-tree">
+                    <ul id="three-pitaka-ul"></ul>
+                </div>
+            </div>
+            <div id="search-area">
+                <div id="search-status" align="center"></div>
+                <div id="search-filter-status" align="center"></div>
+                <table id="search-results">
+                    <thead>
+                        <tr>
+                            <td><i class="fa fa-book fa-fw"></i> පොත<span class="sort-action" by="book">
+                                <i class="fa fa-sort-numeric-asc fa-fw" tip="වැඩිවන පිළිවෙලට පෙළගස්වන්න" order="asc"></i>
+                                <i class="fa fa-sort-numeric-desc fa-fw" tip="අඩුවන පිළිවෙලට පෙළගස්වන්න" order="desc"></i></span></td>
+                            <td><i class="fa fa-search fa-fw"></i> නම<span class="sort-action" by="name">
+                                <i class="fa fa-sort-alpha-asc fa-fw" tip="වැඩිවන පිළිවෙලට පෙළගස්වන්න" order="asc"></i>
+                                <i class="fa fa-sort-alpha-desc fa-fw" tip="අඩුවන පිළිවෙලට පෙළගස්වන්න" order="desc"></i></span></td>
+                            <td><i class="fa fa-map-marker fa-fw"></i> ස්ථානය</td>
+                            <td><i class="fa fa-file-text-o fa-fw"></i> පිටුව<span class="sort-action" by="page">
+                                <i class="fa fa-sort-numeric-asc fa-fw" tip="වැඩිවන පිළිවෙලට පෙළගස්වන්න" order="asc"></i>
+                                <i class="fa fa-sort-numeric-desc fa-fw" tip="අඩුවන පිළිවෙලට පෙළගස්වන්න" order="desc"></i></span></td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div id="image-area">
+                <a class="page-navigation top" id="prev-page-button"><i class="fa fa-backward"></i> කළින් පිටුවට</a>
+                <a class="page-navigation bottom" id="next-page-button">ඊළඟ පිටුවට <i class="fa fa-forward"></i></a>
+            </div>
+        </div>
+
+</div>
+
+<!--<div style="clear:both; max-height: 0px;">&nbsp;</div>-->
+
+<!-- dialog box -->
+<div id="dialog-overlay" onclick="closeDialog()"></div>
+<div id="dialog-box">
+    <div class="dialog-content">
+        <div id="dialog-message"></div> 
+    </div>
+</div>
+
+<script src="../scripts/jquery-1.11.1.min.js"></script>
+<script src="../scripts/underscore-min.js"></script>
+<script src="../scripts/utilities.js"></script>
+<script src="../scripts/pitakaTree.js"></script>
+<script src="../scripts/singlish.js"></script>
+<script src="scripts/searchIndex.js"></script>
+<script src="scripts/bjtTree.js"></script>
+<script src="scripts/books.js"></script>
+<script src="scripts/bookList.js"></script>
+<script src="scripts/search.js"></script>
+<script src="../dialog/jquery.multi-select.js"></script>
+<script src="../dialog/dialog_select_book.js"></script>
+<script>
+    $( document ).ready( function() {
+        populateTree(); // load entries in the searchIndex to tree
+        $('.pitaka-tree').pitakaTree();
+        initSearchBar();
+
+        function handleResize() {
+            $('#contents-area,#image-area').css('height', $(window).innerHeight() - $('#contents-area').offset().top - 20); // todo remove 20
+            // to make sure the overlay fills the screen and dialogbox aligned to center
+            // only do it if the dialog box is not hidden
+            if (!$('#dialog-box').is(':hidden')) repositionDialog();
+        }
+        handleResize(); // do initial set
+        $(window).resize(handleResize);
+
+        $('#toggle-header').click( function () {
+            $(this).children().toggle();
+            $('#header').slideToggle('fast', handleResize)
+        });
+
+        handleScroll(); // initial set
+        $('#image-area').on('scroll', handleScroll);
+
+        $('#prev-page-button').click(prevButtonClick);
+        $('#next-page-button').click(nextButtonClick);
+
+        $('#toggle-tree').click( function () {
+            $('#tree-window').animate({width: 'toggle'}, 350);
+        });
+
+        $('#search-results-button').click(function () {
+            $('#search-area').toggle();
+            $('#image-area').toggle();
+        });
+
+        $('#image-area').on('mouseover', '.page', function () {
+            $(this).children('.page-link').show();
+        });
+        $('#image-area').on('mouseout', '.page', function () {
+            $(this).children('.page-link').hide();
+        });
+        $('#image-area').on('click', '.page-link', function () {
+            dialogSettings = { imgSrc: $(this).prev('img').attr('src') };
+			//, pageId: $(this).parent().attr('page-id'), bookId: curBookId };
+            showDialog(DialogNames.LINK_REPORT, 'link');
+        });
+
+        $('span.sort-action').on('click', 'i', function () {
+            var by = $(this).parent().attr('by');
+            var order = $(this).attr('order');
+            refreshCurrentSearchDisplay(by, order);
+        });
+
+        $('[tip]').hover(showToolTip, hideToolTip);
+    });
+</script>
+</body>
+</html>

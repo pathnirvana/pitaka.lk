@@ -1,0 +1,58 @@
+#search-status {
+    font-size: 13pt;
+    font-style: italic;
+    color: darkblue;
+    padding: 5pt;
+}
+#search-filter-status {
+    font-size: 9pt;
+    color: darkred;
+}
+
+#search-results {
+    margin: 0px;
+    padding-left: 0pt;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.15);
+    background: #FFFFFF;
+    border: 1px solid;
+    border-radius: 2px;
+    display: none;
+    width: 100%;
+}
+#search-results thead {
+    font-size: 15pt;
+    font-weight: bold;
+    background: lightgrey;
+}
+#search-results tr {
+    font-size: 13pt;
+    padding: 2pt 5pt 2pt 5pt;
+    border-top: 1pt solid;
+}
+#search-results tr:hover {
+    background: lightgoldenrodyellow;
+}
+#search-results td {
+    padding: 0pt 5pt 0pt 5pt;
+}
+#search-results span.action {
+    float: right;
+    color: blue;
+    cursor: pointer;
+}
+#search-results span.action i:hover {
+    color: red;
+}
+.result-sutta-name {
+    color: darkblue;
+    font-weight: bold;
+    padding-right: 10pt;
+}
+.result-parents {
+    font-size: 12pt;
+    color: darkgreen;
+}
+.result-sutta-name:hover, .result-parent-name:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}

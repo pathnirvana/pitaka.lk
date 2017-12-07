@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="3q30uQ1_gO_dEVjUO6EsTgpovt8MHTyY75774HmTSb0" />
+    <title>Pali - Sinhala Dictionary පිටක.lk</title>
+    <meta name="description" content="පාළි - සිංහල ශබ්දකෝෂය. සුමංගල සහ බුද්ධදත්ත. Pali - Sinhala Dictionary. Sumangala And Buddhadatta">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="../styles/font-awesome.css"/>
+    <link rel="stylesheet" href="../styles/common_styles.css"/>
+    <link rel="stylesheet" href="./styles.css" />
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-46817481-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+</head>
+<body>
+
+<div align="center" style="width: 100%; max-width: 940pt; margin: 0pt auto;">
+    
+        <div align="center" id="header" style="display: block; margin: 0pt;">
+            <img class="header-logo-img" src="../images/chakra.png" />
+            <a class="header-logo-text" href="http://pitaka.lk">පාළි - සිංහල ශබ්දකෝෂය</a>
+            <ul class="header-menu-list">
+                <li><a class="header-menu-item" href="intro.html#about"><i class="fa fa-user fa-fw"></i> අප ගැන</a></li>
+                <li><a class="header-menu-item" href="intro.html#instructions"><i class="fa fa-info-circle fa-fw"></i> භාවිතයට උපදෙස්</a></li>
+                <li class="header-menu-item"><a onclick="showDialog(DialogNames.STATIC, 'dlg-unicode-fonts')"><i class="fa fa-font fa-fw"></i> Unicode Fonts</a></li>
+            </ul>
+        </div>
+        
+        <div class="toolbar" id="right-toolbar" align="center">
+            <i class="fa fa-book fa-lg"></i>&nbsp;
+            <input class="search-bar" type="text" placeholder="සොයන්න">
+            
+            <a id="sinhala-search" class="button"><i class="fa fa-search fa-lg"></i> සිංහල</a>
+            <!--<a onclick="showDialog(DialogNames.DICT_SETTINGS);" class="button"><i class="fa fa-cogs"></i> settings</a>-->
+            <a class="button" href="https://www.facebook.com/pitaka.lk" target="_blank" style="color: blue;"><i class="fa fa-facebook fa-lg"></i> පිටුව</a>
+            <!--<a onclick="showDialog(DialogNames.DICT_LINK);" class="button"><i class="fa fa-share"></i> share link</a>-->
+            <a id="toggle-header" class="button"><i class="fa fa-arrow-up fa-lg"></i><i class="fa fa-arrow-down fa-lg" style="display: none;"></i></a>
+        </div>
+        <div id="search-status" align="center"></div>
+        <div align="left">
+            <ul id="search-results"></ul>
+        </div>    
+</div>
+
+<!--<div style="clear:both; max-height: 0px;">&nbsp;</div>-->
+
+<!-- dialog box -->
+<div id="dialog-overlay" onclick="closeDialog()"></div>
+<div id="dialog-box">
+    <div class="dialog-content">
+        <div id="dialog-message"></div> 
+    </div>
+</div>
+
+<script src="../scripts/jquery-1.11.1.min.js"></script>
+<script src="../scripts/utilities.js"></script>
+<script src="../scripts/trie.js"></script>
+<script src="../scripts/singlish.js"></script>
+<script src="scripts/lz-string.min.js"></script>
+<script src="scripts/storage.js"></script>
+<script>
+    $( document ).ready( function() {
+
+        $(window).resize(function(){
+            // to make sure the overlay fills the screen and dialogbox aligned to center
+            // only do it if the dialog box is not hidden
+            if (!$('#dialog-box').is(':hidden')) repositionDialog();
+        });
+
+        $('#toggle-header').click( function () {
+            $(this).children().toggle();
+            $('#header').slideToggle('fast');
+        });
+        
+	    // when abbreviations are mouseover-ed show a tooltip with the desc	
+        $('#search-results').on('mouseover', 'i', function() {
+            // first remove all existing abbreviation tooltips
+            $('i').next('.tooltip').remove();
+            
+            // create the tooltip
+            var dataName = $(this).parents('li.result').attr('dataName');
+            var tipText = '';
+            if ($(this).hasClass('dict-name')) {
+                tipText = dataSettings[dataName].desc;
+                if ($(this).attr('page-num') > 0) {
+                    tipText += '. පිටුව: ' + $(this).attr('page-num');
+                }
+            } else {
+                tipText = abbreviations[dataName][$(this).text()][0];
+            }
+            $(this).after('<span class="tooltip">' + tipText + '</span>');
+            
+            // position
+            var left = $(this).position().left + $(this).width() + 4;
+            var top = $(this).position().top - 10;
+            $(this).next().css('left', left);
+            $(this).next().css('top', top);
+        });
+	
+        /**
+         * when abbreviations are clicked trigger their mouseover event then fade the tooltip
+         * (this is friendly to touch interfaces)
+         */
+        $('#search-results').on('click', 'i', function() {
+            $(this).mouseover();
+            
+            // after a slight 2 second fade, fade out the tooltip for 1 second
+            $(this).next().animate({opacity: 0.9}, {duration: 2000, complete: function() {
+                $(this).fadeOut(1000);
+            }});
+        });
+	
+        // Remove the tooltip on abbreviation mouseout
+        $('#search-results').on('mouseout', 'i', function() {	
+            $(this).next('.tooltip').remove();
+        });	
+
+        // do this at the end due to index pre-fetching
+        initSearchBar();
+    });
+</script>
+</body>
+</html>

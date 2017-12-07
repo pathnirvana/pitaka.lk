@@ -1,0 +1,106 @@
+/*
+  Tipitaka stylesheet for Unicode Sinhala encoding.
+*/
+/*local('☺')*/
+@font-face {
+    font-family: 'libre';
+    src: local('☺'), url('../fonts/AbhayaLibre-Regular.otf') format('opentype');
+}
+@font-face {
+    font-family: 'libre-bold';
+    src: local('☺'), url('../fonts/AbhayaLibre-Bold.otf') format('opentype');
+}
+/*@font-face {
+    font-family: 'Noto Sans Sinhala';
+    src: local('Noto Sans Sinhala'), url('../fonts/NotoSansSinhala-Regular.ttf') format('truetype');
+}*/
+
+body {
+    margin-top: 0px;
+    overflow: hidden;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.005);
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+}
+
+.tab-column {
+    position: relative;
+}
+
+.tab-column .text-action {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.tab-column.half {
+    float: left;
+    width: 50%;
+    padding: 0px;
+}
+
+.tab-column .collection-info { font-style: italic; text-align: center;  color: blue;  margin: 5px; }
+
+.text-section {
+    font-family: libre;
+	/*font-family: "Noto Sans Sinhala", "Noto Sans", sans-serif;*/
+    padding: 5px 10px 5px 10px;
+}
+
+.text-section .edit-textarea {
+    font-size: 12pt;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    background: lightgray;
+}
+
+.text-section .edit-textinput {
+    font-size: 12pt;
+    background: lightgray;
+}
+
+.text-section .span-links { position: absolute; cursor: pointer; color: lightgray; background-color: white; z-index: 99; padding: 0px 5px 0px 5px;}
+.text-section .span-links .fa:hover { color: lightcoral; }
+
+.text-section span.note { color: blue; }
+.text-section span.bold { font-weight: bold; }
+.text-section span.paranum { font-weight: normal; display: inline-block; float: left; font-family: libre-bold; }
+.text-section span.paranum::after { font-weight: bold; content: "."; }
+.text-section .bld { font-weight: bold; }
+
+.text-section .indent { font-size: 12pt; text-indent: 2em; margin-left: 3em; }
+.text-section .unindented { font-size: 12pt;}
+.text-section .hangnum { font-size: 12pt; margin-bottom: -0.75cm; text-indent: 2em; }
+/* Namo tassa, and nitthita -- no unique structural distinction */
+.text-section .centered { font-size: 12pt; text-align:center; }
+
+.text-section .nikaya { font-size: 24pt; text-align:center; font-weight: normal; font-family: libre-bold; margin: 7px 0px 7px 0px;}
+.text-section .book { font-size: 21pt; text-align:center; font-weight: normal; font-family: libre-bold; margin: 7px 0px 7px 0px;}
+.text-section .specialcaption { font-size: 18pt; text-align: center; font-family: libre-bold; } /* used for pannasaka bhagaya*/
+
+.text-section div.chapter { text-align:center; margin: 5px 0px 5px 0px; }
+.text-section span.chapter { font-size: 18pt; font-family: libre-bold; color: darkgoldenrod; }
+
+.text-section div.title { text-align:center; margin: 5px 0px 5px 0px; }
+.text-section span.title { font-size: 16pt; cursor: pointer; font-family: libre-bold; color: #000000; }
+
+.text-section div.subhead { text-align:center; margin: 5px 0px 5px 0px;}
+.text-section span.subhead { font-size: 14pt; cursor: pointer; font-weight: normal; font-family: libre-bold;}
+.text-section span.subhead.sc_collapsed {color: #5423DB; }
+/*.text-section span.subhead.sc_collapsed::before {content: "+  "; color: blue;}*/
+
+.text-section div.subsubhead { font-size: 12pt; text-align:center; font-family: libre-bold;  margin: 3px 0px 3px 0px;}
+
+.text-section .paragraph {padding-top: 5px; padding-bottom: 5px; display: table; width: 100%;}
+
+.text-section .bodytext { font-size: 12pt; text-indent: 1em; text-align:justify; font-weight: normal;}
+
+/* Gatha line */
+.text-section .gatha { font-size: 12pt; margin-bottom: 0em; margin-left: 4em; text-align:left; font-weight: normal;}
+.text-section .gathalast { font-size: 12pt; margin-bottom: 0.5cm; margin-left: 4em; text-align:left; font-weight: normal;}
+
+.text-section .ending {font-size: 12pt; text-align:center; }
+.text-section .udana {font-style: italic; }
+.text-section .namothassa {font-style: italic; text-align: center }

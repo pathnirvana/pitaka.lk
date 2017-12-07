@@ -1,0 +1,37 @@
+<script>
+    $(document).ready(function() {
+        $('div[id^="dlg-"]').hide();
+        $('#' + dialogSettings.type).show();
+    });
+</script>
+<div style="width: 600px">
+    <div id="dlg-about-us">
+        <div class="title"><i class="fa fa-user fa-lg" style="color: #5423DB"></i> අප ගැන</div>
+        <p>අපගේ අරමුණ ත්‍රිපිටකය භාවිතය ලංකාව තුළ ජනප්‍රිය කිරීමත්, එමගින් පිරිසිදු බුදු දහම ම ලංකාව තුළ ප්‍රචාරය කිරීමත්ය.
+            පාලි ත්‍රිපිටකය ට අපි විශේෂ වැදගත්කමක් ලබා දී ඇති අතර, සිංහල පරිවර්තනයන් ගණනාවක් ඇතුලත් කිරීමේ පහසුවද මේ වෙබ්අඩවියේ ඇත.
+            ත්‍රිපිටකය ඉගෙන ගන්නා ඕනෑම අයෙකුට ඉතා වටිනා ධර්ම දානයකි.</p>
+        <p>යෝජනා හෝ චෝදනා සඳහා අපට විද්‍යුත් තැපැල් පණිවිඩයක් එවන්න. අපගේ ලිපිනය admin@pitaka.lk</p>
+        <p style="text-align: center"><a class="button" href="https://www.facebook.com/pitaka.lk" target="_blank"><i class="fa fa-facebook fa-lg"></i> අපගේ Facebook පිටුවට පිවිසෙන්න</a></p>
+    </div>
+    <div id="dlg-help-us">
+        <div class="title"><i class="fa fa-gift fa-lg" style="color: #5423DB;"></i> අපට උදව් කරන්න. ධර්ම දානයට සම්බන්ධ වන්න. </div>
+        <p>පහත දැක්වෙන වීඩියෝ එකේ දැක්වෙන පරිදි මෙම වෙබ්අඩවිය ට සිංහල පරිවර්තන එක කිරීමට කැමති නම් අපට විද්‍යුත් තැපැල් පණිවිඩයක් එවන්න. අපගේ ලිපිනය admin@pitaka.lk</p>
+        <iframe width="590" height="400" src="//www.youtube.com/embed/-weape7PZYY" frameborder="0" allowfullscreen></iframe>
+        <p></p>
+    </div>
+    <div id="dlg-instructions">
+        <div class="title"><i class="fa fa-info-circle fa-lg" style="color: #5423DB;"></i> භාවිතයට මූලික උපදෙස්</div>
+        <p>මූලික උපදෙස් පහත වීඩියෝ එකේ දක්වා ඇත.</p>
+        <iframe width="590" height="400" src="//www.youtube.com/embed/A7UsHjN-xLc" frameborder="0" allowfullscreen></iframe>
+        <p></p>
+    </div>
+    <div id="dlg-unicode-fonts">
+        <div class="title"><i class="fa fa-font fa-lg" style="color: #5423DB;"></i> Unicode Fonts</div>
+        <p>Unicode Fonts පහත සබැඳියාවෙන් භාගත කරගන්න. </p>
+        <p><a href="http://pathnirvana.org/custom/unicode_tools/test_fonts/" target="_blank">Fonts භාගත කිරීම</a></p>
+        <p>If you are using a Mac (Apple) computer do not install these fonts.</p>
+    </div>
+    <div style="text-align: center">
+        <a href="#" class="button close-button" onclick="closeDialog()"><i class="fa fa-close fa-lg"></i> වසන්න</a>
+    </div>
+</div>
