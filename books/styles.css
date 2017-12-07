@@ -1,0 +1,76 @@
+@font-face {
+    font-family: 'noto-serif';
+    src: local('###'), url('../fonts/NotoSerifSinhala-Regular.ttf') format('truetype');
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'noto-serif';
+    src: local('###'), url('../fonts/NotoSerifSinhala-Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+
+body {
+    font-family: noto-serif;
+}
+div.book-rect {
+    border: 5px solid gray;
+    padding: 15px;
+    margin: 5px;
+    text-align: center;
+    position: relative;
+}
+
+div.book-rect.medium {
+    width: 150px;
+    height: 225px;
+    /*line-height: 225px;*/
+    font-size: 20px;
+}
+
+div.book-rect.small {
+    width: 125px;
+    height: 188px;
+    font-size: 18px;
+}
+
+div.book-rect .links {
+    position: absolute;
+    bottom: 10px;
+    left: 0px;
+    width: 100%;
+}
+
+span.book-name {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+span.book-author {
+    font-size: 12px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+span.links {
+    font-size: 16px;
+    background-color: lightgrey;
+}
+
+.book-desc {
+    display: block;
+    clear: both;
+    font-size: 12px;
+}
+
+td {
+    padding-right: 20px;
+    width: 220px;
+    vertical-align: top;
+}
+
+div.group-header {
+    font-size: 24px;
+    font-weight: bold;
+}
+

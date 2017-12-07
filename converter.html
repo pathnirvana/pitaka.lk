@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Pali Script Converter</title>
+    <meta name="description" content="Pali Transliteration among Sinhala, Thai and IAST Roman scripts. තායි සහ රෝමන් අකුරු වලින් ඇති පාළි ලිපි සිංහලෙන් කියවන්න.">
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="styles/common_styles.css" />
+    <link rel="stylesheet" href="styles/text_styles.css" />
+    <link rel="stylesheet" href="styles/font-awesome.css"/>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-46817481-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+</head>
+<body style="overflow: auto;">
+    
+    <div align="center" style="width: 100%; max-width: 800pt; margin: 0pt auto;">
+
+        <div align="center" id="header" style="display: block; margin: 0pt;">
+            <img class="header-logo-img" src="images/chakra.png" style="height: 55pt; float: none;" />
+            <a class="header-logo-text" style="font-size: 40pt; float: none;" href="http://pitaka.lk">Pali Script Converter</a>
+            <img class="header-logo-img" src="images/chakra.png" style="height: 55pt; float: none;" />
+        </div>
+        
+        <div style="display: block;">
+            <ol align="left">
+                <li>Select the Input text script by using one of the buttons below.</li>
+                <li>Type or paste the text to be converted to the first text box.</li>
+                <li>Click one of the convert buttons to get the converted text in the second text box.</li>
+            </ol>
+            <div id="input-buttons" style="height: 15pt; padding: 5pt;">
+                <span>1) Select Input Script: </span>
+                <a class="button" script="ro"><i class="fa fa-check-circle-o" style="color: green;"></i> Roman</a>
+                <a class="button definscript" script="si"><i class="fa fa-circle-thin" style="color: green;"></i> Sinhala සිංහල</a>
+                <a class="button" script="th"><i class="fa fa-circle-thin" style="color: green;"></i> Thai ไทย</a>
+            </div>
+            <br />
+            <textarea id="box1" rows="12" placeholder="2) Input Text" style="font-size: 14pt; width: 800pt; font-family:un-abhaya"></textarea>
+            <br />
+            <div id="output-buttons" style="height: 15pt; padding: 5pt;">
+                <span>3) Output Script: </span>
+                <a class="button" script="ro"><i class="fa fa-arrow-down" style="color: green;"></i> Roman</a>
+                <a class="button" script="si"><i class="fa fa-arrow-down" style="color: green;"></i> Sinhala සිංහල</a>
+                <a class="button" script="th"><i class="fa fa-arrow-down" style="color: green;"></i> Thai ไทย</a>
+                <a class="button" onclick="$('#box1,#box2').val('');">
+                    <i class="fa fa-trash" style="color: darkred;"></i> Reset</a>
+                <a class="button" onclick="loadTestPattern()">
+                    <i class="fa fa-bug" style="color: red;"></i> Test</a>
+            </div>
+            <br />
+            <textarea id="box2" rows="12" placeholder="Output Text" style="font-size: 14pt; width: 800pt; font-family:un-abhaya"></textarea>
+
+            <span class="p"><i class="fa fa-copyright" style="color: green;"></i> 2016 <a href="https://pitaka.lk">පිටක.lk</a></span>
+            <br />
+            <span class="p" style="color: grey">report any conversion errors to admin<i class="fa fa-at"></i>pitaka.lk</span>
+
+        </div>
+</div>
+
+<script src="scripts/jquery-1.11.1.min.js"></script>
+<script src="scripts/converter_common.js"></script>
+<script src="scripts/thai_char_mapping.js"></script>
+<script src="scripts/roman_char_mapping.js"></script>
+<script>
+    var inScript = '';
+
+    $('#input-buttons a.button').on('click', function () {
+        inScript = $(this).attr('script');
+        // set pressed state
+        $(this).addClass('pressed').children('i.fa').removeClass('fa-circle-thin').addClass('fa-check-circle-o');
+        $(this).siblings('.button').removeClass('pressed').children('i.fa').addClass('fa-circle-thin').removeClass('fa-check-circle-o');
+        // remove inS button from output selection buttons list
+        $('#output-buttons>a.button').show().filter('[script="'+ inScript +'"]').hide();
+    });
+
+    $('a.definscript').click(); // select the default input script
+
+    $('#output-buttons a.button[script]').on('click', function () {
+        text = $('#box1').val();
+        var outScript = $(this).attr('script');
+        if (inScript != 'si') {
+            //convert from input to si
+            if (inScript == 'th') {
+                thaiToSinhalaConvert();
+            } else {
+                romanToSinhalaConvert();
+            }
+        }
+        if (outScript != 'si') {
+            // convert from si to outScript
+            if (outScript == 'th') {
+                sinhalaToThaiConvert();
+            } else {
+                sinhalaToRomanConvert();
+            }
+        }
+        $('#box2').val(text);
+    });
+
+    function loadTestPattern() {
+        var testSin = genTestPattern();
+        $('#box1').val(testSin);
+        $('a.definscript').click(); // select sinhala
+    }
+    $( document ).ready( function() {
+    });
+</script>
+</body>
+</html>

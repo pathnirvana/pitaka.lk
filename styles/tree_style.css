@@ -1,0 +1,80 @@
+#left-column {
+    position: fixed;
+}
+
+#main-tree {
+    max-width: 250px;
+}
+
+.pitaka-tree {
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.pitaka-tree a {
+	cursor: pointer;
+    font-size: 10pt;
+}
+.pitaka-tree > ul {
+    margin-left:-5px;
+}
+.pitaka-tree ul {
+    list-style: none inside none;
+    /* change indentation width */
+    padding-left: 15px;
+}
+/* bigger font for the first level only */
+.pitaka-tree > ul > li > a {
+    /*font-size: 11pt;*/
+    font-weight: bold;
+}
+.pitaka-tree li a {
+    line-height: 16px;
+    display: block;
+    position: relative;
+    text-decoration: none;
+    padding: 0 0 0 20px;
+    white-space: nowrap;
+}
+.pitaka-tree li a:hover {
+    background-color: silver;
+	font-weight: bold;
+}
+.pitaka-tree li a:active {
+    background-color: lavender;
+}
+
+.pitaka-tree li[disabled] a {
+    color: gray;
+}
+
+.pitaka-tree ul li > a:before {
+    background-image: url("../images/file.png");
+    background-repeat: no-repeat;
+    content: "";
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    vertical-align: middle;
+    height: 16px;
+    width: 16px;
+}
+
+.pitaka-tree ul li.parent > a:before {
+    background-image: url("../images/folder.png");
+    background-repeat: no-repeat;
+    /*background-position: 25px center;*/
+}
+
+.pitaka-tree ul li.active > a:before {
+    background-image: url("../images/openfolder.png");
+    background-repeat: no-repeat;
+    /*background-position: 0 center;*/
+}
+
+.pitaka-tree ul li ul {
+    display: none;
+}
+.pitaka-tree ul li ul li {
+    position: relative;
+}

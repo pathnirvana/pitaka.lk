@@ -1,0 +1,81 @@
+/*----- Tabs -----*/
+body {
+    background-color: #eeeeee;
+}
+.right-side-column {
+    margin-left: 255px;
+}
+.pitaka-tabs {
+    width:100%;
+    display:inline-block;
+}
+/*----- Tab Links -----*/
+/* Clearfix */
+.pitaka-tabs .tab-links:after {
+    display: block;
+    clear: both;
+    content:'';
+}
+.pitaka-tabs .tab-links {
+    margin-top: 5px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+}
+
+.pitaka-tabs .tab-links li {
+    margin: 0px 5px;
+    float: left;
+    list-style: none;
+
+    padding: 7px 15px;
+    display: inline-block;
+    border-radius: 5px 5px 0px 0px;
+    box-shadow: -2px 0px 0px rgba(0,0,0,0.15);
+    background: #7FB5DA;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.pitaka-tabs .tab-links a {
+    transition: all linear 0.15s;
+    text-decoration: none;
+    color: black;
+}
+.pitaka-tabs .close-icon {
+    width: 16px;
+    height: 16px;
+    margin-left: 5px;
+    vertical-align: middle;
+    margin-right: -5px;
+    background-image: url("../images/close.gif");
+    display: inline-block;
+}
+
+.pitaka-tabs .close-icon:hover {
+    background: url("../images/tab_close_active.png");
+}
+
+.pitaka-tabs .tab-links li:hover {
+    background: #a7cce5;
+}
+
+.pitaka-tabs li.active, .pitaka-tabs li.active:hover {
+    background: #ffffff;
+}
+/*.pitaka-tabs li.active a, .pitaka-tabs li.active a:hover {
+    background: #ffffff;
+    color: black;
+}*/
+/*----- Content of Tabs -----*/
+.pitaka-tabs .tab-content {
+    padding: 5px 15px 15px 15px; /* top right bottom left */
+    border-radius:10px 10px 10px 10px;
+    box-shadow:-2px 2px 2px rgba(0,0,0,0.15);
+    background:#fff;
+}
+
+.pitaka-tabs .tab {
+    display:none;
+    max-height: inherit;
+    overflow-y: auto;
+}

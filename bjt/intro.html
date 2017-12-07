@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="3q30uQ1_gO_dEVjUO6EsTgpovt8MHTyY75774HmTSb0" />
+    <title>Buddha Jayanthi Tripitakaya Introduction</title>
+    <meta name="description" content="බුද්ධ ජයන්ති ත්‍රිපිටකය online මෘදුකාංගය">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="../styles/common_styles.css"/>
+    <link rel="stylesheet" href="../styles/font-awesome.css"/>
+    <style>
+        h2 {
+            color: darkred;
+            text-align: center;
+        }
+        h3 {
+            color: darkgreen;
+            text-align: center;
+        }
+        ul .sinhala-char {
+            font-weight: bold;
+            padding-right: 20pt;
+        }
+    </style>
+</head>
+<body style="background-color: white;">
+    <div align="center" style="width: 100%; max-width: 800pt; margin: 0pt auto; padding: 10pt; border: 2px solid brown;">
+        <div align="justify">
+        <h2 id="about">අප ගැන - About Us</h2>
+        
+        <p>This web application provides an easy way to search and navigate the Budda Jayanthi Tipitaka (BJT) scanned pages.
+            It uses a search index created from the Table of Contents (ToC - පටුන) of the 57 Tipitaka volumes.
+            Hal akuru were used where appropriate to ease the Sinhala reading. Other than that no changes were made to the original ToC entries.</p>
+
+        <p>BJT is the most trusted Tipitaka source by scolars worldwide and the Sinhala translation is the most trusted in Sri Lanka.
+            The scanned PDFs of the all 57 volumes of BJT are available <a href="https://www.mediafire.com/folder/najd8hdk6bqqf/Buddha_Jayanthi_Tipitaka">here (900 MB download)</a>.</p>
+
+        <p>It is entirely possible that there are some mistakes in the search index and thus when clicking on a sutta name it opens up the wrong page.
+                If you find one feel free to send us an email at admin<i class="fa fa-at"></i>pitaka.lk. We are also looking for volunteers who can build Android and iOS apps for this web application.</p>
+
+        <h3>පුණ්‍යානුමෝදනා</h3>
+        <p>We are using the scanned PDFs made available by Mr Saminda Ranasinghe on his website <a href="http://www.aathaapi.org/">aathaapi.org</a>.
+            We are all in-debt to Mr Saminda for making this invaluable timeless dhamma available freely.</p>
+
+        <h2 id="download">භාගත කරන්න - Download</h2>
+        <p>The total size of this application including the image files containing Tipitaka pages is around 2.3 GB.</p>
+
+        <p>It can be downloaded <a href="http://www.mediafire.com/file/ha3c6qzspp3j787">here (2.3 GB download)</a> and used offline on PC, Mac or Linux computers without the need of an internet connection.
+        After downloading, extract the zip file and open the file named "Buddha Jayanthi Tipitaka.html".</p>
+
+        <p>We have also published the application in DVD format so that it can be easily distributed among the interested parties.
+            DVD copies can be obtained from Mr Chaaminda in Nawala. Phone: 0770 769101, Email: cchaami@gmail.com</p>
+
+        <p>Since the download size is very big, our friend, Mr Sampath has suggested that using a torrent program might be better over for users with less reliable internet connections.
+           The torrent file prepared by him is available <a href="http://www.mediafire.com/file/74nvpzfgkvtv7xv/Buddha_Jayanthi_Software_v1.zip.torrent">here</a> and the instructions of using it is available <a href="http://www.mediafire.com/file/f8grics4xmb3gut/Instructions_for_torrent_download.docx">here (instructions)</a>.</p>
+        
+        <h2 id="instructions">Usage Instructions</h2>
+        <ul>
+            <li>You can use Sinhala Unicode, or Singlish for searching the Table of Contents. (Singlish letter table is listed below)</li>
+            <li>At least 2 characters need to be typed in the search text box to activate the searching process. If the searching is not activated press 'Enter' or an arrow key.</li>
+            <li>Results from the Table of Contents of BJT volumes matching your search term will be listed in a table view. Maximum 100 results will be shown.</li>
+            <li>You can change the order of displayed entries by clicking on the <i class="fa fa-sort-alpha-asc"></i> and <i class="fa fa-sort-numeric-asc"></i> icons in the table heading.</li>
+            <li>You can limit the searching to a subset of the available 57 books by clicking on the <i class="fa fa-wrench"></i> icon.</li>
+            <li>By clicking on the <i class="fa fa-list-alt"></i> icon you can view the results of the last search.</li>
+            <li>You can also navigate to a paricular section/sutta in the Tipitaka by using the Tree View. To show/hide the tree click on the <i class="fa fa-sitemap"></i> icon.</li>
+            <li>Click the button with <i class="fa fa-arrow-up"></i> icon in the toolbar to open/close the top banner.</li>
+        </ul>
+        <h3>Singlish Letter Table</h3>
+            <p>When searching in Singlish, please refer to the table below to find the appropriate English letter for Sinhala letters.
+            When there are multiple English letters for a single Sinhala letter you can use any one of them. E.g. To search for <i>ඛ</i> you can use either 'ka' or 'kha'.</p>
+
+            <table align="center" width="100%" border="1">
+                <tbody>
+                    <tr align="center">
+                        <td><h4>Vowels</h4></td>
+                        <td><h4>Consonants</h4></td>
+                        <td><h4>Example</h4></td>
+                        <td><h4>Specials</h4></td>
+                    </tr>
+                    <tr style="vertical-align: top;">
+                        <td><ul id="singlish-vowels"></ul></td>
+                        <td><ul id="singlish-consonants"></ul></td>
+                        <td><ul id="singlish-conso-example"></ul></td>
+                        <td><ul id="singlish-specials"></ul></td>
+                    </tr>
+                </tbody>
+            </table>
+        
+        </div>
+    </div>
+    <script src="../scripts/jquery-1.11.1.min.js"></script>
+    <script src="../scripts/trie.js"></script>
+    <script src="../scripts/singlish.js"></script>
+    <script>
+        $( document ).ready( function() {
+
+            function addSinglishEntries(map, ulSelector) {
+                $.each(map, function(_1, pair) {
+                    var li = $('<li/>').appendTo(ulSelector);
+                    $('<span/>').text(pair[0]).addClass('sinhala-char').appendTo(li);
+                    $('<span/>').text(pair[1]).addClass('english-char').appendTo(li);
+                });
+            }
+            addSinglishEntries(singlish_vowels, '#singlish-vowels');
+            addSinglishEntries(singlish_consonants, '#singlish-consonants');
+
+            var consoExampleMap = []; // use k as example
+            $.each(singlish_combinations, function (_1, pair) {
+                var exSinglish = 'k' + pair[1].split(', ').join(', k');
+                consoExampleMap.push(['ක' + pair[0], exSinglish]);
+            });
+            addSinglishEntries(consoExampleMap, '#singlish-conso-example');
+            addSinglishEntries(singlish_specials, '#singlish-specials');
+        });
+    </script>
+
+</body>
+</html>
