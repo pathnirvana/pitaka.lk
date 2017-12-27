@@ -2,15 +2,17 @@
     function getDialogLinkUrl() {
         var url = '';
         if ('nodeId' in dialogSettings) {
-            url = 'http://pitaka.lk/' + dialogSettings.nodeId;
+			// changed short url format on 2017/12/26 to prevent htaccess redirect by Apache
+			// better fetch by google bot for seo
+            url = 'http://pitaka.lk/?node=' + dialogSettings.nodeId;
             if (dialogSettings.paragraphId) {
-                url += ('/' + dialogSettings.paragraphId);
+                url += ('&para=' + dialogSettings.paragraphId);
             }
             var shortColls = dialogSettings.collections.map(function (coll) {
                 return CollectionsList[coll].short;
             });
             if (shortColls) {
-                url += ('/' + shortColls.join(','));
+                url += ('&coll=' + shortColls.join(','));
             }
         } else if ('imgSrc' in dialogSettings) {
             url = 'http://pitaka.lk/bjt/' + dialogSettings.imgSrc;
