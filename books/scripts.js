@@ -98,7 +98,7 @@ var groups = [
         rect: rectSize.SMALL,
         books: [
             {
-                name: "යතුරුලියනය කළ පොත් 17 ක්",
+                name: "යතුරුලියනය කළ පොත් 18 ක්",
                 desc: typedBookDesc,
                 urls: [["http://www.mediafire.com/file/7gnmxf14xhgzl08/Rerukane_Thero_17_books.zip", linkType.ZIP, 26]],
             },
@@ -107,6 +107,12 @@ var groups = [
                 desc: typedBookDesc,
                 urls: [["http://www.mediafire.com/file/38w9pjbq9qr3dbs/Bauddhayage_Athpotha.pdf", linkType.PDF, 2],
                     ["http://pitaka.lk/books/rc/Bauddhayage_Athpotha.htm", linkType.HTML, 2.3]],
+            },
+            {
+                name: "අභිධර්මයේ මූලික කරුණු",
+                desc: typedBookDesc,
+                urls: [["http://www.mediafire.com/file/epmoc5661k704uc/Abhidharmaye_Mulika_Karunu.pdf", linkType.PDF, 1],
+                    ["http://pitaka.lk/books/rc/Abhidharmaye_Mulika_Karunu.htm", linkType.HTML, 2]],
             },
             {
                 name: "බෝධිපාක්ෂික ධර්ම විස්තරය",
