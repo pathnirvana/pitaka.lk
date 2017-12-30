@@ -147,9 +147,9 @@
         changePitakaTabFocus(tabId);
     };
     /**
-     * Sets the contents of all columns
+     * Sets the contents of all columns, nodeId passed in only for ga logging purposes
      */
-    $.fn.pitakaTabsOpenVagga = function (origin, vaggaId, forceColls) {
+    $.fn.pitakaTabsOpenVagga = function (origin, vaggaId, forceColls, nodeId) {
         console.log(vaggaId, forceColls);
         //var tab = getActiveTab(this);
         var tab = getTabToOpenContent(origin);
@@ -165,6 +165,15 @@
         columns = columns.filter(function(n) { // should be a subset of the availColls, so do array intersection
             return availColls.indexOf(n) != -1;
         });
+        // google analaytics - send node view
+        ga('send', {
+            hitType: 'event',
+            eventCategory: origin,
+            eventAction: 'view_node',
+            eventValue: vaggaId,
+            columns: columns,
+            nodeId: nodeId
+        });
 
         var vaggaFileId = 'vagga_' + vaggaId + '.xml';
         tab.empty().append('<br style="clear:both;" />').data('target-id', vaggaFileId).data('avail-colls', availColls);
@@ -176,7 +185,8 @@
     };
 
     $.fn.pitakaTabsOpenSutta = function (origin, location) {
-        $('#main-tabs').pitakaTabsOpenVagga(origin, location.vaggaId, location.collection).done(function() {
+        $('#main-tabs').pitakaTabsOpenVagga(origin, location.vaggaId, location.collection, location.nodeId).done(function() {
+            // after the vagga is opened navigate to sutta and optionally hightlight the para
             var tab = getActiveTab();
             var highlightPara = [];
             if (location.paragraphId) {
@@ -193,6 +203,8 @@
                     tab.scrollTop(highlightPara.position().top);
                 });
             }
+            // set the page title to sutta name
+            document.title = divsToOpen.last().children('span').text().replace(/^\d+\./, '');
         });
     };
 

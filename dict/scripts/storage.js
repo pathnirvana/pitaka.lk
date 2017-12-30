@@ -108,15 +108,6 @@ function initSearchBar() {
         initDataSet(name);
         searchCache[name] = {};
     });
-    
-    // to be done after loading data sets
-    //$.when.apply($, defs).done(function () {
-        // should happen after loading data
-        /* var location = getStartupLocation();
-        if (location) {
-            pitakaLkOpenLocation(location);
-        }*/
-    //});
 
     $('.search-bar').focus(); // give focus to the search bar on page load
 

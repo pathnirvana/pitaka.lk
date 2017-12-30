@@ -43,7 +43,7 @@ function initSearchBar() {
 
     updateFilterStatusDisplay();
 
-    // clicking on a result brings its pali word to the search bar
+    // clicking on a result opens it up in the tabs
     $('#search-results').on('click', '.result-sutta-name,.result-parent-name', function() {
         $('.search-bar').val($(this).text());
         pitakaLkOpenLocation(createLocationObj($(this).attr('index'), [], 0), 'search');
