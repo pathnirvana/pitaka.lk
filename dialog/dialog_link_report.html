@@ -4,7 +4,7 @@
         if ('nodeId' in dialogSettings) {
 			// changed short url format on 2017/12/26 to prevent htaccess redirect by Apache
 			// better fetch by google bot for seo
-            url = 'http://pitaka.lk/?node=' + dialogSettings.nodeId;
+            url = 'https://pitaka.lk/?node=' + dialogSettings.nodeId;
             if (dialogSettings.paragraphId) {
                 url += ('&para=' + dialogSettings.paragraphId);
             }
@@ -15,7 +15,7 @@
                 url += ('&coll=' + shortColls.join(','));
             }
         } else if ('imgSrc' in dialogSettings) {
-            url = 'http://pitaka.lk/bjt/' + dialogSettings.imgSrc;
+            url = 'https://pitaka.lk/bjt/' + dialogSettings.imgSrc;
         }
         return url;
     }
