@@ -62,11 +62,20 @@ function loadNextPage(visibleIds) {
     return nextId;
 }
 
-function navigateToPage(searchId) {
+function navigateToPage(searchId, origin) {
     var entry = searchIndex[searchId];
     // set the current book
     curBookId = entry[SF.book];
     curBook = books[curBookId];
+    // google analaytics - send node view
+    ga('send', {
+        hitType: 'event',
+        eventCategory: origin,
+        eventAction: 'view_node',
+        eventValue: searchId,
+        bookId: curBookId,
+        pageNum: entry[SF.page]
+    });
 
     $('#image-area').children('.page-pair').remove();
     $('#image-area').append(createPagePair(curBook.pageNumOffset + entry[SF.page]));

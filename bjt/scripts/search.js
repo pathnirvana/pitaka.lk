@@ -32,10 +32,10 @@ function initSearchBar() {
     $('.search-bar').focus(); // give focus to the search bar on page load
     updateFilterStatusDisplay();
 
-    // clicking on a result brings its pali word to the search bar
+    // clicking on a result brings the bjt pages
     $('#search-results').on('click', '.result-sutta-name,.result-parent-name', function() {
         $('.search-bar').val($(this).text());
-        navigateToPage($(this).attr('index'));
+        navigateToPage($(this).attr('index'), 'search');
     });
 }
 function updateFilterStatusDisplay() {
