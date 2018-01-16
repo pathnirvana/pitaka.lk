@@ -72,6 +72,7 @@ function navigateToPage(searchId, origin) {
         hitType: 'event',
         eventCategory: origin,
         eventAction: 'view_node',
+        eventLabel: entry[SF.name],
         eventValue: searchId,
         bookId: curBookId,
         pageNum: entry[SF.page]
