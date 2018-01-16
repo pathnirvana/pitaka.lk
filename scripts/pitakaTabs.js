@@ -12,14 +12,20 @@
         // handle tab clicks
         $('.tab-links', tabs).on('click', 'li', function (e) { // delegate to new elements(tabs) too
             var tabId = $(this).attr('id');
+            // log new/change tab so we can track tab usage (consider removing tabs)
             if (tabId == '#pitaka-tab-new') { //clicking on the newtab - create a newtab and focus
+                ga('send', {  hitType: 'event',  eventCategory: 'tab_navigation',  eventAction: 'new_tab_icon_click' });
                 tabId = createNewPitakaTab(tabs, 'last');
+            } else if (tabId != '#pitaka-tab-search') {
+                ga('send', {  hitType: 'event',  eventCategory: 'tab_navigation',  eventAction: 'change_tab' });
             }
+            console.log(tabId);
             changePitakaTabFocus(tabId);
         });
         // close icon click handler
         $('.tab-links', tabs).on('click', '.close-icon', function (e) { // delegate to new elements(tabs) too
             var tabId = $(this).parent().attr('id');
+            ga('send', {  hitType: 'event',  eventCategory: 'tab_navigation',  eventAction: 'close_tab' });
             closePitakaTab(tabId);
             e.stopPropagation(); // prevent parent li click - since icon is inside the li
         });
