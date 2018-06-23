@@ -60,6 +60,13 @@ var groups = [
                     ["http://pitaka.lk/books/Vishuddhi_Margaya.htm", linkType.HTML, 9]],
             },
 			{
+                name: "සම සතළිස් කර්මස්ථාන භාවනා",
+                desc: typedBookDesc,
+				author: "නාඋයනේ අරියධම්ම හිමි",
+                urls: [["http://www.mediafire.com/file/qtc7ypa3li596sm/", linkType.PDF, 2],
+                    ["http://pitaka.lk/books/Sama_Sathalis_Karmasthana.htm", linkType.HTML, 4]],
+            },
+			{
                 name: "මිලින්ද ප්‍රශ්නය",
                 desc: typedBookDesc,
 				author: "හීනටිකුඹුරේ සුමංගල හිමි",
@@ -68,6 +75,7 @@ var groups = [
             {
                 name: "සරළ සිංහල මිලින්ද ප්‍රශ්නය",
                 desc: typedBookDesc,
+				author: "Mr. R. Gamini Gunasiri",
                 urls: [["http://www.mediafire.com/file/u7kkdtxrd89xevw/Sarala_Sinhala_Milinda_Prashnaya.pdf", linkType.PDF, 1],
                     ["http://pitaka.lk/books/Sarala_Sinhala_Milinda_Prashnaya.htm", linkType.HTML, 0.6]],
             },
@@ -98,9 +106,9 @@ var groups = [
         rect: rectSize.SMALL,
         books: [
             {
-                name: "යතුරුලියනය කළ පොත් 19 ක්",
+                name: "යතුරුලියනය කළ පොත් 20 ක්",
                 desc: typedBookDesc,
-                urls: [["http://www.mediafire.com/file/7gnmxf14xhgzl08/Rerukane_Thero_19_books.zip", linkType.ZIP, 29]],
+                urls: [["http://www.mediafire.com/file/7gnmxf14xhgzl08/", linkType.ZIP, 30]],
             },
             {
                 name: "බෞද්ධයාගේ අත්පොත",
@@ -218,6 +226,13 @@ var groups = [
                 urls: [["http://www.mediafire.com/file/ze5hhwogbn6olzq/Wanchaka_Dharma.pdf", linkType.PDF, 2],
                     ["http://pitaka.lk/books/rc/Wanchaka_Dharma.htm", linkType.HTML, 1.7]],
             },
+			{
+                name: "පටිච්චසමුප්පාද විවරණය",
+                css: { "font-size": "16px" },
+                desc: typedBookDesc,
+                urls: [["http://www.mediafire.com/file/07fm80acy50g0o0/Patichcha_Samuppada_Vivarana.pdf", linkType.PDF, 2],
+                    ["http://pitaka.lk/books/rc/Patichcha_Samuppada_Vivarana.htm", linkType.HTML, 2.4]],
+            },
         ]
     },
     {
@@ -225,6 +240,12 @@ var groups = [
         anchor: "old",
         rect: rectSize.SMALL,
         books: [
+			{
+                name: "දුර්ලභ ඉපැරණි පොත් සමුහය",
+                css: { "font-size": "16px" },
+                desc: "නාඋයන ආරණ්‍යයෙන් ස්කෑන් කර සකසන ලද පොත් 150 ක්",
+                urls: [["http://www.mediafire.com/folder/f7yy971gjkeak/Nauyana_Books", linkType.FOLDER, 10000]],
+            },
             {
                 name: "සද්ධර්මාලංකාරය",
                 css: { "font-size": "16px" },

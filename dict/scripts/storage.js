@@ -1,7 +1,7 @@
 
 // store the data in local browser cache - will be available even after browser restart
 function setLocalData(name, version) {
-    if (typeof(Storage) == "undefined") {
+    if (typeof(Storage) == "undefined" || !localStorage) {
         return false;
     }
     var setting = dataSettings[name];
@@ -28,7 +28,7 @@ function getLocalData(name) {
 }
 
 function initDataSet(name) {
-    if (typeof(Storage) == "undefined") {
+    if (typeof(Storage) == "undefined" || !localStorage) {
         getUrlData(name, -1);
         return;
     }
@@ -137,7 +137,7 @@ function dataLoadComplete(name, version) {
         $('.search-bar').on('keyup compositionend', function(e) {
             performSearch(e, SearchType.PALI);
         });
-        $('#sinhala-search').on('click', function(e) {
+        $('#sinhala-search-button').on('click', function(e) {
             performSearch(e, SearchType.SINH);
         });
         eventsRegistered = true;
@@ -233,9 +233,9 @@ function performSearch(e, searchType) {
     });
     ul.slideDown('fast');
     if (entries.length < resultSettings.maxResults) {
-        statusDiv.text("“" + query + "” යන සෙවුම සඳහා ගැළපෙන වචන " + entries.length + " ක් හමුවුනා.");
+        statusDiv.text("“" + query + "” සෙවුම සඳහා වචන " + entries.length + " ක් හමුවුනා.");
     } else {
-        statusDiv.text("ඔබගේ සෙවුම සඳහා ගැළපෙන වචන " + hits + " කට වඩා හමුවුනා. එයින් මුල් වචන " + resultSettings.maxResults + " පහත දැක්වේ.");
+        statusDiv.text("සෙවුම සඳහා වචන " + hits + " කට වඩා හමුවුනා. එයින් මුල් වචන " + resultSettings.maxResults + " පහත දැක්වේ.");
     }
 }
 

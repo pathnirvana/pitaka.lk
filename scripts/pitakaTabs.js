@@ -176,7 +176,7 @@
             hitType: 'event',
             eventCategory: origin,
             eventAction: 'view_node',
-            eventValue: vaggaId,
+            eventLabel: vaggaId,
             columns: columns,
             nodeId: nodeId
         });
