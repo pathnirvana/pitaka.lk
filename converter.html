@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Pali Script Converter</title>
     <meta name="description" content="Pali Transliteration among Sinhala, Thai and IAST Roman scripts. තායි සහ රෝමන් අකුරු වලින් ඇති පාළි ලිපි සිංහලෙන් කියවන්න.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
 
@@ -19,34 +20,40 @@
         ga('create', 'UA-46817481-2', 'auto');
         ga('send', 'pageview');
     </script>
+    <style>
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            margin: 0pt;
+        }
+    </style>
 </head>
-<body style="overflow: auto;">
-    
-    <div align="center" style="width: 100%; max-width: 800pt; margin: 0pt auto;">
+<body align="center">
 
-        <div align="center" id="header" style="display: block; margin: 0pt;">
-            <img class="header-logo-img" src="images/chakra.png" style="height: 55pt; float: none;" />
-            <a class="header-logo-text" style="font-size: 40pt; float: none;" href="http://pitaka.lk">Pali Script Converter</a>
-            <img class="header-logo-img" src="images/chakra.png" style="height: 55pt; float: none;" />
+    <div style="margin:0 auto; max-width: 800pt; height: 100%; display: flex; flex-flow: column;">
+
+        <div style="flex: 0 1 auto;">
+            <div class="title-bar" align="left">
+                <a id="menu-toggle" style="padding:0 10pt 0 10pt;">
+                    <i class="fa fa-bars" style="color: white"></i></a>
+                <div style="display: inline-block; color:white; ">Pali Script Converter</div>
+            </div>
         </div>
         
-        <div style="display: block;">
-            <ol align="left">
-                <li>Select the Input text script by using one of the buttons below.</li>
-                <li>Type or paste the text to be converted to the first text box.</li>
-                <li>Click one of the convert buttons to get the converted text in the second text box.</li>
-            </ol>
-            <div id="input-buttons" style="height: 15pt; padding: 5pt;">
-                <span>1) Select Input Script: </span>
+        <div align="left" style="overflow-y: auto; flex: 1 1 content; display: flex; flex-flow: column; padding: 3pt">
+            
+            <div>1) Select the Input script by using one of the buttons below</div>
+            <div id="input-buttons" style="padding: 5pt;">
                 <a class="button" script="ro"><i class="fa fa-check-circle-o" style="color: green;"></i> Roman</a>
                 <a class="button definscript" script="si"><i class="fa fa-circle-thin" style="color: green;"></i> Sinhala සිංහල</a>
                 <a class="button" script="th"><i class="fa fa-circle-thin" style="color: green;"></i> Thai ไทย</a>
             </div>
-            <br />
-            <textarea id="box1" rows="12" placeholder="2) Input Text" style="font-size: 14pt; width: 800pt; font-family:un-abhaya"></textarea>
-            <br />
-            <div id="output-buttons" style="height: 15pt; padding: 5pt;">
-                <span>3) Output Script: </span>
+            
+            <textarea id="box1" rows="12" placeholder="2) Type or paste the Input text to be converted here." 
+                style="font-size: 13pt; font-family:un-abhaya; flex: 1 1"></textarea>
+            
+            <div>3) Select the desired output script by using one of the buttons below</div>
+            <div id="output-buttons" style="padding: 5pt;">
                 <a class="button" script="ro"><i class="fa fa-arrow-down" style="color: green;"></i> Roman</a>
                 <a class="button" script="si"><i class="fa fa-arrow-down" style="color: green;"></i> Sinhala සිංහල</a>
                 <a class="button" script="th"><i class="fa fa-arrow-down" style="color: green;"></i> Thai ไทย</a>
@@ -55,15 +62,14 @@
                 <a class="button" onclick="loadTestPattern()">
                     <i class="fa fa-bug" style="color: red;"></i> Test</a>
             </div>
-            <br />
-            <textarea id="box2" rows="12" placeholder="Output Text" style="font-size: 14pt; width: 800pt; font-family:un-abhaya"></textarea>
+            
+            <textarea id="box2" rows="12" placeholder="4) Output converted text will be displayed here" 
+                style="font-size: 13pt; font-family:un-abhaya; flex: 1 1"></textarea>
 
-            <span class="p"><i class="fa fa-copyright" style="color: green;"></i> 2016 <a href="https://pitaka.lk">පිටක.lk</a></span>
-            <br />
-            <span class="p" style="color: grey">report any conversion errors to admin<i class="fa fa-at"></i>pitaka.lk</span>
-
-        </div>
-</div>
+            <div class="p" style="align-self: center;"><i class="fa fa-copyright" style="color: green;"></i> 2016 <a href="https://pitaka.lk">පිටක.lk</a></div>
+            <div class="p" style="color: grey; align-self: center;">Report any conversion errors to admin<i class="fa fa-at"></i>pitaka.lk</div>
+        </div> 
+    </div>
 
 <script src="scripts/jquery-1.11.1.min.js"></script>
 <script src="scripts/converter_common.js"></script>
