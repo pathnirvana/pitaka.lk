@@ -12,6 +12,14 @@ body {
     font-family: un-abhaya;
 }
 
+.title-bar {
+    white-space: nowrap; 
+    padding: 8pt 5pt 8pt 5pt; 
+    background-color: coral; 
+    font-size: 15pt;
+    cursor: pointer;
+}
+
 .header-logo-img {
     vertical-align: middle;
     display: inline-block;
