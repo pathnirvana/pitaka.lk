@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
+<n lang="en">
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="3q30uQ1_gO_dEVjUO6EsTgpovt8MHTyY75774HmTSb0" />
     <title>Pali - Sinhala Dictionary Info</title>
@@ -15,16 +15,23 @@
         i {
             font-weight: bold;
         }
-        #abbreviations-ul {
+        table {
+            border-collapse: collapse;
+        }
+        table ul {
             list-style: none;
+            padding: 0pt;
+            margin: 0pt;
+        }
+        table, th, td {
+            padding: 5pt;
+            border: 1px solid black;
         }
         span.abbre {
             font-weight: bold;
             display: inline-block;
             min-width: 25pt;
             padding-right: 5pt;
-        }
-        span.desc {
         }
         h2 {
             color: darkred;
@@ -38,101 +45,131 @@
             font-weight: bold;
             padding-right: 20pt;
         }
+        div.section {
+            display: none;
+        }
     </style>
-</head>
-<body style="background-color: white;">
-    <div align="center" style="width: 100%; max-width: 800pt; margin: 0pt auto; padding: 10pt; border: 2px solid brown;">
-        <div align="justify">
-        <h2 id="about"><i>අප ගැන</i> - About Us</h2>
-        
-        <p>This online dictionary is prepared from the entries of multiple dictionaries as mentioned below.</p>
-        
-        <h3><i>මඩිතියවෙල සිරි සුමඞ්ගල හිමි, පාලි-සිංහල ශබ්දකෝෂය</i></h3> 
-        <p>The scanned PDF of the book used as the source is available <a href="http://www.mediafire.com/?36312538rqfxv3c">here (54 MB download)</a>.
-        To ease the reading, we have seperated the bandi akuru <i>(බැඳි අකුරු)</i> in Pali words.
-            We also tried to correct many of the <i>න ණ ල ළ</i> errors according to the currently accepted Sinhala standard.
-            Hal akuru were used where appropriate to ease the Sinhala reading. Other than that no changes were made to the original dictionary entries.</p>
-        
-        <p>The book contains about 545 pages and about 25,000 entries. A partially typed list of entries prepared by Chanaka and his team was used for about 200 of those pages.
-        Many volunteers helped in typing the rest of the entries and proofreading/correcting the full list of entries to make sure they match exactly with the original book.
-            In total it took about 8 months to finish the project. The Dhamma donation <i>(ධර්ම දානමය)</i> merit from every lookup from this dictionary goes to all those volunteers who helped make this a reality.</p>
-        
-        <h3><i>පොල්වත්තේ බුද්ධදත්ත හිමි, පාලි-සිංහල අකාරාදිය</i></h3>
-        <p>This dictionary was typed entirely by Ven Galpotugoda Gnanavansa and he has kindly given it to us to be published in a website.
-        Many merits for him for his enromous effort in typing nearly 19,000 entries. However he has mentioned that the text was not proofread after typing.
-            (UPDATE: this is being proofread now and we will update the site after it is finished.)</p>
-        
-        <p>It is entirely possible that there are further mistakes in the text. 
-        If you find one feel free to send us an email at admin<i class="fa fa-at"></i>pitaka.lk. We are also looking for voluteers who can build Android and iOS apps for the dictionary.</p>
-        <p>තායි සහ රෝමන් අකුරු වලින් ඇති පාලි ලිපි සිංහලෙන් කියවන්න -> <a href="../converter.html">Our Pali Script Converter</a></p>
-        
-        <h3><i>පුණ්‍යානුමෝදනා</i> - Some of our Volunteers</h3>
-        <ul>
-            <li>Galpotugoda Gnanavansa Thero</li>
-            <li>Bhikkhu Dhammagaru</li>
-            <li>HA Amaratunga</li>
-            <li>Dilrukshi Weeraratne</li>
-            <li>Wasantha Karunarathna</li>
-            <li>Chanaka Nanayakkara and the Team</li>
-            <li>Lahiru Madhumadha</li>
-            <li>Lakme Kuruppu</li>
-            <li>Anura Lakmal</li>
-        </ul>
-        
-        <h2 id="instructions">Usage Instructions</h2>
-        <ul>
-            <li>You can use Sinhala Unicode, or Singlish for searching the pali entries here. (Singlish letter table is listed below)</li>
-            <li>At least 2 characters need to be typed in the search text box to activate the searching process. If the searching is not activated press 'Enter' or an arrow key.</li>
-            <li>Results from all the dictionaries matching the search query will be sorted in the order of the Pali word and listed below the search box.</li>
-            <li>To search inside the Sinhala meanings, type the word in Sinhala Unicode in the search text box and click <i>"සිංහල"</i> button.</li>
-            <li>Mouse over the abbreviations to view the expanded meaning in a tooltip.</li>
-            <li>Mouse over the small book icon on the far left corner of search results to see the name of the dictionary and the page number in the PDF.</li>
-            <li>Clicking on a pali word in the search results will copy that word to the search box.</li>
-            <li>Click the button with an arrow head in the toolbar to open/close the top banner.</li>
-            <li>Loading the dictionary page for the very first time will take some time as both dictionaries has to be downloaded to your computer.
-                After that Internet is no longer needed when searching (provided you do not close the browser window). Subsequent loadings of the dictionary page would be faster.</li>
-            <!--<h5>(not implemented yet)</h5>
-            <li>Click the "Share" button to obtain a unique url that would point to the current results set with the current search term</li>
-            <li>The maximum number of displayed entries can be changed by using the "Settings" button.</li>
-            -->
-        </ul>
-        <h3>Singlish Letter Table</h3>
-            <p>When searching in Singlish, please refer to the table below to find the appropriate English letter for Sinhala letters.
-            When there are multiple English letters for a single Sinhala letter you can use any one of them. E.g. To search for <i>ඛ</i> you can use either 'ka' or 'kha'.</p>
+</n>
+<body style="background-color: white; margin: 0pt">
+    <div align="center" style="height: 100%; display: flex; flex-flow: column; width: 100%; max-width: 800pt; margin: 0pt auto;">
 
-            <table align="center" width="100%" border="1">
-                <tbody>
+        <div style="flex: 0 1 auto">
+                <div class="title-bar" align="left" onclick="location.href='index.html';">
+                    <a id="back-button" style="padding:0 10pt 0 10pt;">
+                        <i class="fa fa-chevron-left" style="color: white"></i></a>
+                    <div id="title-bar-text" style="display: inline-block; color:white; ">placeholder</div>
+                </div>        
+        </div>
+    
+        <div id="content-div" align="justify" style="overflow-y: auto; position: relative; flex: 1 1 auto; padding: 5pt;">
+        </div> 
+    
+
+        <div id="about" class="section">
+            <span class="title"><i>අප ගැන</i> - About Us</span>
+            <div class="contents">
+                <p>This online dictionary is prepared from the entries of multiple dictionaries as mentioned below.</p>
+    
+                <h3><i>මඩිතියවෙල සිරි සුමඞ්ගල හිමි, පාලි-සිංහල ශබ්දකෝෂය</i></h3> 
+                <p>The scanned PDF of the book used as the source is available <a href="http://www.mediafire.com/?36312538rqfxv3c">here (54 MB download)</a>.
+                To ease the reading, we have seperated the bandi akuru <i>(බැඳි අකුරු)</i> in Pali words.
+                    We also tried to correct many of the <i>න ණ ල ළ</i> errors according to the currently accepted Sinhala standard.
+                    Hal akuru were used where appropriate to ease the Sinhala reading. Other than that no changes were made to the original dictionary entries.</p>
+                
+                <p>The book contains about 545 pages and about 25,000 entries. A partially typed list of entries prepared by Chanaka and his team was used for about 200 of those pages.
+                Many volunteers helped in typing the rest of the entries and proofreading/correcting the full list of entries to make sure they match exactly with the original book.
+                    In total it took about 8 months to finish the project. The Dhamma donation <i>(ධර්ම දානමය)</i> merit from every lookup from this dictionary goes to all those volunteers who helped make this a reality.</p>
+                
+                <h3><i>පොල්වත්තේ බුද්ධදත්ත හිමි, පාලි-සිංහල අකාරාදිය</i></h3>
+                <p>This dictionary was typed entirely by Ven Galpotugoda Gnanavansa and he has kindly given it to us to be published in a website.
+                Many merits for him for his enromous effort in typing nearly 19,000 entries. However he has mentioned that the text was not proofread after typing.
+                    (UPDATE: this is being proofread now and we will update the site after it is finished.)</p>
+                
+                <p>It is entirely possible that there are further mistakes in the text. 
+                If you find one feel free to send us an email at admin<i class="fa fa-at"></i>pitaka.lk. We are also looking for voluteers who can build Android and iOS apps for the dictionary.</p>
+                <p>තායි සහ රෝමන් අකුරු වලින් ඇති පාලි ලිපි සිංහලෙන් කියවන්න -> <a href="../converter.html">Our Pali Script Converter</a></p>
+                
+                <h3><i>පුණ්‍යානුමෝදනා</i> - Some of our Volunteers</h3>
+                <ul>
+                    <li>Galpotugoda Gnanavansa Thero</li>
+                    <li>Bhikkhu Dhammagaru</li>
+                    <li>HA Amaratunga</li>
+                    <li>Dilrukshi Weeraratne</li>
+                    <li>Wasantha Karunarathna</li>
+                    <li>Chanaka Nanayakkara and the Team</li>
+                    <li>Lahiru Madhumadha</li>
+                    <li>Lakme Kuruppu</li>
+                    <li>Anura Lakmal</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div id="usage" class="section">
+            <span class="title">භාවිතයට උපදෙස්</span>
+            <div class="contents">
+                <ul style="padding-left: 15pt; margin: 0pt;">
+                    <li>You can use Sinhala Unicode, or Singlish for searching the pali entries here. (Singlish letter table is listed below)</li>
+                    <li>At least 2 characters need to be typed in the search text box to activate the searching process. If the searching is not activated press 'Enter' or an arrow key.</li>
+                    <li>Results from all the dictionaries matching the search query will be sorted in the order of the Pali word and listed below the search box.</li>
+                    <li>To search inside the Sinhala meanings, type the word in Sinhala Unicode in the search text box and click <i>"සිංහල"</i> button.</li>
+                    <li>Mouse over the abbreviations to view the expanded meaning in a tooltip.</li>
+                    <li>Mouse over the small book icon on the far left corner of search results to see the name of the dictionary and the page number in the PDF.</li>
+                    <li>Clicking on a pali word in the search results will copy that word to the search box.</li>
+                    <li>Click the button with an arrow head in the toolbar to open/close the top banner.</li>
+                    <li>Loading the dictionary page for the very first time will take some time as both dictionaries has to be downloaded to your computer.
+                        After that Internet is no longer needed when searching (provided you do not close the browser window). Subsequent loadings of the dictionary page would be faster.</li>
+                    <!--<h5>(not implemented yet)</h5>
+                    <li>Click the "Share" button to obtain a unique url that would point to the current results set with the current search term</li>
+                    <li>The maximum number of displayed entries can be changed by using the "Settings" button.</li>
+                    -->
+                </ul>
+                <h3>සිංග්ලිෂ් අකුරු ලැයිස්තුව</h3>
+                <p>When searching in Singlish, please refer to the table below to find the appropriate English letter for Sinhala letters.
+                When there are multiple English letters for a single Sinhala letter you can use any one of them. E.g. To search for <i>ඛ</i> you can use either 'ka' or 'kha'.</p>
+
+                <table align="center" width="100%">
                     <tr align="center">
-                        <td><h4>Vowels</h4></td>
-                        <td><h4>Consonants</h4></td>
-                        <td><h4>Example</h4></td>
-                        <td><h4>Specials</h4></td>
+                        <td><h3>Vowels</h3></td>
+                        <td><h3>Consonants</h3></td>
                     </tr>
                     <tr style="vertical-align: top;">
                         <td><ul id="singlish-vowels"></ul></td>
                         <td><ul id="singlish-consonants"></ul></td>
+                    </tr>
+                </table>
+                <table align="center" width="100%">
+                    <tr align="center">
+                        <td><h3>උදාහරණ</h3></td>
+                        <td><h3>විශේෂ</h3></td>
+                    </tr>
+                    <tr style="vertical-align: top;">
                         <td><ul id="singlish-conso-example"></ul></td>
                         <td><ul id="singlish-specials"></ul></td>
                     </tr>
-                </tbody>
-            </table>
+                </table>
+            </div>
+        </div>
         
-        <h2><i>සඞ්කෙත නිරූපණය</i> - Abbreviations</h2>
+        <div id="abbre" class="section">
+            <span class="title"><i>සඞ්කෙත නිරූපණය</i></span>
+            <div class="contents">
+                <table align="center" width="100%">
+                    <tbody>
+                        <tr align="center">
+                            <td><h3><i>මඩිතියවෙල සිරි සුමඞ්ගල හිමි, පාලි-සිංහල ශබ්දකෝෂය</i></h3></td>
+                            <td><h3><i>පොල්වත්තේ බුද්ධදත්ත හිමි, පාලි-සිංහල අකාරාදිය</i></h3></td>
+                        </tr>
+                        <tr style="vertical-align: top;">
+                            <td><ul id="abbre-ul-sumangala"></ul>
+                                <ul id="abbre-ul-sumangala-other"></ul>
+                            </td>
+                            <td><ul id="abbre-ul-buddhadatta"></ul></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-            <table align="center" width="100%" border="1">
-                <tbody>
-                    <tr align="center">
-                        <td><h3><i>මඩිතියවෙල සිරි සුමඞ්ගල හිමි, පාලි-සිංහල ශබ්දකෝෂය</i></h3></td>
-                        <td><h3><i>පොල්වත්තේ බුද්ධදත්ත හිමි, පාලි-සිංහල අකාරාදිය</i></h3></td>
-                    </tr>
-                    <tr style="vertical-align: top;">
-                        <td><ul id="abbre-ul-sumangala"></ul>
-                            <ul id="abbre-ul-sumangala-other"></ul>
-                        </td>
-                        <td><ul id="abbre-ul-buddhadatta"></ul></td>
-                    </tr>
-                </tbody>
-            </table>
         <!--
         <h3><i>මඩිතියවෙල සිරි සුමඞ්ගල හිමි, පාලි-සිංහල ශබ්දකෝෂය</i></h3>
         <ul id="abbre-ul-sumangala"></ul>
@@ -141,50 +178,64 @@
         <h3><i>පොල්වත්තේ බුද්ධදත්ත හිමි, පාලි-සිංහල අකාරාදිය</i></h3>
         <ul id="abbre-ul-buddhadatta"></ul>-->
         
-        <h2>Introduction Pages of the Dictionary</h2>
-        <h3><i>මඩිතියවෙල සිරි සුමඞ්ගල හිමි, පාලි-සිංහල ශබ්දකෝෂය</i></h3>
-        Click the following link to download/view the <a href="intro_sumangala.pdf">introductory pages of Madithiyawela dictionary.</a>
-        
-        <h3><i>පොල්වත්තේ බුද්ධදත්ත හිමි, පාලි-සිංහල අකාරාදිය</i></h3>
-        
+        <div id="intro_pages" class="section">
+            <span class="title">ශබ්දකෝෂ සඥාපනය</span>
+            <div class="contents">
+                <h3><i>මඩිතියවෙල සිරි සුමඞ්ගල හිමි, පාලි-සිංහල ශබ්දකෝෂය</i></h3>
+                Click the following link to download/view the <a href="intro_sumangala.pdf">introductory pages of Madithiyawela dictionary.</a>
+                
+                <h3><i>පොල්වත්තේ බුද්ධදත්ත හිමි, පාලි-සිංහල අකාරාදිය</i></h3>
+            </div>
         </div>
+        
+        
     </div>
     <script src="../scripts/jquery-1.11.1.min.js"></script>
     <script src="../scripts/trie.js"></script>
+    <script src="../scripts/utilities.js"></script>
     <script src="../scripts/singlish.js"></script>
     <script src="scripts/storage.js"></script>
     <script>
         $( document ).ready( function() {
-            // fill the abbreviations div
-            function addAbbre(map, ulSelector) {
-                $.each(map, function(abbre, desc) {
-                    var li = $('<li/>').appendTo(ulSelector);
-                    $('<span/>').text(abbre).addClass('abbre').appendTo(li);
-                    $('<span/>').text(desc[0]).addClass('desc').appendTo(li);
-                });
+            var navi = getParameterByName("goto", "about");
+            var displayDiv = $('#' + navi);
+            $('#title-bar-text').text(displayDiv.children('span.title').first().text());
+            $('#content-div').append(displayDiv.children('div.contents').first());
+
+            if (navi == 'abbre') {
+                // fill the abbreviations div
+                function addAbbre(map, ulSelector) {
+                    $.each(map, function(abbre, desc) {
+                        var li = $('<li/>').appendTo(ulSelector);
+                        $('<span/>').text(abbre).addClass('abbre').appendTo(li);
+                        $('<span/>').text(desc[0]).addClass('desc').appendTo(li);
+                    });
+                }
+                
+                addAbbre(abbreviations["sumangala"], '#abbre-ul-sumangala');
+                addAbbre(su_otherNotations, '#abbre-ul-sumangala-other');
+                addAbbre(abbreviations["buddhadatta"], '#abbre-ul-buddhadatta');
             }
             
-            addAbbre(abbreviations["sumangala"], '#abbre-ul-sumangala');
-            addAbbre(su_otherNotations, '#abbre-ul-sumangala-other');
-            addAbbre(abbreviations["buddhadatta"], '#abbre-ul-buddhadatta');
+            if (navi == 'usage') {
+                function addSinglishEntries(map, ulSelector) {
+                    $.each(map, function(_1, pair) {
+                        var li = $('<li/>').appendTo(ulSelector);
+                        $('<span/>').text(pair[0]).addClass('sinhala-char').appendTo(li);
+                        $('<span/>').text(pair[1]).addClass('english-char').appendTo(li);
+                    });
+                }
+                addSinglishEntries(singlish_vowels, '#singlish-vowels');
+                addSinglishEntries(singlish_consonants, '#singlish-consonants');
 
-            function addSinglishEntries(map, ulSelector) {
-                $.each(map, function(_1, pair) {
-                    var li = $('<li/>').appendTo(ulSelector);
-                    $('<span/>').text(pair[0]).addClass('sinhala-char').appendTo(li);
-                    $('<span/>').text(pair[1]).addClass('english-char').appendTo(li);
+                var consoExampleMap = []; // use k as example
+                $.each(singlish_combinations, function (_1, pair) {
+                    var exSinglish = 'k' + pair[1].split(', ').join(', k');
+                    consoExampleMap.push(['ක' + pair[0], exSinglish]);
                 });
+                addSinglishEntries(consoExampleMap, '#singlish-conso-example');
+                addSinglishEntries(singlish_specials, '#singlish-specials');
             }
-            addSinglishEntries(singlish_vowels, '#singlish-vowels');
-            addSinglishEntries(singlish_consonants, '#singlish-consonants');
-
-            var consoExampleMap = []; // use k as example
-            $.each(singlish_combinations, function (_1, pair) {
-                var exSinglish = 'k' + pair[1].split(', ').join(', k');
-                consoExampleMap.push(['ක' + pair[0], exSinglish]);
-            });
-            addSinglishEntries(consoExampleMap, '#singlish-conso-example');
-            addSinglishEntries(singlish_specials, '#singlish-specials');
         });
     </script>
 
