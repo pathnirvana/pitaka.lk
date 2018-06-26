@@ -22,7 +22,7 @@ function createChildOptions(optElem, childIds, nameField) {
     });
 }
 var dialogBookSelectHtml = '\
-    <div style="width: 500px">\
+    <div style="max-width: 500px">\
     <div id="dlg-get-link">\
     <div class="title"><i class="fa fa-book fa-lg" style="color: #5423DB"></i> සෙවීම සීමා කරන්න</div>\
     <p>මෙම තෝරන ලද පොත් වලට පමණක් සෙවීම සීමා වේ. Use this to filter the search results by books.</p>\

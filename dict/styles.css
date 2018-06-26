@@ -3,34 +3,6 @@ html, body {
     overflow: hidden;
 }
 
-.title-bar {
-    white-space: nowrap; 
-    padding: 8pt 5pt 8pt 5pt; 
-    background-color: coral; 
-    font-size: 15pt;
-    cursor: pointer;
-}
-
-#menu-list {
-    position: absolute; 
-    z-index: 999; 
-    display: none; 
-    left: 0px; 
-    background-color: lightsalmon;
-    border: 1px solid black;
-    -webkit-box-shadow: 2px 2px 1px 0px #000000; 
-    box-shadow: 2px 2px 1px 0px #000000;
-}
-.menu-list-item {
-    display: block;
-    padding: 5pt 8pt 5pt 5pt;
-    color: black;
-    text-decoration: none;
-}
-.menu-list-item:hover {
-    background-color: white;
-}
-
 #sinhala-search-button {
     display: inline-block; 
     border-radius: 0px; 
