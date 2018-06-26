@@ -25,66 +25,78 @@
         ga('send', 'pageview');
 
     </script>
+    <style>
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            margin: 0pt;
+        }
+        #search-bar-div > * {
+            margin: 3pt 5pt 3pt 5pt;
+        }
+        .title-bar > * {
+            padding:0 10pt 0 10pt;
+            color: white;
+        }
+    </style>
 </head>
 <body>
+<!--<div align="center" style="width: 100%; margin: 0pt auto;">-->
+    <div align="center" style="margin:0 auto; max-width: 800pt; height: 100%; display: flex; flex-flow: column;">
 
-<div align="center" style="width: 100%; margin: 0pt auto;">
-    
-        <div align="center" id="header" style="display: block; margin: 0pt;">
-            <img class="header-logo-img" src="../images/chakra.png" />
-            <a class="header-logo-text" href="http://pitaka.lk/bjt">බුද්ධ ජයන්ති ත්‍රිපිටකය</a>
-            <ul class="header-menu-list">
-                <li><a class="header-menu-item" href="intro.html#about" target="_blank"><i class="fa fa-user fa-fw"></i> අප ගැන</a></li>
-                <li><a class="header-menu-item" href="intro.html#instructions" target="_blank"><i class="fa fa-info-circle fa-fw"></i> භාවිතයට උපදෙස්</a></li>
-                <li><a class="header-menu-item" href="intro.html#download" target="_blank"><i class="fa fa-download fa-fw"></i> භාගත කරන්න</a></li>
-            </ul>
+        <div style="flex: 0 1 auto;">
+            <div class="title-bar" style="display: flex; flex-flow: row nowrap; align-items: center;">
+                <i id="toggle-tree" class="fa fa-sitemap"></i>
+                <div style="flex: 1 1;">බුද්ධ ජයන්ති ත්‍රිපිටකය</div>
+                <i id="menu-toggle" class="fa fa-bars"></i>
+            </div>
+            <div id="search-bar-div" style="display: flex; justify-content: center; flex-flow: row nowrap; align-items: center;">
+                <input class="search-bar" type="text" placeholder="සොයන්න" style="flex: 1 1; max-width: 250pt; min-width: 70pt;">
+                <a id="search-settings-button" class="button" tip="සෙවුම පොත් කිහිපයකට සීමා කරන්න" onclick="showBookSelectDialog(SF.name)"><i class="fa fa-wrench fa-lg"></i></a>
+                <a id="search-results-button" class="button" tip="කලින් සෙවුමේ ප්‍රතිපල පෙන්වන්න"><i class="fa fa-table fa-lg"></i> සෙවුම</a>
+            </div>
         </div>
         
-        <div class="toolbar" id="right-toolbar" align="center">
-            <a id="toggle-tree" class="button" tip="නාමාවලිය අරින්න-වහන්න"><i class="fa fa-sitemap fa-lg"></i> නාමාවලිය</a>
-            <i class="fa fa-search fa-lg"></i>
-            <input class="search-bar" type="text" placeholder="සොයන්න">
-
-            <a id="search-settings-button" class="button" tip="සෙවුම පොත් කිහිපයකට සීමා කරන්න" onclick="showBookSelectDialog(SF.name)"><i class="fa fa-wrench fa-lg"></i></a>
-            <a id="search-results-button" class="button" tip="කලින් සෙවුමේ ප්‍රතිපල පෙන්වන්න"><i class="fa fa-table fa-lg"></i> සෙවුම</a>
-            <a class="button" href="https://www.facebook.com/pitaka.lk" target="_blank" style="color: blue;" tip="අපගේ FACEBOOK පිටුවට..."><i class="fa fa-facebook fa-lg"></i> පිටුව</a>
-            <a id="toggle-header" class="button" tip="උඩ තීරුව අරින්න-වසන්න"><i class="fa fa-arrow-up fa-lg"></i><i class="fa fa-arrow-down fa-lg" style="display: none;"></i></a>
-        </div>
-        <div id="contents-area">
-            <!--this tree would be populated by the entries in searchIndex-->
-            <div id="tree-window" style="display: none;" align="left">
-                <div id="left-tree" class="pitaka-tree">
-                    <ul id="three-pitaka-ul"></ul>
-                </div>
-            </div>
+        <div id="contents-area" style="flex: 1 1 auto; overflow-y: auto;" >
             <div id="search-area">
-                <div id="search-status" align="center"></div>
+                <div id="search-status" align="center">සෙවීම සඳහා උඩ කොටුවේ නම type කරන්න.</div>
                 <div id="search-filter-status" align="center"></div>
                 <table id="search-results">
                     <thead>
                         <tr>
-                            <td><i class="fa fa-book fa-fw"></i> පොත<span class="sort-action" by="book">
+                            <td><i class="fa fa-book fa-fw" tip="පොත සහ පිටු අංකය"></i> පොත<span class="sort-action" by="book">
                                 <i class="fa fa-sort-numeric-asc fa-fw" tip="වැඩිවන පිළිවෙලට පෙළගස්වන්න" order="asc"></i>
                                 <i class="fa fa-sort-numeric-desc fa-fw" tip="අඩුවන පිළිවෙලට පෙළගස්වන්න" order="desc"></i></span></td>
                             <td><i class="fa fa-search fa-fw"></i> නම<span class="sort-action" by="name">
                                 <i class="fa fa-sort-alpha-asc fa-fw" tip="වැඩිවන පිළිවෙලට පෙළගස්වන්න" order="asc"></i>
                                 <i class="fa fa-sort-alpha-desc fa-fw" tip="අඩුවන පිළිවෙලට පෙළගස්වන්න" order="desc"></i></span></td>
-                            <td><i class="fa fa-map-marker fa-fw"></i> ස්ථානය</td>
-                            <td><i class="fa fa-file-text-o fa-fw"></i> පිටුව<span class="sort-action" by="page">
-                                <i class="fa fa-sort-numeric-asc fa-fw" tip="වැඩිවන පිළිවෙලට පෙළගස්වන්න" order="asc"></i>
-                                <i class="fa fa-sort-numeric-desc fa-fw" tip="අඩුවන පිළිවෙලට පෙළගස්වන්න" order="desc"></i></span></td>
                         </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
             </div>
-            <div id="image-area">
-                <a class="page-navigation top" id="prev-page-button"><i class="fa fa-backward"></i> කළින් පිටුවට</a>
-                <a class="page-navigation bottom" id="next-page-button">ඊළඟ පිටුවට <i class="fa fa-forward"></i></a>
+            <div id="image-area"  style="display: none;">
+                <a class="page-navigation top"><i class="fa fa-angle-up"></i> කළින් පිටුවට <i class="fa fa-angle-up"></i></a>
+                <a class="page-navigation bottom"><i class="fa fa-angle-down"></i> ඊළඟ පිටුවට <i class="fa fa-angle-down"></i></a>
             </div>
         </div>
 
 </div>
+
+<div id="menu-list" style="right: 0;">
+    <a class="menu-list-item" href="intro.html?goto=about"><i class="fa fa-user fa-fw"></i> අප ගැන</a>
+    <a class="menu-list-item" href="intro.html?goto=usage"><i class="fa fa-info-circle fa-fw"></i> භාවිතයට උපදෙස්</a>
+    <a class="menu-list-item" href="intro.html?goto=download"><i class="fa fa-download fa-fw"></i> භාගත කරන්න</a>
+    <a class="menu-list-item" href="https://www.facebook.com/pitaka.lk" tip="අපගේ FACEBOOK පිටුවට..."><i style="color: blue;" class="fa fa-facebook fa-fw"></i> Facebook පිටුව</a>
+</div>
+
+<!--this tree would be populated by the entries in searchIndex-->
+<div id="tree-window" style="display: none;" align="left">
+    <div id="left-tree" class="pitaka-tree">
+        <ul id="three-pitaka-ul"></ul>
+    </div>
+</div>
+<div id="toast"></div>
 
 <!--<div style="clear:both; max-height: 0px;">&nbsp;</div>-->
 
@@ -114,28 +126,31 @@
         $('.pitaka-tree').pitakaTree();
         initSearchBar();
 
-        function handleResize() {
-            $('#contents-area,#image-area').css('height', $(window).innerHeight() - $('#contents-area').offset().top - 20); // todo remove 20
-            // to make sure the overlay fills the screen and dialogbox aligned to center
-            // only do it if the dialog box is not hidden
-            if (!$('#dialog-box').is(':hidden')) repositionDialog();
-        }
+        $('#menu-toggle').mousedown(function (e) {
+            $('#menu-list').animate({height: 'toggle'}, 350);
+            $('#menu-list').css({top:$('#search-bar-div').position().top, right:$('#search-bar-div').position().left});
+            e.stopPropagation();
+        });
+        $('#toggle-tree').mousedown(function(e) {
+            $('#tree-window').animate({width: 'toggle'}, 350);
+            $('#tree-window').css({top:$('#search-bar-div').position().top, left:$('#search-bar-div').position().left});
+            e.stopPropagation();
+        });
+        $('#menu-list, #tree-window').mousedown(function(e) {
+            e.stopPropagation();
+        });
+        $('body').mousedown(function() {
+            $('#menu-list').animate({height: 'hide'}, 350);
+            $('#tree-window').animate({width: 'hide'}, 350);
+        });
+
         handleResize(); // do initial set
         $(window).resize(handleResize);
 
-        $('#toggle-header').click( function () {
-            $(this).children().toggle();
-            $('#header').slideToggle('fast', handleResize)
-        });
-
-        handleScroll(); // initial set
-        $('#image-area').on('scroll', handleScroll);
-
-        $('#prev-page-button').click(prevButtonClick);
-        $('#next-page-button').click(nextButtonClick);
-
-        $('#toggle-tree').click( function () {
-            $('#tree-window').animate({width: 'toggle'}, 350);
+        $('#image-area').on('click', '.page-navigation', function() {
+            if ($(this).hasClass('top')) prevButtonClick();
+            else if ($(this).hasClass('bottom')) nextButtonClick();
+            else sideButtonClick();
         });
 
         $('#search-results-button').click(function () {
@@ -143,16 +158,21 @@
             $('#image-area').toggle();
         });
 
-        $('#image-area').on('mouseover', '.page', function () {
+        /*$('#image-area').on('mouseover', '.page', function () {
             $(this).children('.page-link').show();
         });
         $('#image-area').on('mouseout', '.page', function () {
             $(this).children('.page-link').hide();
-        });
+        });*/
+        // set startup location if specified in url params
+        navigateStartupLocation();
         $('#image-area').on('click', '.page-link', function () {
-            dialogSettings = { imgSrc: $(this).prev('img').attr('src') };
-			//, pageId: $(this).parent().attr('page-id'), bookId: curBookId };
-            showDialog(DialogNames.LINK_REPORT, 'link');
+            var bjtLink = createBJTLink(curBookId, $(this).parent().attr('page-id'));
+            console.log(bjtLink);
+            copyTextAndShowToast(bjtLink, 'link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.');
+            //dialogSettings = { imgSrc: $(this).prev('img').attr('src') };
+            //, pageId: $(this).parent().attr('page-id'), bookId: curBookId };
+            //showDialog(DialogNames.LINK_REPORT, 'link');
         });
 
         $('span.sort-action').on('click', 'i', function () {

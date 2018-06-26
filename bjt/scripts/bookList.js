@@ -14,14 +14,17 @@ var curBook = {};
 
 function createPagePair(pageId) {
     var pair = $('<div/>').addClass('page-pair').attr('page-id', pageId);
-    return pair.append($('<hr/>'), createPage(pageId, COLL.PALI), createPage(pageId + 1, COLL.SINH));
+    return pair.append(createPage(pageId, COLL.PALI), createPage(pageId + 1, COLL.SINH));
 }
 
 function createPage(pageId, coll) {
-    var page = $('<div/>').addClass('page half').attr('page-id', pageId).attr('coll', coll);
+    var page = $('<div/>').addClass('page half').attr('page-id', pageId).addClass(coll);
     var img = $('<img/>').attr('src', getPageImageSrc(pageId));
-    var linkSpan = $('<span/>').addClass('page-link').append($('<i class="fa fa-link fa-fw"/>'));
-    return page.append(img).append(linkSpan);
+    var linkSpan = $('<span/>').addClass('page-link').append($('<i class="fa fa-share"/>'));
+    var pageNav = (coll == COLL.PALI) ? 
+        $('<a class="page-navigation right"><i class="fa fa-angle-right"></i> සිංහල පිටුවට <i class="fa fa-angle-right"></i></a>') : 
+        $('<a class="page-navigation left"><i class="fa fa-angle-left"></i> පාලි පිටුවට <i class="fa fa-angle-left"></i></a>');
+    return page.append(img).append(linkSpan).append(pageNav);
 }
 
 function getPageImageSrc(pageId) {
@@ -62,28 +65,47 @@ function loadNextPage(visibleIds) {
     return nextId;
 }
 
-function navigateToPage(searchId, origin) {
+function navigateToIndex(searchId, origin) {
     var entry = searchIndex[searchId];
+    navigateToLocation(entry[SF.book], entry[SF.page], entry[SF.name], origin);
+}
+
+function navigateToLocation(bookId, pageId, name, origin) {
     // set the current book
-    curBookId = entry[SF.book];
+    curBookId = bookId;
     curBook = books[curBookId];
     // google analaytics - send node view
     ga('send', {
         hitType: 'event',
         eventCategory: origin,
         eventAction: 'view_node',
-        eventLabel: entry[SF.name],
-        eventValue: searchId,
-        bookId: curBookId,
-        pageNum: entry[SF.page]
+        eventLabel: name,
+        eventValue: curBookId,
+        pageNum: pageId
     });
 
     $('#image-area').children('.page-pair').remove();
-    $('#image-area').append(createPagePair(curBook.pageNumOffset + entry[SF.page]));
+    $('#image-area').append(createPagePair(curBook.pageNumOffset + pageId));
     $('#search-area').hide();
     $('#image-area').show();
     $('#image-area').scrollTop(0);
-    handleScroll();
+    handleResize();
+}
+
+function createBJTLink(bookId, pageId) {
+    return 'https://pitaka.lk/bjt?b=' + bookId + '&p=' + (Number(pageId) - curBook.pageNumOffset);
+}
+function navigateStartupLocation() {
+    var bookId = Number(getParameterByName('b', 0)),
+        pageId = Number(getParameterByName('p', 0));
+    if (bookId && pageId && $.isNumeric(bookId) && $.isNumeric(pageId)) {
+        if (pageId % 2 == 0) {
+            hideCol = COLL.SINH; // open the pali page
+        } else {
+            pageId--; // pageId should be even - open sinhala page
+        }
+        navigateToLocation(bookId, pageId, '', 'startup');
+    }
 }
 
 function getVisiblePages() {
@@ -116,11 +138,10 @@ function deleteNonVisible(visiblePageIds, newPageId) {
 function prevButtonClick() {
     // load prev page and remove bottom page
     var visibleIds = getVisiblePages();
-    //$('#image-area').scrollTop(getPageHeight(visibleIds[0]));
     if (newPageId = loadPrevPage(visibleIds)) {
         deleteNonVisible(visibleIds, newPageId);
         console.log("loaded prev page " + newPageId);
-        handleScroll();
+        handleResize();
     }
 }
 
@@ -130,27 +151,26 @@ function nextButtonClick() {
     if (newPageId = loadNextPage(visibleIds)) {
         deleteNonVisible(visibleIds, newPageId);
         console.log("loaded next page " + newPageId);
-        handleScroll();
+        handleResize();
     }
 }
 
-function handleScroll() {
-    $('#prev-page-button').hide();
-    $('#next-page-button').hide();
-    if ($('.page-pair').length) { // only if there are images in the window
-        if ($(this).scrollTop() == 0) {
-            $('#prev-page-button').css('top', 0).show();
-        } else if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight - 5 ||
-            $(this)[0].scrollHeight <= $(this).innerHeight() - 5) {
+var hideCol = COLL.PALI;
 
-            $('#next-page-button').css('top', $('#image-area')[0].scrollHeight - $('#next-page-button').outerHeight()).show();
-            console.log($(this)[0].scrollHeight, $(this).innerHeight());
-        }
-    }
-    // position the tree to the top
-    //$('#tree-window').css('top', $('#image-area').scrollTop());
+function sideButtonClick() {
+    $('div.page').toggle();
+    hideCol = hideCol == COLL.PALI ? COLL.SINH : COLL.PALI;
 }
 
-function getPageHeight(pageId) {
-    return $('.page-pair[page-id="' + pageId + '"]').outerHeight();
+function handleResize() {
+    if ($(window).width() < 800) {
+        $('div.page.' + hideCol).hide();
+        $('div.page > .page-navigation').show();
+    } else {
+        $('div.page').show();
+        $('div.page > .page-navigation').hide();
+    }
+    // to make sure the overlay fills the screen and dialogbox aligned to center
+    // only do it if the dialog box is not hidden
+    if (!$('#dialog-box').is(':hidden')) repositionDialog();
 }

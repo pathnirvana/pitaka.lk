@@ -26,6 +26,15 @@
             overflow: hidden;
             margin: 0pt;
         }
+        textarea {
+            font-size: 13pt; 
+            font-family:un-abhaya; 
+            flex: 1 1; 
+            min-height: 100pt;
+            max-height: 200pt;
+            flex-basis: auto; 
+            border: 1px solid coral;
+        }
     </style>
 </head>
 <body align="center">
@@ -49,8 +58,7 @@
                 <a class="button" script="th"><i class="fa fa-circle-thin" style="color: green;"></i> Thai ไทย</a>
             </div>
             
-            <textarea id="box1" rows="12" placeholder="2) Type or paste the Input text to be converted here." 
-                style="font-size: 13pt; font-family:un-abhaya; flex: 1 1"></textarea>
+            <textarea id="box1" rows="8" placeholder="2) Type or paste the Input text to be converted here."></textarea>
             
             <div>3) Select the desired output script by using one of the buttons below</div>
             <div id="output-buttons" style="padding: 5pt;">
@@ -63,10 +71,9 @@
                     <i class="fa fa-bug" style="color: red;"></i> Test</a>
             </div>
             
-            <textarea id="box2" rows="12" placeholder="4) Output converted text will be displayed here" 
-                style="font-size: 13pt; font-family:un-abhaya; flex: 1 1"></textarea>
+            <textarea id="box2" rows="8" placeholder="4) Output converted text will be displayed here"></textarea>
 
-            <div class="p" style="align-self: center;"><i class="fa fa-copyright" style="color: green;"></i> 2016 <a href="https://pitaka.lk">පිටක.lk</a></div>
+            <div class="p" style="align-self: center; flex: 0; white-space: nowrap;"><i class="fa fa-copyright" style="color: green;"></i> 2018 <a href="https://pitaka.lk">පිටක.lk</a></div>
             <div class="p" style="color: grey; align-self: center;">Report any conversion errors to admin<i class="fa fa-at"></i>pitaka.lk</div>
         </div> 
     </div>

@@ -49,7 +49,7 @@ var pitakaTree = {
                     $('#main-tabs').pitakaTabsOpenVagga('tree', li.attr('node-id'), [], li.attr('node-id'));
                     document.title = li.children('a').text().replace(/^\d+\./, '');
                 } else if (li.attr('search-id')) {
-                    navigateToPage(li.attr('search-id'), 'tree'); // for bjt tree
+                    navigateToIndex(li.attr('search-id'), 'tree'); // for bjt tree
                 }
             }
         });

@@ -176,23 +176,21 @@ function repositionDialog() {
     // get the screen height and width
     var maskHeight = Math.min($(document).height(), $(window).height());
     var maskWidth = $(window).width();
-
-    // calculate the values for center alignment
-    var dialogTop =  (maskHeight/3) - ($('#dialog-box').height()/3);
-    var dialogLeft = (maskWidth/2) - ($('#dialog-box').width()/2);
+    if (maskWidth < 500) {
+        $('#dialog-box').css('min-width', maskWidth);
+    }
 
     // assign values to the overlay and dialog box
     $('#dialog-overlay').css({height:maskHeight, width:maskWidth});
-    $('#dialog-box').css({top:dialogTop, left:dialogLeft});
 }
 
 //Popup dialog
 function showDialog(dialogName, type) {
     dialogSettings.type = type; // pass in to the dialog
     $('#dialog-message').load(utilScriptPath + '../dialog/' + dialogName + '.html', function() {
-        repositionDialog();
         $('#dialog-overlay').fadeIn('fast');
         $('#dialog-box').slideDown('fast');
+        repositionDialog();    
     });
 }
 
@@ -201,6 +199,19 @@ function closeDialog() {
     $('#dialog-box').slideUp('fast', function() {
         $('#dialog-message').html('');
     });
+}
+
+function copyTextAndShowToast(copyText, toastMsg) {
+    const el = document.createElement('textarea');
+    el.value = copyText;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+
+    var toast = $('#toast').text(toastMsg).fadeIn(300);
+    // After 3 seconds, remove the show class from DIV
+    setTimeout(function(){ toast.fadeOut(); }, 3000);
 }
 
 

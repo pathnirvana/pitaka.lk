@@ -21,7 +21,7 @@ var resultSettings = {
     minQueryLength: 2,
     maxSinglishLength: 10,
     maxResults: 100,  // search stopped after getting this many matches
-    fullSearchBooksLength: 10
+    fullSearchBooksLength: 17
 };
 
 function initSearchBar() {
@@ -33,9 +33,9 @@ function initSearchBar() {
     updateFilterStatusDisplay();
 
     // clicking on a result brings the bjt pages
-    $('#search-results').on('click', '.result-sutta-name,.result-parent-name', function() {
+    $('#search-results').on('click', 'span.result-sutta-name,span.result-parent-name', function() {
         $('.search-bar').val($(this).text());
-        navigateToPage($(this).attr('index'), 'search');
+        navigateToIndex($(this).attr('index'), 'search');
     });
 }
 function updateFilterStatusDisplay() {
@@ -91,10 +91,11 @@ function displaySearchResults() {
     // add results
     $.each(entries, function (_1, entry) {
         var tr = $('<tr/>').attr('index', entry.index).addClass('result');
-        tr.append(getBookNameDisplay(entry));
-        tr.append($('<td/>').append(getSuttaNameDisplay(entry.index, 'result-sutta-name')));
-        tr.append(getParentsDisplay(entry));
-        tr.append(getPageNumberDisplay(entry));
+        tr.append(getBookNamePageNumberDisplay(entry));
+        var namesTd = $('<td/>').addClass('result-sutta-name-parents').appendTo(tr);
+        namesTd.append($('<div/>').append(getSuttaNameDisplay(entry.index, 'result-sutta-name')).addClass('result-sutta-name'));
+        namesTd.append(getParentsDisplay(entry));
+        //tr.append(getPageNumberDisplay(entry));
         tr.appendTo(table);
     });
     table.slideDown('fast');
@@ -109,20 +110,21 @@ function getSuttaNameDisplay(ind, cssClass) {
     return $('<span/>').text(searchIndex[ind][SF.name]).addClass(cssClass).attr('index', ind);
 }
 function getParentsDisplay(entry) {
-    var td = $('<td/>').addClass('result-parents');
+    var div = $('<div/>').addClass('result-parents');
     $.each(entry.parents, function (_1, ind) {
-        td.prepend(getSuttaNameDisplay(ind, 'result-parent-name')).prepend($('<span/>').text(' » '));
+        div.prepend(getSuttaNameDisplay(ind, 'result-parent-name')).prepend($('<span/>').text(' » '));
     });
-    td.children().first().remove(); // remove the last »
-    return td;
+    div.children().first().remove(); // remove the last »
+    return div;
 }
-function getBookNameDisplay(entry) {
+function getBookNamePageNumberDisplay(entry) {
     var book = books[entry.book];
-    return $('<td/>').text(entry.book + '. ' + book.name).addClass('result-book-name');
+    return $('<td/>').append($('<div/>').addClass('result-page-number').text(entry.book + '. ' + entry.page))
+        .append($('<div/>').addClass('result-book-name').text(book.name));
 }
-function getPageNumberDisplay(entry) {
+/*function getPageNumberDisplay(entry) {
     return $('<td/>').text(entry.page).addClass('result-page-number');
-}
+}*/
 
 /*
 var isPiliPapili = "්ාැෑිීුූෘෙේෛොෝෞෟෲෳංඃ";
@@ -194,6 +196,12 @@ function sortSearchResults() {
             return -1 * currentSort.order;
         if (e1[currentSort.by] > e2[currentSort.by])
             return 1 * currentSort.order;
+        if (currentSort.by == 'book') { // if book is the same sort by page
+            if (e1.page < e2.page)
+                return -1 * currentSort.order;
+            if (e1.page > e2.page)
+                return 1 * currentSort.order;
+        }
         return 0;
     });
 }
