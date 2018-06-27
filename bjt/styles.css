@@ -9,7 +9,7 @@
 a.page-navigation {
     position: absolute;
     background-color: lightblue;
-    opacity: 0.15;
+    opacity: 0.25;
     z-index: 1000;
     cursor: pointer;
     text-decoration: none;
@@ -64,6 +64,7 @@ a.page-navigation.right {    right: 0;}
 
 .page.half {
     position: relative;
+    /*flex-shrink: 0; fix for ie*/
     flex: 1 1 auto;
     padding: 0px;
 }

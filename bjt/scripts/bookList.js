@@ -68,6 +68,9 @@ function loadNextPage(visibleIds) {
 function navigateToIndex(searchId, origin) {
     var entry = searchIndex[searchId];
     navigateToLocation(entry[SF.book], entry[SF.page], entry[SF.name], origin);
+    if (origin == 'tree') { // hide the tree
+        $('#tree-window').hide();
+    }
 }
 
 function navigateToLocation(bookId, pageId, name, origin) {
