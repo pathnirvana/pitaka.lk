@@ -190,7 +190,8 @@ function showDialog(dialogName, type) {
     $('#dialog-message').load(utilScriptPath + '../dialog/' + dialogName + '.html', function() {
         $('#dialog-overlay').fadeIn('fast');
         $('#dialog-box').slideDown('fast');
-        repositionDialog();    
+        repositionDialog();
+        hideToolTip(); // for touch devices 
     });
 }
 
@@ -219,23 +220,23 @@ function copyTextAndShowToast(copyText, toastMsg) {
  * TOOLTIP Related code
  * when names are mouseover'ed show the value in the tip attr as the tooltip
  */
+//var isAndroid = getParameterByName('android', 0);
 var toolTipDelay = 1000, toolTipTimeoutConst;
 function showToolTip() {
-    toolTipTimeoutConst = setTimeout(_.bind(function () {
+    toolTipTimeoutConst = setTimeout(_.bind(function () { // delay showing the tip
         var tipText = $(this).attr('tip');
-        $(this).after('<span class="tooltip">' + tipText + '</span>');
-
+        var tip = $('<span/>').addClass('tooltip').text(tipText).appendTo($('body'));
         // position
-        var left = $(this).position().left + $(this).width() + 10;
-        var top = $(this).position().top;
-        $(this).next().css('left', left).css('top', top).fadeIn(400);
+        var left = $(this).position().left;
+        var top = $(this).position().top + $(this).outerHeight();
+        tip.css({left:left, top:top}).fadeIn(400);
     }, $(this)), toolTipDelay);
 }
 
-// Remove the tooltip on abbreviation mouseout
+// Remove the tooltip on mouseout
 function hideToolTip() {
     clearTimeout(toolTipTimeoutConst);
-    $(this).next('.tooltip').remove();
+    $('.tooltip').remove();
 }
 
 

@@ -41,17 +41,16 @@
     </style>
 </head>
 <body>
-<!--<div align="center" style="width: 100%; margin: 0pt auto;">-->
-    <div align="center" style="margin:0 auto; max-width: 800pt; height: 100%; display: flex; flex-flow: column;">
+    <div align="center" style="margin:0 auto; max-width: 1000pt; height: 100%; display: flex; flex-flow: column; overflow: hidden;">
 
         <div style="flex: 0 1 auto;">
             <div class="title-bar" style="display: flex; flex-flow: row nowrap; align-items: center;">
-                <i id="toggle-tree" class="fa fa-sitemap"></i>
+                <i id="toggle-tree" class="fa fa-sitemap" tip="සූත්‍ර නාමාවලිය අරින්න වහන්න"></i>
                 <div style="flex: 1 1;">බුද්ධ ජයන්ති ත්‍රිපිටකය</div>
                 <i id="menu-toggle" class="fa fa-bars"></i>
             </div>
             <div id="search-bar-div" style="display: flex; justify-content: center; flex-flow: row nowrap; align-items: center;">
-                <input class="search-bar" type="text" placeholder="සොයන්න" style="flex: 1 1; max-width: 250pt; min-width: 70pt;">
+                <input class="search-bar" type="text" placeholder="සොයන්න" style="flex: 1 1; max-width: 350pt; min-width: 70pt;">
                 <a id="search-settings-button" class="button" tip="සෙවුම පොත් කිහිපයකට සීමා කරන්න" onclick="showBookSelectDialog(SF.name)"><i class="fa fa-wrench fa-lg"></i></a>
                 <a id="search-results-button" class="button" tip="කලින් සෙවුමේ ප්‍රතිපල පෙන්වන්න"><i class="fa fa-table fa-lg"></i> සෙවුම</a>
             </div>
@@ -97,8 +96,6 @@
     </div>
 </div>
 <div id="toast"></div>
-
-<!--<div style="clear:both; max-height: 0px;">&nbsp;</div>-->
 
 <!-- dialog box -->
 <div id="dialog-overlay" onclick="closeDialog()"></div>
@@ -158,21 +155,12 @@
             $('#image-area').toggle();
         });
 
-        /*$('#image-area').on('mouseover', '.page', function () {
-            $(this).children('.page-link').show();
-        });
-        $('#image-area').on('mouseout', '.page', function () {
-            $(this).children('.page-link').hide();
-        });*/
         // set startup location if specified in url params
         navigateStartupLocation();
         $('#image-area').on('click', '.page-link', function () {
             var bjtLink = createBJTLink(curBookId, $(this).parent().attr('page-id'));
             console.log(bjtLink);
             copyTextAndShowToast(bjtLink, 'link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.');
-            //dialogSettings = { imgSrc: $(this).prev('img').attr('src') };
-            //, pageId: $(this).parent().attr('page-id'), bookId: curBookId };
-            //showDialog(DialogNames.LINK_REPORT, 'link');
         });
 
         $('span.sort-action').on('click', 'i', function () {

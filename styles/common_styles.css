@@ -106,19 +106,15 @@ a.button:active, a.button.pressed {
 }
 
 .tooltip {
-    position:absolute;
+    position: fixed;
     background-color:#eeeefe;
+    color: black;
     border: 1px solid #aaaaca;
     padding: 3pt;
-    width: 100pt;
+    width: auto;
     font-size: 10pt;
-    font-style: normal;
-    font-weight: normal;
-    color: black;
     z-index: 9999;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-    -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 /* The snackbar - position it at the bottom and in the middle of the screen */
