@@ -17,7 +17,7 @@ var searchIndex = [];
 var searchPrevQuery = "";
 var searchCache = [];
 var currentSearch = {}; // all results matching query
-var currentSort = {by: 'name', order: 1}; // ascending by name
+var currentSort = {by: 'nikaya', order: 1}; // ascending by name
 
 var resultSettings = {
     minQueryLength: 2,
@@ -38,7 +38,7 @@ function initSearchBar() {
         console.log('search index loaded with length ' + _.size(searchIndex));
         $('.search-bar').on('keyup compositionend', function(e) {
             performSearch(e);
-        }).focus(); // give focus to the search bar on page load
+        }); // TODO: give focus to the search bar on page load
     });
 
     updateFilterStatusDisplay();
@@ -46,7 +46,7 @@ function initSearchBar() {
     // clicking on a result opens it up in the tabs
     $('#search-results').on('click', '.result-sutta-name,.result-parent-name', function() {
         $('.search-bar').val($(this).text());
-        pitakaLkOpenLocation(createLocationObj($(this).attr('index'), [], 0), 'search');
+        pitakaLkOpenLocation(createLocationObj($(this).attr('index'), 0), 'search');
     });
 }
 
@@ -61,7 +61,7 @@ function updateFilterStatusDisplay() {
 function performSearch(e) {
     e.stopPropagation();
 
-    $('#main-tabs').pitakaTabsShowTab(1); //show the search tab
+    showSearchArea();
 
     var query = $('.search-bar').val().toLowerCase();
     if (query == searchPrevQuery) {
@@ -86,7 +86,7 @@ function performSearch(e) {
     currentSearch = {query: query};
     searchDataSet();
     // sort and display
-    sortSearchResults();
+    sortSearchResultsByLocation();
     displaySearchResults(); // display the results
 }
 
@@ -100,13 +100,13 @@ function displaySearchResults() {
         return;
     }
     // add results
+    var tbody = table.children('tbody').first();
     $.each(entries, function (_1, entry) {
         var tr = $('<tr/>').attr('index', entry.index).addClass('result');
-        tr.append(getBookNameDisplay(entry.nikaya, 'result-nikaya-name'));
-        tr.append($('<td/>').append(getSuttaNameDisplay(entry.index, entry.name, 'result-sutta-name')));
-        tr.append(getBookNameDisplay(entry.book, 'result-book-name'));
-        tr.append(getParentsDisplay(entry));
-        tr.appendTo(table);
+        $('<td/>').appendTo(tr).append(getNikayaNameDisplay(entry.nikaya))
+            .append(getParentsDisplay(entry))
+            .append(getSuttaNameDisplay(entry.index, entry.name, 'result-sutta-name'));
+        tr.appendTo(tbody);
     });
     table.slideDown('fast');
     if (entries.length < resultSettings.maxResults) {
@@ -115,23 +115,26 @@ function displaySearchResults() {
         statusDiv.text("ඔබගේ සෙවුම සඳහා ගැළපෙන වචන " + entries.length + " කට වඩා හමුවුනා. එයින් මුල් වචන " + resultSettings.maxResults + " පහත දැක්වේ.");
     }
 }
-
+function getNikayaNameDisplay(nikaya) {
+    var paliName = searchIndex[nikaya][SL.paliName]; // no sinhala name for these
+    return $('<span/>').text(paliName).addClass('result-nikaya-name').append($('<span/>').text(' » '));
+}
 function getSuttaNameDisplay(ind, name, cssClass) {
     return $('<span/>').text(name).addClass(cssClass).attr('index', ind);
 }
 function getParentsDisplay(entry) {
-    var td = $('<td/>').addClass('result-parents');
+    var div = $('<span/>').addClass('result-parents');
     $.each(entry.parents, function (_1, ind) {
         var name = searchIndex[ind][SL.paliName];  // use the pali name in parents display
-        td.prepend(getSuttaNameDisplay(ind, name, 'result-parent-name')).prepend($('<span/>').text(' » '));
+        div.prepend($('<span/>').text(' » ')).prepend(getSuttaNameDisplay(ind, name, 'result-parent-name'));
     });
-    td.children().first().remove(); // remove the last »
-    return td;
+    //td.children().first().remove(); // remove the last »
+    return div;
 }
-function getBookNameDisplay(ind, cssClass) {
+/*function getBookNameDisplay(ind, cssClass) {
     var paliName = searchIndex[ind][SL.paliName]; // no sinhala name for these
     return $('<td/>').text(ind + '. ' + paliName).addClass(cssClass);
-}
+}*/
 
 // check if the entry belongs in the currently selected search books list
 function inCurrentSearchBooks(parents) {
@@ -185,8 +188,8 @@ function searchDataSet() {
             index: m[0],
             name: info[m[1]],
             nikaya: info[SL.parents][1], // nikaya - 2nd parent
-            book: info[SL.parents][2] || m[0], // vagga - 3rd parent (could be undefined if has only 2 parents)
-            parents: info[SL.parents].slice(3).sort(function (a, b) { return b - a; })
+            //book: info[SL.parents][2] || m[0], // vagga - 3rd parent (could be undefined if has only 2 parents)
+            parents: info[SL.parents].slice(2).sort(function (a, b) { return b - a; })
         };
     });
     currentSearch.results = results;
@@ -203,8 +206,27 @@ function sortSearchResults() {
     });
 }
 
+function sortSearchResultsByLocation () {
+    currentSearch.results.sort(function (e1, e2) {
+        if (e1.nikaya < e2.nikaya)
+            return -1 * currentSort.order;
+        if (e1.nikaya > e2.nikaya)
+            return 1 * currentSort.order;
+        return sortByParent(0, e1, e2);
+    });
+}
+function sortByParent(i, e1, e2) { // TODO: this is not working right
+    if (e1.parents.length == i || e2.parents.length == i)
+        return (e2.parents.length - e1.parents.length) * currentSort.order;
+    if (e1.parents[i] < e2.parents[i])
+        return -1 * currentSort.order;
+    if (e1.parents[i] > e2.parents[i])
+        return 1 * currentSort.order;
+    return sortByParent(i+1, e1, e2); 
+}
+
 function refreshCurrentSearchDisplay(by, order) {
     currentSort = {by: by, order: order == 'asc' ? 1 : -1};
-    sortSearchResults();
+    sortSearchResultsByLocation();
     displaySearchResults();
 }

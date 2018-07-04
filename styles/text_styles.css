@@ -22,14 +22,33 @@ body {
 .tab-column.half {
     float: left;
     width: 50%;
+    min-width: 50%;
     padding: 0px;
 }
 
 .tab-column .collection-info { font-style: italic; text-align: center;  color: blue;  margin: 5px; }
 
+#text-view-table {
+    table-layout: fixed;
+    text-align: center;
+    width: 100%;
+}
+#text-view-table td {
+    width:50%;
+    vertical-align: top;
+    padding: 2pt 6pt 2pt 6pt;
+}
+/*#text-view-table td[node-id-p] {
+    display: none;
+}
+/*#text-view-table tr:hover {
+    background-color: white;
+}*/
+
 .text-section {
     font-size: 12pt;
     padding: 5px 10px 5px 10px;
+    background-color: white;
 }
 
 .text-section .edit-textarea {
@@ -44,12 +63,26 @@ body {
     background: lightgray;
 }
 
+.text-section .share-icon {
+    font-size: smaller;
+    cursor: pointer;
+    color: lightblue;
+    padding-left: 5pt;
+}
+.text-section .share-icon:hover {
+    color: blue;
+}
+.text-section .textbody .share-icon {
+    float: left;
+}
+
+
 .text-section .span-links { position: absolute; cursor: pointer; color: lightgray; background-color: white; z-index: 99; padding: 0px 5px 0px 5px;}
 .text-section .span-links .fa:hover { color: lightcoral; }
 
 .text-section span.note { color: blue; }
 .text-section span.bold { font-weight: bold; }
-.text-section span.paranum { font-weight: normal; display: inline-block; float: left; }
+.text-section span.paranum { font-weight: normal; float: left; }
 .text-section span.paranum::after { font-weight: bold; content: "."; }
 .text-section .bld { font-weight: bold; }
 
