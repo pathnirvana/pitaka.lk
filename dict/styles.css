@@ -3,14 +3,14 @@ html, body {
     overflow: hidden;
 }
 
-#sinhala-search-button {
+/*#sinhala-search-button {
     display: inline-block; 
     border-radius: 0px; 
     background-color: coral; 
     margin: 1pt; 
     padding: 6pt; 
     color: white;
-}
+}*/
 
 #search-status {
     font-size: 13pt;
@@ -22,19 +22,19 @@ html, body {
 #search-results {
     margin: 0px;
     padding-left: 0pt;
-    /*box-shadow: -3px 3px 2px rgba(0,0,0,0.15);
-    position: absolute;
-    z-index: 9999;*/
     background: #FFFFFF;
-    border: 1px solid;
-    border-radius: 2px;
+    /*border: 1px solid;
+    border-radius: 2px;*/
     display: none;
 }
 #search-results li {
     font-size: 13pt;
     list-style-type: none;
     padding: 2pt 5pt 2pt 5pt;
-    border-top: 1pt solid;
+    border-top: 1px solid darkgray;
+}
+#search-results li:nth-child(even) {
+    background-color: antiquewhite;
 }
 #search-results li:hover {
     background: lightgoldenrodyellow;
