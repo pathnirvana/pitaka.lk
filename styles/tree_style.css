@@ -1,14 +1,14 @@
-#left-column {
-    position: fixed;
-}
-
-#main-tree {
+.pitaka-tree-container {
+    overflow: auto;
     max-width: 250px;
+    top: 0;
+    left: 0;
+    background-color: whitesmoke;
+    z-index: 4;
 }
 
 .pitaka-tree {
-    overflow-y: auto;
-    overflow-x: auto;
+    text-align: left;
 }
 
 .pitaka-tree a {
@@ -16,7 +16,8 @@
     font-size: 10pt;
 }
 .pitaka-tree > ul {
-    margin-left:-5px;
+    margin: 0;
+    padding: 5px;
 }
 .pitaka-tree ul {
     list-style: none inside none;

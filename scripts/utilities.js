@@ -115,16 +115,14 @@ var UrlParamNames = {
     EDITING: 'editing',
     ADMIN_EDITING: 'adminediting',
     NODE: 'node',
-    PARA: 'para',
-    COLL: 'coll'
+    PARA: 'para'
 };
 // e.g. location url pitaka.lk/15111/12/cs,kk
 // url rewritten pitaka.lk/?node=15111&para=12&coll=cs,kk
 function getStartupLocation() {
     var nodeId = getParameterByName(UrlParamNames.NODE, 0),
-        paragraphId = getParameterByName(UrlParamNames.PARA, 0),
-        colls = getParameterByName(UrlParamNames.COLL, "");
-    colls = colls ? colls.split(',') : ['cs', 'aps'];
+        paragraphId = getParameterByName(UrlParamNames.PARA, 0);
+    /*colls = colls ? colls.split(',') : ['cs', 'aps'];
     var collNames = [];
     $.each(colls, function(_1, coll) {
        for (var collName in CollectionsList) {
@@ -132,25 +130,26 @@ function getStartupLocation() {
                collNames.push(collName);
            }
        }
-    });
+    });*/
     if (!$.isNumeric(paragraphId)) {
         paragraphId = 0;
     }
     if (!nodeId || !$.isNumeric(nodeId) || (+nodeId) < 1000) {
         return false
     }
-    return createLocationObj(nodeId, collNames, paragraphId);
+    return createLocationObj(nodeId, paragraphId);
 }
 
-function createLocationObj(nodeId, colls, paragraphId) {
+function createLocationObj(nodeId, paragraphId) {
     var bookId = nodeId.substr(0, 2), vaggaId = nodeId.length >= 4 ? nodeId.substr(0, 4) : (bookId + '10'); // select the first vagga of  the book if node==book
-    return { bookId: +(bookId), vaggaId: +(vaggaId), nodeId: +(nodeId), paragraphId: +(paragraphId), collection: colls };
+    nodeId = (nodeId.length > 4) ? nodeId : 0; // incase node==vagga/book, nodeId is not needed
+    return { bookId: +(bookId), vaggaId: +(vaggaId), nodeId: +(nodeId), paragraphId: +(paragraphId)};
 }
 
-function pitakaLkOpenLocation(location, origin) {
-    console.log(location);
-    $('#main-tree').pitakaTreeOpenBranch(location.bookId);
-    $('#main-tabs').pitakaTabsOpenSutta(origin, location);
+function pitakaLkOpenLocation(loc, origin) {
+    console.log(loc);
+    $('.pitaka-tree').pitakaTreeOpenBranch(loc.bookId);
+    $.fn.pitakaTableOpenVagga(origin, loc.vaggaId, loc.nodeId, loc.paragraphId);
 }
 
 // get the list of columns/collections in a tab
@@ -161,7 +160,6 @@ function getCurrentColumns(tabId) {
     });
     return columns;
 }
-
 
  /**
   * DIALOG RELATED CODE
@@ -215,7 +213,30 @@ function copyTextAndShowToast(copyText, toastMsg) {
     setTimeout(function(){ toast.fadeOut(); }, 3000);
 }
 
-
+// function to determine the browser OS
+// currently used for disabling tooltips 
+function getOS() {
+    var userAgent = window.navigator.userAgent,
+        platform = window.navigator.platform,
+        macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+        windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+        iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+        os = null;
+  
+    if (macosPlatforms.indexOf(platform) !== -1) {
+      os = 'Mac OS';
+    } else if (iosPlatforms.indexOf(platform) !== -1) {
+      os = 'iOS';
+    } else if (windowsPlatforms.indexOf(platform) !== -1) {
+      os = 'Windows';
+    } else if (/Android/.test(userAgent)) {
+      os = 'Android';
+    } else if (!os && /Linux/.test(platform)) {
+      os = 'Linux';
+    }
+  
+    return os;
+  }  
 /**
  * TOOLTIP Related code
  * when names are mouseover'ed show the value in the tip attr as the tooltip
@@ -223,13 +244,19 @@ function copyTextAndShowToast(copyText, toastMsg) {
 //var isAndroid = getParameterByName('android', 0);
 var toolTipDelay = 1000, toolTipTimeoutConst;
 function showToolTip() {
+    //var os = getOS();
+    //if (os == 'Android' || os == 'iOS') return; // no tooltips on mobile platform
     toolTipTimeoutConst = setTimeout(_.bind(function () { // delay showing the tip
         var tipText = $(this).attr('tip');
         var tip = $('<span/>').addClass('tooltip').text(tipText).appendTo($('body'));
         // position
-        var left = $(this).position().left;
-        var top = $(this).position().top + $(this).outerHeight();
-        tip.css({left:left, top:top}).fadeIn(400);
+        var left = $(this).offset().left;
+        var top = $(this).offset().top + $(this).outerHeight();
+        if ($(this).hasClass('tipright')) {
+            tip.css({left:left - 150, top:top}).fadeIn(400);
+        } else {
+            tip.css({left:left, top:top}).fadeIn(400);
+        }
     }, $(this)), toolTipDelay);
 }
 

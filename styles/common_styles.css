@@ -8,26 +8,34 @@
     src: local('###'), url('../fonts/NotoSansSinhala-Bold.ttf') format('truetype');
     font-weight: bold;
 }
-body {
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    margin: 0pt;
     font-family: un-abhaya;
 }
 
 .title-bar {
-    white-space: nowrap; 
-    padding: 8pt 5pt 8pt 5pt; 
+    padding: 6pt 8pt 6pt 8pt; 
     background-color: coral; 
     font-size: 15pt;
     cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    flex-flow: row nowrap;
+    align-items: center;
 }
 
 #menu-list {
     position: absolute; 
     z-index: 9999; 
     display: none; 
+    text-align: left;
     background-color: lightsalmon;
-    border: 1px solid black;
-    -webkit-box-shadow: 2px 2px 1px 0px #000000; 
-    box-shadow: 2px 2px 1px 0px #000000;
+    -webkit-box-shadow: -8px 9px 42px 8px rgba(0,0,0,0.19);
+    -moz-box-shadow: -8px 9px 42px 8px rgba(0,0,0,0.19);
+    box-shadow: -8px 9px 42px 8px rgba(0,0,0,0.19);
 }
 .menu-list-item {
     display: block;
@@ -39,69 +47,45 @@ body {
     background-color: white;
 }
 
-.header-logo-img {
-    vertical-align: middle;
-    display: inline-block;
-    padding: 5px;
-    height: 60pt;
+#search-bar-div {
+    display: flex;
+    justify-content: center; 
+    flex-flow: row nowrap;
+    align-items: center;
+    box-shadow: 0px 10px 25px -3px rgba(0,0,0,0.3);
+    z-index: 2;
+    position: relative;
 }
-.header-logo-text {
-    text-decoration: none;
-    color: brown;
-    padding-left: 7pt;
-    font-weight: bold;
-    font-size: 50pt;
-    vertical-align: middle;
-    display: inline-block;
-}
-.header-menu-list {
-    display: inline-block;
-    vertical-align: middle;
-    list-style: none;
-    text-align: left;
-}
-.header-menu-item {
-    font-size: 13pt;
-    font-weight: bold;
-    cursor: pointer;
-    color: blue;
-    padding-bottom: 2px;
-    text-decoration: none;
-}
-.header-menu-item:hover {
-    color: red;
-}
-
-.toolbar {
-    padding:2px;
-    border-radius:5px;
-    box-shadow:-2px 2px 2px rgba(0,0,0,0.15);
-    background:#dddddd;
-}
-
 .search-bar {
+    flex: 1 1;
     font-size: 15pt;
     font-family: un-abhaya;
     vertical-align: middle;
+    margin: 2pt 1pt 2pt 1pt;
+    border: 1px solid lightsalmon;
+    max-width: 350pt;
+    min-width: 70pt;
+    /*box-shadow: 0 3px 3px rgba(0,0,0,0.2);*/
 }
 
 a.button {
-    margin: 4pt 1pt 4pt 1pt;
+    margin: 2pt 1pt 2pt 1pt;
     text-align:center;
-    background-color: whitesmoke;
+    background-color: white;
     padding: 6px 5px 6px 5px;
     text-decoration: none;
     line-height: 1;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    /*border-radius: 4px;*/
+    border: 1px solid lightsalmon;
+    /*box-shadow: 0 3px 3px rgba(0,0,0,0.2);*/
     cursor: pointer;
     display: inline-block;
 }
 a.button:hover {
-    background-color: lightblue;
+    background-color: lightsalmon;
 }
 a.button:active, a.button.pressed {
-    background-color: darkgray;
+    background-color: gray;
     box-shadow: none;
 }
 
@@ -109,12 +93,12 @@ a.button:active, a.button.pressed {
     position: fixed;
     background-color:#eeeefe;
     color: black;
-    border: 1px solid #aaaaca;
+    /*border: 1px solid #aaaaca;*/
     padding: 3pt;
     width: auto;
     font-size: 10pt;
     z-index: 9999;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 3px rgba(0,0,0,0.2);
 }
 
 /* The snackbar - position it at the bottom and in the middle of the screen */
