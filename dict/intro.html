@@ -13,20 +13,25 @@
     <link rel="stylesheet" href="../styles/font-awesome.css"/>
     <link rel="stylesheet" href="./styles.css" />
     <style>
-        i {
-            font-weight: bold;
-        }
-        table {
-            border-collapse: collapse;
-        }
-        table ul {
+        .table-item-contents ul {
             list-style: none;
             padding: 0pt;
             margin: 0pt;
         }
-        table, th, td {
+        .table-item {
+            border: 1px solid salmon;
+            flex: 0 1 auto;
             padding: 5pt;
-            border: 1px solid black;
+            margin: 3pt;
+        }
+        .table-item-header {
+            font-size: 13pt;
+            padding-bottom: 5pt;
+            font-weight: bold;
+            color: darkgreen;
+        }
+        #singlish-table .table-item:nth-child(even) {
+            background-color: antiquewhite;
         }
         span.abbre {
             font-weight: bold;
@@ -55,10 +60,9 @@
     <div align="center" style="height: 100%; display: flex; flex-flow: column; width: 100%; max-width: 800pt; margin: 0pt auto;">
 
         <div style="flex: 0 1 auto">
-                <div class="title-bar" align="left" onclick="location.href='index.html';">
-                    <a id="back-button" style="padding:0 10pt 0 10pt;">
-                        <i class="fa fa-chevron-left" style="color: white"></i></a>
-                    <div id="title-bar-text" style="display: inline-block; color:white; ">placeholder</div>
+                <div class="title-bar" onclick="location.href='index.html';">
+                    <i class="fa fa-chevron-left"></i>
+                    <div id="title-bar-text" style="flex: 1 1 auto;">placeholder</div>
                 </div>        
         </div>
     
@@ -69,38 +73,41 @@
         <div id="about" class="section">
             <span class="title"><i>අප ගැන</i> - About Us</span>
             <div class="contents">
-                <p>This online dictionary is prepared from the entries of multiple dictionaries as mentioned below.</p>
+                <p>මෙම අන්තර්ජාල ශබ්දකෝෂය පහත ශබ්දකෝෂ 2 ඇසුරෙන් සකසා ඇත.</p>
     
-                <h3><i>මඩිතියවෙල සිරි සුමඞ්ගල හිමි, පාලි-සිංහල ශබ්දකෝෂය</i></h3> 
-                <p>The scanned PDF of the book used as the source is available <a href="http://www.mediafire.com/?36312538rqfxv3c">here (54 MB download)</a>.
-                To ease the reading, we have seperated the bandi akuru <i>(බැඳි අකුරු)</i> in Pali words.
-                    We also tried to correct many of the <i>න ණ ල ළ</i> errors according to the currently accepted Sinhala standard.
-                    Hal akuru were used where appropriate to ease the Sinhala reading. Other than that no changes were made to the original dictionary entries.</p>
+                <h3><i>මඩිතියවෙල සිරි සුමඞ්ගල හිමි, පාලි-සිංහල ශබ්දකෝෂය</i></h3>
+                <p>මේ සඳහා භාවිත කළ ස්කෑන් පිටපත් pdf ගොනුව <a href="http://www.mediafire.com/?36312538rqfxv3c">මෙතැනින් ලබාගත හැක (54 MB)</a>. 
+                කියවීම පහසුකිරීම සඳහා පාලි බැඳි අකුරු වෙන්කොට දක්වා ඇත. දැනට භාවිතයේ ඇති පිළිගැනීම අනුව න ණ ල ළ වැරදි නිවැරදි කර ඇත. 
+                සිංහල කියවීම පහසු කෙරවීම සඳහා සුදුසු තැන්වල හල් අකුරු භාවිතා කර ඇති අතර ඒ හැර වෙනත් කිසිම වෙනසක් මුල් ශබ්දකෝෂයට සිදු කොට නැත.</p>
                 
-                <p>The book contains about 545 pages and about 25,000 entries. A partially typed list of entries prepared by Chanaka and his team was used for about 200 of those pages.
-                Many volunteers helped in typing the rest of the entries and proofreading/correcting the full list of entries to make sure they match exactly with the original book.
-                    In total it took about 8 months to finish the project. The Dhamma donation <i>(ධර්ම දානමය)</i> merit from every lookup from this dictionary goes to all those volunteers who helped make this a reality.</p>
+                <p>මෙම පොතෙහි පිටු 545ක් පමණ ඇති අතර අර්ථ විග්‍රහයන් 25,000 පමණ අඩංගු වේ. 
+                    චානක මහත්මා ඇතුළු කණ්ඩායම විසින් දළ වශයෙන් යතුරුලියනය කර තිබූ පිටු 200ක පමණ අර්ථ විග්‍රහයන් යොදාගන්නා ලදී.
+                    ඉතිරි සියල්ල යතුරුලියනය කිරීමටත්, සියලු පිටු මුල් පිටපත සමඟ සංසන්දනය කරමින් සෝදුපත් කියවා මුල් පිටපත හා සම්පූර්ණයෙන්ම සමාන වන පරිදි මෙය සැකසීම සඳහාත් බොහෝ දෙනෙක් ස්වේච්ඡාවෙන් උදව් විය. 
+                    මේ සඳහා මාස අටක පමණ කාලයක් ගතවිය. මෙම අන්තර්ජාල ශබ්දකෝෂය භාවිතා කරන වාරයක් පාසා ලැබෙන ධර්ම දානමය පිං මෙය සාර්ථක කරගැනීමට ස්වේච්ඡාවෙන් උදව් කළ සියලුම දෙනාට අනුමෝදන් වේවා. </p>
                 
                 <h3><i>පොල්වත්තේ බුද්ධදත්ත හිමි, පාලි-සිංහල අකාරාදිය</i></h3>
-                <p>This dictionary was typed entirely by Ven Galpotugoda Gnanavansa and he has kindly given it to us to be published in a website.
-                Many merits for him for his enromous effort in typing nearly 19,000 entries. However he has mentioned that the text was not proofread after typing.
-                    (UPDATE: this is being proofread now and we will update the site after it is finished.)</p>
+                <p>පූජනීය ගල්පොතුගොඩ ඤාණවංස ස්වාමින් වහන්සේ විසින් මෙම ශබ්දකෝෂය යතුරුලියනය කර තිබූ අතර අපගේ අන්තර්ජාල ශබ්දකෝෂයෙහි පළකරීම සඳහා කරුණාවෙන් ලබා දෙන ලදී. 
+                    අර්ථ විග්‍රහයන් 19,000 පමණ වූ සුවිශාල ප්රමාණයක් යතුරුලියනය සඳහා ගත් සුවිශේෂී කැපකිරීම වෙනුවෙන් උන්වහන්සේට බොහෝ පින්. 
+                    එම යතුරුලියනය කිරීමෙන් පසු සෝදුපත් බලා නොතිබූ බව උන්වහන්සේ අපවෙත දැනුම් දී තිබිණ. මේ වනවිට මෙය සෝදුපත් බැලීම සඳහා යොමු කර තිබෙන අතර එම කර්තව්‍යයෙන් පසු මෙම අන්තර්ජාල වෙබ් පිටුව නැවත යාවත්කාලීන කෙරුණු ඇත.</p>
                 
-                <p>It is entirely possible that there are further mistakes in the text. 
-                If you find one feel free to send us an email at admin<i class="fa fa-at"></i>pitaka.lk. We are also looking for voluteers who can build Android and iOS apps for the dictionary.</p>
+                <p>තවදුරටත් අන්තර්ජාල ශබ්දකෝෂයේ යම් අඩුපාඩු තිබීමට හැකි අතර යම් දෝෂයක් තිබුනොත් කරුණාකර අපගේ admin<i class="fa fa-at"></i>pitaka.lk ඊ-මේල් ලිපිනය වෙත දැනුම් දෙන්න. 
+                    මෙම අන්තර්ජාල මෘදුකාංගය සඳහා iOS මෘදුකාංගයක් ස්වේච්ඡාවෙන් හෝ යම් මුදලකට සැකසීමට කැමති අයෙක් සිටීනම් කරුණාවෙන් අප හා සම්බන්ධ වන්න.</p>
+
                 <p>තායි සහ රෝමන් අකුරු වලින් ඇති පාලි ලිපි සිංහලෙන් කියවන්න -> <a href="../converter.html">Our Pali Script Converter</a></p>
                 
-                <h3><i>පුණ්‍යානුමෝදනා</i> - Some of our Volunteers</h3>
+                <h3><i>පුණ්‍යානුමෝදනා</i> - අප හා ස්වේච්ඡාවෙන් එකතු වූ කණ්ඩායම් සමහරක්</h3>
                 <ul>
-                    <li>Galpotugoda Gnanavansa Thero</li>
-                    <li>Bhikkhu Dhammagaru</li>
-                    <li>HA Amaratunga</li>
-                    <li>Dilrukshi Weeraratne</li>
-                    <li>Wasantha Karunarathna</li>
-                    <li>Chanaka Nanayakkara and the Team</li>
-                    <li>Lahiru Madhumadha</li>
-                    <li>Lakme Kuruppu</li>
-                    <li>Anura Lakmal</li>
+                    <li>ගල්පොතුගොඩ ඤාණවංස ස්වාමින් වහන්සේ</li>
+                    <li>උස්ගොඩ ධම්මගරු ස්වාමින් වහන්සේ</li>
+                    <li>එච්. ඒ. අමරතුංග </li>
+                    <li>දිල්රුක්ෂි වීරරත්න </li>
+                    <li>වසන්තා කරුණාරත්න </li>
+                    <li>චානක නානායක්කාර සහ එම කණ්ඩායම</li>
+                    <li>ළහිරු මදුමාද </li>
+                    <li>ලක්මී කුරුප්පු </li>
+                    <li>අනුර ලක්මාල් </li>
+                    <li>පණ්ඩුක බණ්ඩාර</li>
+                    <li>තනූජ මාලිංබඩ</li>
                 </ul>
             </div>
         </div>
@@ -108,46 +115,43 @@
         <div id="usage" class="section">
             <span class="title">භාවිතයට උපදෙස්</span>
             <div class="contents">
+                <iframe width="380" height="600" src="https://www.youtube.com/embed/GLQCAn1-2lc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 <ul style="padding-left: 15pt; margin: 0pt;">
-                    <li>You can use Sinhala Unicode, or Singlish for searching the pali entries here. (Singlish letter table is listed below)</li>
-                    <li>At least 2 characters need to be typed in the search text box to activate the searching process. If the searching is not activated press 'Enter' or an arrow key.</li>
-                    <li>Results from all the dictionaries matching the search query will be sorted in the order of the Pali word and listed below the search box.</li>
-                    <li>To search inside the Sinhala meanings, type the word in Sinhala Unicode in the search text box and click <i>"සිංහල"</i> button.</li>
-                    <li>Mouse over the abbreviations to view the expanded meaning in a tooltip.</li>
-                    <li>Mouse over the small book icon on the far left corner of search results to see the name of the dictionary and the page number in the PDF.</li>
-                    <li>Clicking on a pali word in the search results will copy that word to the search box.</li>
-                    <li>Click the button with an arrow head in the toolbar to open/close the top banner.</li>
-                    <li>Loading the dictionary page for the very first time will take some time as both dictionaries has to be downloaded to your computer.
-                        After that Internet is no longer needed when searching (provided you do not close the browser window). Subsequent loadings of the dictionary page would be faster.</li>
+                    <li>අවශ්‍ය සූත්‍රය සෙවීම සඳහා යුනිකෝඩ් හෝ සිංග්ලිෂ් වලින් ලිවිය හැක. (සිංග්ලිෂ් සඳහා භාවිතා වන ඉංග්‍රීසි අකුරු වගුව පහතින් දැක්වේ)</li>
+                    <li>සෙවීම ආරම්භ වීම සඳහා අවම වශයෙන් අකුරු දෙකක්වත් ලිවිය යුතු අතර ස්වයංක්‍රීයව ප්‍රතිඵල ලැබුණේ නැතිනම් ‘Enter’ හෝ ‘Arrow Key’ එකක් ඔබන්න.</li>
+                    <li>පාලි ශබ්ද කෝෂ වලින් සෙවීමෙන් ලැබෙන ගැළපෙන පාලි වචන සහ තේරුම්, පාලි වචන වල අකාරාදී පිළිවෙළට පෙන්වනු ඇත.</li>
+                    <li>ශබ්දකෝෂ වල ඇති තේරුම් වල සිංහල වචන සෙවීමද කළ හැක. ඒ සඳහා පෙර පරිදිම වචනය ලියා ‘සිංහල’ කියන බොත්තම ඔබන්න. </li>
+                    <li>ප්‍රතිඵල වල පාලි වචනයෙන් පසුව ඇති කෙටි අකුරෙන් දැක්වෙන තේරුම, එම අකුර මත මූසිකය තැබීමෙන් බැලිය හැක. </li>
+                    <li>පාලි වචනයට පෙර ඇති පොත් සලකුණ මත මූසිකය තැබීමෙන් එය සඳහන් වන ශබ්ද කෝෂය සහ එහි පිටු අංකය බැලිය හැක. </li>
+                    <li>ප්‍රතිඵල වල ඇති පාලි වචන මත ක්ලික් කිරීමෙන් එය සෙවුම් කොටුව මතට පිටපත් වනු ඇත. </li>
+                    <li>පළමු වතාවට වෙබ් පිටුව සඳහා යොමුවීමේදී ශබ්දකෝෂ දෙකම බාගැනීම වන අතර, කුඩා ප්‍රමාදයක් ඇතිවිය හැක. ඉන්පසුව අන්තර්ජාල පහසුකම් නැතුව වුනත් බ්‍රවුසරය වහනතුරු සෙවීම කල හැක. </li>
                     <!--<h5>(not implemented yet)</h5>
                     <li>Click the "Share" button to obtain a unique url that would point to the current results set with the current search term</li>
                     <li>The maximum number of displayed entries can be changed by using the "Settings" button.</li>
                     -->
                 </ul>
                 <h3>සිංග්ලිෂ් අකුරු ලැයිස්තුව</h3>
-                <p>When searching in Singlish, please refer to the table below to find the appropriate English letter for Sinhala letters.
-                When there are multiple English letters for a single Sinhala letter you can use any one of them. E.g. To search for <i>ඛ</i> you can use either 'ka' or 'kha'.</p>
+                <p>සිංග්ලිෂ් වලින් ලිවීමේ දී අවශ්‍ය සිංහල අකුරු ලබා ගැනීම සඳහා පහත වගුවෙහි දැක්වෙන ඉංග්‍රීසි අකුරු භාවිතා කරන්න. 
+                එකම සිංහල ශබ්දය සඳහා ඉංග්‍රීසි අකුරු එකකට වඩා ඇති විට ඔබට ඒ ඕනෑම අකුරක් භාවිතා කල හැකිය. උදාහරණ ලෙස 'ඛ' අකුර ලිවීම සඳහා 'ka' හෝ 'kha' දෙවිදියම භාවිතා කළ හැක.</p>
 
-                <table align="center" width="100%">
-                    <tr align="center">
-                        <td><h3>Vowels</h3></td>
-                        <td><h3>Consonants</h3></td>
-                    </tr>
-                    <tr style="vertical-align: top;">
-                        <td><ul id="singlish-vowels"></ul></td>
-                        <td><ul id="singlish-consonants"></ul></td>
-                    </tr>
-                </table>
-                <table align="center" width="100%">
-                    <tr align="center">
-                        <td><h3>උදාහරණ</h3></td>
-                        <td><h3>විශේෂ</h3></td>
-                    </tr>
-                    <tr style="vertical-align: top;">
-                        <td><ul id="singlish-conso-example"></ul></td>
-                        <td><ul id="singlish-specials"></ul></td>
-                    </tr>
-                </table>
+                <div id="singlish-table" style="display: flex; flex-direction: row; flex-flow: row wrap;">
+                    <div class="table-item">
+                        <div class="table-item-header">Vowels</div>
+                        <div class="table-item-contents"><ul id="singlish-vowels"></ul></div>
+                    </div>
+                    <div class="table-item">
+                        <div class="table-item-header">Consonants</div>
+                        <div class="table-item-contents"><ul id="singlish-consonants"></ul></div>
+                    </div>
+                    <div class="table-item">
+                        <div class="table-item-header">උදාහරණ</div>
+                        <div class="table-item-contents"><ul id="singlish-conso-example"></ul></div>
+                    </div>
+                    <div class="table-item">
+                        <div class="table-item-header">විශේෂ</div>
+                        <div class="table-item-contents"><ul id="singlish-specials"></ul></div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -170,22 +174,15 @@
                 </table>
             </div>
         </div>
-
-        <!--
-        <h3><i>මඩිතියවෙල සිරි සුමඞ්ගල හිමි, පාලි-සිංහල ශබ්දකෝෂය</i></h3>
-        <ul id="abbre-ul-sumangala"></ul>
-        <ul id="abbre-ul-sumangala-other"></ul>
         
-        <h3><i>පොල්වත්තේ බුද්ධදත්ත හිමි, පාලි-සිංහල අකාරාදිය</i></h3>
-        <ul id="abbre-ul-buddhadatta"></ul>-->
-        
-        <div id="intro_pages" class="section">
-            <span class="title">ශබ්දකෝෂ සඥාපනය</span>
+        <div id="download" class="section">
+            <span class="title">භාගත කිරීම සහ සඥාපනය</span>
             <div class="contents">
-                <h3><i>මඩිතියවෙල සිරි සුමඞ්ගල හිමි, පාලි-සිංහල ශබ්දකෝෂය</i></h3>
-                Click the following link to download/view the <a href="intro_sumangala.pdf">introductory pages of Madithiyawela dictionary.</a>
-                
-                <h3><i>පොල්වත්තේ බුද්ධදත්ත හිමි, පාලි-සිංහල අකාරාදිය</i></h3>
+                <p><i class="fa fa-android"></i> Android <i class="fa fa-mobile"></i> ජංගම දුරකථන සහ <i class="fa fa-tablet"></i> ටැබ්ලට් සඳහා අන්තර්ජාලය නොමැතිව භාවිතා කල හැකි app එකක් සාදා ඇත.
+                <a href="https://play.google.com/store/apps/details?id=lk.pitaka.dictionary">එය Google Play Store එකෙන් ලබාගන්න.</a></p> 
+
+                <h3><i>මඩිතියවෙල සිරි සුමඞ්ගල හිමි, පාලි-සිංහල ශබ්දකෝෂ සඥාපනය</i></h3>
+                මඩිතියවෙල සිරි සුමඞ්ගල හිමිගේ පාලි-සිංහල ශබ්දකෝෂය <a href="intro_sumangala.pdf">හැඳින්වීම මෙතනින් බැලීම සහ භාගත කර ගැනීම කල හැක.</a>
             </div>
         </div>
         
