@@ -13,20 +13,25 @@
     <link rel="stylesheet" href="../styles/common_styles.css"/>
     <link rel="stylesheet" href="../styles/font-awesome.css"/>
     <style>
-        i {
-            font-weight: bold;
-        }
-        table {
-            border-collapse: collapse;
-        }
-        table ul {
+        .table-item-contents ul {
             list-style: none;
             padding: 0pt;
             margin: 0pt;
         }
-        table, th, td {
+        .table-item {
+            border: 1px solid salmon;
+            flex: 0 1 auto;
             padding: 5pt;
-            border: 1px solid black;
+            margin: 3pt;
+        }
+        .table-item-header {
+            font-size: 13pt;
+            padding-bottom: 5pt;
+            font-weight: bold;
+            color: darkgreen;
+        }
+        #singlish-table .table-item:nth-child(even) {
+            background-color: antiquewhite;
         }
         span.abbre {
             font-weight: bold;
@@ -56,10 +61,9 @@
     <div align="center" style="height: 100%; display: flex; flex-flow: column; width: 100%; max-width: 800pt; margin: 0pt auto;">
 
         <div style="flex: 0 1 auto">
-                <div class="title-bar" align="left" onclick="location.href='index.html';">
-                    <a id="back-button" style="padding:0 10pt 0 10pt;">
-                        <i class="fa fa-chevron-left" style="color: white"></i></a>
-                    <div id="title-bar-text" style="display: inline-block; color:white; ">placeholder</div>
+                <div class="title-bar" onclick="location.href='index.html';">
+                    <i class="fa fa-chevron-left"></i>
+                    <div id="title-bar-text" style="flex: 1 1 auto;">placeholder</div>
                 </div>        
         </div>
     
@@ -68,7 +72,7 @@
     
 
         <div id="about" class="section">
-            <span class="title"><i>අප ගැන</i> - About Us</span>
+            <span class="title">අප ගැන - About Us</span>
             <div class="contents">
                 <p>මෙම මෘදුකාංගය මඟින් ස්කෑන් පිටපත් කර ඇති බුද්ධ ජයන්ති ත්‍රිපිටක පොත් වහන්සේලා පහසුවෙන් පරිශීලනය කළ හැක. සෙවීම පහසු කිරීම සඳහා ත්‍රිපිටක පොත් වහන්සේලා වෙලුම් 57 හිම ඇති පටුනවල් භාවිතා කර සෙවුම් ක්‍රමයක් ද සකසා ඇත. පටුන කියවීම පහසු වීම සඳහා සුදුසු තැන්වල හල් අකුරු භාවිතා කර ඇති අතර ඒ හැර වෙනත් කිසිම වෙනසක් සිදු කොට නැත.</p>
                 <p>බුද්ධ ජයන්ති ත්‍රිපිටකය ලොව පුරා ධර්මය හදාරන ප්‍රවීණයන්ගේ විශ්වසනීය ම ත්‍රිපිටක පිටපත වන අතර එහි සිංහල පරිවර්තනය ශ්‍රී ලංකාවේ වඩාත් ම පිළිගත් පරිවර්තනය වේ. ස්කෑන් පිටපත් කර ඇති බුද්ධ ජයන්ති ත්‍රිපිටක පොත් වහන්සේලා ගේ සම්පූර්ණ වෙලුම් 57ම <a href="https://www.mediafire.com/folder/najd8hdk6bqqf/Buddha_Jayanthi_Tipitaka">මෙතැනින් භාගත් හැක (900 MB)</a>.</p>
@@ -82,21 +86,32 @@
         <div id="download" class="section">
             <span class="title">භාගත කරන්න - Download</span>
             <div class="contents"> 
-                <p>මෙම මෘදුකාංගය භාගත කරගෙන අන්තර්ජාල පහසුකම් නැති පරිඝණක වලද භාවිත කිරීමට පහසුකම් ඇත. ඇපල්, වින්ඩෝස්, ලිනක්ස් ආදී ඕනෑම මෙහෙයුම් පද්ධතියක ක්‍රිය කල හැකිය.
+                <p><i class="fa fa-android"></i> Android <i class="fa fa-mobile"></i> ජංගම දුරකථන සහ <i class="fa fa-tablet"></i> ටැබ්ලට් සඳහා අන්තර්ජාලය නොමැතිව භාවිතා කල හැකි app එකක් සාදා ඇත. 
+                <a href="http://www.mediafire.com/file/5bsg56jxuajcuc8/app-release.apk/file">ප්‍රමාණය 2.5 GB වන මේ app එක භාගත කරගෙන install කරගන්න.</a>
+                මේ ඇප් එක <i class="fa fa-usb"></i> පෙන් ඩ්‍රයිව් එකකට කොපි කරගෙන ආරණ්‍යවාසී භික්ෂූන් වහන්සේලාගේ මොබයිල් ෆෝන් ටැබ්ලට් වලට install කරල දෙන්න පුළුවන් වැඩපිළිවෙළක් හදන්න. මුද්‍රිත පොත් කට්ටලයකටත් වඩා භාවිතය පහසුයි.</p>
+
+                <p>ඉහත app එක ඔබගේ ජංගම දුරකතනයේ install කල නොහැකි නම් විකල්පයක් ලෙස පහත දැක්වෙන zip file එකේ අන්තර්ගතය ඔබගේ ජංගම දුරකතනයේ "Pictures" ගොනුවට copy කරන්න.
+                    Zip file එක මෙතැනින් භාගත කරගන්න (ප්‍රමාණය 2.3 GB) -> http://www.mediafire.com/file/dw6g8guxn37s0mk/
+                    එසේ copy කිරීමෙන් පසුව "Pictures/bjt_books" නමැති ගොනුව තුළ 1 සිට 57 දක්වා නම් ඇති ගොනු 57ක් තිබිය යුතුය. 
+                    දැන් ඔබට Google Play Store හි ඇති <a href="https://play.google.com/store/apps/details?id=lk.pitaka.buddhajayanthi">මෙම බුද්ධ ජයන්ති ත්‍රිපිටක app එක</a> අන්තර්ජාලය නොමැතිව භාවිතා කල හැකිය. (ඔබගේ ෆොටෝස් access කිරීම සඳහා අනුකුලතාවය (permission) ලබා දෙන්න)
+                </p>
+                
+                <p>අන්තර්ජාල පහසුකම් නැති පරිඝණක වල භාවිත කල හැකි මෘදුකාංගයක්ද අප චිසින් සකසා ඇත. <i class="fa fa-apple"></i> ඇපල්, <i class="fa fa-windows"></i> වින්ඩෝස්, <i class="fa fa-linux"></i> ලිනක්ස් ආදී ඕනෑම මෙහෙයුම් පද්ධතියක ක්‍රිය කල හැකිය.
                 ත්‍රිපිටක පොත් වහන්සේලා සමඟ මෙම මෘදුකාංගයේ ප්‍රමාණය 2.3 GB පමණ වන අතර <a href="http://www.mediafire.com/file/ha3c6qzspp3j787">මෙතනින් භාගත හැක.</a>
                 භාගත කරගැනීමෙන් පසු zip ගොනුව දිගහැර 'Buddha Jayanthi Tipitaka.html' කියන ගොනුව විවෘත කරන්න.</p>
 
                 <p>මෙම මෘදුකාංගය ඇතුලක් කර DVD තැටි සකසා තියෙන අතර අවශ්‍ය අය සඳහා ලබාදිය හැක. DVD පිටපතක් අවශ්‍ය අය දුරකථන අංක 0770 769101 හෝ ඊ මේල් cchaami<i class="fa fa-at"></i>gmail.com මඟින් නාවල චාමින්ද මහත්මා අමතන්න.</p>
 
-                මෙම මෘදුකාංගයේ ප්‍රමාණය විශාල නිසා දුර්වල අන්තර්ජාල පහසුකම් ඇති අය සඳහා ටොරන්ට් ඔස්සේ පහසුවෙන් භාගත හැකි බව අපගේ මිතුරු සම්පත් මහත්මා විසින් දන්වා ඇති අතර ඒ සඳහා ඔහු විසින් පිළියෙල කර ඇති 
-                torrent ගොනුව <a href="http://www.mediafire.com/file/74nvpzfgkvtv7xv/">මෙතනින් ලබාගත හැක</a>.  ඒ සඳහා අවශ්‍ය සියලුම උපදෙස් <a href="http://www.mediafire.com/file/f8grics4xmb3gut/">මෙතන සඳහන් වේ</a>. 
+                <!--මෙම මෘදුකාංගයේ ප්‍රමාණය විශාල නිසා දුර්වල අන්තර්ජාල පහසුකම් ඇති අය සඳහා ටොරන්ට් ඔස්සේ පහසුවෙන් භාගත හැකි බව අපගේ මිතුරු සම්පත් මහත්මා විසින් දන්වා ඇති අතර ඒ සඳහා ඔහු විසින් පිළියෙල කර ඇති 
+                torrent ගොනුව <a href="http://www.mediafire.com/file/74nvpzfgkvtv7xv/">මෙතනින් ලබාගත හැක</a>.  ඒ සඳහා අවශ්‍ය සියලුම උපදෙස් <a href="http://www.mediafire.com/file/f8grics4xmb3gut/">මෙතන සඳහන් වේ</a>. -->
             </div>
         </div>
 
         <div id="usage" class="section">
             <span class="title">භාවිතයට උපදෙස්</span>
             <div class="contents">
-                <ul>
+                <iframe width="380" height="600" src="https://www.youtube.com/embed/-s7QXs97VnM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <ul style="padding-left: 15pt; margin: 0pt;">
                     <li>අවශ්‍ය සූත්‍රය සෙවීම සඳහා යුනිකෝඩ් හෝ සිංග්ලිෂ් වලින් ලිවිය හැක. (සිංග්ලිෂ් සඳහා භාවිතා වන ඉංග්‍රීසි අකුරු වගුව පහතින් දැක්වේ)</li>
                     <li>සෙවීම ආරම්භ වීම සඳහා අවම වශයෙන් අකුරු දෙකක්වත් ලිවිය යුතු අතර ස්වයංක්‍රීයව ප්‍රතිඵල ලැබුණේ නැතිනම් Enter හෝ Arrow Key ඔබන්න.</li>
                     <li>ඔබ සොයන පදයට සමාන පද සහිත බුද්ධ ජයන්ති ත්‍රිපිටකයේ පටුනෙහි සඳහන් වන මාතෘකා ප්‍රතිඵල 100ක් දක්වා වගුවක් ආකාරයෙන් පෙන්නුම් කෙරෙනු ඇත.</li>                
@@ -111,27 +126,24 @@
                 <p>සිංග්ලිෂ් වලින් ලිවීමේ දී අවශ්‍ය සිංහල අකුරු ලබා ගැනීම සඳහා පහත වගුවෙහි දැක්වෙන ඉංග්‍රීසි අකුරු භාවිතා කරන්න.
                     එකම සිංහල ශබ්දය සඳහා ඉංග්‍රීසි අකුරු එකකට වඩා ඇති විට ඔබට ඒ ඕනෑම අකුරක් භාවිතා කල හැකිය. උදාහරණ ලෙස 'ඛ' අකුර ලිවීම සඳහා 'ka' හෝ 'kha' දෙවිදියම භාවිතා කළ හැක.</p>
     
-                <table align="center" width="100%">
-                    <tr align="center">
-                        <td><h3>Vowels</h3></td>
-                        <td><h3>Consonants</h3></td>
-                    </tr>
-                    <tr style="vertical-align: top;">
-                        <td><ul id="singlish-vowels"></ul></td>
-                        <td><ul id="singlish-consonants"></ul></td>
-                    </tr>
-                </table>
-                <table align="center" width="100%">
-                    <tr align="center">
-                        <td><h3>උදාහරණ</h3></td>
-                        <td><h3>විශේෂ</h3></td>
-                    </tr>
-                    <tr style="vertical-align: top;">
-                        <td><ul id="singlish-conso-example"></ul></td>
-                        <td><ul id="singlish-specials"></ul></td>
-                    </tr>
-                </table>
-
+                    <div id="singlish-table" style="display: flex; flex-direction: row; flex-flow: row wrap;">
+                        <div class="table-item">
+                            <div class="table-item-header">Vowels</div>
+                            <div class="table-item-contents"><ul id="singlish-vowels"></ul></div>
+                        </div>
+                        <div class="table-item">
+                            <div class="table-item-header">Consonants</div>
+                            <div class="table-item-contents"><ul id="singlish-consonants"></ul></div>
+                        </div>
+                        <div class="table-item">
+                            <div class="table-item-header">උදාහරණ</div>
+                            <div class="table-item-contents"><ul id="singlish-conso-example"></ul></div>
+                        </div>
+                        <div class="table-item">
+                            <div class="table-item-header">විශේෂ</div>
+                            <div class="table-item-contents"><ul id="singlish-specials"></ul></div>
+                        </div>
+                    </div>
             </div>
         </div>
 
@@ -145,7 +157,7 @@
         $( document ).ready( function() {
             var navi = getParameterByName("goto", "about");
             var displayDiv = $('#' + navi);
-            $('#title-bar-text').text(displayDiv.children('span.title').first().text());
+            $('#title-bar-text').html(displayDiv.children('span.title').first());
             $('#content-div').append(displayDiv.children('div.contents').first());
             
             if (navi == 'usage') {

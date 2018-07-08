@@ -10,7 +10,7 @@ a.page-navigation {
     position: absolute;
     background-color: lightblue;
     opacity: 0.25;
-    z-index: 1000;
+    z-index: 2;
     cursor: pointer;
     text-decoration: none;
     font-size: 14pt;
@@ -42,7 +42,7 @@ a.page-navigation.right {    right: 0;}
 
 #tree-window {
     position: absolute;
-    z-index: 1001;
+    z-index: 100;
     left: 0;
     top: 0;
     max-height: 100%;
@@ -76,7 +76,7 @@ a.page-navigation.right {    right: 0;}
 
 .page > .page-link {
     position: absolute;
-    z-index: 1001;
+    z-index: 3;
     opacity: 0.5;
     right: 0;
     margin: 25pt 10pt 0 0;

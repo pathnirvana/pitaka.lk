@@ -27,8 +27,21 @@ function createPage(pageId, coll) {
     return page.append(img).append(linkSpan).append(pageNav);
 }
 
+var imgURLPrefix = 'books/';
+var booksFolder = getParameterByName('books_folder', '');
+var loadFromRemote = getParameterByName('load_books_remote', 0);
+
+if (booksFolder) {
+    if (loadFromRemote > 0) {
+        imgURLPrefix = 'https://pitaka.lk/bjt/books/'; //full path for android app without pages
+    } else {
+        imgURLPrefix = booksFolder;
+    }
+}
+console.log("Loading images from: " + imgURLPrefix);
+
 function getPageImageSrc(pageId) {
-    return 'books/' +
+    return imgURLPrefix +
         getDef(curBook, 'folder', curBookId) + '/' +
         getDef(curBook, 'imagePrefix', defaultImgPrefix) +
         padZeros(pageId, 3) +

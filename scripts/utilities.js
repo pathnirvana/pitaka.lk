@@ -112,16 +112,15 @@ var CollectionsList = {
 };
 
 var UrlParamNames = {
-    EDITING: 'editing',
-    ADMIN_EDITING: 'adminediting',
     NODE: 'node',
     PARA: 'para'
 };
 // e.g. location url pitaka.lk/15111/12/cs,kk
 // url rewritten pitaka.lk/?node=15111&para=12&coll=cs,kk
 function getStartupLocation() {
-    var nodeId = getParameterByName(UrlParamNames.NODE, 0),
-        paragraphId = getParameterByName(UrlParamNames.PARA, 0);
+    var nodeId = getParameterByName('node', 0), nId = getParameterByName('n', 0),
+        paragraphId = getParameterByName('para', 0), pId = getParameterByName('p', 0);
+        nodeId = nodeId || nId; paragraphId = paragraphId || pId;
     /*colls = colls ? colls.split(',') : ['cs', 'aps'];
     var collNames = [];
     $.each(colls, function(_1, coll) {
@@ -268,6 +267,7 @@ function hideToolTip() {
 
 
  // todo consider moving these to pitakaTabs.js
+ /*
 function getTabHeader(tabId) {
     return $('[id="' + tabId + '"]', $('#main-tabs'));
 }
@@ -310,4 +310,4 @@ var BusyTab = {
         }
         return this.data[tabId][type];
     }
-};
+};*/
