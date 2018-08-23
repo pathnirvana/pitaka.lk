@@ -89,8 +89,7 @@ function hideAllSubheads(tbody) {
 
 function setLoadingError(xhr, targetUrl) {
     var msg = "සූත්‍ර දේශනාව ලබා ගැනීමේදී දෝෂයක් සිදුවූ බව කණගාටුවෙන් දැනුම් දෙමු . : ";
-    textDiv.html( msg + xhr.status + " " + xhr.statusText + ". Url: " + targetUrl);
-    setTabHeaderError(tabId);
+    alert( msg + xhr.status + " " + xhr.statusText + ". Url: " + targetUrl);
 }
 
 var trSpanSelector = 'div>span:not(.note):not(.bold)'; // spans that should go in the table rows
