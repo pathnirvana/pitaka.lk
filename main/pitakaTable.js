@@ -13,7 +13,7 @@ $.fn.registerTextClicks = function() {
         }
     });
     // span links
-    tbody.on('click', 'i.share-icon', function (e) {
+    /*tbody.on('click', 'i.share-icon', function (e) {
         var nodeId = $(this).parents('tr').attr('node-id');
         var paraId = $(this).parents('tr').attr('para');
         var url = 'https://pitaka.lk/main?n=' + nodeId;
@@ -22,7 +22,19 @@ $.fn.registerTextClicks = function() {
         }
         copyTextAndShowToast(url, 'link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.');
         e.stopPropagation();
+    });*/
+    const clipb = new ClipboardJS('i.share-icon', {
+        text: function(icon) {
+            var nodeId = $(icon).parents('tr').attr('node-id');
+            var paraId = $(icon).parents('tr').attr('para');
+            var url = 'https://pitaka.lk/main?n=' + nodeId;
+            if (paraId) {
+                url += ('&p=' + paraId);
+            }
+            return url;
+        }
     });
+    clipb.on('success', e => showToast('link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.'));
 }
 
 

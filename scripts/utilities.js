@@ -211,6 +211,11 @@ function copyTextAndShowToast(copyText, toastMsg) {
     // After 3 seconds, remove the show class from DIV
     setTimeout(function(){ toast.fadeOut(); }, 3000);
 }
+function showToast(toastMsg) {
+    var toast = $('#toast').text(toastMsg).fadeIn(300);
+    // After 3 seconds, remove the show class from DIV
+    setTimeout(function(){ toast.fadeOut(); }, 3000);
+}
 
 // function to determine the browser OS
 // currently used for disabling tooltips 
