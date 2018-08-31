@@ -99,6 +99,7 @@
 
 <script src="../scripts/jquery-1.11.1.min.js"></script>
 <script src="../scripts/underscore-min.js"></script>
+<script src="../scripts/clipboard.min.js"></script>
 <script src="../scripts/utilities.js?v=1"></script>
 <script src="../scripts/pitakaTree.js?v=1"></script>
 <script src="../scripts/singlish.js?v=1"></script>
@@ -149,11 +150,18 @@
 
         // set startup location if specified in url params
         navigateStartupLocation();
-        $('#image-area').on('click', '.page-link', function () {
+        /*$('#image-area').on('click', '.page-link', function () {
             var bjtLink = createBJTLink(curBookId, $(this).parent().attr('page-id'));
             console.log(bjtLink);
             copyTextAndShowToast(bjtLink, 'link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.');
+        });*/
+        const clipb = new ClipboardJS('span.page-link', {
+            text: function(icon) {
+                var bjtLink = createBJTLink(curBookId, $(icon).parent().attr('page-id'));
+                return bjtLink;
+            }
         });
+        clipb.on('success', e => showToast('link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.'));
         
         $('.search-bar').focus(function (){ // show search area
             $('#search-area').show();
