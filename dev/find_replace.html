@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Find Replace</title>
+</head>
+<body>
+<script src="../scripts/jquery-1.11.1.min.js"></script>
+<script src="../scripts/utilities.js"></script>
+
+<script>
+    // metta.lk text processing and error correcting
+
+    function convertFolderToText(filesList, checkFolder) {
+        var files = filesList.split(',');
+        $.each(files, function(_1, file) {
+            var fileParts = file.split('.');
+            if (fileParts.length == 2 && fileParts[1].substr(0, 3) == 'htm'){
+                var fileName = checkFolder + '/' + fileParts[0] + '.txt';
+                loadTextDoc(checkFolder + '/' + file, convertFileToText, fileName)
+            }
+        });
+    }
+    function convertFileToText(html, fileName) {
+        var text = jQuery('<div>').html(html).text();
+        saveXmlDoc(fileName, text, savePassword);
+        console.log('Wrote ' + fileName);
+    }
+
+    function findReplaceFolder(filesList, checkFolder) {
+        var files = filesList.split(',');
+        var fileNumber = 0;
+        $.each(files, function(_1, file) {
+            var fileParts = file.split('.');
+            if (fileParts.length == 2 && fileParts[1] == 'txt' && fileParts[0].indexOf('_Unicode') >= 0){
+                var inputFile = checkFolder + '/' + file;
+                var outputFile = checkFolder + '/p_' + (fileNumber++) + '.txt';
+                loadTextDoc(inputFile, findReplaceFile, outputFile)
+            }
+        });
+    }
+    function findReplaceFile(data, fileName) {
+
+        data = data.replace(/,ි/g, 'ි');
+        data = data.replace(/ත්‍ර්‍ථ/g, 'ර්ත්‍ථ'); // artha
+        data = data.replace(/ ෙවෂ/g, ' ද්වේෂ');
+        data = data.replace(/නමි/g, 'නම්'); //nami to nam
+        data = data.replace(/වෙි/g, 'වේ');
+        data = data.replace(/මෙි/g, 'මේ');
+        data = data.replace(/Ãˆ/g, 'දු');
+        data = data.replace(/Ã‰/g, 'දූ');
+        data = data.replace(/ÃŒ/g, 'ඳු');
+        data = data.replace(/Ã‹/g, 'ඳ');
+        data = data.replace(/ÃෙŠ/g, 'දො');
+        data = data.replace(/ÃŠ/g, 'ද්‍ර');
+        data = data.replace(/Ãෙ‹/g, 'ඳෙ');
+        data = data.replace(/Ã˜/g, '!');
+        data = data.replace(/Ã™/g, "''");
+        data = data.replace(/Ȁd/g, '\u200D');
+        data = data.replace(/}š/g, ',');
+        data = data.replace(/}˜/g, '‘');
+        data = data.replace(/}™/g, '’');
+        data = data.replace(/Â/g, ''); // unnecessary leftover chars
+
+        data = data.replace(/\u0DD9\u0DCA/g, '\u0DDA');
+        data = data.replace(/\u0DDC\u0DCA/g, '\u0DDD');
+        data = data.replace(/\u0DDA\u0DCA/g, '\u0DDA');
+        data = data.replace(/(.{1})\u0DCA\u200D\u0DBB\u0DCA\u200D\u0DBA/g, '\u0DBB\u0DCA\u200D\$1\u0DCA\u200D\u0DBA'); // virya
+
+        data = data.replace(/\r\nඤෆ.+රැ% \r\n/g, ' '); // page endings
+        // remove new lines and add them back only to paragraphs - when there are unnecessary line breaks uncomment this
+        //data = data.replace(/\r\n/g, ' ');
+
+        data = data.replace(/\s\d*[(\u0DD4)(\u0DCA\u200D\u0DBB)]*\d*[(\u0DD4)(\u0DCA\u200D\u0DBB)]*\d*ග\s/g, '\r\n# '); //6්‍ර1ග 61ුග  etc
+        data = data.replace(/\s\d*[(\u0DD4)(\u0DCA\u200D\u0DBB)]*\d*[(\u0DD4)(\u0DCA\u200D\u0DBB)]*\d*ග\s/g, '\r\n# ');
+
+        data = data.replace(/\s([0-9]+\.)/g, '\r\n#');
+        data = data.replace(/\r\n([0-9]+\.)/g, '\r\n#');
+        data = data.replace(/\t/g, ' '); // remove tab
+        data = data.replace(/[ \u00A0][ \u00A0]+/g, ' '); // remove double space
+
+        saveXmlDoc(fileName, data, savePassword);
+        console.log('Wrote ' + fileName);
+    }
+
+    var convertToText = false;
+    var rootFolder = 'misc/replace-files/metta.lk/samyuththa';
+    var checkRange = {start: 12, end: 13};
+    var savePassword = 'janaka-super';
+
+    $( document ).ready( function() {
+        for (var i = checkRange.start; i<=checkRange.end; i++) {
+            var checkFolder = rootFolder + '/' + i;
+            if (convertToText) {
+                console.log('Converting files in folder ' + checkFolder + ' to text.');
+                var params = '?folder=' + checkFolder;
+                loadTextDoc('php/dir_list.php' + params, convertFolderToText, checkFolder);
+            } else {
+                console.log('Doing find-replace on folder ' + checkFolder);
+                var params = '?folder=' + checkFolder;
+                loadTextDoc('php/dir_list.php' + params, findReplaceFolder, checkFolder);
+            }
+        }
+    });
+</script>
+<div id="status"></div>
+</body>
+</html>

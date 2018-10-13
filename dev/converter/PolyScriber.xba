@@ -1,0 +1,1821 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="PolyScriber" script:language="StarBasic">REM  *****  BASIC  *****
+Dim Dlg As Object
+Option Explicit
+const CASE_NO as boolean = False
+const CASE_YES as boolean = True
+const CASE_NO_FLAGS as integer = 1280
+const CASE_YES_FLAGS as Integer = 1024
+const ARRAY_SIZE_SINHALA = 150
+const ARRAY_SIZE = 256
+
+Sub Main
+call dlgPolyScriber
+End Sub
+
+
+Sub PaliComposer
+DialogLibraries.LoadLibrary(&quot;PolyScriber&quot;)
+Dlg = CreateUnoDialog(DialogLibraries.PolyScriber.PaliComposer)
+Dim edtPali as Object
+Select Case Dlg.Execute() 
+Case 1
+ edtPali = Dlg.getControl(&quot;edtPali&quot;)
+ msgBox edtPali.Text
+ 
+End Select
+
+end sub
+
+Sub dlgPolyScriber
+
+DialogLibraries.LoadLibrary(&quot;PolyScriber&quot;)
+Dlg = CreateUnoDialog(DialogLibraries.PolyScriber.dlgPolyScriber)
+Dlg.Execute() 
+Dlg.endExecute()
+
+end sub
+
+Sub cmdAbout
+Msgbox &quot;This preliminary release of PolyScriber was created by Bhikkhu Subhūti. If there are problems please contact BkSubhuti@gmail.com.  &quot; &amp;_
+&quot;Please do not distribute this to others until a proper release is finished&quot;
+end sub
+
+
+
+Sub GetAsciiToUnicodeFonts(strAscii as String, strUnicode as String)
+&apos;  I&apos;m hard coding the font listings because I cannot read a file with unicode. not yet.
+&apos;    strSource = &quot;AA,aa,II,ii,UU,uu,~N,~n,.T,.t,.D,.d,.N,.n,.L,.l,.M,.m,N.,n.,Curriur new@&quot;   
+strAscii = &quot;^S,^s,.S,.s,AA,aa,II,ii,UU,uu,~N,~n,.T,.t,.D,.d,.N,.n,.L,.l,.M,.m,N.,n.,-,-,&quot;&quot;,&quot;&quot;,…,&apos;,.^,||,|,Curriur new@&quot;   
+strUnicode = &quot;Ś,ś,Ş,ş,Ā,ā,Ī,ī,Ū,ū,Ñ,ñ,Ṭ,ṭ,Ḍ,ḍ,Ṇ,ṇ,Ḷ,ḷ,Ṃ,ṃ,Ṅ,ṅ,-,-,&quot;&quot;,&quot;&quot;,…,&apos;,∙,║,│,Times New Roman@&quot;
+ 	   
+End Sub
+
+
+Sub GetSinhalaAsciiToUnicodeFonts(strAscii as String, strUnicode as String)
+&apos;  I&apos;m hard coding the font listings because I cannot read a file with unicode. not yet.
+&apos;    strSource = &quot;AA,aa,II,ii,UU,uu,~N,~n,.T,.t,.D,.d,.N,.n,.L,.l,.M,.m,N.,n.,Curriur new@&quot;   
+strAscii = &quot;ṃ,aae,ae,oo,ee,ai,(nd,(n.d,(ng,(mb,^S,^s,.S,.s,AA,aa,II,ii,UU,uu,~N,~n,.T,.t,.D,.d,.N,.n,.L,.l,.M,.m,N.,n.,-,-,&quot;&quot;,&quot;&quot;,…,&apos;,Curriur new@&quot;   
+strUnicode = &quot;ṁ,ǣ,æ,ō,ē,ĭ,ṉd,ṉḍ,ṉg,ḿb,Ś,ś,Ş,ş,Ā,ā,Ī,ī,Ū,ū,Ñ,ñ,Ṭ,ṭ,Ḍ,ḍ,Ṇ,ṇ,Ḷ,ḷ,Ṁ,ṁ,Ṅ,ṅ,-,-,&quot;&quot;,&quot;&quot;,…,&apos;,Times New Roman@&quot;
+ 	   
+End Sub
+
+
+
+Sub GetMozpaliFonts(strMozPali as String, strUnicode as String)
+&apos;  I&apos;m hard coding the font listings because I cannot read a file with unicode. not yet.
+&apos;    strSource = &quot;AA,aa,II,ii,UU,uu,~N,~n,.T,.t,.D,.d,.N,.n,.L,.l,.M,.m,N.,n.,Curriur new@&quot;   
+strMozpali = &quot;£,¤,§,¨,«,¬,½,¾,Á,Â,¿,À,»,¼,±,²,¶,¹,º,·,µ,Mozpali@&quot;   
+strUnicode = &quot;Ā,ā,Ī,ī,Ū,ū,Ñ,ñ,Ṭ,ṭ,Ḍ,ḍ,Ṇ,ṇ,Ḷ,ḷ,Ṁ,ṁ,Ṅ,ṅ,ṁ,Times New Roman@&quot;
+End Sub
+
+
+
+Sub GetChineseFonts(arstrRoman() as String,arstrChinese() as String) as integer
+Dim idx as Integer
+idx = 0
+
+arstrRoman(idx) =&quot;kaṁ,khaṁ,gaṁ,ghaṁ,caṁ,chaṁ,jaṁ,jhaṁ,ñaṁ,ṭam,ṭhaṁ,taṁ,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;岡,慷,岗,康,章,昌,彰,苌,酿,当,汤,当,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ḍaṁ,ḍhaṁ,naṁ,paṁ,phaṁ,baṁ,bhaṁ,maṁ,yaṁ,raṁ,laṁ,vaṁ,saṁ,ḷaṁ,haṁ,ṁ,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;当,堂,襄,蚌,磅,帮,邦,茫,央,啷,郎,旺,桑,琅,杭,ṁ,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;kha,khā,khi,khī,khu,khū,khe,kho,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;卡,卡∫,奇,奇∫,库,库∫,柯∫,扣∫,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;cha,chā,chi,chī,chu,chū,che,cho,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;差,差∫,其,其∫,楚,楚∫,佉∫,抽∫,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;gha,ghā,ghi,ghī,ghu,ghū,ghe,gho,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;喀,喀∫,契,契∫,枯,枯∫,克∫,摳∫,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;tha,thā,thi,thī,thu,thū,the,tho,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;他,他∫,提,提∫,土,土∫,铁∫,投∫,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ṭha,ṭhā,ṭhi,ṭhī,ṭhu,ṭhū,ṭhe,ṭho,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;他,他∫,提,提∫,土,土∫,铁∫,投∫,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;dha,dhā,dhi,dhī,dhu,dhū,dhe,dho,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;塔,塔∫,底,底∫,荼,荼∫,贴∫,驮∫,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;bha,bhā,bhi,bhī,bhu,bhū,bhe,bho,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;跋,跋∫,毗,毗∫,菩,菩∫,佩∫,婆∫,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;jha,jhā,jhi,jhī,jhu,jhū,jhe,jho,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;叉,叉∫,耆,耆∫,救,救∫,伽∫,绸∫,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;pha,phā,phi,phī,phu,phū,phe,pho,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;帕,帕∫,批,批∫,普,普∫,培∫,颇∫,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ka,kā,ki,kī,ku,kū,ke,ko,k,NO_CHANGE@&quot;
+arstrChinese(idx) = &quot;咖,咖∫,积,积∫,古,古∫,葛∫,果∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ga,gā,gi,gī,gu,gū,ge,go,g,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;嘎,嘎∫,笈,笈∫,谷,谷∫,给∫,苟∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ca,cā,ci,cī,cu,cū,ce,co,c,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;吒,吒∫,吉,吉∫,朱,朱∫,羯∫,周∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ja,jā,ji,jī,ju,jū,je,jo,j,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;迦,迦∫,基,基,竹,竹∫,揭,∫舟∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ña,ñā,ñi,ñī,ñu,ñū,ñe,ño,ñ,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;ñ阿,ñ阿∫,ñ伊,ñ伊∫,ñ伍,ñ伍∫,ñ伊∫,ñ呕∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ya,yā,yi,yī,yu,yū,ye,yo,y,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;亚,亚∫,夷,夷∫,忧,忧∫,耶∫,优∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ta,tā,ti,tī,tu,tū,te,to,t,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;他,他∫,提,提∫,土,土∫,铁∫,投∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ḍa,ḍā,ḍi,ḍī,ḍu,ḍū,ḍe,ḍo,ḍ,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;达,达∫,地,地∫,度,度∫,迭∫,兜∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;da,dā,di,dī,du,dū,de,do,d,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;达,达∫,地,地∫,度,度∫,迭∫,兜∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ṭa,ṭā,ṭi,ṭī,ṭu,ṭū,ṭe,ṭo,ṭ,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;他,他∫,提,提∫,土,土∫,铁∫,投∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ra,rā,ri,rī,ru,rū,re,ro,r,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;拉,拉∫,利,利∫,卢,卢∫,勒∫,罗∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;la,lā,li,lī,lu,lū,le,lo,l,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;喇,喇∫,离,离∫,鲁,鲁∫,雷∫,洛∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;na,nā,ni,nī,nu,nū,ne,no,n,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;那,那∫,匿,匿∫,耨,耨∫,涅∫,若∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ḷa,ḷā,ḷi,ḷī,ḷu,ḷū,ḷe,ḷo,l,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;喇,喇∫,离,离∫,鲁,鲁∫,雷∫,洛∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;sa,sā,si,sī,su,sū,se,so,s,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;萨,萨∫,西,西∫,苏,苏∫,色∫,索∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;pa,pā,pi,pī,pu,pū,pe,po,p,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;巴,巴∫,毕,毕∫,补,补∫,贝∫,波∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ba,bā,bi,bī,bu,bū,be,bo,b,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;拔,拔∫,比,比∫,布,布∫,悲∫,钵∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ma,mā,mi,mī,mu,mū,me,mo,m,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;马,马∫,弥,弥∫,木,木∫,美∫,摩∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;va,vā,vi,vī,vu,vū,ve,vo,v,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;瓦,瓦∫,维,维∫,屋,屋∫,韦∫,沃∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ṇa,ṇā,ṇi,ṇī,ṇu,ṇū,ṇe,ṇo,ṇ,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;那,那∫,匿,匿∫,耨,耨∫,涅∫,若∫,|,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ha,hā,hi,hī,hu,hū,he,ho,h,aṁ,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;哈,哈∫,希,希∫,胡,胡∫,嘿∫,厚∫,盎, ,NO_CHANGE@&quot;
+idx = idx +1
+&apos;get rid of quotes
+arstrRoman(idx) =&quot;‘‘,’’,a,ā,e,i,ī,o,u,ū,NO_CHANGE@&quot;
+arstrChinese(idx)=  &quot;,,阿,阿∫,E,伊∫,伍,伍∫,伊∫,呕∫,NO_CHANGE@&quot;
+
+GetChineseFonts = idx
+end sub
+
+
+
+
+
+&apos; this function passes two arrays
+&apos; It will fill up the arrays and return the size too.
+sub GetSinhalaFonts1(arstrRoman() as String,arstrSinhala() as String) as integer
+Dim idx as Integer
+
+idx =0
+arstrRoman(idx) =&quot;ḿba,ḿbā,ḿbæ,ḿbǣ,ḿbi,ḿbī,ḿbu,ḿbū,ḿbe,ḿbē,ḿbo,ḿbō,ḿbĭ,ḿb,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ඹ,ඹා,ඹැ,ඹෑ,ඹී,ඹි,ඹු,ඹූ‍‍‍‍,ඹෙ,ඹේ,ඹො,ඹෝ,ඹෛ,ඹ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;kyaṁ,khyaṁ,gyaṁ,ghyaṁ,cyaṁ,chyaṁ,jyaṁ,jhyaṁ,ṭyaṁ,ṭhyaṁ,ḍyaṁ,ḍhyaṁ,ṇyaṁ,tyaṁ,thyaṁ,dyaṁ,dhyaṁ,nyaṁ,pyaṁ,phyaṁ,byaṁ,bhyaṁ,myaṁ,lyaṁ,vyaṁ,syaṁ,shyaṁ,śyaṁ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ක්‍යං,ඛ්‍යං,ග්‍යං,ඝ්‍යං,ච්‍යං,ඡ්‍යං,ජ්‍යං,ඣ්‍යං,ට්‍යං,ඨ්‍යං,ඩ්‍යං,ඪ්‍යං,ණ්යං,ත්‍යං,ථ්‍යං,ද්‍යං,ධ්‍යං,න්‍යං,ප්‍යං,ඵ්‍යං,බ්‍යං,භ්‍යං,ම්‍යං,ල්‍යං,ව්‍යං,ස්‍යං,ෂ්‍යං,ශ්‍යං,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;kaṁ,khaṁ,gaṁ,ghaṁ,caṁ,chaṁ,jaṁ,jhaṁ,ñaṁ,ṭaṁ,ṭhaṁ,taṁ,thaṁ,NO_CHANGE@&quot;
+arstrSinhala(idx)=  &quot;කං,ඛං,ගං,ඝං,චං,ඡං,ජං,ඣං,ඤං,ටං,ඨං,තං,ථං,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ḍaṁ,ḍhaṁ,daṁ,dhaṁ,naṁ,ṇaṁ,paṁ,phaṁ,baṁ,bhaṁ,maṁ,yaṁ,raṁ,laṁ,vaṁ,saṁ,ḷaṁ,haṁ,NO_CHANGE@&quot;
+arstrSinhala(idx)=  &quot;ඩං,ඪං,දං,ධං,නං,ණං,පං,ඵං,බං,භං,මං,යං,රං,ලං,වං,සං,ළං,හං,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;siṁ,tiṁ,tuṁ,ṭiṁ,ṭum,khiṁ,khuṁ,kiṁ,kuṁ,NO_CHANGE@&quot;
+arstrSinhala(idx)=  &quot;සිං,තිං,තුං,ථිං,ථුං,ඛිං,ඛුං,කිං,කුං,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;kaṁ,khaṁ,gaṁ,ghaṁ,caṁ,chaṁ,jaṁ,jhaṁ,ñaṁ,ṭaṁ,ṭhaṁ,ḍaṁ,ḍhaṁ,ṇaṁ,taṁ,thaṁ,daṁ,dhaṁ,naṁ,paṁ,phaṁ,baṁ,bhaṁ,maṁ,yaṁ,raṁ,laṁ,waṁ,śaṁ,.saṁ,saṁ,haṁ,ḷaṁ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;කං,ඛං,ගං,ඝං,චං,ඡං,ජං,ඣං,ඤං,ටං,ඨං,ඩං,ඪං,ණං,තං,ථං,දං,ධං,නං,පං,ඵං,බං,භං,මං,යං,රං,ලං,වං,ශං,ෂං,සං,හං,ළං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;kiṁ,khiṁ,giṁ,ghiṁ,ciṁ,chiṁ,jiṁ,jhiṁ,ñiṁ,ṭiṁ,ṭhiṁ,ḍiṁ,ḍhiṁ,ṇiṁ,tiṁ,thiṁ,diṁ,dhiṁ,niṁ,piṁ,phiṁ,biṁ,bhiṁ,miṁ,yiṁ,riṁ,liṁ,wiṁ,şim,śiṁ,siṁ,hiṁ,ḷiṁ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;කිං,ඛිං,ගිං,ඝිං,චිං,ඡිං,ජිං,ඣිං,ඤිං,ටිං,ඨිං,ඩිං,ඪිං,ණිං,තිං,ථිං,දිං,ධිං,නිං,පිං,ඵිං,බිං,භිං,මිං,යිං,රිං,ලිං,විං,ශිං,ෂිං,සිං,හිං,ළිං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;kuṁ,khuṁ,guṁ,ghuṁ,cuṁ,chuṁ,juṁ,jhuṁ,ñuṁ,ṭuṁ,ṭhuṁ,ḍuṁ,ḍhuṁ,ṇuṁ,tuṁ,thuṁ,duṁ,dhuṁ,nuṁ,puṁ,phuṁ,buṁ,bhuṁ,muṁ,yuṁ,ruṁ,luṁ,wuṁ,śuṁ,şuṁ,suṁ,huṁ,ḷuṁ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;කුං,ඛුං,ගුං,ඝුං,චුං,ඡුං,ජුං,ඣුං,ඤුං,ටුං,ඨුං,ඩුං,ඪුං,ණුං,තුං,ථුං,දුං,ධුං,නුං,පුං,ඵුං,බුං,භුං,මුං,යුං,රුං,ලුං,වුං,ශුං,ෂුං,සුං,හුං,ළුං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;koṁ,khoṁ,goṁ,ghoṁ,ṇoṁ,coṁ,choṁ,joṁ,jhoṁ,ñoṁ,ṭoṁ,ṭhoṁ,ḍoṁ,ḍhoṁ,ṇoṁ,toṁ,thoṁ,doṁ,dhoṁ,noṁ,poṁ,phoṁ,boṁ,bhoṁ,moṁ,yoṁ,roṁ,loṁ,woṁ,śoṁ,soṁ,hoṁ,ḷoṁ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;කොං,ඛොං,ගොං,ඝොං,චොං,ඡොං,ජොං,ඣොං,ඤොං,ටොං,ඨොං,‍ඩොං,ඪොං,ණොං,තොං,ථොං,දොං,ධොං,නොං,පොං,ඵොං,බොං,භොං,මොං,‍යොං,රොං,ලොං,වොං,ශොං,ෂොං,සොං,හොං,ළොං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;keṁ,kheṁ,geṁ,gheṁ,ṇeṁ,ceṁ,cheṁ,jeṁ,jheṁ,ñeṁ,ṭeṁ,ṭheṁ,ḍeṁ,ḍheṁ,ṇeṁ,teṁ,theṁ,deṁ,dheṁ,neṁ,peṁ,pheṁ,beṁ,bheṁ,meṁ,yeṁ,reṁ,leṁ,weṁ,śeṁ,seṁ,heṁ,ḷeṁ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;කෙං,ඛෙං,ගෙං,ඝෙං,චෙං,ඡෙං,ජෙං,ඣෙං,ඤෙං,ටෙං,ඨෙං,‍ඩෙං,ඪෙං,ණෙං,තෙං,ථෙං,දෙං,ධෙං,නෙං,පෙං,ඵෙං,බෙං,භෙං,මෙං,‍යෙං,රෙං,ලෙං,වෙං,ශෙං,ෂෙං,සෙං,හෙං,ළෙං,DinaminaUniweb@&quot;
+idx = idx +1
+
+&apos;added on july 9th 2015
+arstrRoman(idx) =&quot;kya,kyā,kyu,kyū,kye,kyē,kyo,kyō,kyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ක්‍ය,ක්‍යා,ක්‍යු,ක්‍යූ,ක්‍යෙ,ක්‍යේ,ක්‍යො,ක්‍යෝ,ක්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;khya,khyā,khyu,khyū,khye,khyo,khyō,khyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ඛ්‍ය,ඛ්‍යා,ඛ්‍යු,ඛ්‍යූ,ඛ්‍යෙ,ඛ්‍යො,‌ඛ්‍යෝ,ඛ්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;gya,gyā,gyu,gyū,gye,gyē,gyo,gyō,gyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ග්‍ය,ග්‍යා,ග්‍යු,ග්‍යූ,ග්‍යෙ,ග්‍යේ,ග්‍යො,ග්‍යෝ,ග්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;ghya,ghyā,ghyu,ghyū,ghye,ghyo,ghyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ඝ්‍ය,ඝ්‍යා,ඝ්‍යු,ඝ්‍යූ,ඝ්‍යෙ,ඝ්‍යො,ඝ්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;cya,cyā,cyu,cyū,cye,cyo,cyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ච්‍ය,ච්‍යා,ච්‍යු,ච්‍යූ,ච්‍යෙ,‌ච්‍යො,ච්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;chya,chyā,chyu,chyū,chye,chyo,chyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ඡ්‍ය,ඡ්‍යා,ඡ්‍යු,ඡ්‍යූ,ඡ්‍යෙ,ඡ්‍යො,ඡ්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;jya,jyā,jyu,jyū,jye,jyo,jyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ජ්‍ය,ජ්‍යා,ජ්‍යු,ජ්‍යූ,‌ජ්‍යෙ,ජ්‍යො,ජ්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;jhya,jhyā,jhyu,jhyū,jhye,jhyo,jhyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ඣ්‍ය,ඣ්‍යා,ඣ්‍යු,ඣ්‍යූ,‌ඣ්‍යෙ,ඣ්‍යො,ඣ්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;ṭya,ṭyā,ṭyu,ṭyū,ṭye,ṭyo,ṭyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ට්‍ය,ට්‍යා,ට්‍යු,ට්‍යූ,ට්‍යෙ,ට්‍යො,ට්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;ṭhya,ṭhyā,ṭhyu,ṭhyū,ṭhye,ṭhyo,ṭhyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ඨ්‍ය,ඨ්‍යා,ඨ්‍යු,ඨ්‍යූ,ඨ්‍යෙ,ඨ්‍යො,ඨ්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;ḍya,ḍyā,ḍyu,ḍyū,ḍye,ḍyē,ḍyo,ḍyō,ḍyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ඩ්‍ය,ඩ්‍යා,ඩ්‍යු,ඩ්‍යූ,ඩ්‍යෙ,ඩ්‍යේ,ඩ්‍යො,ඩ්‍යෝ,ඩ්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;ḍhya,ḍhyā,ḍhyu,ḍhyū,ḍhye,ḍhyē,ḍhyo,ḍhyō,ḍhyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ඪ්‍ය,ඪ්‍යා,ඪ්‍යු,ඩ්‍යූ,ඪ්‍යෙ,ඪ්‍යේ,ඪ්‍යො,ඪ්‍යෝ,ඪ්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;ṇya,ṇyā,ṇyu,ṇyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ණ්‍ය,ණ්‍යා,ණ්‍යු,ණ්‌යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;tya,tyā,tyu,tyū,tye,tyē,tyo,tyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ත්‍ය,ත්‍යා,ත්‍යු,ත්‍යූ,ත්‍යෙ,ත්‍යේ,ත්‍යො,ත්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;thya,thyā,thyu,thyū,thye,thyē,thyo,thyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ථ්‍ය,ථ්‍යා,ථ්‍යු,ථ්‍යූ,ථ්‍යෙ,ථ්‍යේ,ථ්‍යො,ථ්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;nya,nyā,nyu,nyo,nyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;න්‍ය,න්‍යා,න්‍යු,න්‍යො,න්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;dya,dyā,dyu,dyū,dye,dyē,dyo,dyō,dyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ද්‍ය,ද්‍යා,ද්‍යු,ද්‍යූ,ද්‍යෙ,ද්‍යේ,ද්‍යො,ද්‍යෝ,ද්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;dhya,dhyā,dhyu,dhyū,dhye,dhyē,dhyo,dhyō,dhyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ධ්‍ය,ධ්‍යා,ධ්‍යු,ධ්‍යූ,ධ්‍යෙ,ධ්‍යේ,ධ්‍යො,ධ්‍යෝ,ධ්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;pya,pyā,pyu,pyū,pye,pyē,pyo,pyō,pyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ප්‍ය,ප්‍යා,ප්‍යු,ප්‍යූ,ප්‍යෙ,ප්‍යේ,ප්‍යො,ප්‍යෝ,ප්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;phya,phyā,phyu,phyū,phye,phyē,phyo,phyō,phyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ඵ්‍ය,ඵ්‍යා,ඵ්‍යු,ඵ්‍යූ,ඵ්‍යෙ,ඵ්‍යේ,ඵ්‍යො,ඵ්‍යෝ,ඵ්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;bya,byā,byu,byū,byo,byaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;බ්‍ය,බ්‍යා,බ්‍යු,බ්‍යූ,බ්‍යො,බ්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;bhya,bhyā,bhyu,bhyū,bhyo,bhyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;භ්‍ය,භ්‍යා,භ්‍යු,භ්‍යූ,භ්‍යො,භ්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;mya,myā,myu,myū,mye,myo,myaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ම්‍ය,ම්‍යා,ම්‍යු,ම්‍යූ,ම්‍යෙ,ම්‍යො,ම්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;rya,ryā,ryu,ryū,rye,ryē,ryo,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ර්‍ය,ර්‍යා ,ර්යු,ර්යූ,ර්‍යෙ,ර්යේ,ර්‍යො,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;lya,lyā,lyu,lyū,lye,lyē,lyo,lyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ල්‍ය,ල්‍යා,ල්‍යු,ල්‍යූ,ල්‍යෙ,ල්‍යෙ,ල්‍යො,ල්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;vya,vyā,vyu,vyū,vye,vyo,vyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ව්‍ය,ව්‍යා,ව්‍යු,ව්‍යූ,ව්‍යෙ,ව්‍යො,ව්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;sya,syā,syu,syū,sye,syē,syo,syō,syaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ස්‍ය,ස්‍යා,ස්‍යු,ස්‍යූ,ස්‍යෙ,ස්‍යේ,ස්‍යො,ස්‍යෝ,ස්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;śya,śyā,śyu,śyū,śye,śyē,śyo,śyō,śyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ශ්‍ය,ශ්‍යා,ශ්‍යු,ශ්‍යූ,ශ්‍යෙ,ශ්‍යේ,ශ්‍යො,ශ්‍යෝ,ශ්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx)=&quot;shya,shyā,shyu,shyū,shye,shyē,shyo,shyō,shyaṃ,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ෂ්‍ය,ෂ්‍යා,ෂ්‍යු,ෂ්‍යූ,ෂ්‍යෙ,ෂ්‍යේ ,ෂ්‍යො,ෂ්‍යෝ,ෂ්‍යං,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;śra,śrā,śri,śrī,śru,śrū,śre,śrē,śro,śrō,NO_CHANGE@&quot;
+arstrSinhala(idx) =  &quot;ශ්‍ර,ශ්‍රා,ශ්‍රි,ශ්‍රී,ශ්‍රැ,ශ්‍රෑ,ශ්‍රෙ,ශ්‍රේ,ශ්‍රො,ශ්‍රෝ,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;kra,krā,kri,krī,kru,krū,kre,krē,kro,krō,krĭ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ක්‍ර,ක්‍රා,ක්‍රි,ක්‍රී,ක්‍රැ,ක්‍රෑ,ක්‍රෙ,ක්‍රේ,ක්‍රො,ක්‍රෝ,ක්‍රෛ,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;gra,grā,gri,grī,gru,grū,gre,grē,gro,grō,grĭ,NO_CHANGE@&quot;
+arstrSinhala(idx)=  &quot;ග්‍ර,ග්‍රා,ග්‍රි,ග්‍රී,ග්‍රැ,ග්‍රෑ,ග්‍රෙ,ග්‍රේ,ග්‍රො,ග්‍රෝ,ග්‍රෛ,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;cra,crā,cri,crī,cru,crū,cre,crē,cro,crō,crĭ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ච්‍ර,ච්‍රා,ච්‍රි,ච්‍රී,ච්‍රැ,ච්‍රෑ,ච්‍රෙ,ච්‍රේ,ච්‍රො,ච්‍රෝ,ච්‍රෛ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;jra,jrā,jri,jrī,jru,jrū,jre,jrē,jro,jrō,jrĭ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ජ්‍ර,ජ්‍රා,ජ්‍රි,ජ්‍රී,ජ්‍රැ,ජ්‍රෑ,ජ්‍රෙ,ජ්‍රේ,ජ්‍රො,ජ්‍රෝ,ජ්‍රෛ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;yra,yrā,yru,yrū,yre,yrē,yro,yrō,yrĭ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ය්‍ර,ය්‍රා,ය්‍රැ,ය්‍රෑ,ය්‍රෙ,ය්‍රේ,ය්‍රො,ය්‍රෝ,ය්‍රෛ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;tra,trā,tri,trī,tru,trū,tre,trē,tro,trō,trĭ,NO_CHANGE@&quot;
+arstrSinhala(idx) =&quot;ත්‍ර,ත්‍රා,ත්‍රි,ත්‍රී,ත්‍රැ,ත්‍රෑ,ත්‍රෙ,ත්‍රේ,ත්‍රො,ත්‍රෝ,ත්‍රෛ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ḍra,ḍrā,ḍri,ḍrī,ḍru,ḍrū,ḍre,ḍrē,ḍro,ḍrō,ḍrĭ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ඩ්‍ර,ඩ්‍රා,ඩ්‍රි,ඩ්‍රී,ඩ්‍රැ,ඩ්‍රෑ,ඩ්‍රෙ,ඩ්‍රේ,ඩ්‍රො,ඩ්‍රෝ,ඩ්‍රෛ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;dra,drā,dri,drī,dru,drū,dre,drē,dro,drō,drĭ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ද්‍ර,ද්‍රා,ද්‍රි,ද්‍රී,ද්‍රැ,ද්‍රෑ,ද්‍රෙ,ද්‍රේ,ද්‍රො,ද්‍රෝ,ද්‍රෛ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ṭra,ṭrā,ṭri,ṭrī,ṭru,ṭrū,ṭre,ṭrē,ṭro,ṭrō,ṭrĭ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ට්‍ර,‍ට්‍රා,ට්‍රි,ට්‍රී,ට්‍රැ,ට්‍රෑ,ට්‍රෙ,ට්‍රේ,ට්‍රො,ට්‍රෝ,ට්‍රෛ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;nra,nrā,nru,nrū,nre,nrē,nro,nrō,nrĭ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;න්‍ර,න්‍රා,න්‍රැ,න්‍රෑ,න්‍රෙ,න්‍රේ,න්‍රො,න්‍රෝ,න්‍රෛ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;sra,srā,sri,srī,sru,srū,sre,srē,sro,srō,srĭ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ස්‍ර,ස්‍රා,ස්‍රි,ස්‍රී,ස්‍රැ,ස්‍රෑ,ස්‍රෙ,ස්‍රේ,ස්‍රො,ස්‍රෝ,ස්‍රෛ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;pra,prā,pri,prī,pru,prū,pre,prē,pro,prō,prĭ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ප්‍ර,ප්‍රා,ප්‍රි,ප්‍රී,‍‍ප්‍රැ,ප්‍රෑ,ප්‍රෙ,‍ප්‍රේ,‍‍ප්‍රො,ප්‍රෝ,ප්‍රෛ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;bra,brā,bri,brī,bru,brū,bre,brē,bro,brō,brĭ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;බ්‍ර,බ්‍රා,බ්‍රි,බ්‍රී,බ්‍රැ,බ්‍රෑ,බ්‍රෙ,බ්‍රේ,බ්‍රො,බ්‍රෝ,බ්‍රෛ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;mra,mrā,mri,mrī,mru,mrū,mre,mrē,mro,mrō,mrĭ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ම්‍ර,ම්‍රා,ම්‍රි,ම්‍රී,ම්‍රැ,ම්‍රෑ,ම්‍රෙ,ම්‍රේ,ම්‍රො,ම්‍රෝ,ම්‍රෛ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;vra,vrā,vri,vrī,vru,vrū,vre,vrē,vro,vrō,vrĭ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ව්‍ර,ව්‍රා,ව්‍රි,ව්‍රී,ව්‍රැ,ව්‍රෑ,ව්‍රෙ,ව්‍රේ,ව්‍රො,ව්‍රෝ,ව්‍රෛ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;fra,frā,fri,frī,fru,frū,fre,frē,fro,frō,frĭ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ෆ්‍ර,‍ෆ්‍රා,ෆ්‍රි,ෆ්‍රී,ෆ්‍රැ,ෆ්‍රෑ,ෆ්‍රෙ,ෆ්‍රේ,ෆ්‍රො,‍ෆ්‍රෝ,ෆ්‍රෛ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;śa,śā,śæ,śǣ,śi,śī,śu,śū,śe,śē,śo,śō,śĭ,ś,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ශ,ශා,ශැ,ශෑ,ශි,ශී,ශු,ශූ,ශෙ,ශේ,ශො,ශෝ,ශෛ,ශ්,DinaminaUniweb@&quot;  
+idx = idx +1
+arstrRoman(idx) =&quot;şa,şā,şæ,şǣ,şi,şī,şu,şū,şe,şē,şo,şō,ş,NO_CHANGE@&quot;
+arstrSinhala(idx) =  &quot;ෂ,ෂා,ෂැ,ෂෑ,ෂි,ෂී,ෂු,ෂූ,ෂෙ,ෂේ,ෂො,ෂෝ,ෂ්, DinaminaUniweb@&quot;
+idx = idx +1
+&apos;Above section was added above Sept 10th
+
+arstrRoman(idx) = &quot;ṁ,kha,khā,khæ,khǣ,khi,khī,khu,khū,khe,khē,kho,khō,khĭ,kh,NO_CHANGE@&quot;
+arstrSinhala(idx)=  &quot;ං,ඛ,ඛා,ඛැ,ඛෑ,ඛි,ඛී,ඛු,ඛූ,ඛෙ,ඛේ,ඛො,ඛෝ,ඛෛ,ඛ්,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;cha,chā,chæ,chǣ,chi,chī,chu,chū,che,chē,cho,chō,chĭ,ch,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ඡ,ඡා,ඡැ,ඡෑ,ඡි,ඡී,ඡු,ඡූ,ඡෙ,ඡේ,ඡො,ඡෝ,ඡෛ,ඡ්,DinaminaUniWeb@&quot;
+idx = idx +1
+
+arstrRoman(idx) = &quot;jha,jhā,jhæ,jhǣ,jhi,jhī,jhu,jhū,jhe,jhē,jho,jhō,jhĭ,jh,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ඣ,ඣා,ඣැ,ඣෑ,ඣි,ඣී,ඣු,ඣූ,ඣෙ,ඣේ,ඣො,ඣෝ,ඣෛ,ඣ්,DinaminaUniWeb@&quot;
+idx = idx +1
+
+arstrRoman(idx) =&quot;gha,ghā,ghæ,ghǣ,ghi,ghī,ghu,ghū,ghe,ghē,gho,ghō,ghĭ,gh,NO_CHANGE@&quot;
+arstrSinhala(idx)=  &quot;ඝ,ඝා,ඝැ,ඝෑ,ඝි,ඝී,ඝු,ඝූ,ඝෙ,ඝේ,ඝො,ඝෝ,ඝෛ,ඝ්,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;tha,thā,thæ,thǣ,thi,thī,thu,thū,the,thē,tho,thō,thĭ,th,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ථ,ථා,ථැ,ථෑ,ථි,ථී,ථු,ථූ,ථෙ,ථේ,ථො,ථෝ,ටෛ,ථ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ṭha,ṭhā,ṭhæ,ṭhǣ,ṭhi,ṭhī,ṭhu,ṭhū,ṭhe,ṭhē,ṭho,ṭhō,ṭhĭ,ṭh,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ඨ,ඨා,ඨැ,ඨෑ,ඨි,ඨී,ඨු,ඨූ,ඨෙ,ඨේ,ඨො,ඨෝ,ඨෛ,ඨ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ḍha,ḍhā,ḍhæ,ḍhǣ,ḍhi,ḍhī,ḍhu,ḍhū,ḍhe,ḍhē,ḍho,ḍhō,ḍhĭ,ḍh,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ඪ,ඪා,ඪැ,ඪෑ,ඪි,ඪී,ඪු,ඪූ,ඪෙ,ඪේ,ඪො,ඪෝ,ඪෛ,ඪ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;dha,dhā,dhæ,dhǣ,dhi,dhī,dhu,dhū,dhe,dhē,dho,dhō,dhĭ,dh,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ධ,ධා,ධැ,ධෑ,ධි,ධී,ධු,ධූ,ධෙ,ධේ,ධො,‍ධෝ,ධෛ,ධ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;pha,phā,phæ,phǣ,phi,phī,phu,phū,phe,phē,pho,phō,phĭ,ph,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ඵ,ඵා,ඵැ,ඵෑ,ඵි,ඵී,ඵු,ඵූ,ඵෙ,ඵේ,ඵො,ඵෝ,‍ඵෛ,ඵ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;bha,bhā,bhæ,bhǣ,bhi,bhī,bhu,bhū,bhe,bhē,bho,bhō,bhĭ,bh,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;භ,භා,භැ,භෑ,භි,භී,භු,භූ,භෙ,භේ,භො,භෝ,භෛ,භ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ṉda,ṉdā,ṉdæ,ṉdǣ,ṉdi,ṉdī,ṉdu,ṉdū,ṉde,ṉdē,ṉdo,ṉdō,ṉd,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ඳ,ඳා,ඳැ,ඳෑ,ඳි,ඳී,ඳු,ඳූ,ඳෙ,ඳේ,ඳො,ඳෝ,ඳ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ṉḍa,ṉḍā,ṉḍæ,ṉḍǣ,ṉḍi,ṉḍī,ṉḍu,ṉḍū,ṉḍe,ṉḍo,ṉḍ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ඬ,ඬා,ඬැ,ඬෑ,ඬි,ඬී,ඬු,ඬූ,ඬෙ,ඬො,ඬ්,DinaminaUniWeb@&quot; 
+idx = idx +1
+arstrRoman(idx) =&quot;ṉga,ṉgā,ṉgæ,ṉgǣ,ṉgi,ṉgī,ṉgu,ṉgū,ṉge,ṉgē,ṉgo,ṉgō,ṉg,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ඟ,ඟා,ඟැ,ඟෑ,ඟි,ඟී,ඟු,ගූ,ඟෙ,ඟේ,ඟො,ඟෝ,ඟ්,DinaminaUniWeb@&quot; 
+idx= idx +1
+arstrRoman(idx) = &quot;ka,kā,kæ,kǣ,ki,kī,ku,kū,ke,kē,ko,kō,kĭ,k,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ක,කා,කැ,කෑ,කි,කී,කු,කූ,කෙ,කේ,කො,කෝ,කෛ,ක්,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ga,gā,gæ,gǣ,gi,gī,gu,gū,ge,gē,go,gō,gĭ,g,NO_CHANGE@&quot;
+arstrSinhala(idx)=&quot;ග,ගා,ගැ,ගෑ,ගි,ගී,ගු,ගූ,ගෙ,ගේ,ගො,ගෝ,ගෛ,ග්,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ha,hā,hæ,hǣ,hi,hī,hu,hū,he,hē,ho,hō,hĭ,h,NO_CHANGE@&quot;
+arstrSinhala(idx)= &quot;හ,හා,හැ,හෑ,හි,හී,හු,හූ,හෙ,හේ,හො,හෝ,හෛ,හ්,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ca,cā,cæ,cǣ,ci,cī,cu,cū,ce,cē,co,cō,cĭ,c,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ච,චා,චැ,චෑ,චි,චී,චු,චූ,චෙ,චේ,චො,චෝ,චෛ,ච්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ja,jā,jæ,jǣ,ji,jī,ju,jū,je,jē,jo,jō,jĭ,j,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ජ,ජා,ජැ,ජෑ,ජි,ජී,ජු,ජූ,ජෙ,ජේ,ජො,ජෝ,ජෛ,ජ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ña,ñā,ñæ,ñǣ,ñi,ñī,ñu,ñū,ñe,ñē,ño,ñō,ñĭ,ñ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ඤ,ඤා,ඤැ,ඤෑ,ඤි,ඤී,ඤු,ඤූ,ඤෙ,ඤේ,ඤො,ඤෝ,ඤෛ,ඤ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ya,yā,yæ,yǣ,yi,yī,yu,yū,ye,yē,yo,yō,yĭ,y,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ය,යා,යැ,යෑ,යි,යී,යු,යූ,යෙ,යේ,යො,යෝ,යෛ,ය්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ta,tā,tæ,tǣ,ti,tī,tu,tū,te,tē,to,tō,tĭ,t,NO_CHANGE@&quot;
+arstrSinhala(idx) =&quot;ත,තා,තැ,තෑ,ති,තී,තු,තූ,තෙ,තේ,තො,තෝ,තෛ,ත්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ḍa,ḍā,ḍæ,ḍǣ,ḍi,ḍī,ḍu,ḍū,ḍe,ḍē,ḍo,ḍō,ḍĭ,ḍ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ඩ,ඩා,ඩැ,ඩෑ,ඩි,ඩී,ඩු,ඩූ,ඩෙ,ඩේ,ඩො,ඩෝ,ඩෛ,ඩ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;da,dā,dæ,dǣ,di,dī,du,dū,de,dē,do,dō,dĭ,d,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ද,දා,දැ,දෑ,දි,දී,දු,දූ,දෙ,දේ,දො,දෝ,දෛ,ද්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ṭa,ṭā,ṭæ,ṭǣ,ṭi,ṭī,ṭu,ṭū,ṭe,ṭē,ṭo,ṭō,ṭĭ,ṭ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ට,ටා,ටැ,ටෑ,ටි,ටී,ටු,ටූ,ටෙ,ටේ,ටො,ටෝ,ටෛ,ට්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;la,lā,læ,lǣ,li,lī,lu,lū,le,lē,lo,lō,lĭ,l,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ල,ලා,ලැ,ලෑ,ලි,ලී,ලු,ලූ,ලෙ,ලේ,ලො,ලෝ,ලෛ,ල්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;na,nā,næ,næe,ni,nī,nu,nū,ne,nē,no,nō,nĭ,n,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;න,නා,නැ,නෑ,නි,නී,නු,නූ,නෙ,‍නේ,නො,නෝ,නෛ,න්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ḷa,ḷā,ḷæ,ḷǣ,ḷi,ḷī,ḷu,ḷū,ḷe,ḷē,ḷo,ḷō,ḷĭ,ḷ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ළ,ළා,ළැ,ළෑ,ළි,ළී,ළු,ළූ,ළෙ,ළේ,‍ළො,ළෝ,ළෛ,ළ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;sa,sā,sæ,sǣ,si,sī,su,sū,se,sē,so,sō,sĭ,s,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ස,සා,සැ,සෑ,සි,සී,සු,සූ,සෙ,සේ,සො,සෝ,සෛ,ස්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;pra,pa,pā,pæ,pǣ,pi,pī,pu,pū,pe,pē,po,pō,pĭ,p,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ප්‍ර,ප,පා,පැ,පෑ,පි,පී,පු,පූ,පෙ,පේ,පො,පෝ,පෛ,ප්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ba,bā,bæ,bæe,bi,bī,bu,bū,be,bē,bo,bō,bĭ,b,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;බ,බා,බැ,බෑ,බි,බී,බු,බූ,බෙ,බේ,බො,බෝ,බෛ,බ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ma,mā,mæ,mǣ,mi,mī,mu,mū,me,mē,mo,mō,mĭ,m,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ම,මා,මැ,මෑ,මි,මී,මු,මූ‍,මෙ,මේ,මො,මෝ,මෛ,ම්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;va,vā,væ,vǣ,vi,vī,vu,vū,ve,vē,vo,vō,vĭ,v,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ව,වා,වැ,වෑ,වි,වී,වු,වූ,වෙ,වේ,වො,වෝ,වෛ,ව්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ṇa,ṇā,ṇæ,ṇǣ,ṇi,ṇī,ṇu,ṇū,ṇe,ṇē,ṇo,ṇō,ṇĭ,ṇ,ṅ,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ණ,ණා,ණැ,ණෑ,ණි,ණී,ණු,ණූ,ණෙ,ණේ,ණො,ණෝ,ණෛ,ණ්,ඞ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;fa,fā,fæ,fǣ,fi,fī,fu,fū,fe,fē,fo,fō,fĭ,f,no_change@&quot;
+arstrSinhala(idx) = &quot;ෆ,‍ෆා,ෆැ,ෆෑ,ෆි,ෆී,ෆු,ෆූ,ෆෙ,ෆේ,ෆො,ෆෝ,ෆෛ,ෆ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ra,rā,ræ,rǣ,ri,rī,ru,rū,re,rē,ro,rō,rĭ,r,NO_CHANGE@&quot;
+arstrSinhala(idx) = &quot;ර,රා,,,රි,රී,රු,රූ,රෙ,රේ,රො,රෝ,රෛ,ර්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;a,ā,æ,ǣ,i,ī,u,ū,e,ē,o,ō,NO_CHANGE@&quot;
+arstrSinhala(idx) =&quot;අ,ආ,ඇ,ඈ,ඉ,ඊ,උ,ඌ,එ,ඒ,ඔ,ඕ,DinaminaUniWeb@&quot;
+
+GetSinhalaFonts1 = idx
+
+end Sub
+
+
+&apos; this function passes two arrays
+&apos; It will fill up the arrays and return the size too.
+sub GetThaiFonts(arstrRoman() as String,arstrThai() as String) as integer
+Dim idx as Integer
+
+idx =0
+
+arstrRoman(idx) = &quot;ñca,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;ฐ,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;kaṁ,khaṁ,gaṁ,ghaṁ,caṁ,chaṁ,jaṁ,jhaṁ,ñaṁ,ṭaṁ,ṭhaṁ,ḍaṁ,ḍhaṁ,ṇaṁ,taṁ,thaṁ,daṁ,dhaṁ,naṁ,paṁ,phaṁ,baṁ,bhaṁ,maṁ,yaṁ,raṁ,laṁ,waṁ,saṁ,haṁ,ḷaṁ,NO_CHANGE@&quot;
+arstrThai(idx)=  &quot;กํ,ขํ,คํ,ฆํ,จํ,ฉํ,ชํ,ฌํ,,ฏํ,%,ฑํ,ฒํ,ณํ,ตํ,ถํ,ทํ,ธํ,นํ,ปํ,ผํ,พํ,ภํ,มํ,ยํ,รํ,ลํ,วํ,สํ,หํ,ฟํ,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṃ,ṅ,kiṃ,khiṃ,tiṃ,diṃ,dhiṃ,niṃ,miṃ,yiṃ,viṃ,hiṃ,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;,งฺ,กึ,ขึ,ตึ,ทึ,ธึ,นึ,มึ,ยึ,วึ,หึ,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;khe,kho,khā,kha,khi,khī,khu,khū,kh,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เข,โข,ขา,ข,ขิ,ขี,ขุ,ขู,ขฺ,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ghe,gho,ghā,gha,ghi,ghī,ghu,ghū,gh,NO_CHANGE@&quot;
+arstrThai(idx)=  &quot;เฆ,โฆ,ฆา,ฆ,ฆิ,ฆี,ฆุ,ฆู,ฆฺ,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;che,cho,chā,cha,chi,chī,chu,chū,ch,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เฉ,โฉ,ฉา,ฉ,ฉิ,ฉี,ฉุ,ฉู,ฉฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;jhe,jho,jhā,jha,jhi,jhī,jhu,jhū,jh,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เฌ,โฌ,ฌา,ฌ,ฌิ,ฌี,ฌุ,ฌู,ฌฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;the,tho,thā,tha,thi,thī,thu,thū,th,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เถ,โถ,ถา,ถ,ถิ,ถี,ถุ,ถู,ถฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṭhe,ṭho,ṭhā,ṭha,ṭhi,ṭhī,ṭhu,ṭhū,ṭh,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;ඨෙ,ඨො,ඨා,,ඨි,ඨී,ඨු,ඨූ,ඨ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ḍhe,ḍho,ḍhā,ḍha,ḍhi,ḍhī,ḍhu,ḍhū,ḍh,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เฒ,โฒ,ฒา,ฒ,ฒิ,ฒี,ฒุ,ฒู,ฒฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;dhe,dho,dhā,dha,dhi,dhī,dhu,dhū,dh,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เธ,โธ,ธา,ธ,ธิ,ธี,ธุ,ธู,ธฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;phe,pho,phā,pha,phi,phī,phu,phū,ph,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เผ,โผ,ผา,ผ,ผิ,ผี,ผุ,ผู,ผฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;bhe,bho,bhā,bha,bhi,bhī,bhu,bhū,bh,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เภ,โภ,ภา,ภ,ภิ,ภี,ภุ,ภู,ภฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ke,ko,kā,ka,ki,kī,ku,kū,k,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เก,โก,กา,ก,กิ,กี,กุ,กู,กฺ,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ge,go,gā,ga,gi,gī,gu,gū,g,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เค,โค,คา,ค,คิ,คี,คุ,คู,คฺ,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;he,ho,hā,ha,hi,hī,hu,hū,h,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เห,โห,หา,ห,หิ,หี,หุ,หู,หฺ,DinaminaUniweb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ce,co,cā,ca,ci,cī,cu,cū,c,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เจ,โจ,จา,จ,จิ,จี,จุ,จู,จฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;je,jo,jā,ja,ji,jī,ju,jū,j,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เช,โช,ชา,ช,ชิ,ชี,ชุ,ชู,ชฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ñe,ño,ñā,ña,ñi,ñī,ñu,ñū,ñ,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;ඤෙ,ඤො,ඤා,,ඤි,ඤී,ඤු,ඤූ,ඤ්,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ye,yo,yā,ya,yi,yī,yu,yū,y,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เย,โย,ยา,ย,ยิ,ยี,ยุ,ยู,ยฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;te,to,tā,ta,ti,tī,tu,tū,t,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เต,โต,ตา,ต,ติ,ตี,ตุ,ตู,ตฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ḍe,ḍo,ḍā,ḍa,ḍi,ḍī,ḍu,ḍū,ḍ,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เฑ,โฑ,ฑา,ฑ,ฑิ,ฑี,ฑุ,ฑู,ฑฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;de,do,dā,da,di,dī,du,dū,d,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เท,โท,ทา,ท,ทิ,ที,ทุ,ทู,ทฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṭe,ṭo,ṭā,ṭa,ṭi,ṭī,ṭu,ṭū,ṭ,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;ටෙ,ටො,ටා,ฏ,ฏิ,ฏี,ටු,ටූ,ฏฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;le,lo,lā,la,li,lī,lu,lū,l,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เล,โล,ลา,ล,ลิ,ลี,ลุ,ลู,ลฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ne,no,nā,na,ni,nī,nu,nū,n,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เน,โน,นา,น,นิ,นี,นุ,นู,นฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ḷe,ḷo,ḷā,ḷa,ḷi,ḷī,ḷu,ḷū,ḷ,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เฬ,โฬ,ฬา,ฬ,ฬิ,ฬี,ฬุ,ฬู,ฬฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;se,so,sā,sa,si,sī,su,sū,s,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เส,โส,สา,ส,สิ,สี,สุ,สู,สฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;pe,po,pā,pa,pi,pī,pu,pū,p,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เป,โป,ปา,ป,ปิ,ปี,ปุ,ปู,ปฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;be,bo,bā,ba,bi,bī,bu,bū,b,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เพ,โพ,พา,พ,พิ,พี,พุ,พู,พฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;me,mo,mā,ma,mi,mī,mu,mū,m,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เม,โม,มา,ม,มิ,มี,มุ,มู,มฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ve,vo,vā,va,vi,vī,vu,vū,v,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เว,โว,วา,ว,วิ,วี,วุ,วู,วฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṇe,ṇo,ṇā,ṇa,ṇi,ṇī,ṇu,ṇū,ṇ,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เณ,โณ,ณา,ณ,ณิ,ณี,ณุ,ณู,ณฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;re,ro,rā,ra,ri,rī,ru,rū,r,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เร,โร,รา,ร,ริ,รี,รุ,รู,รฺ,DinaminaUniWeb@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;e,o,ā,a,i,ī,u,ū,NO_CHANGE@&quot;
+arstrThai(idx)  = &quot;เอ,โอ,อา,อ,อิ,อี,อุ,อู,DinaminaUniWeb@&quot;
+GetThaiFonts = idx
+
+end Sub
+  
+
+sub GetMyanmarFonts(arstrRoman() as String,arstrMyanmar() as String) as integer
+Dim idx as Integer
+&apos;added the myanmar fonts January 5
+&apos;need to add double characters and single characters with c on top (last letter in each list is wrong)
+&apos;need to add h and y formations and other consonants
+&apos;Jan 11, 2015 added ṅgho combos and reversed the order of e and o (o now is ahead)
+&apos;      add these above combos with the .m added.
+&apos;     OK  Need to do .n.d (da.nda) combinations nt combo (hontu)  tvaa (gahetva) combos  mba (Sambahula) combos.  Maybe finished after that?
+ &apos; Jan 12 added above combos but not double consonants with ending in .m
+&apos; fixed all double letters to have .m in the same line.
+&apos; *****all .m&apos;s endings so that it is with each letter group.  (BIG) better organized.
+
+
+
+&apos; ???  atiu.nhanti    p253 of singaalasuttam aalasyassa cha aadiinavaa
+&apos; avisaṃvaာdanatāya  fixed
+&apos;ggo go  Maybe add both?  Can&apos;t hurt?
+&apos;မစ္ဆဗန္ဓကေဝဋ္ဋော.  OK  .t.to  .
+
+
+&apos;  need to check the spelling for go and ge and gaa  ဧဝံဂောတ္တော  mn51
+
+
+idx =0	
+arstrRoman(idx) = &quot;bro,brū,bru,brā,bra,hmaṃ,hmiṃ,hmuṃ,hmo,hme,hmā,hma,hmi,hmī,hmu,hmū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေျဗာ,ျဗဴ,ျဗဳ,ျဗာ,ျဗ,ဟၼံ,ဟၼႎ,ဟၼဳံ,ေဟၼာ,ေဟၼ,ဟၼာ,ဟၼ,ဟၼိ,ဟၼီ,ဟၼဳ,ဟၼဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ntve,ntvā,ntva,yvā,yva,ndri,ndra,ndrā,nve,nvā,nva,nvi,myā,mya,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေႏ႖,ႏ႖ာ,ႏ႖,ယြာ,ယြ,ႁႏၵိ,ႁႏၵ,ႁႏၵာ,ေႏြ,ႏြာ,ႏြ,ႏြိ,မ်ာ,မ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ñcaṃ,ñciṃ,ñcuṃ,ñco,ñce,ñcā,ñca,ñci,ñcī,ñcu,ñcū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ၪၥံ,ၪၥႎ,ၪၥဳံ,ေၪၥာ,ေၪၥ,ၪၥာ,ၪၥ,ၪၥိ,ၪၥီ,ၪၥဳ,ၪၥဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ñchaṃ,ñchiṃ,ñchuṃ,ñcho,ñche,ñchā,ñcha,ñchi,ñchī,ñchu,ñchū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဉၧံ,ဉၧႎ,ဉၧဳံ,ေဉၧာ,ေဉၧ,ဉၧာ,ဉၧ,ဉၧိ,ဉၧီ,ဉၧဳ,ဉၧဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ñjaṃ,ñjiṃ,ñjuṃ,ñjo,ñje,ñjā,ñja,ñji,ñjī,ñju,ñjū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ၪၨံ,ၪၨႎ,ၪၨဳံ,ေၪၨာ,ေၪၨ,ၪၨာ,ၪၨ,ၪၨိ,ၪၨီ,ၪၨဳ,ၪၨဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ñhaṃ,ñhiṃ,ñhuṃ,ñho,ñhe,ñhā,ñha,ñhi,ñhī,ñhu,ñhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ၪႇံ,ၪႇႎ,ၪႇဳံ,ေၪႇာ,ေၪႇ,ၪႇာ,ၪႇ,ၪႇိ,ၪႇီ,ၪႇဳ,ၪႇဴ,Zawgyi-One@&quot;
+idx = idx +1
+&apos;added Jan 12th  
+arstrRoman(idx) = &quot;ṇḍhaṃ,ṇḍhiṃ,ṇḍhuṃ,ṇḍho,ṇḍhe,ṇḍhā,ṇḍha,ṇḍhi,ṇḍhī,ṇḍhu,ṇḍhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဏ္ဎံ,ဏ္ဎိံ,ဏ္ဎုံ,ဏ္ဎော,ဏ္ဎေ,ဏ္ဎာ,ဏ္ဎ,ဏ္ဎိ,ဏ္ဎီ,ဏ္ဎု,ဏ္ဎူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ndhaṃ,ndhiṃ,ndhuṃ,ndho,ndhe,ndhā,ndha,ndhi, ndhī,ndhu,ndhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ႏၶံ,ႏၶႎ,ႏၶဳံ,ေႏၶာ,ေႏၶ,ႏၶာ,ႏၶ,ႏၶိ, ႏၶီ,ႏၶဳ,ႏၶဴ, Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṇṭhaṃ,ṇṭhiṃ,ṇṭhuṃ,ṇṭho,ṇṭhe,ṇṭhā,ṇṭha,ṇṭhi,ṇṭhī,ṇṭhu,ṇṭhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဏၭံ,ဏၭႎ,ဏၭဳံ,ေဏၭာ,ေဏၭ,ဏၭာ,ဏၭ,ဏၭိ,ဏၭီ,ဏၭဳ,ဏၭဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;nthaṃ,nthiṃ,nthuṃ,ntho,nthe,nthā,ntha,nthi,nthī,nthu,nthū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ႏၴံ,ႏၴႎ,ႏၴဳံ,ေႏၴာ,ေႏၴ,ႏၴာ,ႏၴ,ႏၴိ,ႏၴီ,ႏၴဳ,ႏၴဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṇḍaṃ,ṇḍiṃ,ṇḍuṃ,ṇḍo,ṇḍe,ṇḍā,ṇḍa,ṇḍi,ṇḍī,ṇḍu,ṇḍū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;႑ံ,႑ႎ,႑ဳံ,ေ႑ာ,ေ႑,႑ာ,႑,႑ိ,႑ီ,႑ဳ,႑ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ndaṃ,ndiṃ,nduṃ,ndo,nde,ndā,nda,ndi,ndī,ndu,ndū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ႏၵံ,ႏၵႎ,ႏၵဳံ,ေႏၵာ,ေႏၵ,ႏၵာ,ႏၵ,ႏၵိ,ႏၵီ,ႏၵဳ,ႏၵဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṇṭaṃ,ṇṭiṃ,ṇṭuṃ,ṇṭo,ṇṭe,ṇṭā,ṇṭa,ṇṭi,ṇṭī,ṇṭu,ṇṭū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဏၬံ,ဏၬႎ,ဏၬဳံ,ေဏၬာ,ေဏၬ,ဏၬာ,ဏၬ,ဏၬိ,ဏၬီ,ဏၬဳ,ဏၬဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ntaṃ,ntiṃ,ntuṃ,nto,nte,ntā,nta,nti,ntī,ntu,ntū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ႏၲံ,ႏၲႎ,ႏၲဳံ,ေႏၲာ,ေႏၲ,ႏၲာ,ႏၲ,ႏၲိ,ႏၲီ,ႏၲဳ,ႏၲဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;mbaṃ,mbiṃ,mbuṃ,mbo,mbe,mba,mbi,mbī,mbu,mbū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;မၺံ,မၺႎ,မၺဳံ,ေမၺာ,ေမၺ,မၺ,မၺိ,မၺီ,မၺဳ,မၺဴ ူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;mbhaṃ,mbhiṃ,mbhuṃ,mbho,mbhe,mbhā,mbha,mbhi,mbhī,mbhu,mbhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;မ႓ံ,မ႓ႎ,မ႓ဳံ,ေမ႓ာ,ေမ႓,မ႓ာ,မ႓,မ႓ိ,မ႓ီ,မ႓ဳ,မ႓ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;mpaṃ,mpiṃ,mpuṃ,mpo,mpe,mpā,mpa,mpi,mpī,mpu,mpū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;မၸံ,မၸႎ,မၸဳံ,ေမၸာ,ေမၸ,မၸာ,မၸ,မၸိ,မၸီ,မၸဳ,မၸဴ,Zawgyi-One@&quot;
+idx = idx +1  &apos;no mho or .m combos
+arstrRoman(idx) = &quot;mhe,mhā,mha,mhi,mhī,mhu,mhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေမွ,မွာ,မွ,မွိ,မွီ,မွဳ,မွဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;traṃ,triṃ,truṃ,tro,tre,trā,tra,tri,trī,tru,trū,tvaṃ,tvā,tva,tve,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ၾတံ,ၾတႎ,ၾတဳံ,ေၾတာ,ေၾတ,ၾတာ,ၾတ,ၾတိ,ၾတီ,ၾတဳ,ၾတဴ,တြံ,တြာ,တြ,ေတြ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;dve,dvā,dva,dvi,dvī,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဒြ,ဒြါ,ဒြ,ဒြိ,ဒြီ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;khvi,khve,khvā,khva,kvhi,kvhe,kvhā,kvha,kvi,kve,kvā,kva,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ခြိ,ေခြ,ခြါ,ခြ,ခြိ,ေkvh,kvhာ,kvh,ကြိ,ေကြ,ကြာ,ကြ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;kyaṃ,kyiṃ,kyuṃ,kyo,kye,kyā,kya,kyi,kyī,kyu,kyū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot; က်ံ,က်ႎ,က်ဳံ,ေက်ာ,ေက်,က်ာ,က်,က်ိ,က်ီ,က်ဳ,က်ဴ,Zawgyi-One@&quot;
+idx = idx +1  
+arstrRoman(idx) = &quot;khyaṃ,khyiṃ,khyuṃ,khyo,khye,khyā,khya,khyi,khyī,khyu,khyū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot; ခ်ံ,ခ်ႎ,ခ်ဳံ,ေခ်ာ,ေခ်,ခ်ာ,ခ်,ခ်ိ,ခ်ီ,ခ်ဳ,ခ်ဴ,Zawgyi-One@&quot;
+idx = idx +1  &apos;  not many thya..only those listed below at the end of this line
+arstrRoman(idx) = &quot;tyaṃ,tyiṃ,tyuṃ,tyo,tye,tyā,tya,tyi,tyī,tyu,tyū,thya,thyā,thyeNO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;တ်ံ,တ်ႎ,တ်ဳံ,ေတ်ာ,ေတ်,တ်ာ,တ်,တ်ိ,တ်ီ,တ်ဳ,တ်ဴ,ထ်,ထ်ာ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṇhaṃ,ṇhiṃ,ṇhuṃ,ṇho,ṇhe,ṇhā,ṇha,ṇhi,ṇhī,ṇhu,ṇhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဏွံ,ဏွႎ,ဏွဳံ,ေဏွာ,ေဏွ,ဏွာ,ဏွ,ဏွိ,ဏွီ,ဏွဳ,ဏွဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;nhaṃ,nhiṃ,nhuṃ,nho,nhe,nhā,nha,nhi,nhī,nhu,nhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ႏွံ,ႏွႎ,ႏွဳံ,ေႏွာ,ေႏွ,ႏွာ,ႏွ,ႏွိ,ႏွီ,ႏွဳ,ႏွဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṅghaṃ,ṅghiṃ,ṅghuṃ,ṅgho,ṅghe,ṅghā,ṅgha,ṅghi,ṅghī,ṅghu,ṅghū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဃႍ,ဃႋ`ံ,ဃၤု`ံ,ေဃၤာ,ေဃၤ,ဃၤာ,ဃၤ,ဃႋ,ဃႌ,ဃၤု,ဃၤူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṅgaṃ,ṅgiṃ,ṅguṃ,ṅgo,ṅge,ṅgā,ṅga,ṅgi,ṅgī,ṅgu,ṅgū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဂႍ,ဂႋ`ံ,ဂၤု`ံ,ေဂၤါ,ေဂၤ,ဂၤါ,ဂၤ,ဂႋ,ဂႌ,ဂၤု,ဂၤူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṅkhaṃ,ṅkhiṃ,ṅkhuṃ,ṅkho,ṅkhe,ṅkhā,ṅkha,ṅkhi,ṅkhī,ṅkhu,ṅkhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ခႍ,ခႋ`ံ,ခၤု`ံ,ေခၤါ,ေခၤ,ခၤါ,ခၤ,ခႋ,ခႌ,ခၤု,ခၤူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṅkaṃ,ṅkiṃ,ṅkuṃ,ṅko,ṅke,ṅkā,ṅka,ṅki,ṅkī,ṅku,ṅkū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ကႍ,ကႋ`ံ,ကၤု`ံ,ေကၤာ,ေကၤ,ကၤာ,ကၤ,ကႋ,ကႌ,ကၤု,ကၤူ,Zawgyi-One@&quot;
+idx = idx +1
+&apos; the longer letter combo&apos;s  need to go first for replacement.
+arstrRoman(idx) = &quot;kkhaṃ,kkhiṃ,kkhuṃ,kkho,kkhe,kkhā,kkha,kkhi,kkhī,kkhu,kkhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ကၡံ,ကၡႎ,ကၡဳံ,ေကၡာ,ေကၡ,ကၡာ,ကၡ,ကၡိ,ကၡီ,ကၡဳ,ကၡဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;gghaṃ,gghiṃ,gghuṃ,gro,ggho,gghe,gghā,ggha,gghi,gghī,gghu,gghū,NO_CHANGE@&quot;
+arstrMyanmar(idx)=  &quot;ဂၣံ,ဂၣႎ,ဂၣဳံ,ေျဂာ,ေဂၣါ,ေဂၣ,ဂၣါ,ဂၣ,ဂၣိ,ဂၣီ,ဂၣဳ,ဂၣဴ ူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;cchaṃ,cchiṃ,cchuṃ,ccho,cche,cchā,ccha,cchi,cchī,cchu,cchū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;စၧံ,စၧႎ,စၧဳံ,ေစၧာ,ေစၧ,စၧာ,စၧ,စၧိ,စၧီ,စၧဳ,စၧဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;jjhaṃ,jjhiṃ,jjhuṃ,jjho,jjhe,jjhā,jjha,jjhi,jjhī,jjhu,jjhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဇၩံ,ဇၩႎ,ဇၩဳံ,ေဇၩာ,ေဇၩ,ဇၩာ,ဇၩ,ဇၩိ,ဇၩီ,ဇၩဳ,ဇၩဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;tthaṃ,tthiṃ,tthuṃ,ttho,tthe,tthā,ttha,tthi,tthī,tthu,tthū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;တၳံ,တၳႎ,တၳဳံ,ေတၳာ,ေတၳ,တၳာ,တၳ,တၳိ,တၳီ,တၳဳ,တၳဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṭṭhaṃ,ṭṭhiṃ,ṭṭhuṃ,ṭṭho,ṭṭhe,ṭṭhā,ṭṭha,ṭṭhi,ṭṭhī,ṭṭhu,ṭṭhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;႒ံ,႒ႎ,႒ဳံ,ေ႒ာ,ေ႒,႒ာ,႒,႒ိ,႒ီ,႒ဳ,႒ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ḍḍhaṃ,ḍḍhiṃ,ḍḍhuṃ,ḍḍho,ḍḍhe,ḍḍhā,ḍḍha,ḍḍhi,ḍḍhī,ḍḍhu,ḍḍhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ၯံ,ၯႎ,ၯုံ,ေၯာ,ေၯ,ၯာ,ၯ,ၯိ,ၯီ,ၯု,ၯူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ddhaṃ,ddhiṃ,ddhuṃ,ddho,ddhe,ddhā,ddha,ddhi,ddhī,ddhu,ddhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဒၶံ,ဒၶႎ,ဒၶဳံ,ေဒၶါ,ေဒၶ,ဒၶါ,ဒၶ,ဒၶိ,ဒၶီ,ဒၶဳ,ဒၶဴ ူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;pphaṃ,pphiṃ,pphuṃ,ppho,pphe,pphā,ppha,pphi,pphī,pphu,pphū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ပၹံ,ပၹႎ,ပၹဳံ,ေပၹါ,ေပၹ,ပၹါ,ပၹ,ပၹိ,ပၹီ,ပၹဳ,ပၹဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;bbhaṃ,bbhiṃ,bbhuṃ,bbho,bbhe,bbhā,bbha,bbhi,bbhī,bbhu,bbhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဗ႓ံ,ဗ႓ႎ,ဗ႓ဳံ,ေဗ႓ာ,ေဗ႓,ဗ႓ာ,ဗ႓,ဗ႓ိ,ဗ႓ီ,ဗ႓ဳ,ဗ႓ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;byaṃ,byiṃ,byuṃ,byo,bye,byā,bya,byi,byī,byu,byū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဗ်ံ,ဗ်ႎ,ဗ်ဳံ,ေဗ်ာ,ေဗ်,ဗ်ာ,ဗ်,ဗ်ိ,ဗ်ီ,ဗ်ဳ,ဗ်ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;lyaṃ,lyiṃ,lyuṃ,lyo,lye,lyā,lya,lyi,lyī,lyu,lyū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;လ်ံ,လ်ႎ,လ်ဳံ,ေလ်ာ,ေလ်,လ်ာ,လ်,လ်ိ,လ်ီ,လ်ဳ,လ်ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ḷhaṃ,ḷhiṃ,ḷhuṃ,ḷho,ḷhe,ḷhā,ḷha,ḷhi,ḷhī,ḷhu,ḷhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဠႇံ,ဠႇႎ,ဠႇဳံ,ေဠႇာ,ေဠႇ,ဠႇာ,ဠႇ,ဠႇိ,ဠႇီ,ဠႇဳ,ဠႇဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;kkaṃ,kkiṃ,kkuṃ,kko,kke,kkā,kka,kki,kkī,kku,kkū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ကၠံ,ကၠႎ,ကၠဳံ,ေကၠာ,ေကၠ,ကၠာ,ကၠ,ကၠိ,ကၠီ,ကၠဳ,ကၠဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ggaṃ,ggiṃ,gguṃ,ggo,gge,ggā,gga,ggi,ggī,ggu,ggū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဂၢံ,ဂၢႎ,ဂၢဳံ,ေဂၢါ,ေဂၢ,ဂၢါ,ဂၢ,ဂၢိ,ဂၢီ,ဂၢဳ,ဂၢဴ,Zawgyi-One@&quot;
+
+&apos; There is no double &apos;hh&apos; so it is not included
+idx = idx +1
+arstrRoman(idx) = &quot;ccaṃ,cciṃ,ccuṃ,cco,cce,ccā,cca,cci,ccī,ccu,ccū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;စၥံ,စၥႎ,စၥဳံ,ေစၥာ,ေစၥ,စၥာ,စၥ,စၥိ,စၥီ,စၥဳ,စၥဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;jjaṃ,jjiṃ,jjuṃ,jjo,jje,jjā,jja,jji,jjī,jju,jjū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဇၨံ,ဇၨႎ,ဇၨဳံ,ေဇၨာ,ေဇၨ,ဇၨာ,ဇၨ,ဇၨိ,ဇၨီ,ဇၨဳ,ဇၨဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ññaṃ,ññiṃ,ññuṃ,ñño,ññe,ññā,ñña,ññi,ññī,ññu,ññū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ညံ,ညႎ,ညဳံ,ေညာ,ေည,ညာ,ည,ညိ,ညီ,ညဳ,ညဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;yhaṃ,yhiṃ,yhuṃ,yho,yhe,yhā,yha,yhi,yhī,yhu,yhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot; ယွံ,ယွႎ,ယွဳံ,ေယွာ,ေယွ,ယွာ,ယွ,ယွိ,ယွီ,ယွဳ,ယွဴ,Zawgyi-One@&quot;
+idx = idx +1
+
+arstrRoman(idx) = &quot;yyaṃ,yyiṃ,yyuṃ,yyo,yye,yyā,yya,yyi,yyī,yyu,yyū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ယ်ံ,ယ်ႎ,ယ်ဳံ,ေယ်ာ,ေယ်,ယ်ာ,ယ်,ယ်ိ,ယ်ီ,ယ်ဳ,ယ်ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ttaṃ,ttiṃ,ttuṃ,tto,tte,ttā,tta,tti,ttī,ttu,ttū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;တၱံ,တၱႎ,တၱဳံ,ေတၱာ,ေတၱ,တၱာ,တၱ,တၱိ,တၱီ,တၱဳ,တၱဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ḍḍaṃ,ḍḍiṃ,ḍḍuṃ,ḍḍo,ḍḍe,ḍḍā,ḍḍa,ḍḍi,ḍḍī,ḍḍu,ḍḍū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ၮံ,ၮႎ,ၮဳံ,ေၮာ,ေၮ,ၮာ,ၮ,ၮိ,ၮီ,ၮဳ,ၮဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ddaṃ,ddiṃ,dduṃ,ddo,dde,ddā,dda,ddi,ddī,ddu,ddū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဒၵံ,ဒၵႎ,ဒၵဳံ,ေဒၵါ,ေဒၵ,ဒၵါ,ဒၵ,ဒၵိ,ဒၵီ,ဒၵဳ,ဒၵဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṭṭaṃ,ṭṭiṃ,ṭṭuṃ,ṭṭo,ṭṭe,ṭṭā,ṭṭa,ṭṭi,ṭṭī,ṭṭu,ṭṭū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;႗ံ,႗ႎ,႗ဳံ,ေ႗ာ,ေ႗,႗ာ,႗,႗ိ,႗ီ,႗ဳ,႗ဴ ူ,Zawgyi-One@&quot;
+idx = idx +1   
+arstrRoman(idx) = &quot;llaṃ,lliṃ,lluṃ,llo,lle,llā,lla,lli,llī,llu,llū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;လႅံ,လႅႎ,လႅဳံ,ေလႅာ,ေလႅ,လႅာ,လႅ,လႅိ,လႅီ,လႅဳ,လႅဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;nnaṃ,nniṃ,nnuṃ,nno,nne,nnā,nna,nni,nnī,nnu,nnū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ႏၷံ,ႏၷႎ,ႏၷဳံ,ေႏၷာ,ေႏၷ,ႏၷာ,ႏၷ,ႏၷိ,ႏၷီ,ႏၷဳ,ႏၷဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ḷḷaṃ,ḷḷiṃ,ḷḷuṃ,ḷḷo,ḷḷe,ḷḷā,ḷḷa,ḷḷi,ḷḷī,ḷḷu,ḷḷū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဠ္ဠံ,ဠ္ဠိံ,ဠ္ဠုံ,ဠ္ဠော,ဠ္ဠေ,ဠ္ဠာ,ဠ္ဠ,ဠ္ဠိ,ဠ္ဠီ,ဠ္ဠု,ဠ္ဠူ,Zawgyi-One@&quot;
+idx = idx +1 &apos;check to see if this is correct
+
+&apos;this one is special and has smi.m and smaa
+arstrRoman(idx) = &quot;smiṃ,smimpi,ssaṃ,ssiṃ,ssuṃ,smo,sme,smā,smaṃ,sma,smi,smī,smu,smū,sso,sse,ssā,ssa,ssi,ssī,ssu,ssū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;သၼႎ,သၼိမၸိ,ႆံ,ႆႎ,ႆုံ,ေသၼာ,ေသၼ,သၼာ,သၼံ,သၼ,သၼိ,သၼီ,သၼဳ,သၼဴ,ေႆာ,ေႆ,ႆာ,ႆ,ႆိ,ႆီ,ႆု,ႆူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;svaṃ,sviṃ,svuṃ,svo,sve,svā,sva,svi,svī,svu,svū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;သြံ,သြႎ,သြဳံ,ေသြာ,ေသြ,သြာ,သြ,သြိ,သြီ,သြဳ,သြဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;syaṃ,syiṃ,syuṃ,syo,sye,syā,sya,syi,syī,syu,syū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;သ်ံ,သ်ႎ,သ်ဳံ,ေသ်ာ,ေသ်,သ်ာ,သ်,သ်ိ,သ်ီ,သ်ဳ,သ်ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ppaṃ,ppiṃ,ppuṃ,ppo,ppe,ppā,ppa,ppi,ppī,ppu,ppū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ပၸံ,ပၸႎ,ပၸဳံ,ေပၸါ,ေပၸ,ပၸါ,ပၸ,ပၸိ,ပၸီ,ပၸဳ,ပၸဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;bbaṃ,bbiṃ,bbuṃ,bbo,bbe,bbā,bba,bbi,bbī,bbu,bbū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဗၺံ,ဗၺႎ,ဗၺဳံ,ေဗၺာ,ေဗၺ,ဗၺာ,ဗၺ,ဗၺိ,ဗၺီ,ဗၺဳ,ဗၺဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;mmaṃ,mmiṃ,mmuṃ,mmo,mme,mmā,mma,mmi,mmī,mmu,mmū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;မၼံ,မၼႎ,မၼဳံ,ေမၼာ,ေမၼ,မၼာ,မၼ,မၼိ,မၼီ,မၼဳ,မၼဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;vhaṃ,vhiṃ,vhuṃ,vho,vhe,vhā,vha,vhi,vhī,vhu,vhū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဝွံ,ဝွႎ,ဝွဳံ,ေဝွါ,ေဝွ,ဝွါ,ဝွ,ဝွိ,ဝွီ,ဝွဳ,ဝွဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṇṇaṃ,ṇṇiṃ,ṇṇuṃ,ṇṇo,ṇṇe,ṇṇā,ṇṇa,ṇṇi,ṇṇī,ṇṇu,ṇṇū,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဏၰံ,ဏၰႎ,ဏၰဳံ,ေဏၰာ,ေဏၰ,ဏၰာ,ဏၰ,ဏၰိ,ဏၰီ,ဏၰဳ,ဏၰဴ,Zawgyi-One@&quot;
+&apos;idx = idx +1  I think there is no double “rr”  so it is left out
+&apos;arstrRoman(idx) = &quot;rro,rre,rrā,rra,rri,rrī,rru,rrū,NO_CHANGE@&quot;
+&apos;arstrMyanmar(idx)  = &quot;ရြော,ရြေ,ရြာ,ရြ,ရြိ,ရြီ,ရြု,ရြူ,Zawgyi-One@&quot;
+
+&apos; will need to do double letter versions of the strings below.
+idx = idx +1
+arstrRoman(idx) =&quot;kyaṃ,khyaṃ,gyaṃ,ghyaṃ,cyaṃ,chyaṃ,jyaṃ,jhyaṃ,ṭyaṃ,ṭhyaṃ,ḍyaṃ,ḍhyaṃ,ṇyaṃ,tyaṃ,thyaṃ,dyaṃ,dhyaṃ,nyaṃ,pyaṃ,phyaṃ,byaṃ,bhyaṃ,myaṃ,lyaṃ,vyaṃ,syaṃ,NO_CHANGE@&quot;
+arstrMyanmar(idx) =&quot;က်ံ,ခ်ံ,ဂ်ံ,ဃ်ံ,စ်ံ,ဆ်ံ,ဇ်ံ,ဈ်ံ,ဋ်ံ,ဌ်ံ,ḍyံ,ḍhyံ,ဏ်ံ,တ်ံ,ထ်ံ,ဒ်ံ,ဓ်ံ,ႏ်ံ,ပ်ံ,ဖ်ံ,ဗ်ံ,ဘ်ံ,မ်ံ,လ်ံ,ဗ်ံ,သ်ံ, NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;kaṃ,khaṃ,gaṃ,ghaṃ,caṃ,chaṃ,jaṃ,jhaṃ,ñaṃ,ṭaṃ,ṭhaṃ,ḍaṃ,ḍhaṃ,ṇaṃ,taṃ,thaṃ,daṃ,dhaṃ,naṃ,paṃ,phaṃ,baṃ,bhaṃ,maṃ,yaṃ,raṃ,laṃ,vaṃ,saṃ,haṃ,ḷaṃ,NO_CHANGE@&quot;
+arstrMyanmar(idx)=  &quot;ကံ,ခံ,ဂံ,ဃံ,စံ,ဆံ,ဇံ,ဈံ,ဉံ,ဋံ,ဌံ,ဍံ,ဎံ,ဏံ,တံ,ထံ,ဒံ,ဓံ,နံ,ပံ,ဖံ,ဗံ,ဘံ,မံ,ယံ,ရံ,လံ,ဝံ,သံ,ဟံ,ဠံ,NO_CHANGE@&quot;
+idx = idx +1 	
+&apos;deleted .m
+arstrRoman(idx) = &quot;ṅ,kiṃ,khiṃ,tiṃ,diṃ,dhiṃ,niṃ,miṃ,yiṃ,viṃ,hiṃ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;င,ကႋ`ံ,ခႎ,တႎ,ဒႎ,ဓႎ,နႎ,မႎ,ယႎ,ဝႎ,ဟႎ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;kaṃ,khaṃ,gaṃ,ghaṃ,caṃ,chaṃ,jaṃ,jhaṃ,ñaṃ,ṭaṃ,ṭhaṃ,taṃ,thaṃ,NO_CHANGE@&quot;
+arstrMyanmar(idx)=  &quot;ကံ,ခံ,ဂံ,ဃံ,စံ,ဆံ,ဇံ,ဈံ,ဉံ,ဋံ,ဌံ,တံ,ထံ,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;ḍaṃ,ḍhaṃ,daṃ,dhaṃ,naṃ,ṇaṃ,paṃ,phaṃ,baṃ,bhaṃ,maṃ,yaṃ,raṃ,laṃ,vaṃ,saṃ,ḷaṃ,haṃ,NO_CHANGE@&quot;
+arstrMyanmar(idx)=  &quot;ဍံ,ဎံ,ဒံ,ဓံ,နံ,ဏံ,ပံ,ဖံ,ဗံ,ဘံ,မံ,ယံ,ရံ,လံ,ဝံ,သံ,ဠံ,ဟံ,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;siṃ,tiṃ,tuṃ,ṭiṃ,ṭum,khiṃ,khuṃ,kiṃ,kuṃ,NO_CHANGE@&quot;
+arstrMyanmar(idx)=  &quot;သႎ,တႎ,တုံ,ဋႎ,ဋဳ,ခႎ,ခုံ,ကႎ,ကုံ,NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;kaṃ,khaṃ,gaṃ,ghaṃ,caṃ,chaṃ,jaṃ,jhaṃ,ñaṃ,ṭaṃ,ṭhaṃ,ḍaṃ,ḍhaṃ,ṇaṃ,taṃ,thaṃ,daṃ,dhaṃ,naṃ,paṃ,phaṃ,baṃ,bhaṃ,maṃ,yaṃ,raṃ,laṃ,vaṃ,saṃ,haṃ,ḷaṃ,vaṃ,NO_CHANGE@&quot;
+arstrMyanmar(idx)=&quot;ကံ,ခံ,ဂံ,ဃံ,စံ,ဆံ,ဇံ,ဈံ,ဉံ,ဋံ,ဌံ,ဍံ,ဎံ,ဏံ,တံ,ထံ,ဒံ,ဓံ,နံ,ပံ,ဖံ,ဗံ,ဘံ,မံ,ယံ,ရံ,လံ,ဝံ,သံ,ဟံ,ဠံ,ဝံ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;kiṃ,khiṃ,giṃ,ghiṃ,ciṃ,chiṃ,jiṃ,jhiṃ,ñiṃ,ṭiṃ,ṭhiṃ,ḍiṃ,ḍhiṃ,ṇiṃ,tiṃ,thiṃ,diṃ,dhiṃ,niṃ,piṃ,phiṃ,biṃ,bhiṃ,miṃ,yiṃ,riṃ,liṃ,viṃ,siṃ,hiṃ,ḷiṃ,viṃ,NO_CHANGE@&quot;
+arstrMyanmar(idx)=&quot;ကႎ,ခႎ,ဂႎ,ဃႎ,စႎ,ဆႎ,ဇႎ,ဈႎ,ဉႎ,ဋႎ,ဌႎ,ဍႎ,ဎႎ,ဏႎ,တႎ,ထႎ,ဒႎ,ဓႎ,နႎ,ပႎ,ဖႎ,ဗႎ,ဘႎ,မႎ,ယႎ,ရႎ,လႎ,ဝႎ,သႎ,ဟႎ,ဠႎ,ဝႎ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;kuṃ,khuṃ,guṃ,ghuṃ,cuṃ,chuṃ,juṃ,jhuṃ,ñuṃ,ṭuṃ,ṭhuṃ,ḍuṃ,ḍhuṃ,ṇuṃ,tuṃ,thuṃ,duṃ,dhuṃ,nuṃ,puṃ,phuṃ,buṃ,bhuṃ,muṃ,yuṃ,ruṃ,luṃ,vuṃ,suṃ,huṃ,ḷuṃ,NO_CHANGE@&quot;
+arstrMyanmar(idx)=&quot;ကုံ,ခုံ,ဂုံ,ဃုံ,စုံ,ဆုံ,ဇုံ,ဈုံ,ဉုံ,ဋဳံ,ဌဳံ,ဍဳံ,ဎုံ,ဏုံ,တုံ,ထုံ,ဒုံ,ဓုံ,ႏုံ,ပုံ,ဖုံ,ဗုံ,ဘုံ,မုံ,ယုံ,႐ုံ,လုံ,ဝုံ,သုံ,ဟုံ,ဠဳံ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;kyaṁ,khyaṁ,gyaṁ,ghyaṁ,cyaṁ,chyaṁ,jyaṁ,jhyaṁ,ṭyaṁ,ṭhyaṁ,ḍyaṁ,ḍhyaṁ,ṇyaṁ,tyaṁ,thyaṁ,dyaṁ,dhyaṁ,nyaṁ,pyaṁ,phyaṁ,byaṁ,bhyaṁ,myaṁ,lyaṁ,vyaṁ,syaṁ,NO_CHANGE@&quot;
+arstrMyanmar(idx) =&quot;က်ံ,ခ်ံ,ဂ်ံ,ဃ်ံ,စ်ံ,ဆ်ံ,ဇ်ံ,ဈ်ံ,ဋ်ံ,ဌ်ံ,ḍyံ,ḍhyံ,ဏ်ံ,တ်ံ,ထ်ံ,ဒ်ံ,ဓ်ံ,ႏ်ံ,ပ်ံ,ဖ်ံ,ဗ်ံ,ဘ်ံ,မ်ံ,လ်ံ,ဗ်ံ,သ်ံ, NO_CHANGE@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;kaṁ,khaṁ,gaṁ,ghaṁ,caṁ,chaṁ,jaṁ,jhaṁ,ñaṁ,ṭaṁ,ṭhaṁ,ḍaṁ,ḍhaṁ,ṇaṁ,taṁ,thaṁ,daṁ,dhaṁ,naṁ,paṁ,phaṁ,baṁ,bhaṁ,maṁ,yaṁ,raṁ,laṁ,vaṁ,saṁ,haṁ,ḷaṁ,NO_CHANGE@&quot;
+arstrMyanmar(idx)=  &quot;ကံ,ခံ,ဂံ,ဃံ,စံ,ဆံ,ဇံ,ဈံ,ဉံ,ဋံ,ဌံ,ဍံ,ဎံ,ဏံ,တံ,ထံ,ဒံ,ဓံ,နံ,ပံ,ဖံ,ဗံ,ဘံ,မံ,ယံ,ရံ,လ,ံ၀ံ,သံ,ဟံ,ဠံ,NO_CHANGE@&quot;
+idx = idx +1 	
+&apos;deleted .m
+arstrRoman(idx) = &quot;kho,khe,khā,kha,khi,khī,khu,khū,kh,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေခါ,ေခ,ခါ,ခ,ခိ,ခီ,ခု,ခူ,ခ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) =&quot;gho,ghe,ghā,gha,ghi,ghī,ghu,ghū,gh,NO_CHANGE@&quot;
+arstrMyanmar(idx)=  &quot;ေဃာ,ေဃ,ဃာ,ဃ,ဃိ,ဃီ,ဃု,ဃူ,ဃ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;cho,che,chā,cha,chi,chī,chu,chū,ch,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဆာ,ေဆ,ဆာ,ဆ,ဆိ,ဆီ,ဆု,ဆူ,ဆ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;jho,jhe,jhā,jha,jhi,jhī,jhu,jhū,jh,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဈာ,ေဈ,ဈာ,ဈ,ဈိ,ဈီ,ဈဳ,ဈဴ,ဈ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;tho,the,thā,tha,thi,thī,thu,thū,th,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေထာ,ေထ,ထာ,ထ,ထိ,ထီ,ထု,ထူ,ထ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṭho,ṭhe,ṭhā,ṭha,ṭhi,ṭhī,ṭhu,ṭhū,ṭh,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဌာ,ေဌ,ဌာ,ဌ,ဌိ,ဌီ,ဌဳ,ဌဴ,ဌ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ḍho,ḍhe,ḍhā,ḍha,ḍhi,ḍhī,ḍhu,ḍhū,ḍh,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဎာ,ေဎ,ဎာ,ဎ,ဎိ,ဎီ,ဎု,ဎူ,ဎ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;dho,dhe,dhā,dha,dhi,dhī,dhu,dhū,dh,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဓါ,ေဓ,ဓါ,ဓ,ဓိ,ဓီ,ဓု,ဓူ,ဓ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;pho,phe,phā,pha,phi,phī,phu,phū,ph,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဖာ,ေဖ,ဖာ,ဖ,ဖိ,ဖီ,ဖု,ဖူ,ဖ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;bho,bhe,bhā,bha,bhi,bhī,bhu,bhū,bh,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဘာ,ေဘ,ဘာ,ဘ,ဘိ,ဘီ,ဘု,ဘူ,ဘ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ko,ke,kā,ka,ki,kī,ku,kū,k,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေကာ,ေက,ကာ,က,ကိ,ကီ,ကု,ကူ,က,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;go,ge,gā,ga,gi,gī,gu,gū,g,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဂါ,ေဂ,ဂါ,ဂ,ဂိ,ဂီ,ဂု,ဂူ,ဂ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ho,he,hā,ha,hi,hī,hu,hū,h,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဟာ,ေဟ,ဟာ,ဟ,ဟိ,ဟီ,ဟု,ဟူ,ဟ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;co,ce,cā,ca,ci,cī,cu,cū,c,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေစာ,ေစ,စာ,စ,စိ,စီ,စု,စူ,စ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;jo,je,jā,ja,ji,jī,ju,jū,j,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဇာ,ေဇ,ဇာ,ဇ,ဇိ,ဇီ,ဇု,ဇူ,ဇ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ño,ñe,ñā,ña,ñi,ñī,ñu,ñū,ñ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဉာာ,ေဉ,ဉာ,ဉ,ဉိ,ဉီ,ဉု,ဉဴ,ဉ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot; yaṃ,yiṃ,yuṃ,yampi,yo,ye,yā,ya,yi,yī,yu,yū,y,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ယံ,ယႎ,ယုံ,ယမၸိ,ေယာ,ေယ,ယာ,ယ,ယိ,ယီ,ယု,ယူ,ယ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;to,te,tā,ta,ti,tī,tu,tū,t,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေတာ,ေတ,တာ,တ,တိ,တီ,တု,တူ,တ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ḍo,ḍe,ḍā,ḍa,ḍi,ḍī,ḍu,ḍū,ḍ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဍာ,ေဍ,ဍာ,ဍ,ဍိ,ဍီ,ဍဳ,ဍဴ,ဍ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;do,de,dā,da,di,dī,du,dū,d,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဒါ,ေဒ,ဒါ,ဒ,ဒိ,ဒီ,ဒု,ဒူ,ဒ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṭo,ṭe,ṭā,ṭa,ṭi,ṭī,ṭu,ṭū,ṭ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဋာ,ေဋ,ဋာ,ဋ,ဋိ,ဋီ,ဋဳ,ဋဴ,ဋ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;lo,le,lā,la,li,lī,lu,lū,l,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေလာ,ေလ,လာ,လ,လိ,လီ,လု,လူ,လ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;no,ne,nā,na,ni,nī,nu,nū,n,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေနာ,ေန,နာ,န,နိ,နီ,နု,နူ,န်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ḷo,ḷe,ḷā,ḷa,ḷi,ḷī,ḷu,ḷū,ḷ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဠာ,ေဠ,ဠာ,ဠ,ဠိ,ဠီ,ဠဳ,ဠဴ,ဠ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;so,se,sā,sa,si,sī,su,sū,s,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေသာ,ေသ,သာ,သ,သိ,သီ,သု,သူ,သ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;po,pe,pā,pa,pi,pī,pu,pū,p,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေပါ,ေပ,ပါ,ပ,ပိ,ပီ,ပု,ပူ,ပ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;bo,be,bā,ba,bi,bī,bu,bū,b,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဗာ,ေဗ,ဗာ,ဗ,ဗိ,ဗီ,ဗု,ဗူ,ဗ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;mo,me,mā,ma,mi,mī,mu,mū,m,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေမာ,ေမ,မာ,မ,မိ,မီ,မု,မူ,မ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;vo,ve,vā,va,vi,vī,vu,vū,v,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဝါ,ေဝ,ဝါ,ဝ,ဝိ,ဝီ,ဝု,ဝူ,ဝ,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ṇo,ṇe,ṇā,ṇa,ṇi,ṇī,ṇu,ṇū,ṇ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဏာ,ေဏ,ဏာ,ဏ,ဏိ,ဏီ,ဏု,ဏူ,ဏ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;ro,re,rā,ra,ri,rī,ru,rū,r,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေရာ,ေရ,ရာ,ရ,ရိ,ရီ,႐ု,႐ူ,ရ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;o,e,ā,a,i,ī,u,ū,.,CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဩ,ဧ,အာ,အ,ဣ,ဤ,ဥ,ဦ,။,Zawgyi-One@&quot;
+idx = idx +1
+arstrRoman(idx) = &quot;1,2,3,4,5,6,7,8,9,0,CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;၁,၂,၃,၄,၅,၆,၇,၈,၉,၀,Zawgyi-One@&quot;
+GetMyanmarFonts=idx
+
+
+end Sub
+
+
+sub GetSinhalaAndMyanmarFonts(arstrSinhala() as String,arstrMyanmar() as String) as integer
+Dim idx as Integer
+&apos;This function will fill up a bunch of paired arrays that have sinhala and Myanmar fonts  (like the others except direct).
+
+
+
+&apos;sub GetSinhalaAndMyanmarFonts(arstrSinhala() as String,arstrMyanmar() as String) as integer
+&apos;Dim idx as Integer
+&apos;This function will fill up a bunch of paired arrays that have sinhala and Myanmar fonts  (like the others except direct).
+
+
+idx =0	
+arstrSinhala(idx) = &quot;බ්‍රො,බ්‍රෑ,බ්‍රැ,බ්‍රා,බ්‍ර,හ්මං,හ්මිං,හ්මුං,හ්මො,හ්මෙ,හ්මා,හ්ම,හ්මි,හ්මී,හ්මු,හ්මූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေျဗာ,ျဗဴ,ျဗဳ,ျဗာ,ျဗ,ဟၼံ,ဟၼႎ,ဟၼဳံ,ေဟၼာ,ေဟၼ,ဟၼာ,ဟၼ,ဟၼိ,ဟၼီ,ဟၼဳ,ဟၼဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;න්ත්වෙ,න්ත්වා,න්ත්ව,ය්‍වා,ය්ව,න්ද්‍රි,න්ද්‍ර,න්ද්‍රා,න්වෙ,න්වා,න්ව,න්වි,ම්‍යා,ම්‍ය,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေႏ႖,ႏ႖ာ,ႏ႖,ယြာ,ယြ,ႁႏၵိ,ႁႏၵ,ႁႏၵာ,ေႏြ,ႏြာ,ႏြ,ႏြိ,မ်ာ,မ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඤ්චං,ඤ්චිං,ඤ්චුං,ඤ්චො,ඤ්චෙ,ඤ්චා,ඤ්ච,ඤ්චි,ඤ්චී,ඤ්චු,ඤ්චූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ၪၥံ,ၪၥႎ,ၪၥဳံ,ေၪၥာ,ေၪၥ,ၪၥာ,ၪၥ,ၪၥိ,ၪၥီ,ၪၥဳ,ၪၥဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඤ්ඡං,ඤ්ඡිං,ඤ්ඡුං,ඤ්ඡො,ඤ්ඡෙ,ඤ්ඡා,ඤ්ඡ,ඤ්ඡි,ඤ්ඡී,ඤ්ඡු,ඤ්ඡූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဉၧံ,ဉၧႎ,ဉၧဳံ,ေဉၧာ,ေဉၧ,ဉၧာ,ဉၧ,ဉၧိ,ဉၧီ,ဉၧဳ,ဉၧဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඤ්ජං,ඤ්ජිං,ඤ්ජුං,ඤ්ජො,ඤ්ජෙ,ඤ්ජා,ඤ්ජ,ඤ්ජි,ඤ්ජී,ඤ්ජු,ඤ්ජූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ၪၨံ,ၪၨႎ,ၪၨဳံ,ေၪၨာ,ေၪၨ,ၪၨာ,ၪၨ,ၪၨိ,ၪၨီ,ၪၨဳ,ၪၨဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඤ්හං,ඤ්හිං,ඤ්හුං,ඤ්හො,ඤ්හෙ,ඤ්හා,ඤ්හ,ඤ්හි,ඤ්හී,ඤ්හු,ඤ්හූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ၪႇံ,ၪႇႎ,ၪႇဳံ,ေၪႇာ,ေၪႇ,ၪႇာ,ၪႇ,ၪႇိ,ၪႇီ,ၪႇဳ,ၪႇဴ,Zawgyi-One@&quot;
+idx = idx +1
+&apos;added Jan 12th  
+arstrSinhala(idx) = &quot;ණ්ඪං,ණ්ඪිං,ණ්ඪුං,ණ්ඪො,ණ්ඪෙ,ණ්ඪා,ණ්ඪ,ණ්ඪි,ණ්ඪී,ණ්ඪු,ණ්ඪූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဏ္ဎံ,ဏ္ဎိံ,ဏ္ဎုံ,ဏ္ဎော,ဏ္ဎေ,ဏ္ဎာ,ဏ္ဎ,ဏ္ဎိ,ဏ္ဎီ,ဏ္ဎု,ဏ္ဎူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;න්ධං,න්ධිං,න්ධුං,න්ධො,න්ධෙ,න්ධා,න්ධ,න්ධි, න්ධී,න්ධු,න්ධූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ႏၶံ,ႏၶႎ,ႏၶဳံ,ေႏၶာ,ေႏၶ,ႏၶာ,ႏၶ,ႏၶိ, ႏၶီ,ႏၶဳ,ႏၶဴ, Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ණ්ඨං,ණ්ඨිං,ණ්ඨුං,ණ්ඨො,ණ්ඨෙ,ණ්ඨා,ණ්ඨ,ණ්ඨි,ණ්ඨී,ණ්ඨු,ණ්ඨූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဏၭံ,ဏၭႎ,ဏၭဳံ,ေဏၭာ,ေဏၭ,ဏၭာ,ဏၭ,ဏၭိ,ဏၭီ,ဏၭဳ,ဏၭဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;න්ථං,න්ථිං,න්ථුං,න්ථො,න්ථෙ,න්ථා,න්ථ,න්ථි,න්ථී,න්ථු,න්ථූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ႏၴံ,ႏၴႎ,ႏၴဳံ,ေႏၴာ,ေႏၴ,ႏၴာ,ႏၴ,ႏၴိ,ႏၴီ,ႏၴဳ,ႏၴဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ණ්ඩං,ණ්ඩිං,ණ්ඩුං,ණ්ඩො,ණ්ඩෙ,ණ්ඩා,ණ්ඩ,ණ්ඩි,ණ්ඩී,ණ්ඩු,ණ්ඩූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;႑ံ,႑ႎ,႑ဳံ,ေ႑ာ,ေ႑,႑ာ,႑,႑ိ,႑ီ,႑ဳ,႑ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;න්දං,න්දිං,න්දුං,න්දො,න්දෙ,න්දා,න්ද,න්දි,න්දී,න්දු,න්දූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ႏၵံ,ႏၵႎ,ႏၵဳံ,ေႏၵာ,ေႏၵ,ႏၵာ,ႏၵ,ႏၵိ,ႏၵီ,ႏၵဳ,ႏၵဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ණ්ටං,ණ්ථිං,ණ්ටුං,ණ්ටො,ණ්ටෙ,ණ්ටා,ණ්ට,ණ්ටි,ණ්ටී,ණ්ටු,ණ්ටූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဏၬံ,ဏၬႎ,ဏၬဳံ,ေဏၬာ,ေဏၬ,ဏၬာ,ဏၬ,ဏၬိ,ဏၬီ,ဏၬဳ,ဏၬဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;න්තං,න්තිං,න්තුං,න්තො,න්තෙ,න්තා,න්ත,න්ති,න්තී,න්තු,න්තූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ႏၲံ,ႏၲႎ,ႏၲဳံ,ေႏၲာ,ေႏၲ,ႏၲာ,ႏၲ,ႏၲိ,ႏၲီ,ႏၲဳ,ႏၲဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ම්බං,ම්බිං,ම්බුං,ම්බො,ම්බෙ,ම්බ,ම්බි,ම්බී,ම්බු,ම්බූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;မၺံ,မၺႎ,မၺဳံ,ေမၺာ,ေမၺ,မၺ,မၺိ,မၺီ,မၺဳ,မၺဴ ူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ම්භං,ම්භිං,ම්භුං,ම්භො,ම්භෙ,ම්භා,ම්භ,ම්භි,ම්භී,ම්භු,ම්භූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;မ႓ံ,မ႓ႎ,မ႓ဳံ,ေမ႓ာ,ေမ႓,မ႓ာ,မ႓,မ႓ိ,မ႓ီ,မ႓ဳ,မ႓ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ම්පං,ම්පිං,ම්පුං,ම්පො,ම්පෙ,ම්පා,ම්ප,ම්පි,ම්පී,ම්පු,ම්පූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;မၸံ,မၸႎ,မၸဳံ,ေမၸာ,ေမၸ,မၸာ,မၸ,မၸိ,မၸီ,မၸဳ,မၸဴ,Zawgyi-One@&quot;
+idx = idx +1  &apos;no mho or .m combos
+arstrSinhala(idx) = &quot;ම්හෙ,ම්හා,ම්හ,ම්හි,ම්හී,ම්හු,ම්හූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေမွ,မွာ,မွ,မွိ,မွီ,မွဳ,မွဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ත්‍රං,ත්‍රිං,ත්‍රැං,ත්‍රො,ත්‍රෙ,ත්‍රා,ත්‍ර,ත්‍රි,ත්‍රී,ත්‍රැ,ත්‍රෑ,ත්වං,ත්වා,ත්ව,ත්වෙ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ၾတံ,ၾတႎ,ၾတဳံ,ေၾတာ,ေၾတ,ၾတာ,ၾတ,ၾတိ,ၾတီ,ၾတဳ,ၾတဴ,တြံ,တြာ,တြ,ေတြ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ද්වෙ,ද්වා,ද්ව,ද්වි,ද්වී,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဒြ,ဒြါ,ဒြ,ဒြိ,ဒြီ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඛ්වි,ඛ්වෙ,ඛ්වා,ඛ්ව,ක්ව්හි,ක්ව්හෙ,ක්ව්හා,ක්ව්හ,ක්වි,ක්වෙ,ක්වා,ක්ව,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ခြိ,ေခြ,ခြါ,ခြ,ခြိ,ေkvh,kvhာ,kvh,ကြိ,ေကြ,ကြာ,ကြ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ක්‍යං,ක්‍යිං,ක්‍යුං,ක්‍යො,ක්‍යෙ,ක්‍යා,ක්‍ය,ක්යි,ක්යී,ක්‍යු,ක්‍යූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot; က်ံ,က်ႎ,က်ဳံ,ေက်ာ,ေက်,က်ာ,က်,က်ိ,က်ီ,က်ဳ,က်ဴ,Zawgyi-One@&quot;
+idx = idx +1  
+arstrSinhala(idx) = &quot;ඛ්‍යං,ඛ්යිං,ඛ්යුං,ඛ්‍යො,ඛ්‍යෙ,ඛ්‍යා,ඛ්‍ය,ඛ්යි,ඛ්යී,ඛ්‍යු,ඛ්‍යූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot; ခ်ံ,ခ်ႎ,ခ်ဳံ,ေခ်ာ,ေခ်,ခ်ာ,ခ်,ခ်ိ,ခ်ီ,ခ်ဳ,ခ်ဴ,Zawgyi-One@&quot;
+idx = idx +1  &apos;  not many thya..only those listed below at the end of this line
+arstrSinhala(idx) = &quot;ත්‍යං,ත්යිං,ත්යුං,ත්‍යො,ත්‍යෙ,ත්‍යා,ත්‍ය,ත්යි,ත්යී,ත්‍යු,ත්‍යූ,ථ්‍ය,ථ්‍යා,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;တ်ံ,တ်ႎ,တ်ဳံ,ေတ်ာ,ေတ်,တ်ာ,တ်,တ်ိ,တ်ီ,တ်ဳ,တ်ဴ,ထ်,ထ်ာ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ණ්හං,ණ්හිං,ණ්හුං,ණ්හො,ණ්හෙ,ණ්හා,ණ්හ,ණ්හි,ණ්හී,ණ්හු,ණ්හූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဏွံ,ဏွႎ,ဏွဳံ,ေဏွာ,ေဏွ,ဏွာ,ဏွ,ဏွိ,ဏွီ,ဏွဳ,ဏွဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;න්හං,න්හිං,න්හුං,න්හො,න්හෙ,න්හා,න්හ,න්හි,න්හී,න්හු,න්හූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ႏွံ,ႏွႎ,ႏွဳံ,ေႏွာ,ေႏွ,ႏွာ,ႏွ,ႏွိ,ႏွီ,ႏွဳ,ႏွဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඞ්ඝං,ඞ්ඝිං,ඞ්ඝුං,ඞ්ඝො,ඞ්ඝෙ,ඞ්ඝා,ඞ්ඝ,ඞ්ඝි,ඞ්ඝී,ඞ්ඝු,ඞ්ඝූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဃႍ,ဃႋ`ံ,ဃၤု`ံ,ေဃၤာ,ေဃၤ,ဃၤာ,ဃၤ,ဃႋ,ဃႌ,ဃၤု,ဃၤူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඞ්ගං,ඞ්ගිං,ඞ්ගුං,ඞ්ගො,ඞ්ගෙ,ඞ්ගා,ඞ්ග,ඞ්ගි,ඞ්ගී,ඞ්ගු,ඞ්ගූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဂႍ,ဂႋ`ံ,ဂၤု`ံ,ေဂၤါ,ေဂၤ,ဂၤါ,ဂၤ,ဂႋ,ဂႌ,ဂၤု,ဂၤူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඞ්ඛං,ඞ්ඛිං,ඞ්ඛුං,ඞ්ඛො,ඞ්ඛෙ,ඞ්ඛා,ඞ්ඛ,ඞ්ඛි,ඞ්ඛී,ඞ්ඛු,ඞ්ඛූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ခႍ,ခႋ`ံ,ခၤု`ံ,ေခၤါ,ေခၤ,ခၤါ,ခၤ,ခႋ,ခႌ,ခၤု,ခၤူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඞ්කං,ඞ්කිං,ඞ්කුං,ඞ්කො,ඞ්කෙ,ඞ්කා,ඞ්ක,ඞ්කි,ඞ්කී,ඞ්කු,ඞ්කූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ကႍ,ကႋ`ံ,ကၤု`ံ,ေကၤာ,ေကၤ,ကၤာ,ကၤ,ကႋ,ကႌ,ကၤု,ကၤူ,Zawgyi-One@&quot;
+idx = idx +1
+&apos; the longer letter combo&apos;s  need to go first for replacement.
+arstrSinhala(idx) = &quot;ක්ඛං,ක්ඛිං,ක්ඛුං,ක්ඛො,ක්ඛෙ,ක්ඛා,ක්ඛ,ක්ඛි,ක්ඛී,ක්ඛු,ක්ඛූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ကၡံ,ကၡႎ,ကၡဳံ,ေကၡာ,ေကၡ,ကၡာ,ကၡ,ကၡိ,ကၡီ,ကၡဳ,ကၡဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) =&quot;ග්ඝං,ග්ඝිං,ග්ඝුං,ග්‍රො,ග්ඝො,ග්ඝෙ,ග්ඝා,ග්ඝ,ග්ඝි,ග්ඝී,ග්ඝු,ග්ඝූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)=  &quot;ဂၣံ,ဂၣႎ,ဂၣဳံ,ေျဂာ,ေဂၣါ,ေဂၣ,ဂၣါ,ဂၣ,ဂၣိ,ဂၣီ,ဂၣဳ,ဂၣဴ ူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ච්ඡං,ච්ඡිං,ච්ඡුං,ච්ඡො,ච්ඡෙ,ච්ඡා,ච්ඡ,ච්ඡි,ච්ඡී,ච්ඡු,ච්ඡූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;စၧံ,စၧႎ,စၧဳံ,ေစၧာ,ေစၧ,စၧာ,စၧ,စၧိ,စၧီ,စၧဳ,စၧဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ජ්ඣං,ජ්ඣිං,ජ්ඣුං,ජ්ඣො,ජ්ඣෙ,ජ්ඣා,ජ්ඣ,ජ්ඣි,ජ්ඣී,ජ්ඣු,ජ්ඣූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဇၩံ,ဇၩႎ,ဇၩဳံ,ေဇၩာ,ေဇၩ,ဇၩာ,ဇၩ,ဇၩိ,ဇၩီ,ဇၩဳ,ဇၩဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ත්ථං,ත්ථිං,ත්ථුං,ත්ථො,ත්ථෙ,ත්ථා,ත්ථ,ත්ථි,ත්ථී,ත්ථු,ත්ථූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;တၳံ,တၳႎ,တၳဳံ,ေတၳာ,ေတၳ,တၳာ,တၳ,တၳိ,တၳီ,တၳဳ,တၳဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ට්ඨං,ට්ඨිං,ට්ඨුං,ට්ඨො,ට්ඨෙ,ට්ඨා,ට්ඨ,ට්ඨි,ට්ඨී,ට්ඨු,ට්ඨූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;႒ံ,႒ႎ,႒ဳံ,ေ႒ာ,ေ႒,႒ာ,႒,႒ိ,႒ီ,႒ဳ,႒ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඩ්ඪං,ඩ්ඪිං,ඩ්ඪුං,ඩ්ඪො,ඩ්ඪෙ,ඩ්ඪා,ඩ්ඪ,ඩ්ඪි,ඩ්ඪී,ඩ්ඪු,ඩ්ඪූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ၯံ,ၯႎ,ၯုံ,ေၯာ,ေၯ,ၯာ,ၯ,ၯိ,ၯီ,ၯု,ၯူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ද්ධං,ද්ධිං,ද්ධුං,ද්ධො,ද්ධෙ,ද්ධා,ද්ධ,ද්ධි,ද්ධී,ද්ධු,ද්ධූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဒၶံ,ဒၶႎ,ဒၶဳံ,ေဒၶါ,ေဒၶ,ဒၶါ,ဒၶ,ဒၶိ,ဒၶီ,ဒၶဳ,ဒၶဴ ူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ප්ඵං,ප්ඵිං,ප්ඵුං,ප්ඵො,ප්ඵෙ,ප්ඵා,ප්ඵ,ප්ඵි,ප්ඵී,ප්ඵු,ප්ඵූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ပၹံ,ပၹႎ,ပၹဳံ,ေပၹါ,ေပၹ,ပၹါ,ပၹ,ပၹိ,ပၹီ,ပၹဳ,ပၹဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;බ්භං,බ්භිං,බ්භුං,බ්භො,බ්භෙ,බ්භා,බ්භ,බ්භි,බ්භී,බ්භු,බ්භූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဗ႓ံ,ဗ႓ႎ,ဗ႓ဳံ,ေဗ႓ာ,ေဗ႓,ဗ႓ာ,ဗ႓,ဗ႓ိ,ဗ႓ီ,ဗ႓ဳ,ဗ႓ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;බ්‍යං,බ්යිං,බ්යුං,බ්‍යො,බ්යෙ,බ්‍යා,බ්‍ය,බ්යි,බ්යී,බ්‍යු,බ්‍යූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဗ်ံ,ဗ်ႎ,ဗ်ဳံ,ေဗ်ာ,ေဗ်,ဗ်ာ,ဗ်,ဗ်ိ,ဗ်ီ,ဗ်ဳ,ဗ်ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ල්‍යං,ල්යිං,ල්යුං,ල්‍යො,ල්‍යෙ,ල්‍යා,ල්‍ය,ල්යි,ල්යී,ල්‍යු,ල්‍යූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;လ်ံ,လ်ႎ,လ်ဳံ,ေလ်ာ,ေလ်,လ်ာ,လ်,လ်ိ,လ်ီ,လ်ဳ,လ်ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ළ්හං,ළ්හිං,ළ්හුං,ළ්හො,ළ්හෙ,ළ්හා,ළ්හ,ළ්හි,ළ්හී,ළ්හු,ළ්හූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဠႇံ,ဠႇႎ,ဠႇဳံ,ေဠႇာ,ေဠႇ,ဠႇာ,ဠႇ,ဠႇိ,ဠႇီ,ဠႇဳ,ဠႇဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ක්කං,ක්කිං,ක්කුං,ක්කො,ක්කෙ,ක්කා,ක්ක,ක්කි,ක්කී,ක්කු,ක්කූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ကၠံ,ကၠႎ,ကၠဳံ,ေကၠာ,ေကၠ,ကၠာ,ကၠ,ကၠိ,ကၠီ,ကၠဳ,ကၠဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ග්ගං,ග්ගිං,ග්ගුං,ග්ගො,ග්ගෙ,ග්ගා,ග්ග,ග්ගි,ග්ගී,ග්ගු,ග්ගූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဂၢံ,ဂၢႎ,ဂၢဳံ,ေဂၢါ,ေဂၢ,ဂၢါ,ဂၢ,ဂၢိ,ဂၢီ,ဂၢဳ,ဂၢဴ,Zawgyi-One@&quot;
+
+&apos; There is no double &apos;hh&apos; so it is not included
+idx = idx +1
+arstrSinhala(idx) = &quot;ච්චං,ච්චිං,ච්චුං,ච්චො,ච්චෙ,ච්චා,ච්ච,ච්චි,ච්චී,ච්චු,ච්චූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;စၥံ,စၥႎ,စၥဳံ,ေစၥာ,ေစၥ,စၥာ,စၥ,စၥိ,စၥီ,စၥဳ,စၥဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ජ්ජං,ජ්ජිං,ජ්ජුං,ජ්ජො,ජ්ජෙ,ජ්ජා,ජ්ජ,ජ්ජි,ජ්ජී,ජ්ජු,ජ්ජූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဇၨံ,ဇၨႎ,ဇၨဳံ,ေဇၨာ,ေဇၨ,ဇၨာ,ဇၨ,ဇၨိ,ဇၨီ,ဇၨဳ,ဇၨဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඤ්ඤං,ඤ්ඤිං,ඤ්ඤුං,ඤ්ඤො,ඤ්ඤෙ,ඤ්ඤා,ඤ්ඤ,ඤ්ඤි,ඤ්ඤී,ඤ්ඤු,ඤ්ඤූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ညံ,ညႎ,ညဳံ,ေညာ,ေည,ညာ,ည,ညိ,ညီ,ညဳ,ညဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ය්හං,ය්හිං,ය්හුං,ය්හො,ය්හෙ,ය්හා,ය්හ,ය්හි,ය්හී,ය්හු,ය්හූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot; ယွံ,ယွႎ,ယွဳံ,ေယွာ,ေယွ,ယွာ,ယွ,ယွိ,ယွီ,ယွဳ,ယွဴ,Zawgyi-One@&quot;
+idx = idx +1
+
+arstrSinhala(idx) = &quot;ය්යං,ය්යිං,ය්යුං,ය්යො,ය්යෙ,ය්යා,ය්ය,ය්යි,ය්යී,ය්යු,ය්යූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ယ်ံ,ယ်ႎ,ယ်ဳံ,ေယ်ာ,ေယ်,ယ်ာ,ယ်,ယ်ိ,ယ်ီ,ယ်ဳ,ယ်ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ත්තං,ත්තිං,ත්තුං,ත්තො,ත්තෙ,ත්තා,ත්ත,ත්ති,ත්තී,ත්තු,ත්තූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;တၱံ,တၱႎ,တၱဳံ,ေတၱာ,ေတၱ,တၱာ,တၱ,တၱိ,တၱီ,တၱဳ,တၱဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඩ්ඩං,ඩ්ඩිං,ඩ්ඩුං,ඩ්ඩො,ඩ්ඩෙ,ඩ්ඩා,ඩ්ඩ,ඩ්ඩි,ඩ්ඩී,ඩ්ඩු,ඩ්ඩූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ၮံ,ၮႎ,ၮဳံ,ေၮာ,ေၮ,ၮာ,ၮ,ၮိ,ၮီ,ၮဳ,ၮဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ද්දං,ද්දිං,ද්දුං,ද්දො,ද්දෙ,ද්දා,ද්ද,ද්දි,ද්දී,ද්දු,ද්දූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဒၵံ,ဒၵႎ,ဒၵဳံ,ေဒၵါ,ေဒၵ,ဒၵါ,ဒၵ,ဒၵိ,ဒၵီ,ဒၵဳ,ဒၵဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ට්ටං,ට්ථිං,ට්ටුං,ට්ටො,ට්ටෙ,ට්ටා,ට්ට,ට්ටි,ට්ටී,ට්ටු,ට්ටූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;႗ံ,႗ႎ,႗ဳံ,ေ႗ာ,ေ႗,႗ာ,႗,႗ိ,႗ီ,႗ဳ,႗ဴ ူ,Zawgyi-One@&quot;
+idx = idx +1   
+arstrSinhala(idx) = &quot;ල්ලං,ල්ලිං,ල්ලුං,ල්ලො,ල්ලෙ,ල්ලා,ල්ල,ල්ලි,ල්ලී,ල්ලු,ල්ලූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;လႅံ,လႅႎ,လႅဳံ,ေလႅာ,ေလႅ,လႅာ,လႅ,လႅိ,လႅီ,လႅဳ,လႅဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;න්නං,න්නිං,න්නුං,න්නො,න්නෙ,න්නා,න්න,න්නි,න්නී,න්නු,න්නූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ႏၷံ,ႏၷႎ,ႏၷဳံ,ေႏၷာ,ေႏၷ,ႏၷာ,ႏၷ,ႏၷိ,ႏၷီ,ႏၷဳ,ႏၷဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ළ්ළං,ළ්ළිං,ළ්ළුං,ළ්‍ළො,ළ්ළෙ,ළ්ළා,ළ්ළ,ළ්ළි,ළ්ළී,ළ්ළු,ළ්ළූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဠ္ဠံ,ဠ္ဠိံ,ဠ္ဠုံ,ဠ္ဠော,ဠ္ဠေ,ဠ္ဠာ,ဠ္ဠ,ဠ္ဠိ,ဠ္ဠီ,ဠ္ဠု,ဠ္ဠူ,Zawgyi-One@&quot;
+idx = idx +1 &apos;check to see if this is correct
+
+&apos;this one is special and has smi.m and smaa
+arstrSinhala(idx) = &quot;ස්මිං,ස්මිම්පි,ස්සං,ස්සිං,ස්සුං,ස්මො,ස්මෙ,ස්මා,ස්මං,ස්ම,ස්මි,ස්මී,ස්මු,ස්මූ‍,ස්සො,ස්සෙ,ස්සා,ස්ස,ස්සි,ස්සී,ස්සු,ස්සූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;သၼႎ,သၼိမၸိ,ႆံ,ႆႎ,ႆုံ,ေသၼာ,ေသၼ,သၼာ,သၼံ,သၼ,သၼိ,သၼီ,သၼဳ,သၼဴ,ေႆာ,ေႆ,ႆာ,ႆ,ႆိ,ႆီ,ႆု,ႆူ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ස්වං,ස්විං,ස්වුං,ස්වො,ස්වෙ,ස්වා,ස්ව,ස්වි,ස්වී,ස්වු,ස්වූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;သြံ,သြႎ,သြဳံ,ေသြာ,ေသြ,သြာ,သြ,သြိ,သြီ,သြဳ,သြဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ස්‍යං,ස්යිං,ස්යුං,ස්‍යො,ස්‍යෙ,ස්‍යා,ස්‍ය,ස්යි,ස්යී,ස්‍යු,ස්‍යූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;သ်ံ,သ်ႎ,သ်ဳံ,ေသ်ာ,ေသ်,သ်ာ,သ်,သ်ိ,သ်ီ,သ်ဳ,သ်ဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ප්පං,ප්පිං,ප්පුං,ප්පො,ප්පෙ,ප්පා,ප්ප,ප්පි,ප්පී,ප්පු,ප්පූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ပၸံ,ပၸႎ,ပၸဳံ,ေပၸါ,ေပၸ,ပၸါ,ပၸ,ပၸိ,ပၸီ,ပၸဳ,ပၸဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;බ්බං,බ්බිං,බ්බුං,බ්බො,බ්බෙ,බ්බා,බ්බ,බ්බි,බ්බී,බ්බු,බ්බූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဗၺံ,ဗၺႎ,ဗၺဳံ,ေဗၺာ,ေဗၺ,ဗၺာ,ဗၺ,ဗၺိ,ဗၺီ,ဗၺဳ,ဗၺဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ම්මං,ම්මිං,ම්මුං,ම්මො,ම්මෙ,ම්මා,ම්ම,ම්මි,ම්මී,ම්මු,ම්මූ‍,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;မၼံ,မၼႎ,မၼဳံ,ေမၼာ,ေမၼ,မၼာ,မၼ,မၼိ,မၼီ,မၼဳ,မၼဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ව්හං,ව්හිං,ව්හුං,ව්හො,ව්හෙ,ව්හා,ව්හ,ව්හි,ව්හී,ව්හු,ව්හූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဝွံ,ဝွႎ,ဝွဳံ,ေဝွါ,ေဝွ,ဝွါ,ဝွ,ဝွိ,ဝွီ,ဝွဳ,ဝွဴ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ණ්ණං,ණ්ණිං,ණ්ණුං,ණ්ණො,ණ්ණෙ,ණ්ණා,ණ්ණ,ණ්ණි,ණ්ණී,ණ්ණු,ණ්ණූ,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဏၰံ,ဏၰႎ,ဏၰဳံ,ေဏၰာ,ေဏၰ,ဏၰာ,ဏၰ,ဏၰိ,ဏၰီ,ဏၰဳ,ဏၰဴ,Zawgyi-One@&quot;
+&apos;idx = idx +1  I think there is no double “rr”  so it is left out
+&apos;arstrSinhala(idx) = &quot;ර්රො,ර්රෙ,ර්රා,ර්ර,ර්රි,ර්රී,ර්රු,ර්රූ,NO_CHANGE@&quot;
+&apos;arstrMyanmar(idx)  = &quot;ရြော,ရြေ,ရြာ,ရြ,ရြိ,ရြီ,ရြု,ရြူ,Zawgyi-One@&quot;
+
+&apos; will need to do double letter versions of the strings below.
+idx = idx +1
+arstrSinhala(idx) = &quot;ක්‍යං,ඛ්‍යං,ග්‍යං,ඝ්‍යං,ච්‍යං,ඡ්‍යං,ජ්‍යං,ඣ්‍යං,ට්‍යං,ඨ්‍යං,ඩ්‍යං,ඪ්‍යං,ණ්යං,ත්‍යං,ථ්‍යං,ද්‍යං,ධ්‍යං,න්‍යං,ප්‍යං,ඵ්‍යං,බ්‍යං,භ්‍යං,ම්‍යං,ල්‍යං,ව්‍යං,ස්‍යං,NO_CHANGE@&quot;
+arstrMyanmar(idx) =&quot;က်ံ,ခ်ံ,ဂ်ံ,ဃ်ံ,စ်ံ,ဆ်ံ,ဇ်ံ,ဈ်ံ,ဋ်ံ,ဌ်ံ,ḍyံ,ḍhyံ,ဏ်ံ,တ်ံ,ထ်ံ,ဒ်ံ,ဓ်ံ,ႏ်ံ,ပ်ံ,ဖ်ံ,ဗ်ံ,ဘ်ံ,မ်ံ,လ်ံ,ဗ်ံ,သ်ံ, NO_CHANGE@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;කං,ඛං,ගං,ඝං,චං,ඡං,ජං,ඣං,ඤං,ටං,ඨං,ඩං,ඪං,ණං,තං,ථං,දං,ධං,නං,පං,ඵං,බං,භං,මං,යං,රං,ලං,වං,සං,හං,ළං,NO_CHANGE@&quot;
+arstrMyanmar(idx)=  &quot;ကံ,ခံ,ဂံ,ဃံ,စံ,ဆံ,ဇံ,ဈံ,ဉံ,ဋံ,ဌံ,ဍံ,ဎံ,ဏံ,တံ,ထံ,ဒံ,ဓံ,နံ,ပံ,ဖံ,ဗံ,ဘံ,မံ,ယံ,ရံ,လံ,ဝံ,သံ,ဟံ,ဠံ,NO_CHANGE@&quot;
+idx = idx +1 	
+&apos;deleted .m
+arstrSinhala(idx) = &quot;ඞ්,කිං,ඛිං,තිං,දිං,ධිං,නිං,මිං,යිං,විං,හිං,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;င,ကႋ`ံ,ခႎ,တႎ,ဒႎ,ဓႎ,နႎ,မႎ,ယႎ,ဝႎ,ဟႎ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;කං,ඛං,ගං,ඝං,චං,ඡං,ජං,ඣං,ඤං,ටං,ඨං,තං,ථං,NO_CHANGE@&quot;
+arstrMyanmar(idx)=  &quot;ကံ,ခံ,ဂံ,ဃံ,စံ,ဆံ,ဇံ,ဈံ,ဉံ,ဋံ,ဌံ,တံ,ထံ,NO_CHANGE@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඩං,ඪං,දං,ධං,නං,ණං,පං,ඵං,බං,භං,මං,යං,රං,ලං,වං,සං,ළං,හං,NO_CHANGE@&quot;
+arstrMyanmar(idx)=  &quot;ဍံ,ဎံ,ဒံ,ဓံ,နံ,ဏံ,ပံ,ဖံ,ဗံ,ဘံ,မံ,ယံ,ရံ,လံ,ဝံ,သံ,ဠံ,ဟံ,NO_CHANGE@&quot;
+idx = idx +1
+arstrSinhala(idx) =&quot;සිං,තිං,තුං,ථිං,ථුං,ඛිං,ඛුං,කිං,කුං,NO_CHANGE@&quot;
+arstrMyanmar(idx)=  &quot;သႎ,တႎ,တုံ,ဋႎ,ဋဳ,ခႎ,ခုံ,ကႎ,ကုံ,NO_CHANGE@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;කං,ඛං,ගං,ඝං,චං,ඡං,ජං,ඣං,ඤං,ටං,ඨං,ඩං,ඪං,ණං,තං,ථං,දං,ධං,නං,පං,ඵං,බං,භං,මං,යං,රං,ලං,වං,සං,හං,ළං,වං,NO_CHANGE@&quot;
+arstrMyanmar(idx)=&quot;ကံ,ခံ,ဂံ,ဃံ,စံ,ဆံ,ဇံ,ဈံ,ဉံ,ဋံ,ဌံ,ဍံ,ဎံ,ဏံ,တံ,ထံ,ဒံ,ဓံ,နံ,ပံ,ဖံ,ဗံ,ဘံ,မံ,ယံ,ရံ,လံ,ဝံ,သံ,ဟံ,ဠံ,ဝံ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;කිං,ඛිං,ගිං,ඝිං,චිං,ඡිං,ජිං,ඣිං,ඤිං,ථිං,ඨිං,ඩිං,ඪිං,ණිං,තිං,ථිං,දිං,ධිං,නිං,පිං,ඵිං,බිං,භිං,මිං,යිං,රිං,ලිං,විං,සිං,හිං,ළිං,විං,NO_CHANGE@&quot;
+arstrMyanmar(idx)=&quot;ကႎ,ခႎ,ဂႎ,ဃႎ,စႎ,ဆႎ,ဇႎ,ဈႎ,ဉႎ,ဋႎ,ဌႎ,ဍႎ,ဎႎ,ဏႎ,တႎ,ထႎ,ဒႎ,ဓႎ,နႎ,ပႎ,ဖႎ,ဗႎ,ဘႎ,မႎ,ယႎ,ရႎ,လႎ,ဝႎ,သႎ,ဟႎ,ဠႎ,ဝႎ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;කුං,ඛුං,ගුං,ඝුං,චුං,ඡුං,ජුං,ඣුං,ඤුං,ටුං,ඨුං,ඩුං,ඪුං,ණුං,තුං,ථුං,දුං,ධුං,නුං,පුං,ඵුං,බුං,භුං,මුං,යුං,රුං,ලුං,වුං,සුං,හුං,ළුං,NO_CHANGE@&quot;
+arstrMyanmar(idx)=&quot;ကုံ,ခုံ,ဂုံ,ဃုံ,စုံ,ဆုံ,ဇုံ,ဈုံ,ဉုံ,ဋဳံ,ဌဳံ,ဍဳံ,ဎုံ,ဏုံ,တုံ,ထုံ,ဒုံ,ဓုံ,ႏုံ,ပုံ,ဖုံ,ဗုံ,ဘုံ,မုံ,ယုံ,႐ုံ,လုံ,ဝုံ,သုံ,ဟုံ,ဠဳံ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ක්‍යං,ඛ්‍යං,ග්‍යං,ඝ්‍යං,ච්‍යං,ඡ්‍යං,ජ්‍යං,ඣ්‍යං,ට්‍යං,ඨ්‍යං,ඩ්‍යං,ඪ්‍යං,ණ්යං,ත්‍යං,ථ්‍යං,ද්‍යං,ධ්‍යං,න්‍යං,ප්‍යං,ඵ්‍යං,බ්‍යං,භ්‍යං,ම්‍යං,ල්‍යං,ව්‍යං,ස්‍යං,NO_CHANGE@&quot;
+arstrMyanmar(idx) =&quot;က်ံ,ခ်ံ,ဂ်ံ,ဃ်ံ,စ်ံ,ဆ်ံ,ဇ်ံ,ဈ်ံ,ဋ်ံ,ဌ်ံ,ḍyံ,ḍhyံ,ဏ်ံ,တ်ံ,ထ်ံ,ဒ်ံ,ဓ်ံ,ႏ်ံ,ပ်ံ,ဖ်ံ,ဗ်ံ,ဘ်ံ,မ်ံ,လ်ံ,ဗ်ံ,သ်ံ, NO_CHANGE@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;කං,ඛං,ගං,ඝං,චං,ඡං,ජං,ඣං,ඤං,ටං,ඨං,ඩං,ඪං,ණං,තං,ථං,දං,ධං,නං,පං,ඵං,බං,භං,මං,යං,රං,ලං,වං,සං,හං,ළං,NO_CHANGE@&quot;
+arstrMyanmar(idx)=  &quot;ကံ,ခံ,ဂံ,ဃံ,စံ,ဆံ,ဇံ,ဈံ,ဉံ,ဋံ,ဌံ,ဍံ,ဎံ,ဏံ,တံ,ထံ,ဒံ,ဓံ,နံ,ပံ,ဖံ,ဗံ,ဘံ,မံ,ယံ,ရံ,လ,ံ၀ံ,သံ,ဟံ,ဠံ,NO_CHANGE@&quot;
+idx = idx +1 	
+&apos;deleted .m
+arstrSinhala(idx) = &quot;ඛො,ඛෙ,ඛා,ඛි,ඛී,ඛු,ඛූ,ඛ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေခါ,ေခ,ခါ,ခိ,ခီ,ခု,ခူ,ခ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඝො,ඝෙ,ඝා,ඝි,ඝී,ඝු,ඝූ,ඝ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)=  &quot;ေဃာ,ေဃ,ဃာ,ဃိ,ဃီ,ဃု,ဃူ,ဃ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඡො,ඡෙ,ඡා,ඡි,ඡී,ඡු,ඡූ,ඡ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဆာ,ေဆ,ဆာ,ဆိ,ဆီ,ဆု,ဆူ,ဆ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඣො,ඣෙ,ඣා,ඣි,ඣී,ඣු,ඣූ,ඣ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဈာ,ေဈ,ဈာ,ဈိ,ဈီ,ဈဳ,ဈဴ,ဈ္,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ථො,ථෙ,ථා,ථි,ථී,ථු,ථූ,ථ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေထာ,ေထ,ထာ,ထိ,ထီ,ထု,ထူ,ထ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඨො,ඨෙ,ඨා,ඨි,ඨී,ඨු,ඨූ,ඨ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဌာ,ေဌ,ဌာ,ဌိ,ဌီ,ဌဳ,ဌဴ,ဌ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඪො,ඪෙ,ඪා,ඪි,ඪී,ඪු,ඪූ,ඪ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဎာ,ေဎ,ဎာ,ဎိ,ဎီ,ဎု,ဎူ,ဎ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ධො,ධෙ,ධා,ධි,ධී,ධු,ධූ,ධ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဓါ,ေဓ,ဓါ,ဓိ,ဓီ,ဓု,ဓူ,ဓ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඵො,ඵෙ,ඵා,ඵි,ඵී,ඵු,ඵූ,ඵ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဖာ,ေဖ,ဖာ,ဖိ,ဖီ,ဖု,ဖူ,ဖ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;භො,භෙ,භා,භි,භී,භු,භූ,භ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဘာ,ေဘ,ဘာ,ဘိ,ဘီ,ဘု,ဘူ,ဘ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;කො,කෙ,කා,කි,කී,කු,කූ,ක්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေကာ,ေက,ကာ,ကိ,ကီ,ကု,ကူ,က,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ගො,ගෙ,ගා,ගි,ගී,ගු,ගූ,ග්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဂါ,ေဂ,ဂါ,ဂိ,ဂီ,ဂု,ဂူ,ဂ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;හො,හෙ,හා,හි,හී,හු,හූ,හ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဟာ,ေဟ,ဟာ,ဟိ,ဟီ,ဟု,ဟူ,ဟ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;චො,චෙ,චා,චි,චී,චු,චූ,ච්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေစာ,ေစ,စာ,စိ,စီ,စု,စူ,စ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ජො,ජෙ,ජා,ජි,ජී,ජු,ජූ,ජ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဇာ,ေဇ,ဇာ,ဇိ,ဇီ,ဇု,ဇူ,ဇ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඤො,ඤෙ,ඤා,ඤි,ඤී,ඤු,ඤූ,ඤ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဉာာ,ေဉ,ဉာ,ဉိ,ဉီ,ဉု,ဉဴ,ဉ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;යං,යිං,යුං,යම්පි,යො,යෙ,යා,යි,යී,යු,යූ,ය්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ယံ,ယႎ,ယုံ,ယမၸိ,ေယာ,ေယ,ယာ,ယိ,ယီ,ယု,ယူ,ယ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;තො,තෙ,තා,ති,තී,තු,තූ,ත්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေတာ,ေတ,တာ,တိ,တီ,တု,တူ,တ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඩො,ඩෙ,ඩා,ඩි,ඩී,ඩු,ඩූ,ඩ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဍာ,ေဍ,ဍာ,ဍိ,ဍီ,ဍဳ,ဍဴ,ဍ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;දො,දෙ,දා,දි,දී,දු,දූ,ද්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဒါ,ေဒ,ဒါ,ဒိ,ဒီ,ဒု,ဒူ,ဒ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ටො,ටෙ,ටා,ටි,ටී,ටු,ටූ,ට්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဋာ,ေဋ,ဋာ,ဋိ,ဋီ,ဋဳ,ဋဴ,ဋ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ලො,ලෙ,ලා,ලි,ලී,ලු,ලූ,ල්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေလာ,ေလ,လာ,လိ,လီ,လု,လူ,လ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;නො,නෙ,නා,නි,නී,නු,නූ,න්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေနာ,ေန,နာ,နိ,နီ,နု,နူ,န်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ළො,ළෙ,ළා,ළි,ළී,ළු,ළූ,ළ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဠာ,ေဠ,ဠာ,ဠိ,ဠီ,ဠဳ,ဠဴ,ဠ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;සො,සෙ,සා,සි,සී,සු,සූ,ස්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေသာ,ေသ,သာ,သိ,သီ,သု,သူ,သ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot; පො,පෙ,පා,පි,පී,පු,පූ,ප්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေပါ,ေပ,ပါ,ပိ,ပီ,ပု,ပူ,ပ္,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;බො,බෙ,බා,බි,බී,බු,බූ,බ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဗာ,ေဗ,ဗာ,ဗိ,ဗီ,ဗု,ဗူ,ဗ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;මො,මෙ,මා,මි,මී,මු,මූ‍,ම්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေမာ,ေမ,မာ,မိ,မီ,မု,မူ,မ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;වො,වෙ,වා,වි,වී,වු,වූ,ව්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဝါ,ေဝ,ဝါ,ဝိ,ဝီ,ဝု,ဝူ,ဝ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ණො,ණෙ,ණා,ණි,ණී,ණු,ණූ,ණ්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေဏာ,ေဏ,ဏာ,ဏိ,ဏီ,ဏု,ဏူ,ဏ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;රො,රෙ,රා,රි,රී,රු,රූ,ර්,NO_CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ေရာ,ေရ,ရာ,ရိ,ရီ,႐ု,႐ူ,ရ်,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ඔ,එ,ආ,අ,ඉ,ඊ,උ,ඌ,.,CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;ဩ,ဧ,အာ,အ,ဣ,ဤ,ဥ,ဦ,။,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;ක,ඛ,ග,ඝ,ඞ,ච,ඡ,ජ,ඣ,ඤ,ට,ඨ,ඩ,ඩ,ණ,ත,ථ,ද,ධ,න,ප,ඵ,බ,භ,ම,ය,ර,ල,ව,ස,හ,ළ,CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;က,ခ,ဂ,ဃ,င,စ,ဆ,ဇ,စ်,ဉ,ဌ,ဋ,ဍ,ဎ,ဏ,တ,ထ,ဒ,ဓ,န,ပ,ဖ,ဗ,ဘ,မ,ယ,ရ,လ,ဝ,သ,ဟ,ဠ,Zawgyi-One@&quot;
+idx = idx +1
+arstrSinhala(idx) = &quot;1,2,3,4,5,6,7,8,9,0,CHANGE@&quot;
+arstrMyanmar(idx)  = &quot;၁,၂,၃,၄,၅,၆,၇,၈,၉,၀,Zawgyi-One@&quot;
+GetSinhalaAndMyanmarFonts=idx
+
+
+&apos;Return the number of lines we made
+GetSinhalaAndMyanmarFonts = idx
+
+end sub
+
+
+Sub ConvertToSinhalaUnicode()
+	&apos; First Convert Text into Pali
+	Call ConvertSinhalaPaliChar
+	Dim arstrRoman(ARRAY_SIZE_SINHALA) as string 
+	Dim arstrSinhala(ARRAY_SIZE_SINHALA) as string
+	Dim index as integer
+	Dim iArraySize as Integer
+
+	&apos;sinhala will get an array and then call replace for each array item
+    iArraySize =	GetSinhalaFonts1(arstrRoman,arstrSinhala)
+	
+	For index =0 to iArraySize&apos;
+		call ReplaceCSVStrings(arstrRoman(index), arstrSinhala(index),CASE_NO)
+	next Index
+end sub
+
+Sub ConvertSinhalaToRoman()
+	Dim arstrRoman(ARRAY_SIZE_SINHALA) as string 
+	Dim arstrSinhala(ARRAY_SIZE_SINHALA) as string
+	Dim index as integer
+	Dim iArraySize as Integer
+	
+	&apos;sinhala will get an array and then call replace for each array item
+    iArraySize =	GetSinhalaFonts1(arstrRoman,arstrSinhala)
+	&apos; get the size of the array (number of elements)
+	&apos;iArraySize = sizeof(arstrSource)
+	
+	For index =0 to iArraySize
+		call ReplaceCSVStrings(arstrSinhala(index), arstrRoman(index),CASE_NO)
+	next Index
+	
+	&apos;convert any mistakes or .m back to how bhante wants it.
+	call Myreplace(&quot;ṁ&quot;,&quot;ṃ&quot;,FALSE)
+	
+end sub
+
+
+Sub ConvertToMyanmarUnicode()
+	&apos; First Convert Text into Pali
+&apos;	Call ConvertSinhalaPaliChar()
+	Dim arstrRoman(ARRAY_SIZE_SINHALA) as string 
+	Dim arstrMyanmar(ARRAY_SIZE_SINHALA) as string
+	Dim index as integer
+	Dim iArraySize as Integer
+
+	&apos;sinhala will get an array and then call replace for each array item
+    iArraySize =	GetMyanmarFonts(arstrRoman,arstrMyanmar)
+	
+	For index =0 to iArraySize&apos;
+		call ReplaceCSVStrings(arstrRoman(index), arstrMyanmar(index),CASE_NO)
+	next Index
+end sub
+Sub ConvertMyanmarUnicodeToRoman()
+&apos;makes a conversion to roman from myanmar unicode text
+
+	Dim arstrRoman(ARRAY_SIZE_SINHALA) as string 
+	Dim arstrMyanmar(ARRAY_SIZE_SINHALA) as string
+	Dim index as integer
+	Dim iArraySize as Integer
+
+	&apos;sinhala will get an array and then call replace for each array item
+    iArraySize =	GetMyanmarFonts(arstrRoman,arstrMyanmar)
+	
+	For index =0 to iArraySize&apos;
+	    &apos;reverses the order of making myanmar
+		call ReplaceCSVStrings(arstrMyanmar(index),arstrRoman(index), CASE_NO)
+	next Index
+end sub
+
+Sub ConvertSinhalaToMyanmar()
+	&apos; First Convert Text into Pali
+&apos;	Call ConvertSinhalaPaliChar()
+	Dim arstrSinhala(ARRAY_SIZE_SINHALA) as string 
+	Dim arstrMyanmar(ARRAY_SIZE_SINHALA) as string
+	Dim index as integer
+	Dim iArraySize as Integer
+
+	&apos;delete this later
+    &apos;call msgbox &quot;Do You Like To Convert Sinhala To Myanmar&quot;
+
+	&apos;sinhala will get an array and then call replace for each array item
+    iArraySize =	GetSinhalaAndMyanmarFonts(arstrSinhala,arstrMyanmar)
+	
+	For index =0 to iArraySize&apos;
+		call ReplaceCSVStrings(arstrSinhala(index), arstrMyanmar(index),CASE_NO)
+	next Index
+end sub
+Sub ConvertMyanmarToSinhala()
+	&apos; First Convert Text into Pali
+&apos;	Call ConvertSinhalaPaliChar()
+	Dim arstrSinhala(ARRAY_SIZE_SINHALA) as string 
+	Dim arstrMyanmar(ARRAY_SIZE_SINHALA) as string
+	Dim index as integer
+	Dim iArraySize as Integer
+
+	
+	&apos;delete this later
+    &apos;call msgbox &quot;MyanmarToSinhala&quot;
+	&apos;sinhala will get an array and then call replace for each array item
+    iArraySize =	GetSinhalaAndMyanmarFonts(arstrSinhala,arstrMyanmar)
+	
+	For index =0 to iArraySize&apos;
+		call ReplaceCSVStrings(arstrMyanmar(index), arstrSinhala(index),CASE_NO)
+	next Index
+end sub
+
+
+Sub ConvertToThaiUnicode()
+	&apos; First Convert Text into Pali
+	Call ConvertPaliChar()
+	Dim arstrRoman(ARRAY_SIZE_SINHALA) as string 
+	Dim arstrThai(ARRAY_SIZE_SINHALA) as string
+	Dim index as integer
+	Dim iArraySize as Integer
+
+	&apos;sinhala will get an array and then call replace for each array item
+    iArraySize =	GetThaiFonts(arstrRoman,arstrThai)
+	
+	For index =0 to iArraySize&apos;
+		call ReplaceCSVStrings(arstrRoman(index), arstrThai(index),CASE_NO)
+	next Index
+end sub
+
+
+Sub ConvertThaiToRoman()
+	Dim arstrRoman(ARRAY_SIZE_SINHALA) as string 
+	Dim arstrThai(ARRAY_SIZE_SINHALA) as string
+	Dim index as integer
+	Dim iArraySize as Integer
+	
+	&apos;sinhala will get an array and then call replace for each array item
+    iArraySize =	GetThaiFonts(arstrRoman,arstrThai)
+	&apos; get the size of the array (number of elements)
+	&apos;iArraySize = sizeof(arstrSource)
+	
+	For index =0 to iArraySize
+		call ReplaceCSVStrings(arstrThai(index), arstrRoman(index),CASE_NO)
+	next Index
+	
+	&apos;convert any mistakes or .m back to how bhante wants it.
+	call Myreplace(&quot;ṁ&quot;,&quot;ṃ&quot;,FALSE)
+	
+end sub
+
+
+Sub ConvertToChinesUnicode()
+	&apos; First Convert Text into Pali
+	Call ConvertPaliChar 
+	Dim arstrRoman(ARRAY_SIZE_SINHALA) as string 
+	Dim arstrChinese(ARRAY_SIZE_SINHALA) as string
+	Dim index as integer
+	Dim iArraySize as Integer
+	
+	&apos;sinhala will get an array and then call replace for each array item
+    iArraySize =	GetChineseFonts(arstrRoman,arstrChinese)
+
+	For index =0 to iArraySize &apos; iArraySize
+		call ReplaceCSVStrings(arstrRoman(index), arstrChinese(index),CASE_NO)
+	next Index
+end sub
+
+
+
+
+
+
+
+&apos;There are two different TimesCSX Fonts (with the same name..duhhhh) So now we have two
+&apos;routines to change TimesCSX 
+Sub ConvertTimesCSXtoUnicodeA()
+	Dim strTimesCSX as String
+    Dim strUnicode As String
+ 
+       strTimesCSX = &quot;ø,ś,â,à,ä,ã,æ,å,ò,ñ,¥,¤,ô,ó,ö,õ,ì,ë,ý,§,ð,ï,-,-,ß,û,,&apos;,Ć,Times_CSX+@&quot;
+    strUnicode =     &quot;Ś,ś,Ā,ā,Ī,ī,Ū,ū,Ṭ,ṭ,Ñ,ñ,Ḍ,ḍ,Ṇ,ṇ,Ḷ,ḷ,Ṁ,ṁ,Ṅ,ṅ,-,-,“,”,…,ʼ,…,Times New Roman@&quot;
+ 	Call ReplaceCSVStrings(strTimesCSX,strUnicode,CASE_YES)
+    Call ChangeFont(&quot;Times New Roman&quot;)
+End sub
+
+
+Sub ConvertTimesCSXPlustoUnicode()
+&apos;this is merged with the ConvertTimesCSXtoUnicodeA function.. only the last character is added.,Ć
+
+	Dim strTimesCSX as String
+	Dim strUnicode As String
+	
+	strTimesCSX = &quot;˜,‘,º,ṉd,ṉḍ,ṉg,ḿb,ø,ś,â,à,ä,ã,æ,å,ò,ñ,¥,¤,ô,ó,ö,õ,ì,ë,ý,§,ð,ï,-,-,ß,û,Ć,&apos;,Times_CSX+@&quot;
+	strUnicode = &quot;ǣ,æ,ō,ṉd,ṉḍ,ṉg,ḿb,Ś,ś,Ā,ā,Ī,ī,Ū,ū,Ṭ,ṭ,Ñ,ñ,Ḍ,ḍ,Ṇ,ṇ,Ḷ,ḷ,Ṁ,ṁ,Ṅ,ṅ,-,-,“,”,…,ʼ,Times New Roman@&quot;
+	Call ReplaceCSVStrings(strTimesCSX,strUnicode,CASE_YES)
+End sub
+
+
+
+Sub ConvertPaliChar()
+
+    Dim strAscii As String
+    Dim strUnicode As String
+
+ 	call GetAsciiToUnicodeFonts(strAscii , strUnicode )
+ 	call ReplaceCSVStrings(strAscii,strUnicode,CASE_YES)
+end Sub
+
+Sub ConvertSinhalaPaliChar()
+
+    Dim strAscii As String
+    Dim strUnicode As String
+
+ 	call GetSinhalaAsciiToUnicodeFonts(strAscii , strUnicode )
+ 	call ReplaceCSVStrings(strAscii,strUnicode,CASE_YES)
+end Sub
+
+
+
+
+Sub ConvertPaliCharToAscii()
+
+    Dim strAscii As String
+    Dim strUnicode As String
+
+	&apos;call this backwards source target
+ 	call GetAsciiToUnicodeFonts(strAscii,strUnicode )
+ 	call ReplaceCSVStrings(strUnicode,strAscii,CASE_YES)
+end Sub
+
+
+Sub ConvertMozPaliToUnicode()
+
+    Dim strMozpali As String
+    Dim strUnicode As String
+
+ 	call GetMozpaliFonts(strMozpali , strUnicode )
+ 	call ReplaceCSVStrings(strMozpali,strUnicode,CASE_YES)
+end Sub
+
+
+
+
+
+
+Sub ReplaceCSVStrings(strSource as string, strTarget as string, bCase as Boolean)
+    dim sFontName as string
+    
+
+
+    Dim strError As String
+    
+    Dim arstrSource(ARRAY_SIZE_SINHALA) As String
+    Dim arstrTarget(ARRAY_SIZE_SINHALA) As String
+    
+    Dim nCounter As Long
+	Dim sMsg as String
+    
+    &apos; just to check if they read the manual not for any other purpose (shsh!!)
+    &apos; check for &apos;@&apos; at the end of each line.. Very much Needed...
+    If Right(strSource, 1)  &lt;&gt; &quot;@&quot; Or Right(strTarget, 1) &lt;&gt; &quot;@&quot; Then
+        strError = &quot;@ expected at the end, please read the manual.&quot; + strSource + strTarget
+        GoTo HandleError
+    End If
+    
+    &apos; Check to see if the string length is less than 256
+    &apos; which will never be parsed more than a 256 size array
+    If Len(strSource) &gt; ARRAY_SIZE Then
+        strError = &quot;Line 1 size is larger than 256 characters&quot;
+        GoTo HandleError
+    End If
+    
+    If Len(strTarget) &gt; ARRAY_SIZE Then
+        strError = &quot;Line 2 size is larger than 256 characters&quot;
+        GoTo HandleError
+    End If
+    
+        
+   
+    Dim nArray As Long
+    Dim nIndex As Long
+    
+    Dim lLength As Long
+    lLength = Len(strSource)
+    Dim strChar As String
+    
+    strChar = Mid(strSource, 1, 1)
+    &apos; parse the string and put into arrays in order
+    &apos; later make it so that it will end at the end of line or end of string!!
+    nArray = 0
+    nIndex = 1
+    While strChar &lt;&gt; &quot;@&quot;
+        &apos; sample a,b,.n,aa,ii,fontname@
+        &apos; go through each character
+        &apos; if &apos;,&apos; is not found then we must add to the same array number
+        &apos; if &apos;,&apos; is found we must increment the array number
+        &apos; the string number is always incremented
+        
+        If strChar = &quot;,&quot; Then
+            &apos;skip to the next letter on line
+            strChar = Mid(strSource, nIndex, 1)
+            &apos;put in the next array as a new character for formating
+            nArray = nArray + 1
+        Else
+            arstrSource(nArray) = arstrSource(nArray) + strChar
+        End If
+        
+        &apos; prime the pump
+        nIndex = nIndex + 1
+        strChar = Mid(strSource, nIndex, 1)
+    Wend
+    
+&apos;do the same for arstrtarget
+    strChar = Mid(strTarget, 1, 1)
+    &apos; parse the string and put into arrays in order
+    &apos; later make it so that it will end at the end of line or end of string!!
+    Dim nArrayTarg As Long
+    
+    nArrayTarg = 0
+    nIndex = 1
+    While strChar &lt;&gt; &quot;@&quot;
+        &apos; sample a,b,.n,aa,ii,fontname@
+        &apos; go through each character
+        &apos; if &apos;,&apos; is not found then we must add to the same array number
+        &apos; if &apos;,&apos; is found we must increment the array number
+        &apos; the string number is always incremented
+        
+        If strChar = &quot;,&quot; Then
+            &apos;skip to the next letter on line
+            strChar = Mid(strTarget, nIndex, 1)
+            &apos;put in the next array as a new character for formating
+            nArrayTarg = nArrayTarg + 1
+        Else
+            arstrTarget(nArrayTarg) = arstrTarget(nArrayTarg) + strChar
+        End If
+        &apos; prime the pump
+        nIndex = nIndex + 1
+        strChar = Mid(strTarget, nIndex, 1)
+    Wend
+    
+
+    
+    &apos; now do the search and replace stuff
+    &apos; but first check to see if the array lengths are the same
+    If (nArray &lt;&gt; nArrayTarg) Then
+        strError = &quot;unequal csv elements please check two lines&quot; + strSource
+        GoTo HandleError
+    End If
+    
+    &apos; start at two because the first array is the number (of the field)
+    For nCounter = 0 To nArray
+        	call Myreplace( arstrSource(nCounter), arstrTarget(nCounter), bCase)
+    &apos;return the loop for change font routine
+    Next nCounter
+
+    &apos;if the target font says nochange don&apos;t do it
+    If arstrTarget(nArray) &lt;&gt; &quot;NO_CHANGE&quot; Then
+         call ChangeFont (arstrTarget(nArray))
+    End If
+    
+    &apos;check to see if an error was loaded. If so show it.
+HandleError:
+    If strError &lt;&gt; &quot;&quot; Then
+       MsgBox (strError)
+    End If
+    
+End Sub
+
+
+sub Myreplace (sSource as string, sTarget as String, bCase as Boolean)
+rem ----------------------------------------------------------------------
+rem define variables
+dim Doc   as object
+dim Replace as object
+rem ----------------------------------------------------------------------
+rem get access to the document
+Doc = ThisComponent
+dim oSheets as object
+Dim oSheet as object
+
+
+if IsSPreadSheetDoc then
+  
+  call CalcReplaceByDesc(sSource, sTarget, bCase)
+else
+ Replace = Doc.createReplaceDescriptor
+
+ Replace.SearchString = sSource
+ Replace.ReplaceString = sTarget
+ Replace.SearchCaseSensitive = bCase
+ Doc.replaceAll(Replace)
+endif
+
+
+
+end sub
+
+Function IsSpreadSheetDoc as boolean
+Dim oDoc as object
+oDoc = thisComponent
+Dim s$ : s$ = &quot;com.sun.star.sheet.SpreadsheetDocument&quot;
+&apos;MsgBox (oDoc.SupportsService(s$)
+
+IsSpreadSheetDoc = oDoc.SupportsService(s$)
+end Function
+
+
+sub ChangeFont(strFontName as string)
+rem ----------------------------------------------------------------------
+rem define variables
+dim document   as object
+dim dispatcher as object
+rem ----------------------------------------------------------------------
+rem get access to the document
+document   = ThisComponent.CurrentController.Frame
+dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+
+rem ----------------------------------------------------------------------
+dispatcher.executeDispatch(document, &quot;.uno:SelectAll&quot;, &quot;&quot;, 0, Array())
+
+rem ----------------------------------------------------------------------
+dim args2(4) as new com.sun.star.beans.PropertyValue
+args2(0).Name = &quot;CharFontName.StyleName&quot;
+args2(0).Value = &quot;&quot;
+args2(1).Name = &quot;CharFontName.Pitch&quot;
+args2(1).Value = 2
+args2(2).Name = &quot;CharFontName.CharSet&quot;
+args2(2).Value = -1
+args2(3).Name = &quot;CharFontName.Family&quot;
+args2(3).Value = 0
+args2(4).Name = &quot;CharFontName.FamilyName&quot;
+args2(4).Value = strFontName
+
+dispatcher.executeDispatch(document, &quot;.uno:CharFontName&quot;, &quot;&quot;, 0, args2())
+
+
+end sub
+
+
+
+
+sub MakeAllLower
+rem ----------------------------------------------------------------------
+rem define variables
+dim document   as object
+dim dispatcher as object
+rem ----------------------------------------------------------------------
+rem get access to the document
+document   = ThisComponent.CurrentController.Frame
+dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+
+rem ----------------------------------------------------------------------
+dispatcher.executeDispatch(document, &quot;.uno:SelectAll&quot;, &quot;&quot;, 0, Array())
+
+rem ----------------------------------------------------------------------
+dispatcher.executeDispatch(document, &quot;.uno:ChangeCaseToLower&quot;, &quot;&quot;, 0, Array())
+
+
+end sub
+
+
+
+
+sub CalcReplaceByDesc(sSource as string, sTarget as String, bCase as Boolean)
+Dim oDescriptor 
+Dim oFound 
+
+dim oSheets as object
+Dim oSheet as object
+Dim oDoc as object
+
+oDoc = ThisComponent
+oSheet = oDoc.Sheets.getByName(&quot;Sheet1&quot;)
+
+REM Create a descriptor from a searchable document. 
+oDescriptor = oSheet.createReplaceDescriptor() 
+With oDescriptor 
+	.SearchString = sSource
+	.ReplaceString = sTarget
+	.SearchCaseSensitive = bCase
+End With
+ oSheet.replaceAll(oDescriptor)
+
+ 
+ End Sub
+ 
+
+
+
+
+
+
+</script:module>

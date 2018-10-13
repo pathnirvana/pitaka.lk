@@ -313,7 +313,7 @@ var groups = [
                 name: "සරල පාලි ශික්ෂකය",
                 desc: scannedBookDesc,
                 author: "බළන්ගොඩ ආනන්ද මෛත්‍රිය හිමි",
-                urls: [["http://www.mediafire.com/file/7n9fxks64bp41nd/Sarala_Pali_Shikshakaya.pdf", linkType.PDF, 6]],
+                urls: [["http://www.mediafire.com/file/7n9fxks64bp41nd/Sarala_Pali_Shikshakaya.pdf", linkType.PDF, 2]],
             },
             {
                 name: "පාලි-සිංහල ශබ්දකෝෂය",

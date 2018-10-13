@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Generate BJT Search Index</title>
+    <link rel="stylesheet" href="../../styles/text_styles.css" />
+</head>
+<body style="margin: 10px; padding: auto; overflow: auto">
+
+<div style="font-size: 15pt">
+    <span>Input File Name : </span>
+    <input type="text" id="input-file"/>
+    <input type="button" onclick="processFile()" value="Convert File" />
+</div>
+<div class="text-section" id="textDiv">
+    <textarea id="text" cols="250" rows="100" style="font-family: 'Abhaya Libre'; font-size: 12pt;"></textarea>
+</div>
+
+<script src="../../scripts/jquery-1.11.1.min.js"></script>
+<script src="../../scripts/vkbeautify.js"></script>
+<script src="../../scripts/utilities.js"></script>
+<script>
+    var F = { // field order in the excel file
+        BOOK: 0,
+        LEVEL: 1,
+        NAME: 2,
+        PAGE: 3,
+        ENDP: 4
+    };
+
+    function convertToJson(inputText, outputFile) {
+        var lines = inputText.trim().split('\r\n');
+        lines.splice(0, 1); // remove the first headers etc
+        
+        var searchIndex = Array();
+        var parents = Array();
+        var lineNum = 2;
+
+        $.each(lines, function(ind, line) {
+            var parts = line.split('\t');
+            if (parts.length != 5) {
+                console.error('Not enough fields in ' + line + '. LineID: ' + lineNum);
+                console.log(parts.length);
+            }
+
+            if (!parts[F.LEVEL].trim()) { // do not process empty level
+                lineNum++;
+                return true; // continue
+            }
+            var level = Number(parts[F.LEVEL].trim());
+            if (isNaN(level)) {
+                console.error('Level in ' + line + ' is not a number. LineID: ' + lineNum)
+            }
+
+            var name = stripLeadingNumbers(parts[F.NAME].trim());
+            if (!name) {
+                console.error('Name in ' + line + ' is empty. LineID: ' + lineNum);
+            }
+
+            var page = Number(parts[F.PAGE].trim());
+            var endPage = Number(parts[F.ENDP].trim());
+            var book = Number(parts[F.BOOK].trim());
+            if (isNaN(page) || isNaN(book) || !page || !book) {
+                console.error('Page or Book in ' + line + ' is not a number or zero. LineID: ' + lineNum)
+            }
+
+            var parent = -1;
+            if (level - 1 >= 0) {
+                parent = parents[level - 1];
+            }
+            var entry = [book, name, parent, page];
+            if (!isNaN(endPage) && endPage) { // endPage is optional
+                entry.push(endPage);
+            }
+            searchIndex.push(entry);
+            parents[level] = searchIndex.length - 1; // new parent for levels below this level
+
+            lineNum++;
+        });
+
+        console.log('Added ' + searchIndex.length + ' entries to data file.');
+
+        // make a js file from json
+        var jsonString = 'var searchIndex = ' + prepareJsonOutput(searchIndex) + ';';
+        $('#text').val(jsonString);
+        downloadFile(outputFile, jsonString);
+    }
+
+    function stripLeadingNumbers(name) {
+        return name.replace(/^[\s\.\-0-9]+/, '');
+    }
+
+    /*function download(filename, text) {
+        var pom = document.createElement('a');
+        pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        pom.setAttribute('download', filename);
+
+        if (document.createEvent) {
+            var event = document.createEvent('MouseEvents');
+            event.initEvent('click', true, true);
+            pom.dispatchEvent(event);
+        }
+        else {
+            pom.click();
+        }
+    }*/
+
+    var defaultInputFile = 'dev/bjt/Book1.txt';
+    var defaultOutputFile = 'searchIndex.js';
+    $('#input-file').val(defaultInputFile);
+    
+    function processFile() {
+        var inputFile = $('#input-file').val();
+        loadTextDoc(inputFile, convertToJson, defaultOutputFile);
+    }
+
+</script>
+
+</body>
+</html>

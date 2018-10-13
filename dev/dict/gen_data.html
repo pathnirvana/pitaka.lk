@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Generate Dictionary Data File</title>
+    <link rel="stylesheet" href="../../styles/text_styles.css" />
+</head>
+<body style="margin: 10px; padding: auto; overflow: auto">
+
+<div style="font-size: 15pt">
+    <span>Input File Name : </span>
+    <input type="text" id="input-file"/>
+    <select id="input-dict">
+        <option value="buddhadatta">Buddhadatta</option>
+        <option value="sumangala">Sumangala</option>
+    </select>
+    <input type="button" onclick="processFile()" value="Convert File" />
+</div>
+<div class="text-section" id="textDiv">
+    <textarea id="text" cols="250" rows="100" style="font-family: 'Abhaya Libre'; font-size: 12pt;"></textarea>
+</div>
+
+<script src="../../scripts/jquery-1.11.1.min.js"></script>
+<script src="../../scripts/vkbeautify.js"></script>
+<script src="../../scripts/utilities.js"></script>
+<script src="../../dict/storage_backup.js"></script>
+<script>
+
+    function convertToJson(inputText, outputFile) {
+        var lines = inputText.trim().split('\r\n');
+        //console.log(lines);
+        lines.splice(0, 1); // remove the first headers etc
+        
+        var outputAr = Array();
+        var prev_parts = Array();
+        var lineNum = 2;
+
+        $.each(lines, function(ind, line) {
+            var parts = line.split('\t');
+            
+            $.each(s.textFields, function(_1, i) {
+                parts[i] = parts[i].replace(/^"(.*)"$/, '$1').trim();
+            });
+            $.each(s.numberFields, function(_1, i) {
+                parts[i] = Number(parts[i].trim());
+                if (isNaN(parts[i])) {
+                    console.error('Field ' + i + ' in ' + line + ' is not a number. LineID: ' + lineNum)
+                }
+            });
+            if (parts[s.paliField] && !parts[s.paliField].endsWith('.')) {  // add a dot to the pali word
+                parts[s.paliField] += '.';
+            }
+            if (!parts[s.sinhalaField]) {
+                console.error('Sinhala Field in ' + line + ' is empty. LineID: ' + lineNum);
+            }
+            parts[s.sinhalaField] = matchAbbre(parts[s.sinhalaField]);
+
+            if (prev_parts.length == 0) { // start
+                prev_parts = parts;
+            } else if (parts[s.paliField]) { // new entry
+                outputAr.push(prev_parts);
+                prev_parts = parts;
+            } else { // update prev entry
+                prev_parts[s.sinhalaField] += ('<br>' + parts[s.sinhalaField]);
+            }
+            lineNum++;
+        });
+        outputAr.push(prev_parts); // push last entry
+
+        console.log('Found ' + outputAr.length + ' entries in data file.');
+
+        var jsonString = prepareJsonOutput(JSON.stringify(outputAr));
+        $('#text').val(jsonString);
+        downloadFile(outputFile, jsonString);
+        
+        /*saveXmlDoc(outputFile, jsonString, editingPassword).fail(function() {
+                console.error('Failed writing to file ' + outputFile);
+            }).done(function() {
+                console.log('Success wrote to file ' + outputFile);
+            });*/
+        console.log(abbreStat);
+    } 
+    
+    function prepareJsonOutput(json) {
+        json = json.replace(/\u200C/g, '');
+        return vkbeautify.json(json);
+    }
+    
+    // create regEx object only once
+    function getAbbreRegex() {
+        if (!abbreRegex) {
+            var escapedAbbre = [];
+            $.each(s.abbreviations, function(abbre) {
+                escapedAbbre.push(escapeRE(abbre));
+            });
+            var abbreStr = escapedAbbre.join('|');
+            console.log(abbreStr);
+            var pattern1 = "^("+ abbreStr +")[ ,\.\-]+" , pattern2 = " ("+ abbreStr +")[ ,\.\-]+";
+            //abbreRegex = new RegExp(pattern1, 'gi');
+            abbreRegex = new RegExp(pattern1 + '|' + pattern2, 'gi');    
+        }
+        return abbreRegex;
+    }
+    
+    // find the abbreviations and mark them
+    function matchAbbre(sinhala) {
+        function replaceStr(match, p1, p2) {
+            // console.log(match + " " + p1 + " " + p2);
+            var abbre = p1 || p2; 
+            abbreStat[abbre] = (abbreStat[abbre] || 0) + 1; 
+            return " <i class='" + s.abbreviations[abbre][1] + "'>" + abbre + "</i> ";
+        }
+        // run twice to process abbre close to each other
+        sinhala = sinhala.replace(getAbbreRegex(), replaceStr);
+        sinhala = sinhala.replace(getAbbreRegex(), replaceStr);
+        return sinhala.trim();
+    }
+
+    function download(filename, text) {
+        var pom = document.createElement('a');
+        pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        pom.setAttribute('download', filename);
+
+        if (document.createEvent) {
+            var event = document.createEvent('MouseEvents');
+            event.initEvent('click', true, true);
+            pom.dispatchEvent(event);
+        }
+        else {
+            pom.click();
+        }
+    }
+    
+    var abbreRegex;
+    var abbreStat = {};
+    
+    var settings = {
+        "buddhadatta": {
+            textFields: [0, 1],
+            numberFields: [],
+            sinhalaField: 1,
+            paliField: 0,
+            inputFile: 'dev/dict/buddhadatta_data.txt',
+            writeFile: 'buddhadatta_data.json',
+            abbreviations: abbreviations["buddhadatta"]
+        },
+        "sumangala": {
+            textFields: [1, 2], // trim these fields
+            numberFields: [0], // check and convert to number
+            sinhalaField: 2,
+            paliField: 1,
+            inputFile: 'dev/dict/sumangala_data.txt',
+            writeFile: 'sumangala_data.json',
+            abbreviations: abbreviations["sumangala"]
+        }
+    };
+
+    //$('#input-file').val(defaultInputFile);
+    var s = {};
+    
+    function processFile() {
+        s = settings[$('#input-dict').val()];
+        console.log(s);
+        loadTextDoc(s.inputFile, convertToJson, s.writeFile);
+    }
+
+</script>
+
+</body>
+</html>

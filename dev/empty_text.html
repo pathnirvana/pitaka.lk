@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Empty Text Gen</title>
+    <script src="../scripts/jquery-1.11.1.min.js"></script>
+    <script src="../scripts/vkbeautify.js"></script>
+    <script src="../scripts/utilities.js"></script>
+</head>
+<body>
+
+<script>
+    // create empty text files based on the pali text
+
+    var fullIndexFile = 'index/main_toc_full.xml';
+    var baseCollection = 'pali-cs'; // collection for the text files
+    var savePassword = 'janaka-super';
+
+    function shouldProcessVagga(bookId, vaggaId) {
+        var process = false;
+        $.each(settings.sets, function(i, set) {
+            if (set.books == 'all' || $.inArray(bookId, set.books) != -1) {
+                if (set.vaggas == 'all' || $.inArray(vaggaId, set.vaggas) != -1) {
+                    process = true;
+                }
+                return false;
+            }
+        });
+        return process;
+    }
+
+    var settings = {
+        sets: [
+            //{books: [26,27,28,29,30,31,32,33,34,35,36], vaggas: 'all'}
+            {books: [28], vaggas: [2820]}
+        ],
+        emptyCollections: ['sinh-aps']
+    };
+
+    loadXmlDoc(fullIndexFile, generateEmptyText);
+
+    function generateEmptyText(xmlDoc) {
+        // read each vagga from index file and check if empty text should be generated for them
+        $('li[orig]', xmlDoc).each(function() {
+            var vaggaId = +($(this).attr('node-id'));
+            var vaggaFileId = 'vagga_' + vaggaId + '.xml';
+            var url = '../text/' + baseCollection + '/' + vaggaFileId;
+            if (shouldProcessVagga(Math.floor(vaggaId / 100), vaggaId)) {
+                $('<div/>').load(url, function(){
+                    writeEmptyText(vaggaFileId, $(this));
+                });
+            }
+        });
+    }
+
+    // be careful when overwriting existing files
+    function writeEmptyText(vaggaFileId, body) {
+        // empty para content except for paranum
+        $('div.paragraph', body).html(function () {
+            return $(this).children('span.paranum');
+        });
+        var output = prepareXmlOutput(body);
+        // write to files
+        $.each(settings.emptyCollections, function (x, collection) {
+            var vaggaFilePath = 'text/' + collection + '/' + vaggaFileId;
+            if (UrlExists(vaggaFilePath)) {
+                console.error('Already exists : ' + vaggaFilePath);
+            } else {
+                saveXmlDoc(vaggaFilePath, output, savePassword);
+                console.log('Wrote : ' + vaggaFilePath);
+            }
+        });
+    }
+</script>
+</body>
+</html>

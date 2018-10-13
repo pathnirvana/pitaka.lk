@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Build Sutta List</title>
+    <script src="../scripts/jquery-1.11.1.min.js"></script>
+    <script src="../scripts/underscore-min.js"></script>
+    <script src="../scripts/vkbeautify.js"></script>
+    <script src="../scripts/utilities.js"></script>
+    <script src="../scripts/search.js"></script>
+</head>
+<body>
+<div id="contents"></div>
+
+<div class="text-section" id="textDiv">
+    <textarea id="text" cols="250" rows="100" style="font-family: 'Abhaya Libre'; font-size: 12pt;"></textarea>
+</div>
+
+<script>
+    var settings = {
+        coll: ['pali-cs', 'sinh-aps'],
+        books: [[15,20], [21, 25], [26, 36], [37, 57]],
+        outputFile: 'sutta-list.json'
+    };
+    function stripLeadingNumbers(name) {
+        return name.replace(/^[\s\.\-0-9]+/, '');
+    }
+    function expandRangeToArray(ranges) {
+        var list = [];
+        $.each(ranges, function (_1, range) {
+            list = _.union(list, $.isArray(range) ? _.range(range[0], range[1] + 1) : [range]);
+        });
+        return list;
+    }
+    settings.books = expandRangeToArray(settings.books);
+    console.log(settings.books);
+
+    /*
+     format - name, nodeid, type(ct_samyuththa to ct_sutta_section), parent (up to vagga)
+     nodeid - can derive, book, vagga etc
+      */
+
+    // load content from all specified books
+    //var vaggaList = {}; // list of vaggas for each book
+    var suttaList = {};
+    var indexUrl = '../index/main_toc_full.xml';
+    var defAr = [];
+
+    $('<div/>').load(indexUrl, function() {
+        $('li[node-id]:not([disabled]) > a.pitaka', $(this)).each(function() { // process all pitaka not disabled
+            console.log('processing pitaka = ' + $(this).text());
+            getIndexNodeInfo($(this).parent(), []);
+        });
+        // write to file after waiting for everything to finish
+        $.when.apply($, defAr).done(function() {
+            console.log('number of entries in suttaList = ' + _.size(suttaList));
+            var jsonString = prepareJsonOutput(suttaList);
+            $('#text').val(jsonString);
+            downloadFile(settings.outputFile, jsonString);
+            errorCheckSuttaList();
+        });
+    });
+
+
+    // recursive descent function
+    function getIndexNodeInfo(liNode, parents) {
+        var info = [], aNode = liNode.children('a'), id = Number(liNode.attr('node-id'));
+        console.assert(aNode.length == 1, 'too many a nodes for ' + id);
+
+        if (aNode.attr('class') == 'vagga') {
+            // process vagga by loading the text file
+            processVagga(id, _.intersection(liNode.attr('collections').split(','), settings.coll), parents);
+            return; // no need for further processing - vagga added by processVagga
+        }
+
+        info[SL.id] = id;
+        info[SL.type] = aNode.attr('class');
+        info[SL.paliName] = stripLeadingNumbers(aNode.text());
+        info[SL.parents] = parents;
+        suttaList[id] = info;
+
+        // process children if any after the parent
+        liNode.children('ul').children('li[node-id]').each(function () {
+            getIndexNodeInfo($(this), _.union(parents, [id]));
+        });
+    }
+
+    var contentTypes = ['.ct_samyuththa', '.ct_nipatha', '.ct_vimana', '.ct_vagga', '.ct_katha', '.ct_sutta'];
+
+    function processVagga(vaggaId, collections, parents) {
+        $.each(collections, function (_i, coll) {
+            var doneVaggaColl = new $.Deferred();
+            defAr.push(doneVaggaColl.promise());
+
+            var vaggaUrl = '../text/' + coll + '/vagga_' + vaggaId + '.xml';
+            $('<div/>').load(vaggaUrl, function(){
+                var div = $(this);
+                $('.paragraph, .note, .ending, .udana', div).remove();
+                $.each(contentTypes, function(ind, ctc) {
+                    $('div' + ctc, div).each(function() {
+                        getTextNodeInfo($(this), coll, ctc, parents);
+                    });
+                });
+                doneVaggaColl.resolve(1);
+            });
+        });
+    }
+
+    function getTextNodeInfo(divNode, coll, ctc, parents) {
+        var info = [], spanNode = divNode.children('span'), id = Number(divNode.attr('node-id'));
+        console.assert(spanNode.length == 1, 'too many a nodes for ' + id);
+
+        // if already exists just add a name
+        if (suttaList[id] != undefined) {
+            suttaList[id][coll == 'pali-cs' ? SL.paliName : SL.sinhName] = stripLeadingNumbers(spanNode.text());
+            return;
+        }
+
+        info[SL.id] = id;
+        info[SL.type] = ctc.substr(1); // remove leading .
+        info[coll == 'pali-cs' ? SL.paliName : SL.sinhName] = stripLeadingNumbers(spanNode.text());
+        info[SL.parents] = parents.slice();  // make a copy
+        divNode.parents(contentTypes.join(', ')).each(function() { //order is immediate parent and up
+            info[SL.parents].push(Number($(this).attr('node-id')));
+        });
+        info[SL.parents].sort(function (a, b) { return a - b; });  // ascending order
+        console.log('adding to list');
+        suttaList[id] = info;
+    }
+
+    function errorCheckSuttaList(){
+        $.each(suttaList, function(_1, info) {
+            console.assert(info[SL.paliName], 'empty node name ' + info);
+            console.assert(info[SL.parents].length <= 6, 'more than 6 parents ' + info);
+            $.each(info[SL.parents], function(_1, parent) {
+                console.assert((parent in suttaList), 'parent ' + parent + ' not found in suttaList. ' + info);
+            });
+        });
+    }
+
+
+</script>
+
+</body>
+</html>

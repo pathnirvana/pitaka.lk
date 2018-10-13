@@ -1,0 +1,42 @@
+<html>
+    <head lang="en">
+    <meta charset="UTF-8">
+    </head>
+    <body>
+        <div id="mydiv">
+        </div>
+        <textarea id="ta" rows="100"></textarea>
+        <script>
+            var pairs = [ // pairs with special conjunct glyphs
+                ['ක', 'ඛ'],
+                ['ක', 'ව'],
+                ['ක', 'ෂ'],
+                ['ත', 'ථ'],
+                ['ත', 'ව'],
+                ['න', 'ද'],
+                ['න', 'ධ'],
+                ['ද', 'ධ'],
+                ['ද', 'ව'],
+                ['ඤ', 'ජ'],
+                ['ඤ', 'ඡ'],
+                ['ඤ', 'ච'],
+                ['ඤ', 'ඩ'],
+                ['ට', 'ඨ'],
+                ['ම', 'බ']
+            ];
+            var text = '';
+            function writeConsole(pair) {
+                text = text + 'normal=' + pair[0] + '්' + pair[1] + '්‍යෝ' + '\n';
+                text = text + 'touching=' + pair[0] + '‍්' + pair[1] + '්‍යෝ' + '\n';
+                text = text + 'conjunct=' + pair[0] + '්‍' + pair[1] + '්‍යෝ' + '\n';
+                text = text + 'normal repaya=' + 'ර්‍' + pair[0] + pair[1] + '\n';    
+                text = text + 'touching repaya=' + 'ර්‍' + pair[0] + '‍්' + pair[1] + '\n';
+                text = text + 'conjunct repaya=' + 'ර්‍' + pair[0] + '්‍' + pair[1] + '\n';
+            }
+            
+            pairs.forEach(writeConsole);
+            document.getElementById("ta").value = text;
+            console.log(text);
+        </script>
+    </body>
+</html>
