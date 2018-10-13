@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Fast Edit</title>
+    <link rel="stylesheet" href="../styles/text_styles.css" />
+</head>
+<body style="margin: 10px; padding: auto; overflow: auto">
+
+<div style="font-size: 15pt">
+    <span>Input File Number : </span>
+    <input type="text" id="file-number"/>
+    <input type="button" onclick="processFile()" value="Process File" />
+    <input type="button" onclick="incFileNumber()" value="Next Num" />
+</div>
+<div class="text-section" id="text"></div>
+
+<script src="../scripts/jquery-1.11.1.min.js"></script>
+<script src="../scripts/vkbeautify.js"></script>
+<script src="../scripts/utilities.js"></script>
+<script>
+    var possibleFields = 'span.nikaya, span.book, span.chapter, span.title, span.subhead, div.paragraph, div.centre, div.specialcaption';
+
+    function matchSections(inputText, fillFile) {
+        var sections = inputText.trim().split('#');
+        $(possibleFields, '#text').each(function() {
+            if ($(this).is('div.centre') && $(this).text().substr(0, 1) == '(') { //hack not process some elements
+                return true;
+            }
+            if (!sections.length) { // sections finish before elements
+                return false;
+            }
+            var sectionText = sections.shift().trim();
+            if (!sectionText.length) { // if empty keep original unchanged
+                return true;
+            }
+            if ($(this).is('div.paragraph')) {
+                var paraDiv = $(this);
+                $.each(sectionText.split('\n'), function(_1, divText) {
+                    if (divText.trim().length) {
+                        var divClass = 'bodytext';
+                        if (divText.substr(0, 1) == 's') {
+                            divClass = 'subsubhead ' + subsubHeadClass;
+                            divText = divText.substr(1);
+                        }
+                        paraDiv.append($('<div/>').addClass(divClass).text(divText.trim()));
+                    }
+                });
+            } else if ($(this).is('span, div.specialcaption')) {
+                $(this).text(getSpanText($(this).text(), sectionText));
+            } else if ($(this).is('div.centre')) {
+                $(this).text(sectionText);
+            } else {
+                console.error('Unhandled html element ' + $(this));
+            }
+            // console.log($(this).text());
+        });
+        if (unusedSectionsCheck && sections.length) {// unused sections
+            console.error('Unused text sections remaining' + sections);
+        } else { // perform writing
+            var output = prepareXmlOutput($('#text'));
+            output = prepareXmlTextSave(output);
+            var writeFile = writeFolder + '/' + fillFile.split('/').pop();
+            saveXmlDoc(writeFile, output, editingPassword).fail(function() {
+                console.error('Failed writing to file ' + writeFile);
+            }).done(function() {
+                console.log('Success wrote to file ' + writeFile);
+            });
+        }
+    }
+
+    // retain the original sutta number
+    function getSpanText(original, newText) {
+        if (newText.slice(-1) == '.') { // remove the last '.' if any
+            newText = newText.slice(0, -1);
+        }
+        var parts = original.split('.');
+        if (parts.length > 1) {
+            return parts[0] + '. ' + newText;
+        }
+        return newText;
+    }
+
+    var fillFolder = 'dev/fast-input', fillBase = 2810;
+    var textInputFolder = 'dev/text-sources/metta.lk/anguththara/3';
+    var writeFolder = 'text/sinh-aps';
+    var subsubHeadClass = 'ct_sutta';
+    var editingPassword = 'janaka-super';
+    var unusedSectionsCheck = true;
+    $('#file-number').val('0');
+
+    function processFile() {
+        var fileNumber = $('#file-number').val();
+        if (!$.isNumeric(fileNumber)) {
+            alert('File Number must be numeric');
+            return;
+        }
+        var fillFile = fillFolder + '/vagga_' + (+fileNumber + fillBase) + '.xml';
+        var textInputFile = textInputFolder + '/p_' + fileNumber + '.txt';
+        $('#text').load('../' + fillFile, function() {
+            loadTextDoc(textInputFile, matchSections, fillFile);
+        });
+    }
+    function incFileNumber() {
+        var fileNumber = $('#file-number').val();
+        $('#file-number').val(+fileNumber + 1);
+    }
+
+</script>
+
+</body>
+</html>

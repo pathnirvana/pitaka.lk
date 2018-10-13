@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Build Tree</title>
+    <script src="../scripts/jquery-1.11.1.min.js"></script>
+    <script src="../scripts/vkbeautify.js"></script>
+    <script src="../scripts/utilities.js"></script>
+    <script src="../scripts/pitakaTree.js"></script>
+    <script src="parseText.js"></script>
+    <link rel="stylesheet" href="../styles/tree_style.css" />
+</head>
+<body>
+<div class="tree"></div>
+
+<script>
+    // build index(tree) or update with collections
+    var originalIndexFile = 'dev/index-original/toc1.xml';
+    var outputIndexFile = 'index/main_toc_full.xml';
+    var baseCollection = 'pali-cs'; // collection for the text files
+    var checkCollections = ["sinh-aps", "sinh-kg"]; // check them to check text file availability
+    var savePassword = 'janaka-super';
+
+    var settings = {
+        sets: [
+            //{books: [37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57], vaggas: 'all' }
+            //{books: [21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36], vaggas: 'all'}
+            //{books: [15,16,17,18,19,20], vaggas: 'all' }
+            { books: 'all', vaggas: 'all' }
+        ],
+        createIndex: false, // create the tree from the original index
+        updateIndexCollections: true // update the tree with collections info
+    };
+
+    var branchId = 0; // id for pitaka and nikaya
+
+    function shouldProcessBook(bookId) {
+        var process = false;
+        $.each(limitProcessing.sets, function(i, set) {
+            if (set.books == 'all' || $.inArray(bookId, set.books) != -1) {
+                process = true;
+                return false;
+            }
+        });
+        return process;
+    }
+
+    function createTree(xmlDoc) {
+        console.log('Creating Tree from index-original.')
+        processBranch('pitaka', xmlDoc);
+        processBranch('nikaya', xmlDoc);
+        console.assert(branchId == 8, 'branch id = ' + branchId); // 3 pitaka + 5 nikaya
+        processBooks(xmlDoc).done(function(){
+            saveTree(xmlDoc);
+        });
+    }
+
+    function saveTree(xmlDoc) {
+        var root = $(':root', xmlDoc);
+        root.wrapInner("<ul/>");
+        var output = prepareXmlOutput(root);
+        $('.tree').html(output);
+        $('.tree').pitakaTree();
+        saveXmlDoc(outputIndexFile, output, savePassword);
+        console.log('Wrote Tree at : ' + outputIndexFile)
+    }
+
+    function processBranch(bname, xmlDoc) {
+        $(bname, xmlDoc).replaceWith(function (){
+            console.log('process branch ' + $(this).attr("text"));
+            var ul = $("<ul/>").append($(this).contents());
+            var a = $("<a/>").append($(this).attr("text")).addClass(bname);
+            return $("<li/>").append(a).append(ul).addClass('parent').attr('node-id', branchId++);
+        });
+    }
+    function processBooks(xmlDoc) {
+        var defAr = [];
+        var bookId = 10;
+        $('book', xmlDoc).replaceWith(function (){
+            var a = $("<a/>").append($(this).attr("text")).addClass('book');
+            var url = '../' + $(this).attr("src");
+            return $("<li/>").append(a).append('<ul/>').attr('data-url', url).attr('node-id', bookId++).addClass('parent');
+        });
+
+        // load content to each book
+        $('li[data-url] ul', xmlDoc).each(function() {
+            var doneBook = new $.Deferred();
+            defAr.push(doneBook);
+            var url = 'dev/' + $(this).parent().attr('data-url');
+            var bookId = $(this).parent().attr('node-id');
+            $(this).load(url, function() {
+                var vaggaId = bookId * 100 + 10;
+                $('tree[text]', $(this)).replaceWith(function() {
+                    var a = $("<a/>").append($(this).attr("text")).addClass('vagga');
+                    var origText = $(this).attr('action').split("/").pop();
+                    // for now add only the baseCollection: more collections added by modify index step
+                    return $("<li/>").append(a).attr('node-id', vaggaId++).attr('orig', origText).attr('collections', baseCollection);
+                });
+                $(this).parent().removeAttr('data-url');
+                $('tree', $(this)).before(function() {
+                    return $(this).contents();
+                });
+                $('tree', $(this)).remove();
+                doneBook.resolve(bookId);
+            });
+        });
+        return $.when.apply($, defAr);
+    }
+
+    if (settings.updateIndexCollections) {
+        loadXmlDoc(outputIndexFile, updateTree)
+    } else if (settings.createIndex) {
+        loadXmlDoc(originalIndexFile, createTree);
+    }
+
+    function updateTree(xmlDoc) {
+        console.log('Updating Tree with Collections.')
+        $('li[collections]', xmlDoc).each(function(){
+            var collections = ["pali-cs"];
+            var vaggaFileId = 'vagga_' + $(this).attr('node-id') + '.xml';
+            $.each(checkCollections, function(i, collection) {
+                if (UrlExists('text/' + collection + '/' + vaggaFileId)) {
+                    collections.push(collection);
+                }
+            });
+            $(this).attr('collections', collections.join(","));
+        });
+        saveTree(xmlDoc);
+    }
+
+</script>
+</body>
+</html>
