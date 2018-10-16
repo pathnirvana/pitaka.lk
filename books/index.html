@@ -17,18 +17,78 @@
 </head>
 <body>
 
-<div align="center" id="main-div" style="width: 100%; margin: 0pt auto; overflow: auto; height: 100%;">
+<div style="width: 100%; max-width: 800pt; margin: 0pt auto; height: 100%; display: flex; flex-flow: column; overflow: hidden; align-content: center;">
+    
+    <div style="flex: 0 1 auto">
+        <div class="title-bar">
+            <i id="menu-toggle" class="fa fa-bars"></i>
+            <div style="flex: 1 1; text-align: center; font-weight: bold; font-size: 20px;">බෞද්ධ පුස්තකාලය</div>
+        </div>
+        <div id="search-bar-div">
+            <input class="search-bar" type="text" placeholder="පොත් සොයන්න">
+
+            <div id="menu-list" style="left: 0; top: 0;">
+                <a class="menu-list-item" href="#content-about"><i class="fa fa-male fa-fw"></i> අප ගැන</a>
+                <!--<a class="menu-list-item" href="#content-usage"><i class="fa fa-question-circle fa-fw"></i> භාවිතයට උපදෙස්</a>-->
+                <a class="menu-list-item" href="https://pitaka.lk/main"><i class="fa fa-file-text-o fa-fw" style="color: darkgreen;"></i> සරල ත්‍රිපිටකය</a>
+                <a class="menu-list-item" href="./dict"><i class="fa fa-leaf fa-fw" style="color: green;"></i> පාළි-සිංහල ශබ්දකෝෂය</a>
+                <a class="menu-list-item" href="https://pitaka.lk/bjt"><i class="fa fa-book fa-fw" style="color: darkgreen;"></i> බුද්ධ ජයන්ති ත්‍රිපිටකය</a>
+                <!--<a class="menu-list-item" href="https://pitaka.lk/books"><i class="fa fa-pagelines fa-fw" style="color: darkgreen;"></i> බෞද්ධ පොත් සංචිතය</a>-->
+                <a class="menu-list-item" href="https://www.facebook.com/pitaka.lk"><i style="color: blue;" class="fa fa-facebook fa-fw"></i> Facebook පිටුව</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="scrolling-div" style="overflow-y: auto; position: relative; flex: 1 1 auto;">
+        <div id="search-status" style="font-size: 11pt; text-align: center; padding: 5pt;">පොත් සෙවීම සඳහා ඉහත කොටුවේ type කරන්න.</div>
+        <table id="search-results" style="width: 100%; display: none;">
+            <thead><tr>
+                    <td><i class="fa fa-book fa-fw"></i> පොතේ නම</td>
+                    <td><i class="fa fa-folder fa-fw"></i> ගොනුව</td>
+                    <td><i class="fa fa-download fa-fw"></i> භාගත කිරීම</td>
+                    <td><i class="fa fa-tasks fa-fw"></i> භාගත ගණන</i></td>
+            </tr></thead>
+            <tbody id="results-tbody"></tbody>
+        </table>
+
+        <div id="book-rects-div" style="text-align:center; width: 100%; margin: 0pt auto;"></div>
+        <div id="content-about" style="font-size: 14px; padding: 10px; text-align: center; background-color: beige;">
+            මෙහි ඇතුලත් කර ඇති පොත් බොහොමයක් පැරණි බෞද්ධ පොත් වන අතර ධර්ම දානය සඳහා ලියන ලද පොත් වේ. කතෘ ජිවත්ව සිටින
+            අවස්ථාවලදී කතු අවසරය සහිතව අඩවියට එක් කිරීමට උත්සාහ දරා ඇත. ඔබ කතෘ වන යම් පොතක් මෙම අඩවියෙන් ඉවත් කර ගැනීමට අවශ්‍ය නම් හෝ 
+            මෙහි නොමැති පොත් අඩවියට ධර්ම දානය පිණිස ඇතුළු කිරීමට අප වෙත ලියන්න admin <i class="fa fa-at"></i> pitaka.lk.<br>
+            ෴෴
+        </div>
+    </div>
 </div>
+
+
 
 <script src="../scripts/jquery-1.11.1.min.js"></script>
 <script src="../scripts/underscore-min.js"></script>
 <script src="../scripts/utilities.js"></script>
+<script src="../scripts/singlish.js"></script>
+<script src="books-list.js"></script>
 <script src="scripts.js"></script>
 <script>
     $( document ).ready( function() {
+        $('.search-bar').on('input', function(e) {
+            performSearch(e);
+        }); // TODO: give focus to the search bar on page load
+        extractHtmlFiles();
         populateBookTables();
 
-        $('[tip]').hover(showToolTip, hideToolTip);
+        $('.title-bar').mouseup(function (e) {
+            $('#menu-list').animate({height: 'toggle'}, 200);
+            e.stopPropagation();
+        });
+        $('body').mouseup(function() {
+            $('#menu-list').animate({height: 'hide'}, 200);
+        });
+
+        $('body').on('mouseenter', '[tip]', showToolTip);
+        $('body').on('mouseleave', '[tip]', hideToolTip);
+
+        $('#search-results').on('click', 'a[type=' + linkType.COLL + ']', loadCollection);
     });
 </script>
 
