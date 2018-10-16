@@ -11,66 +11,32 @@
 
 body {
     font-family: noto-serif;
+    font-size: 16px; 
 }
-div.book-rect {
-    border: 5px solid gray;
-    padding: 15px;
-    margin: 5px;
-    text-align: center;
-    position: relative;
-}
-
-div.book-rect.medium {
-    width: 150px;
-    height: 225px;
-    /*line-height: 225px;*/
-    font-size: 20px;
+i.ss-hide {font-style: normal;}
+@media screen and (max-width: 400pt) {
+    .ss-hide {
+        display: none;
+    }
 }
 
-div.book-rect.small {
-    width: 125px;
-    height: 188px;
-    font-size: 18px;
-}
+table {border: 1px solid black;}
+thead td { font-weight: bold; padding: 4pt; background-color: antiquewhite; }
+tr.result:nth-child(even) {background-color: whitesmoke; }
+td {padding-left: 4px; word-break: break-word;}
+tr.result:hover { background-color: antiquewhite; }
 
-div.book-rect .links {
-    position: absolute;
-    bottom: 10px;
-    left: 0px;
-    width: 100%;
-}
+.result-files { font-size: 14px; }
+.result-book-coll { color: gray; font-size: 14px; }
 
-span.book-name {
-    display: inline-block;
-    vertical-align: middle;
-    line-height: normal;
-}
+div.group { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+div.group-header { font-size: 20px; font-weight: bold; padding: 5px; }
+div.book { width: 170px; }
+div.book-rect { height: 188px; border: 5px solid gray; padding: 15px 5px 15px 5px; margin: 5px; text-align: center; position: relative;}
+div.book-rect .links { position: absolute; bottom: 5px; left: 0px; width: 100%; font-size: 14px; background-color: lightgrey;}
+div.book-name { display: inline-block; vertical-align: middle;    line-height: normal; word-break: break-word; }
+div.book-author { font-size: 12px;   color: brown; padding-top: 3px;}
+div.book-desc { display: block; clear: both; font-size: 12px;}
 
-span.book-author {
-    font-size: 12px;
-    font-weight: bold;
-    font-style: italic;
-}
 
-span.links {
-    font-size: 16px;
-    background-color: lightgrey;
-}
-
-.book-desc {
-    display: block;
-    clear: both;
-    font-size: 12px;
-}
-
-td {
-    padding-right: 20px;
-    width: 220px;
-    vertical-align: top;
-}
-
-div.group-header {
-    font-size: 24px;
-    font-weight: bold;
-}
 

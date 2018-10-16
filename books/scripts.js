@@ -1,6 +1,152 @@
 /**
  * Created by Janaka on 2017-07-15.
  */
+var resultSettings = {
+    minQueryLength: 2,
+    maxSinglishLength: 10,
+    maxResults: 100,  // search stopped after getting this many matches
+};
+
+var linkType = {
+    PDF: 0,
+    HTML: 1,
+    FOLDER: 2,
+    ZIP: 3,
+    COLL: 4,
+    APK: 5,
+    WORD: 6,
+    EXCEL: 7,
+    IMAGE: 8,
+    TEXT: 9,
+};
+
+var linkDesc = [
+    ['fa-file-pdf-o', 'PDF', 'PDF file එක භාගත කරගන්න'],
+    ['fa-chrome', 'HTML', 'HTML file එක වෙත පිවිසෙන්න'],
+    ['fa-folder-o', 'ගොනුව', 'ගොනුව වෙත පිවිසෙන්න'],
+    ['fa-file-zip-o', 'ZIP', 'ZIP file එක භාගත කරගන්න'],
+    ['fa-folder-o', 'ගොනුව', 'ගොනුව වෙත පිවිසෙන්න'],
+    ['fa-android', 'APP', 'android මෘදුකාංගය ලබාගන්න'],
+    ['fa-file-word-o', 'DOC', 'Word file එක භාගත කරගන්න'],
+    ['fa-file-excel-o', 'EXCEL', 'Excel වගුව භාගත කරගන්න'],
+    ['fa-file-image-o', 'IMAGE', 'පින්තූරය භාගත කරගන්න'],
+    ['fa-file-text-o', 'TXT', 'TEXT file එක වෙත පිවිසෙන්න'],
+];
+
+function extToLinkType(extType) {
+    switch(extType.split('.').pop()) {
+        case "htm": case "html": return linkType.HTML;
+        case 'zip': return linkType.ZIP;
+        case 'collection': return linkType.COLL;
+        case 'pdf': return linkType.PDF;
+        case 'apk': return linkType.APK;
+        case 'doc': case 'docx': return linkType.WORD;
+        case 'xls': case 'xlsx': return linkType.EXCEL;
+        case 'jpg': case 'png': return linkType.IMAGE;
+        case 'txt': return linkType.TEXT;
+    }
+    console.error('unhandled extension ' + extType);
+}
+/*const typeSet = new Set();
+books_list.forEach(info=>info.files.forEach(file => typeSet.add(file.type)));
+console.log(typeSet);*/
+
+function performSearch(e) {
+    e.stopPropagation();
+    $('#scrolling-div').scrollTop(0);
+
+    var query = $('.search-bar').val().toLowerCase();
+
+    var table = $('#search-results'), statusDiv = $('#search-status');
+    table.hide().find('.result').remove();
+    if (query.length < resultSettings.minQueryLength) {
+        statusDiv.text("අඩුම තරමේ අකුරු " + resultSettings.minQueryLength + " ක් වත් ඇතුළු කරන්න.");
+        return;
+    }
+    console.log(query);
+
+    // query could be in roman script
+    if (isSinglishQuery(query) && query.length > resultSettings.maxSinglishLength) {
+        statusDiv.text("සිංග්ලිෂ් වලින් සෙවීමේ දී උපරිමය අකුරු " + resultSettings.maxSinglishLength + " කට සීමා කර ඇත.");
+        return;
+    }
+
+    var results = searchDataSet(query);
+    displayResults(query, results); // display the results
+}
+
+function displayResults(query, results) {
+    var table = $('#search-results'), statusDiv = $('#search-status');
+    table.hide().find('.result').remove();
+
+    if (!results.length) {
+        statusDiv.text("“" + query + "” යන සෙවුම සඳහා ගැළපෙන පොත් කිසිවක් හමුවුයේ නැත. වෙනත් සෙවුමක් උත්සාහ කර බලන්න.");
+        return;
+    }
+    // add results
+    var tbody = table.children('tbody').first();
+    $.each(results, function (_1, result) {
+        //var downloads = result.files.reduce((acc, file) => acc + file.downloads, 0);
+        var downloads = _.reduce(result.files, function(acc, file){ return acc + file.downloads; }, 0);
+        $('<tr/>').attr('book-name', result.name).addClass('result')
+            .append($('<td/>').text(result.name).addClass('result-book-name'))
+            .append($('<td/>').text(result.coll).addClass('result-book-coll'))
+            .append(getFilesDisplay(result.files))
+            .append($('<td/>').text(downloads || '').addClass('result-downloads')) // dont show zero
+            .appendTo(tbody);
+    });
+    table.slideDown('fast');
+    if (results.length < resultSettings.maxResults) {
+        statusDiv.text("“" + query + "” යන සෙවුම සඳහා ගැළපෙන පොත් " + results.length + " ක් හමුවුනා.");
+    } else {
+        statusDiv.text("ඔබගේ සෙවුම සඳහා ගැළපෙන පොත් " + results.length + " කට වඩා හමුවුනා. එයින් මුල් පොත් " + resultSettings.maxResults + " පහත දැක්වේ.");
+    }
+}
+
+function getFilesDisplay(files) {
+    const td = $('<td/>').addClass('result-files');
+    $.each(files, function (_1, file) {
+        var info = [file.url, extToLinkType(file.type), Math.round(file.size / 1024 / 1024)];
+        td.append(createLinkButton(info));
+    });
+    return td;
+}
+function loadCollection(e) {
+    var collName = $(e.currentTarget).parents('tr[book-name]').attr('book-name');
+    console.log(collName);
+    displayResults(collName, _.filter(books_list, function(info) { return info.coll == collName; }));
+    return false;
+}
+function searchDataSet(query) {
+    var results = [];
+    // Search all singlish_combinations of translations from roman to sinhala
+    var words = isSinglishQuery(query) ? getPossibleMatches(query) : [];
+    words.push(query); // has english book names too 
+    // TODO: improve this code to ignore na na la la sha sha variations at the comparison
+    var queryReg = new RegExp(words.join('|'), "i"), match = -1;
+    $.each(books_list, function (i, info) {
+        if (info.name.search(queryReg) != -1) {
+            results.push(info);
+            if (results.length == resultSettings.maxResults) {
+                return false;
+            }
+        }
+    });
+
+    console.log("Search in index found " + results.length + " hits");
+    return results;
+}
+
+function createLinkButton(info) {
+    var linkD = linkDesc[info[1]];
+    var sizeText = info[2] < 1024 ? info[2] + ' MB' : (info[2] / 1024).toFixed(1) + ' GB';
+    var link = $('<a/>').addClass('button').attr('tip', linkD[2]).attr('href', info[0]).attr('type', info[1])
+        .append($('<i/>').addClass('fa ' + linkD[0]), $('<span/>').text(' ' + linkD[1] + ' ' + sizeText));
+    if (info[1] == linkType.FOLDER) {
+        link.attr('target', '_blank');
+    }
+    return link;
+}
 
 var rectSize = {
     SMALL: 'small',
@@ -13,24 +159,68 @@ var maxBooksPerRow = {
     'big': 4
 };
 
-var linkType = {
-    PDF: 0,
-    HTML: 1,
-    FOLDER: 2,
-    ZIP: 3
-};
-
-var linkDesc = [
-    ['fa-file-pdf-o', 'PDF', 'PDF file එක භාගත කරගන්න'],
-    ['fa-file-text-o', 'HTML', 'HTML file එක වෙත පිවිසෙන්න'],
-    ['fa-folder-o', 'ගොනුව', 'ගොනුව වෙත පිවිසෙන්න'],
-    ['fa-file-zip-o', 'ZIP', 'ZIP file එක භාගත කරගන්න']
-];
-
 var bookColors = ['bisque', 'DarkKhaki', 'DarkSalmon', 'darkorange', 'gold', 'lightblue', 'LavenderBlush', 'lightgreen'];
 
 var typedBookDesc = "යතුරුලියනය කරන ලද ප්‍රමාණයෙන් කුඩා ඉතා පැහැදිලි";
 var scannedBookDesc = "ස්කෑන් කර සකසන ලද පොතකි";
+
+function addGroup(groupInd, group) {
+    var groupHeader = $('<div/>').addClass('group-header').text(group.name).attr('id', group.anchor);
+    var table = $('<div/>').addClass('group');
+    $.each(group.books, function(bookInd, book) {
+        var links = $('<div/>').addClass('links');
+        $.each(book.urls, function(_1, url) {
+            links.append(createLinkButton(url));
+        });
+        var rect = $('<div/>').addClass('book-rect').addClass(group.rect)
+            .append($('<div/>').addClass('book-name').text(book.name), links)
+            .css('background-color', getBookColor(groupInd, bookInd));
+        if ('css' in book) {
+            rect.css(book.css);
+        }
+        if ('author' in book) {
+            rect.append($('<div/>').addClass('book-author').text(book.author));
+        }
+        var desc = $('<div/>').addClass('book-desc').text(book.desc);
+        table.append($('<div/>').append(rect, desc).addClass('book'));
+    });
+    $('#book-rects-div').append(groupHeader, table, $('<hr/>'));
+
+}
+
+function getBookColor(gInd, bInd) {
+    var colorInd = ((gInd + 1) + (bInd + 1)) % bookColors.length;
+    return bookColors[colorInd];
+}
+
+function populateBookTables() {
+    $.each(groups, function(groupInd, group) {
+        addGroup(groupInd, group);
+    });
+}
+
+var book_to_html = {}; // add any new mappings here directly
+function extractHtmlFiles() {
+    _.each(groups, function(group) { 
+        _.each(group.books, function(book) {
+            _.each(book.urls, function(url) {
+                if (url[1] == linkType.HTML) {
+                    book_to_html[book.name] = {
+                        type: 'htm',
+                        size: url[2] * 1024 * 1024,
+                        downloads: 0, 
+                        url: url[0],
+                    };
+                }
+            });
+        });
+    });
+    _.each(books_list, function(book) {
+        if (book_to_html[book.name]) {
+            book.files.push(book_to_html[book.name]);
+        }
+    });
+}
 
 var groups = [
     {
@@ -336,56 +526,3 @@ var groups = [
         ]
     }
 ];
-
-function addGroup(groupInd, group) {
-    var groupHeader = $('<div/>').addClass('group-header').text(group.name).attr('id', group.anchor);
-    var table = $('<table/>').addClass('group');
-    var curBooksCount = maxBooksPerRow[group.rect], tr;
-    $.each(group.books, function(bookInd, book) {
-        if (curBooksCount >= maxBooksPerRow[group.rect]) {
-            tr = $('<tr/>').attr('align', 'center'); table.append(tr); curBooksCount = 0;
-        }
-        var links = $('<span/>').addClass('links');
-        $.each(book.urls, function(_1, url) {
-            links.append(createLinkButton(url));
-        });
-        var rect = $('<div/>').addClass('book-rect').addClass(group.rect)
-            .append($('<span/>').addClass('book-name').text(book.name), links)
-            .css('background-color', getBookColor(groupInd, bookInd));
-        if ('css' in book) {
-            rect.css(book.css);
-        }
-        if ('author' in book) {
-            rect.append($('<span/>').addClass('book-author').text(book.author));
-        }
-        //var details = $('<span/>').addClass('details')
-        var desc = $('<div/>').addClass('book-desc').text(book.desc);
-        tr.append($('<td/>').append(rect, desc));
-        curBooksCount++;
-        console.log(maxBooksPerRow[group.rect]);
-    });
-    $('#main-div').append($('<hr/>'), groupHeader, table);
-
-}
-
-function getBookColor(gInd, bInd) {
-    var colorInd = ((gInd + 1) + (bInd + 1)) % bookColors.length;
-    return bookColors[colorInd];
-}
-
-function populateBookTables() {
-    $.each(groups, function(groupInd, group) {
-        addGroup(groupInd, group);
-    });
-}
-
-function createLinkButton(url) {
-    var linkD = linkDesc[url[1]];
-    var sizeText = url[2] < 1024 ? url[2] + ' MB' : (url[2] / 1024).toFixed(1) + ' GB';
-    var link = $('<a/>').addClass('button').attr('tip', linkD[2]).attr('href', url[0])
-        .append($('<i/>').addClass('fa fa-lg ' + linkD[0]), $('<span/>').text(' ' + linkD[1] + ' ' + sizeText));
-    if (url[1] == linkType.FOLDER) {
-        link.attr('target', '_blank');
-    }
-    return link;
-}
