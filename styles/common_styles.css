@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'un-abhaya';
-    src: local('###'), url('../fonts/NotoSansSinhala-Regular.ttf') format('truetype');
+    src: local('###'), url('../fonts/NotoSerifSinhala-Regular.ttf') format('truetype');
     font-weight: normal;
 }
 @font-face {
     font-family: 'un-abhaya';
-    src: local('###'), url('../fonts/NotoSansSinhala-Bold.ttf') format('truetype');
+    src: local('###'), url('../fonts/NotoSerifSinhala-Bold.ttf') format('truetype');
     font-weight: bold;
 }
 
