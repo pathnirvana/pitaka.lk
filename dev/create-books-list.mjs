@@ -1,6 +1,6 @@
 /**
  * create the list of books by reading the files/urls from the mediafire using mediafire api
- * node --experimental-modules .\dev\create-books-list.mjs
+ * node --experimental-modules dev/create-books-list.mjs
  */
 
 "use strict";
