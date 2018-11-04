@@ -1,1 +1,0 @@
-c:\Miniconda2\Scripts\pyinstaller.exe --clean -w -i favicon.ico launcher.py
