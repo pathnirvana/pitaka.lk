@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>බෞද්ධ පොත් Sinhala Buddhist Books</title>
+    <meta name="description" content="Buddhist Books of Sri Lanka - Sinhala Language">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="../styles/common_styles.css" />
+    <link rel="stylesheet" href="../styles/font-awesome.css"/>
+    <link rel="stylesheet" href="styles.css"/>
+    <style>
+        
+    </style>
+</head>
+<body>
+
+<div style="width: 100%; max-width: 800pt; margin: 0pt auto; height: 100%; display: flex; flex-flow: column; overflow-y: auto; align-content: center;">
+    
+    <div style="flex: 0 1 auto">
+        <div class="title-bar">
+            <div style="flex: 1 1; text-align: center; font-weight: bold; font-size: 20px;">බෞද්ධ පුස්තකාලය පොත් ලැයිස්තුව</div>
+        </div>
+    </div>
+
+    <div id="scrolling-div" style="overflow-y: auto; position: relative; flex: 1 1 auto;">
+        <!--<div id="search-status" style="font-size: 11pt; text-align: center; padding: 5pt;">පොත් සෙවීම සඳහා ඉහත කොටුවේ type කරන්න.</div>-->
+        <table id="search-results" style="width: 100%; display: none;">
+            <thead><tr>
+                    <td><i class="fa fa-book fa-fw"></i> පොතේ නම</td>
+                    <td><i class="fa fa-folder fa-fw"></i> ගොනුව</td>
+                    <td><i class="fa fa-download fa-fw"></i> භාගත කිරීම</td>
+                    <td><i class="fa fa-tasks fa-fw"></i> භාගත ගණන</i></td>
+            </tr></thead>
+            <tbody id="results-tbody"></tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script src="../scripts/jquery-1.11.1.min.js"></script>
+<script src="../scripts/underscore-min.js"></script>
+<script src="../scripts/utilities.js"></script>
+<script src="../scripts/singlish.js"></script>
+<script src="books-list.js"></script>
+<script src="scripts.js"></script>
+<script>
+    $( document ).ready( function() {
+        extractHtmlFiles();
+        displayResults("", books_list);
+
+        $('body').on('mouseenter', '[tip]', showToolTip);
+        $('body').on('mouseleave', '[tip]', hideToolTip);
+
+        $('#search-results').on('click', 'a[type=' + linkType.COLL + ']', loadCollection);
+    });
+</script>
+
+</body>
+</html>

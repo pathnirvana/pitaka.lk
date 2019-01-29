@@ -139,12 +139,9 @@ function searchDataSet(query) {
 
 function createLinkButton(info) {
     var linkD = linkDesc[info[1]];
-    var sizeText = info[2] < 1024 ? info[2] + ' MB' : (info[2] / 1024).toFixed(1) + ' GB';
+    var sizeText = info[1] != linkType.COLL ? (info[2] < 1024 ? info[2] + ' MB' : (info[2] / 1024).toFixed(1) + ' GB') : '';
     var link = $('<a/>').addClass('button').attr('tip', linkD[2]).attr('href', info[0]).attr('type', info[1])
         .append($('<i/>').addClass('fa ' + linkD[0]), $('<span/>').text(' ' + linkD[1] + ' ' + sizeText));
-    if (info[1] == linkType.FOLDER) {
-        link.attr('target', '_blank');
-    }
     return link;
 }
 
@@ -199,7 +196,22 @@ function populateBookTables() {
     });
 }
 
-var book_to_html = {}; // add any new mappings here directly
+// html files are not uploaded to mediafire - hence extract them from the groups definition below
+// and add them to the books_list
+var book_to_html = { // add any new mappings here directly
+    "පාලිභාෂාවතරණය 1 - පොල්වත්තේ බුද්ධදත්ත හිමි": {
+        size: 1702 * 1024, url: "http://pitaka.lk/books/Palibhashavatharanaya_1.htm", type: "htm", downloads: 0
+    },
+    "පාලිභාෂාවතරණය 2 - පොල්වත්තේ බුද්ධදත්ත හිමි": {
+        size: 2984 * 1024, url: "http://pitaka.lk/books/Palibhashavatharanaya_2.htm", type: "htm", downloads: 0
+    },
+    "පාලිභාෂාවතරණය 3 - පොල්වත්තේ බුද්ධදත්ත හිමි": {
+        size: 3059 * 1024, url: "http://pitaka.lk/books/Palibhashavatharanaya_3.htm", type: "htm", downloads: 0
+    },
+    "සරල පාලි ශික්ෂකය - බළන්ගොඩ ආනන්ද මෛත්‍රිය හිමි": {
+        size: 2734 * 1024, url: "http://pitaka.lk/books/Sarala_Pali_Shikshakaya.htm", type: "htm", downloads: 0
+    },
+}; 
 function extractHtmlFiles() {
     _.each(groups, function(group) { 
         _.each(group.books, function(book) {
@@ -495,9 +507,9 @@ var groups = [
                 css: { "font-size": "18px" },
                 desc: "පොත් තුනම භාගත කරගන්න",
                 author: "පොල්වත්තේ බුද්ධදත්ත හිමි",
-                urls: [["http://www.mediafire.com/file/md9hgduvqr5dctp/Palibhashavatharanaya_1.pdf", linkType.PDF, 19],
-                    ["http://www.mediafire.com/file/e0mfud2xa2v1xd5/Palibhashavatharanaya_2.pdf", linkType.PDF, 36],
-                    ["http://www.mediafire.com/file/75az2rx6k6bg5ch/Palibhashavatharanaya_3.pdf", linkType.PDF, 29]],
+                urls: [["http://www.mediafire.com/file/md9hgduvqr5dctp/Palibhashavatharanaya_1.pdf", linkType.PDF, 2],
+                    ["http://www.mediafire.com/file/e0mfud2xa2v1xd5/Palibhashavatharanaya_2.pdf", linkType.PDF, 2],
+                    ["http://www.mediafire.com/file/75az2rx6k6bg5ch/Palibhashavatharanaya_3.pdf", linkType.PDF, 2]],
             },
             {
                 name: "සරල පාලි ශික්ෂකය",
