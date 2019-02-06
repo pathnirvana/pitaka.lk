@@ -1,5 +1,16 @@
+@font-face {
+    font-family: 'un-abhaya';
+    src: local('###'), url('../fonts/NotoSerifSinhala-Regular.ttf') format('truetype');
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'un-abhaya';
+    src: local('###'), url('../fonts/NotoSerifSinhala-Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+
 body {
-    font-family: 'Noto Serif Sinhala';
+    font-family: un-abhaya;
     text-align: justify;
 }
 
