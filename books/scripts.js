@@ -272,7 +272,8 @@ var groups = [
                 name: "මිලින්ද ප්‍රශ්නය",
                 desc: typedBookDesc,
 				author: "හීනටිකුඹුරේ සුමංගල හිමි",
-                urls: [["https://www.mediafire.com/file/2q9nfk024p9doee/Milinda%20Prashnaya.pdf", linkType.PDF, 4], ["http://pitaka.lk/books/Milinda_Prashnaya.htm", linkType.HTML, 9]],
+                urls: [["https://www.mediafire.com/file/2q9nfk024p9doee/Milinda%20Prashnaya.pdf", linkType.PDF, 4], 
+                    ["http://pitaka.lk/books/Milinda_Prashnaya.htm", linkType.HTML, 9]],
             },
             {
                 name: "සරළ සිංහල මිලින්ද ප්‍රශ්නය",
@@ -316,7 +317,7 @@ var groups = [
                 name: "බෞද්ධයාගේ අත්පොත",
                 desc: typedBookDesc,
                 urls: [["http://www.mediafire.com/file/38w9pjbq9qr3dbs/Bauddhayage_Athpotha.pdf", linkType.PDF, 2],
-                    ["http://pitaka.lk/books/rc/Bauddhayage_Athpotha.htm", linkType.HTML, 2.3]],
+                    ["http://pitaka.lk/books/bauddhayage-athpotha/", linkType.HTML, 2.3]],
             },
             {
                 name: "අභිධර්මයේ මූලික කරුණු",
@@ -442,12 +443,19 @@ var groups = [
         anchor: "old",
         rect: rectSize.SMALL,
         books: [
-			{
+            {
+                name: "සීහළවත්ථු",
+                desc: typedBookDesc,
+                author: "ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි",
+                urls: [["http://www.mediafire.com/file/esntbjbec1a71mz/Sihala_Vatthu.pdf", linkType.PDF, 1],
+                    ["http://pitaka.lk/books/Sihala_Vatthu.htm", linkType.HTML, 1.6]],
+            },
+			/*{
                 name: "දුර්ලභ ඉපැරණි පොත් සමුහය",
                 css: { "font-size": "16px" },
                 desc: "නාඋයන ආරණ්‍යයෙන් ස්කෑන් කර සකසන ලද පොත් 150 ක්",
                 urls: [["http://www.mediafire.com/folder/f7yy971gjkeak/Nauyana_Books", linkType.FOLDER, 10000]],
-            },
+            },*/
             {
                 name: "සද්ධර්මාලංකාරය",
                 css: { "font-size": "16px" },
@@ -474,13 +482,6 @@ var groups = [
                 urls: [["http://www.mediafire.com/file/quid07uqk46yqu6/Buthsarana.pdf", linkType.PDF, 27]],
             },
             {
-                name: "සීහළවත්ථු",
-                desc: typedBookDesc,
-                author: "ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි",
-                urls: [["http://www.mediafire.com/file/esntbjbec1a71mz/Sihala_Vatthu.pdf", linkType.PDF, 1],
-                    ["http://pitaka.lk/books/Sihala_Vatthu.htm", linkType.HTML, 1.6]],
-            },
-            {
                 name: "සිංහල දීපවංශය",
                 desc: scannedBookDesc,
                 urls: [["http://www.mediafire.com/file/67n99d989ee3ble/Sinhala_Deepavansaya.pdf", linkType.PDF, 12]],
@@ -502,6 +503,13 @@ var groups = [
         anchor: "pali_other",
         rect: rectSize.MEDIUM,
         books: [
+            {
+                name: "කර්ම විපාක",
+                desc: typedBookDesc,
+				author: "රිදියගම සුධම්මාභිවංශ හිමි",
+                urls: [["http://www.mediafire.com/file/hoepn8zlja8h16f/Karma_Vipaka.pdf", linkType.PDF, 1],
+                    ["http://pitaka.lk/books/karma-vipaka/", linkType.HTML, 1.5]],
+            },
             {
                 name: "පාලිභාෂාවතරණය 1-3",
                 css: { "font-size": "18px" },
@@ -527,13 +535,6 @@ var groups = [
                 name: "දහම් පාසල් ධර්මාආචාර්‍ය පොත්",
                 desc: scannedBookDesc,
                 urls: [["https://www.mediafire.com/folder/dyokffivchi1r/Daham_Pasal_Poth", linkType.FOLDER, 1500]],
-            },
-			{
-                name: "කර්ම විපාක",
-                desc: typedBookDesc,
-				author: "රිදියගම සුධම්මාභිවංශ හිමි",
-                urls: [["http://www.mediafire.com/file/hoepn8zlja8h16f/Karma_Vipaka.pdf", linkType.PDF, 1],
-                    ["http://pitaka.lk/books/Karma_Vipaka.htm", linkType.HTML, 1.5]],
             },
         ]
     }
