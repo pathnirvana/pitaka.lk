@@ -22,7 +22,7 @@ var linkType = {
 
 var linkDesc = [
     ['fa-file-pdf-o', 'PDF', 'PDF file එක භාගත කරගන්න'],
-    ['fa-chrome', 'HTML', 'HTML file එක වෙත පිවිසෙන්න'],
+    ['fa-chrome', 'WEB', 'HTML file එක වෙත පිවිසෙන්න'],
     ['fa-folder-o', 'ගොනුව', 'ගොනුව වෙත පිවිසෙන්න'],
     ['fa-file-zip-o', 'ZIP', 'ZIP file එක භාගත කරගන්න'],
     ['fa-folder-o', 'ගොනුව', 'ගොනුව වෙත පිවිසෙන්න'],
@@ -251,15 +251,20 @@ var groups = [
                 urls: [["http://www.mediafire.com/file/q6mcjc8jpo1dp8o/APZoysa_Tripitakaya.zip", linkType.ZIP, 60]],
             },
             {
+                name: "සිංහල අටුවා පරිවර්තනය",
+                desc: "ඒ. පී. සොයිසා සහ රාජකීය ආසියාතික සමිතිය පොත් 21",
+                urls: [["http://www.mediafire.com/folder/tvx19bwhxzna0/", linkType.FOLDER, 1600]],
+            },
+            {
                 name: "පාළි අටුවා පොත්",
                 desc: "හේවාවිතාරණ මුද්‍රණය PDF පොත් 49",
-                urls: [["https://www.mediafire.com/folder/31bz1yz9la6m9/Pali_Attakatha", linkType.FOLDER, 3400]],
+                urls: [["https://www.mediafire.com/folder/31bz1yz9la6m9/", linkType.FOLDER, 3400]],
             },
             {
                 name: "විශුද්ධි මාර්ගය",
                 desc: typedBookDesc,
                 urls: [["http://www.mediafire.com/file/4pz6zy81895h5n6/Vishuddhi_Margaya.pdf", linkType.PDF, 6],
-                    ["http://pitaka.lk/books/Vishuddhi_Margaya.htm", linkType.HTML, 9]],
+                    ["http://pitaka.lk/books/vishuddhi-margaya/", linkType.HTML, 9]],
             },
 			{
                 name: "සම සතළිස් කර්මස්ථාන භාවනා",
@@ -304,12 +309,12 @@ var groups = [
         ]
     },
     {
-        name: "රේරුකානේ චන්ද්‍රවිමල හිමියන්ගේ පොත්",
+        name: "රේරුකානේ චන්දවිමල හිමියන්ගේ පොත්",
         anchor: "rerukane",
         rect: rectSize.SMALL,
         books: [
             {
-                name: "යතුරුලියනය කළ පොත් 20 ක්",
+                name: "යතුරුලියනය කළ පොත් 21 ක්",
                 desc: typedBookDesc,
                 urls: [["http://www.mediafire.com/file/7gnmxf14xhgzl08/", linkType.ZIP, 30]],
             },
@@ -323,13 +328,13 @@ var groups = [
                 name: "අභිධර්මයේ මූලික කරුණු",
                 desc: typedBookDesc,
                 urls: [["http://www.mediafire.com/file/epmoc5661k704uc/Abhidharmaye_Mulika_Karunu.pdf", linkType.PDF, 1],
-                    ["http://pitaka.lk/books/rc/Abhidharmaye_Mulika_Karunu.htm", linkType.HTML, 2]],
+                    ["http://pitaka.lk/books/abhidharmaye-mulika-karunu/", linkType.HTML, 2]],
             },
             {
                 name: "අභිධර්ම මාර්ගය",
                 desc: typedBookDesc,
                 urls: [["http://www.mediafire.com/file/bbz96rxw26ck46t/Abhidharma%20Margaya.pdf", linkType.PDF, 2],
-                    ["http://pitaka.lk/books/rc/Abhidharma_Margaya.htm", linkType.HTML, 3.4]],
+                    ["http://pitaka.lk/books/abhidharma-margaya/", linkType.HTML, 3.4]],
             },
             {
                 name: "බෝධිපාක්ෂික ධර්ම විස්තරය",
@@ -359,13 +364,13 @@ var groups = [
                 name: "චතුරාර්‍ය්‍ය සත්‍යය",
                 desc: typedBookDesc,
                 urls: [["http://www.mediafire.com/file/cotp292wjfqvv44/Chathurarya_Sathya.pdf", linkType.PDF, 1],
-                    ["http://pitaka.lk/books/rc/Chathurarya_Sathya.htm", linkType.HTML, 1.6]],
+                    ["http://pitaka.lk/books/chathurarya-sathya/", linkType.HTML, 1.6]],
             },
             {
                 name: "ධර්‍ම විනිශ්චය",
                 desc: typedBookDesc,
                 urls: [["http://www.mediafire.com/file/g19jfrca0cl99a0/Dharma_Winishchaya.pdf", linkType.PDF, 2],
-                    ["http://pitaka.lk/books/rc/Dharma_Winishchaya.htm", linkType.HTML, 2.2]],
+                    ["http://pitaka.lk/books/dharma-winishchaya/", linkType.HTML, 2.2]],
             },
             {
                 name: "කෙලෙස් එක්දහස් පන්සියය",
@@ -377,7 +382,7 @@ var groups = [
                 name: "පාරමිතා ප්‍ර‍කරණය",
                 desc: typedBookDesc,
                 urls: [["http://www.mediafire.com/file/auwlvdl970zopdw/Paramitha_Prakaranaya.pdf", linkType.PDF, 3],
-                    ["http://pitaka.lk/books/rc/Paramitha_Prakaranaya.htm", linkType.HTML, 3.4]],
+                    ["http://pitaka.lk/books/paramitha-rakaranaya/", linkType.HTML, 3.4]],
             },
             {
                 name: "පොහොය දිනය",
@@ -389,7 +394,7 @@ var groups = [
                 name: "පුණ්‍යෝපදේශය",
                 desc: typedBookDesc,
                 urls: [["http://www.mediafire.com/file/puc4b48f54a5ieg/Punyopadeseya.pdf", linkType.PDF, 2],
-                    ["http://pitaka.lk/books/rc/Punyopadeseya.htm", linkType.HTML, 1.8]],
+                    ["http://pitaka.lk/books/punyopadeshaya/", linkType.HTML, 1.8]],
             },
             {
                 name: "සතිපට්ඨාන භාවනා ක්‍ර‍මය (බුරුමයේ)",
@@ -402,13 +407,13 @@ var groups = [
                 css: { "font-size": "16px" },
                 desc: typedBookDesc,
                 urls: [["http://www.mediafire.com/file/kbcoc1y3477ee7e/Shasanavatharanaya.pdf", linkType.PDF, 2],
-                    ["http://pitaka.lk/books/rc/Shasanavatharanaya.htm", linkType.HTML, 3.1]],
+                    ["http://pitaka.lk/books/shasanavatharanaya/", linkType.HTML, 3.1]],
             },
             {
                 name: "සූවිසි මහ ගුණය",
                 desc: typedBookDesc,
                 urls: [["http://www.mediafire.com/file/ova55k0150nr24v/Suvisi_Gunaya.pdf", linkType.PDF, 3],
-                    ["http://pitaka.lk/books/rc/Suvisi_Gunaya.htm", linkType.HTML, 5.4]],
+                    ["http://pitaka.lk/books/suvisi-gunaya/", linkType.HTML, 5.4]],
             },
             {
                 name: "උභය ප්‍රාතිමෝක්‍ෂය",
@@ -436,6 +441,12 @@ var groups = [
                 urls: [["http://www.mediafire.com/file/07fm80acy50g0o0/Patichcha_Samuppada_Vivarana.pdf", linkType.PDF, 2],
                     ["http://pitaka.lk/books/rc/Patichcha_Samuppada_Vivarana.htm", linkType.HTML, 2.4]],
             },
+            {
+                name: "අභිධර්මාර්ථ සංග්‍රහය",
+                css: { "font-size": "16px" },
+                desc: scannedBookDesc,
+                urls: [["http://www.mediafire.com/file/ylikc6kvl0jc943", linkType.PDF, 29]],
+            },
         ]
     },
     {
@@ -448,7 +459,14 @@ var groups = [
                 desc: typedBookDesc,
                 author: "ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි",
                 urls: [["http://www.mediafire.com/file/esntbjbec1a71mz/Sihala_Vatthu.pdf", linkType.PDF, 1],
-                    ["http://pitaka.lk/books/Sihala_Vatthu.htm", linkType.HTML, 1.6]],
+                    ["http://pitaka.lk/books/sihala-vaththu/", linkType.HTML, 1.6]],
+            },
+            {
+                name: "රසවාහිනී සිංහල අනුවාදය",
+                desc: typedBookDesc,
+                author: "රන්ජිත් වනරත්න",
+                urls: [["http://www.mediafire.com/file/829sv2utu69rnm0", linkType.PDF, 1],
+                    ["http://pitaka.lk/books/rasawahini", linkType.HTML, 1]],
             },
 			/*{
                 name: "දුර්ලභ ඉපැරණි පොත් සමුහය",
@@ -523,7 +541,8 @@ var groups = [
                 name: "සරල පාලි ශික්ෂකය",
                 desc: scannedBookDesc,
                 author: "බළන්ගොඩ ආනන්ද මෛත්‍රිය හිමි",
-                urls: [["http://www.mediafire.com/file/7n9fxks64bp41nd/Sarala_Pali_Shikshakaya.pdf", linkType.PDF, 2]],
+                urls: [["http://www.mediafire.com/file/7n9fxks64bp41nd/Sarala_Pali_Shikshakaya.pdf", linkType.PDF, 2],
+                    ["http://pitaka.lk/books/Sarala_Pali_Shikshakaya.htm", linkType.HTML, 2.7]],
             },
             {
                 name: "පාලි-සිංහල ශබ්දකෝෂය",
