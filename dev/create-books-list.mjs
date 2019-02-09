@@ -102,7 +102,9 @@ function writeEntries() {
         entries.push( {name: parts[0], coll: parts[1], files: detailsAr} );
     });
     console.log(`Num entries: ${entries.length}`);
-    fs.writeFileSync('books/books-list.js', `var books_list = ${JSON.stringify(entries)};`, {encoding: 'utf8'});
+    const outputFile = 'books/books-list.js';
+    fs.writeFileSync(outputFile, `var books_list = ${JSON.stringify(entries)};`, {encoding: 'utf8'});
+    console.log(`Wrote file ${outputFile}`);
 }
 
 // get a session token and access the top folder and then all the subfolders found

@@ -11,7 +11,6 @@
     $.fn.pitakaTreeOpenBranch = function (bookId) {
         this.pitakaTreeCollapse(); // collapse all other branches first
         var bookLi = $('li[node-id="' + bookId + '"]', this);
-        console.log(bookLi.length);
         bookLi.parents('li').each(function () {
             pitakaTree.showBranch($(this))
         });
@@ -48,7 +47,6 @@ var pitakaTree = {
                 if (li.attr('node-id')) {
                     //$('#main-tabs').pitakaTabsOpenVagga('tree', li.attr('node-id'), [], li.attr('node-id'));
                     $.fn.pitakaTableOpenVagga('tree', li.attr('node-id'));
-                    document.title = li.children('a').text().replace(/^\d+\./, '');
                 } else if (li.attr('search-id')) {
                     navigateToIndex(li.attr('search-id'), 'tree'); // for bjt tree
                 }
@@ -88,5 +86,13 @@ var pitakaTree = {
 
     getCollections: function(vaggaId) {
         return $('.pitaka-tree').find('li[node-id="'+ vaggaId +'"]').attr('collections').split(',');
+    },
+
+    /* get the pitaka/nikaya/book/vagga hierarchy as a string array */
+    getHierarchy: function(vaggaId) {
+        var vaggaLi = $('.pitaka-tree').find('li[node-id="'+ vaggaId +'"]');
+        return jQuery.uniqueSort(vaggaLi.parents('li').add(vaggaLi).children('a')).map(function() {
+            return $(this).text();
+        }).get();
     }
 };
