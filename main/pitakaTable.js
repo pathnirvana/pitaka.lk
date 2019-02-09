@@ -78,12 +78,30 @@ $.fn.pitakaTableOpenVagga = function (origin, vaggaId, nodeId, paraId) {
             }
         }
         setScrollTop(topTr);
+        setMetaTags(tbody, nodeId || (vaggaId + '0'));
         
         // clicking on tree when it is overlapping with the text should hide it
         if (origin == 'tree' && $('.pitaka-tree-container').css('position') == 'absolute') {
             $('.pitaka-tree-container').animate({width: 'hide'}, 250);
         }
     });
+}
+
+// set the document title and the other opentype properties
+// (update) unfortunately the dynamic tags are not picked up by FB
+function setMetaTags(tbody, nodeId) {
+    if (!nodeId) return;
+    var topTr = tbody.find('tr[node-id='+nodeId+']');
+    var title = topTr.find('span.chapter,span.title,span.subhead').last().text().replace(/^\d+\./, '').trim();
+    document.title = title;
+    $('meta[property="og:title"]').attr('content', title);
+    $('meta[property="og:description"]').attr('content', pitakaTree.getHierarchy(String(nodeId).substr(0, 4)).join(' > '));
+    window.historyInitiated = true; 
+    if (!window.historyPopped) { // if navigation based on history pop, do not put in history again
+        history.pushState([nodeId], title, '?n=' + nodeId); 
+        console.log('putting node to history '+ nodeId);
+    }
+    window.historyPopped = false;
 }
 
 // topElem should be an item in the table

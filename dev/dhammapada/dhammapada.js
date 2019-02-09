@@ -79,6 +79,7 @@ function writeKathaFile(gathas, vaggaInd, vaggaName) {
     const kathaBody = $('<div/>').append(getBackLink(vaggaInd, vaggaName), kathaHeading, gathaDivs, kathaItems, getKathaLinks());
     let preContent = fs.readFileSync('pre-katha.html', { encoding: 'utf8' });
     preContent = preContent.replace(/TITLEPLACEHOLDER/, kathaHeading.text().replace(/^[\d\-\.\w]*/g, '')); // set the title
+    preContent = preContent.replace(/FIRSTPAINTINGPLACEHOLDER/, gathaDivs[0].attr('gatha-num')); // set image
     preContent = preContent.replace(/CONTENTPLACEHOLDER/, vkbeautify.xml(kathaBody.html())); // set the content
     fs.writeFileSync('output/' + getKathaFileName(kathaIndex), preContent);
     return kathaHeading.text();
