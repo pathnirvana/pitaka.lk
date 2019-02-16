@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title> සීවලී තෙරුන්ගේ කථා පුවත</title>
+    <title> සීවලී තෙරුන්ගේ කථා පුවතshare</title>
     <meta name="description" content="පින්තූර සහිත සම්පුර්ණ ධම්මපද කතා අට්ටකතා">
     
     <meta property="og:image" content="https://pitaka.lk/dhammapada/paintings/414.jpg"/>
@@ -13,9 +13,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="common/favicon-96x96.png">
 
-    <link rel="stylesheet" href="dhammapada.css"/>
+    <link rel="stylesheet" href="common/dhammapada.css"/>
 </head>
 <body>
     <div style="width: 100%; max-width: 800pt; margin: 0pt auto; height: 100%; display: flex; flex-flow: column; align-content: center;">
@@ -23,7 +23,9 @@
     <a class="button" href="vagga-26.html#katha-296">26. බ්‍රාහ්මණ වර්ගය වෙතට</a>
     <a class="button" href="index.html#vagga-26">මුල් පිටුවට</a>
 </nav>
-<h1 class="katha">26-31 සීවලී තෙරුන්ගේ කථා පුවත</h1>
+<h1 class="katha">26-31 සීවලී තෙරුන්ගේ කථා පුවත
+    <i class="material-icons share-icon" file-name="katha-296.html">share</i>
+</h1>
 <div class="gatha" gatha-num="414" is-full="true">
     <div class="gatha-parts">
         <div class="pali">
@@ -80,9 +82,16 @@
         <p></p>
     </div>
     <nav class="bottom">
-        <a class="button" href="katha-295.html">කලින් කතාවට</a>
-        <a class="button" href="katha-297.html">ඊළඟ කතාවට</a>
+        <a class="button prev" href="katha-295.html">කලින් කතාවට</a>
+        <a class="button next" href="katha-297.html">ඊළඟ කතාවට</a>
     </nav>
     </div>
+    <div id="content-about" style="font-size: 14px; padding: 10px; text-align: center; background-color: beige;">
+        ධර්ම දානය පිණිස බෙදාහැරීමට <i class="material-icons">link</i> link එකක් copy කර ගැනීම සඳහා <i class="material-icons">share</i> මත click කරන්න.
+    </div>
+    <div id="toast"></div>
+    <script src="common/jquery-3.3.1.slim.min.js"></script>
+    <script src="common/clipboard.min.js"></script>
+    <script src="common/dhammapada.js"></script>
 </body>
 </html>

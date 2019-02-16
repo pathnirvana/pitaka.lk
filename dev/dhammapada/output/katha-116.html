@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title> පිලෝතික ථෙරි පුවත</title>
+    <title> පිලෝතික ථෙරි පුවතshare</title>
     <meta name="description" content="පින්තූර සහිත සම්පුර්ණ ධම්මපද කතා අට්ටකතා">
     
     <meta property="og:image" content="https://pitaka.lk/dhammapada/paintings/143.jpg"/>
@@ -13,9 +13,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="common/favicon-96x96.png">
 
-    <link rel="stylesheet" href="dhammapada.css"/>
+    <link rel="stylesheet" href="common/dhammapada.css"/>
 </head>
 <body>
     <div style="width: 100%; max-width: 800pt; margin: 0pt auto; height: 100%; display: flex; flex-flow: column; align-content: center;">
@@ -23,7 +23,9 @@
     <a class="button" href="vagga-10.html#katha-116">10. දණ්ඩ වර්ගය වෙතට</a>
     <a class="button" href="index.html#vagga-10">මුල් පිටුවට</a>
 </nav>
-<h1 class="katha">10-10 පිලෝතික ථෙරි පුවත</h1>
+<h1 class="katha">10-10 පිලෝතික ථෙරි පුවත
+    <i class="material-icons share-icon" file-name="katha-116.html">share</i>
+</h1>
 <div class="gatha" gatha-num="143" is-full="true">
     <div class="gatha-parts">
         <div class="pali">
@@ -88,9 +90,16 @@
             <p>මෙසේ සිතා එලෙස තෙපිද කෙලෙස් තවව්. හැගුම්බර වව්. මෙලෙස ලෞකික ලෝකෝත්තර දශවිධවූ ශ්‍රද්ධාවෙන් ද සිටි පිරිසිදු සිල්වලින් ද කායික චෛතසික වීර්යයෙන්ද යුතුව අෂ්ට සමාපත්ති ඤාණයෙන් කරුණු නොකරුණු දන්නා ලක්ෂණය ධර්ම විනිශ්චයෙන් ද යුතුව ත්‍රිවිද්‍යා අෂ්ටවිද්‍යා පසළොස් වර්ණ ධර්ම සම්පත්තියෙන් යුක්තව විද්‍යා චරණයන්ගෙන් යුතුව එළඹ සිටි සිහියෙන් මේ අපමණ සසර දුක දුරු කරව් දේශනය අවසානයේ බොහෝ දෙන සෝවාන් ඵලයට පත්වුහ.</p>
         </div>
         <nav class="bottom">
-            <a class="button" href="katha-115.html">කලින් කතාවට</a>
-            <a class="button" href="katha-117.html">ඊළඟ කතාවට</a>
+            <a class="button prev" href="katha-115.html">කලින් කතාවට</a>
+            <a class="button next" href="katha-117.html">ඊළඟ කතාවට</a>
         </nav>
     </div>
+    <div id="content-about" style="font-size: 14px; padding: 10px; text-align: center; background-color: beige;">
+        ධර්ම දානය පිණිස බෙදාහැරීමට <i class="material-icons">link</i> link එකක් copy කර ගැනීම සඳහා <i class="material-icons">share</i> මත click කරන්න.
+    </div>
+    <div id="toast"></div>
+    <script src="common/jquery-3.3.1.slim.min.js"></script>
+    <script src="common/clipboard.min.js"></script>
+    <script src="common/dhammapada.js"></script>
 </body>
 </html>

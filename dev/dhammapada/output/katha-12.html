@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title> දොළොස්වන දෙව්දත් තෙරුන්ගේ වස්තුවයි.</title>
+    <title> දොළොස්වන දෙව්දත් තෙරුන්ගේ වස්තුවයි.share</title>
     <meta name="description" content="පින්තූර සහිත සම්පුර්ණ ධම්මපද කතා අට්ටකතා">
     
     <meta property="og:image" content="https://pitaka.lk/dhammapada/paintings/17.jpg"/>
@@ -13,9 +13,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="common/favicon-96x96.png">
 
-    <link rel="stylesheet" href="dhammapada.css"/>
+    <link rel="stylesheet" href="common/dhammapada.css"/>
 </head>
 <body>
     <div style="width: 100%; max-width: 800pt; margin: 0pt auto; height: 100%; display: flex; flex-flow: column; align-content: center;">
@@ -23,7 +23,9 @@
     <a class="button" href="vagga-1.html#katha-12">1. යමක වර්ගය වෙතට</a>
     <a class="button" href="index.html#vagga-1">මුල් පිටුවට</a>
 </nav>
-<h1 class="katha">1-12 දොළොස්වන දෙව්දත් තෙරුන්ගේ වස්තුවයි.</h1>
+<h1 class="katha">1-12 දොළොස්වන දෙව්දත් තෙරුන්ගේ වස්තුවයි.
+    <i class="material-icons share-icon" file-name="katha-12.html">share</i>
+</h1>
 <div class="gatha" gatha-num="17" is-full="true">
     <div class="gatha-parts">
         <div class="pali">
@@ -156,9 +158,16 @@
         <p>	ගාථා කෙළවර බොහෝ දෙනා සෝවාන් ඵලාදියට පැමිණියහ. දේශනාව මහජනයාට සාර්ථකවිය.</p>
     </div>
     <nav class="bottom">
-        <a class="button" href="katha-11.html">කලින් කතාවට</a>
-        <a class="button" href="katha-13.html">ඊළඟ කතාවට</a>
+        <a class="button prev" href="katha-11.html">කලින් කතාවට</a>
+        <a class="button next" href="katha-13.html">ඊළඟ කතාවට</a>
     </nav>
     </div>
+    <div id="content-about" style="font-size: 14px; padding: 10px; text-align: center; background-color: beige;">
+        ධර්ම දානය පිණිස බෙදාහැරීමට <i class="material-icons">link</i> link එකක් copy කර ගැනීම සඳහා <i class="material-icons">share</i> මත click කරන්න.
+    </div>
+    <div id="toast"></div>
+    <script src="common/jquery-3.3.1.slim.min.js"></script>
+    <script src="common/clipboard.min.js"></script>
+    <script src="common/dhammapada.js"></script>
 </body>
 </html>

@@ -13,6 +13,7 @@ const { document } = (new JSDOM('')).window;
 global.document = document;
 
 var $ = jQuery = require('jquery')(window);
+const MDI = (name, cls) => `<i class="material-icons ${cls}">${name}</i>`;
 
 const kathaDom = new JSDOM(fs.readFileSync('katha.html', { encoding: 'utf8' }));
 //const katha2Dom = new JSDOM(fs.readFileSync('katha2.html', { encoding: 'utf8' }));
@@ -48,7 +49,7 @@ function processKatha(katha, vaggaInd, vaggaName) {
     const gathas = katha.split('g').map(line => line.trim()).filter(line => line);
     const kathaTitle = writeKathaFile(gathas, vaggaInd, vaggaName);
     const kathaDiv = $('<a/>').addClass('katha').attr('href', getKathaFileName(kathaIndex)).attr('id', `katha-${kathaIndex}`);
-    kathaDiv.append($('<div/>').text(kathaTitle).addClass('katha-title'), gathas.map(gatha => processGatha(gatha, false)));
+    kathaDiv.append($('<div/>').html(kathaTitle).addClass('katha-title'), gathas.map(gatha => processGatha(gatha, false)));
     return kathaDiv;
 }
 
@@ -73,7 +74,7 @@ function processGathaPart(gatha, className) {
 }
 
 function writeKathaFile(gathas, vaggaInd, vaggaName) {
-    const kathaHeading = normalizeKathaHeading($(kathaH1[kathaIndex++]).addClass('katha'));
+    const [kathaTitle, kathaHeading] = getKathaHeading($(kathaH1[kathaIndex++]));
     const kathaItems = $('<div/>').addClass('katha-items').append(kathaHeading.nextUntil('h1'));
     const gathaDivs = gathas.map(gatha => processGatha(gatha, true));
     const kathaBody = $('<div/>').append(getBackLink(vaggaInd, vaggaName), kathaHeading, gathaDivs, kathaItems, getKathaLinks());
@@ -82,7 +83,7 @@ function writeKathaFile(gathas, vaggaInd, vaggaName) {
     preContent = preContent.replace(/FIRSTPAINTINGPLACEHOLDER/, gathaDivs[0].attr('gatha-num')); // set image
     preContent = preContent.replace(/CONTENTPLACEHOLDER/, vkbeautify.xml(kathaBody.html())); // set the content
     fs.writeFileSync('output/' + getKathaFileName(kathaIndex), preContent);
-    return kathaHeading.text();
+    return kathaTitle;
 }
 
 function getBackLink(vaggaInd, vaggaName) {
@@ -91,14 +92,14 @@ function getBackLink(vaggaInd, vaggaName) {
     return $('<nav/>').addClass('top').append(vaggaLink, indexLink);
 }
 function getKathaLinks() {
-    const prevLink = $('<a/>').addClass('button').attr('href', getKathaFileName(kathaIndex - 1)).text('කලින් කතාවට');
-    const nextLink = $('<a/>').addClass('button').attr('href', getKathaFileName(kathaIndex + 1)).text('ඊළඟ කතාවට');
+    const prevLink = $('<a/>').addClass('button prev').attr('href', getKathaFileName(kathaIndex - 1)).text('කලින් කතාවට');
+    const nextLink = $('<a/>').addClass('button next').attr('href', getKathaFileName(kathaIndex + 1)).text('ඊළඟ කතාවට');
     return $('<nav/>').addClass('bottom').append(prevLink, nextLink);
 }
 function getVaggaLinks(vaggaInd) {
-    const prevLink = $('<a/>').addClass('button').attr('href', getVaggaFileName(vaggaInd - 1)).text('කලින් වර්ගයට');
+    const prevLink = $('<a/>').addClass('button prev').attr('href', getVaggaFileName(vaggaInd - 1)).text('කලින් වර්ගයට');
     const indexLink = $('<a/>').addClass('button').attr('href', `index.html#vagga-${vaggaInd}`).text(`මුල් පිටුවට`);
-    const nextLink = $('<a/>').addClass('button').attr('href', getVaggaFileName(vaggaInd + 1)).text('ඊළඟ වර්ගයට');
+    const nextLink = $('<a/>').addClass('button next').attr('href', getVaggaFileName(vaggaInd + 1)).text('ඊළඟ වර්ගයට');
     return $('<nav/>').addClass('bottom').append(prevLink, indexLink, nextLink);
 }
 function getPainting(gathaNumber, isFull) {
@@ -110,10 +111,12 @@ function writeIndexFile(indexDiv, fileName) {
     const indexContent = vkbeautify.xml($('<div/>').append(indexDiv).html());
     fs.writeFileSync(fileName, fs.readFileSync('pre-index.html', { encoding: 'utf8' }).replace(/CONTENTPLACEHOLDER/, indexContent));
 }
-function normalizeKathaHeading(kathaHead) {
+function getKathaHeading(kathaHead) {
     assert(/^(\d+)[\-\.]{1}(\d+)/.exec(kathaHead.text()), `katha heading '${kathaHead.text()}' does not follow the standard`);
-    kathaHead.text(kathaHead.text().replace(/^(\d+)[\-\.]{1}(\d+)/, '$1-$2'));
-    return kathaHead;
+    const kathaTitle = kathaHead.text().replace(/^(\d+)[\-\.]{1}(\d+)/, '$1-$2');
+    kathaHead.text(kathaTitle).addClass('katha')
+        .append($(MDI('share', 'share-icon')).attr('file-name', getKathaFileName(kathaIndex)));
+    return [kathaTitle, kathaHead];
 }
 
 function writeVaggaFile(vaggaDiv, fileName, vaggaName) {
