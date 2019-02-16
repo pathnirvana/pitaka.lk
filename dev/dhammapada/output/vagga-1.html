@@ -5,7 +5,7 @@
     <title> යමක වර්ගය</title>
     <meta name="description" content="ධම්මපද වර්ගයේ එන සියලු ගාථා සහ සිංහල තේරුම්">
     
-    <meta property="og:image" content="https://pitaka.lk/dhammapada/images/logo.png"/>
+    <meta property="og:image" content="https://pitaka.lk/dhammapada/common/logo.png"/>
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1000" />
     <meta property="og:image:height" content="500" />
@@ -13,8 +13,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
-    <link rel="stylesheet" href="dhammapada.css"/>
+    <link rel="icon" type="image/png" sizes="96x96" href="common/favicon-96x96.png">
+    <link rel="stylesheet" href="common/dhammapada.css"/>
 </head>
 <body>
     <div style="width: 100%; max-width: 800pt; margin: 0pt auto; height: 100%; display: flex; flex-flow: column; align-content: center;">
@@ -351,11 +351,15 @@
                                                                                         </div>
                                                                                     </a>
                                                                                     <nav class="bottom">
-                                                                                        <a class="button" href="">කලින් වර්ගයට</a>
+                                                                                        <a class="button prev" href="">කලින් වර්ගයට</a>
                                                                                         <a class="button" href="index.html#vagga-1">මුල් පිටුවට</a>
-                                                                                        <a class="button" href="vagga-2.html">ඊළඟ වර්ගයට</a>
+                                                                                        <a class="button next" href="vagga-2.html">ඊළඟ වර්ගයට</a>
                                                                                     </nav>
                                                                                 </div>
     </div>
+    <div id="toast"></div>
+    <script src="common/jquery-3.3.1.slim.min.js"></script>
+    <script src="common/clipboard.min.js"></script>
+    <script src="common/dhammapada.js"></script>
 </body>
 </html>

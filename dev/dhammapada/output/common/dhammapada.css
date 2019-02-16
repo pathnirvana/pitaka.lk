@@ -1,0 +1,115 @@
+@font-face {
+    font-family: 'un-abhaya';
+    src: local('###'), url('NotoSerifSinhala-Regular.ttf') format('truetype');
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'un-abhaya';
+    src: local('###'), url('NotoSerifSinhala-Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Material Icons'),
+      local('MaterialIcons-Regular'),
+      url('MaterialIcons-Regular.woff2') format('woff2');
+}
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    /*font-size: 24px;*/  /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+  
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+  
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+  
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+    vertical-align: middle;
+}
+
+body { font-family: un-abhaya;  text-align: justify; }
+
+.vagga-links { display: flex; flex-wrap: wrap; align-items: center; justify-items: center; }
+.vagga-link { flex-basis: 48%; flex-grow: 1; text-align: center; padding: 0.5rem 0rem 0.5rem 0rem; border: 1px solid oldlace; border-radius: 6px; text-decoration: none; }
+.vagga-link:hover { background-color: whitesmoke;}
+.vagga-name { font-size: 1.5rem; font-weight: bold; color: darkblue; text-align: center; }
+.vagga-link .vagga-name { font-size: 1.2rem; }
+
+.pali p,.sinhala p { padding: 0rem;  margin: 0; }
+.pali { font-style: oblique; color: brown; margin-bottom: 0.4rem; }
+.sinhala { color: black; }
+
+h1.katha { font-size: 1.75rem; text-align: center; }
+
+a.katha { padding: 0.5rem; text-decoration: none; display: block; border-radius: 10px; }
+a.katha:hover { background-color: whitesmoke; cursor: pointer;}
+.gatha { margin-top: 0.3rem; border-radius: 10px; }
+.gatha[is-full=false] { display: flex; flex-direction: row; align-items: center; border: 1px solid white; }
+.gatha[is-full=false]:hover { border: 1px solid darkgray; }
+.gatha[is-full=true] { display: block; text-align: center; border: 1px solid black; }
+.gatha > div { flex-grow: 1; }
+.gatha-parts { padding: 5pt; }
+.painting { text-align: center; }
+.painting[is-full=true] img { max-width: 100%; height: auto; width: auto\9; /* ie8 */}
+@media screen and (max-width: 400pt) {
+    .painting[is-full=false] { display: none; }
+}
+
+.share-icon:hover { visibility: visible; color: blue; cursor: pointer;}
+
+div.katha-items p { margin: 5pt; }
+
+nav.top { text-align: center; }
+nav.bottom { text-align: center; padding: 0.5rem; }
+a.button {
+    margin: 2pt 1pt 2pt 1pt;
+    text-align:center;
+    background-color: white;
+    padding: 6px 5px 6px 5px;
+    text-decoration: none;
+    line-height: 1;
+    border-radius: 4px;
+    border: 1px solid lightsalmon;
+    box-shadow: 0 3px 3px rgba(0,0,0,0.2);
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1.25rem;
+}
+a.button:hover {
+    background-color: lightsalmon;
+}
+a.button:active, a.button.pressed {
+    background-color: gray;
+    box-shadow: none;
+}
+
+/* The snackbar - position it at the bottom and in the middle of the screen */
+#toast {
+    display: none; /* Hidden by default. Visible on click */
+    background-color: black; /* Black background color */
+    color: white; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 5pt; /* Rounded borders */
+    padding: 5pt 10pt 5pt 10pt; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1000; /* Add a z-index if needed */
+    left: 50%; /* Center the snackbar */
+    transform: translateX(-50%);
+    bottom: 30pt; /* 30px from the bottom */
+}
