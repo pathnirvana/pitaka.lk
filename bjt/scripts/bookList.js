@@ -172,6 +172,7 @@ function nextButtonClick() {
 }
 
 var hideCol = COLL.PALI;
+var userNumColls = false;
 
 function sideButtonClick() {
     $('div.page').toggle();
@@ -182,11 +183,30 @@ function handleResize() {
     if ($(window).width() < 800) {
         $('div.page.' + hideCol).hide();
         $('div.page > .page-navigation').show();
-    } else {
+        $('#select-num-columns').hide();
+    } else if (!userNumColls) { // 2 columns
         $('div.page').show();
         $('div.page > .page-navigation').hide();
+        $('#select-num-columns').show();
+    } else {
+        $('#select-num-columns').show();
     }
     // to make sure the overlay fills the screen and dialogbox aligned to center
     // only do it if the dialog box is not hidden
     if (!$('#dialog-box').is(':hidden')) repositionDialog();
+}
+
+var numOpenedColls = 2;
+function selectNumColumns(e) {
+    if ($('#image-area').is(":hidden")) return;
+    userNumColls = true;
+    numOpenedColls = (numOpenedColls == 2) ? 1 : 2;
+    $(this).children().toggle();
+    if (numOpenedColls == 2) {
+        $('div.page').show();
+        $('div.page > .page-navigation').hide();
+    } else { // one column
+        $('div.page.' + hideCol).hide();
+        $('div.page > .page-navigation').show();
+    }
 }
