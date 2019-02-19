@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="3q30uQ1_gO_dEVjUO6EsTgpovt8MHTyY75774HmTSb0" />
     <title>Buddha Jayanthi Tripitaka</title>
-    <meta name="description" content="බුද්ධ ජයන්ති ත්‍රිපිටකය Buddha Jayanthi Tripitaka">
+    <meta name="description" content="බුද්ධ ජයන්ති ත්‍රිපිටකය Software Computer Search">
+    <meta property="og:image" content="https://pitaka.lk/images/favicon-96x96.png"/>
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="96" />
+    <meta property="og:image:height" content="96" />
+
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="icon" type="image/png" sizes="96x96" href="../images/favicon-96x96.png">
@@ -25,6 +30,12 @@
         ga('create', 'UA-46817481-7', 'auto');
         ga('send', 'pageview');
     </script>
+    <style>
+        i.ss-hide { font-style: normal; }
+        @media screen and (max-width: 400pt) {
+            .ss-hide { display: none; }
+        }
+    </style>
 </head>
 <body>
     <div align="center" style="margin:0 auto; max-width: 1000pt; height: 100%; display: flex; flex-flow: column; overflow: hidden;">
@@ -36,9 +47,10 @@
                 <i id="menu-toggle" class="fa fa-bars"></i>
             </div>
             <div id="search-bar-div">
+                <a id="select-num-columns" class="button" tip="තනි තීරුව හෝ තීරු දෙකක්ද යන්න"><i class="fa fa-columns fa-fw" style="display: none;"></i><i class="fa fa-window-maximize fa-fw"></i></a>
                 <input class="search-bar" type="text" placeholder="සොයන්න">
                 <a id="search-settings-button" class="button" tip="සෙවුම පොත් කිහිපයකට සීමා කරන්න" onclick="showBookSelectDialog(SF.name)"><i class="fa fa-wrench fa-lg"></i></a>
-                <a id="search-results-button" class="button" tip="කලින් සෙවුමේ ප්‍රතිපල පෙන්වන්න"><i class="fa fa-table fa-lg"></i> සෙවුම</a>
+                <a id="search-results-button" class="button" tip="කලින් සෙවුමේ ප්‍රතිපල පෙන්වන්න"><i class="fa fa-table fa-lg"></i><i class="ss-hide"> සෙවුම</i></a>
 
                 <div id="menu-list" style="right: 0; top: 0;">
                     <a class="menu-list-item" href="intro.html?goto=about"><i class="fa fa-male fa-fw"></i> අප ගැන</a>
@@ -145,6 +157,8 @@
             else sideButtonClick();
         });
 
+        $('#select-num-columns').click(selectNumColumns);
+
         $('#search-results-button').click(function () {
             $('#search-area').toggle();
             $('#image-area').toggle();
@@ -152,11 +166,7 @@
 
         // set startup location if specified in url params
         navigateStartupLocation();
-        /*$('#image-area').on('click', '.page-link', function () {
-            var bjtLink = createBJTLink(curBookId, $(this).parent().attr('page-id'));
-            console.log(bjtLink);
-            copyTextAndShowToast(bjtLink, 'link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.');
-        });*/
+
         const clipb = new ClipboardJS('span.page-link', {
             text: function(icon) {
                 var bjtLink = createBJTLink(curBookId, $(icon).parent().attr('page-id'));
@@ -175,7 +185,8 @@
             refreshCurrentSearchDisplay(by, order);
         });
 
-        $('[tip]').hover(showToolTip, hideToolTip);
+        // diable tooltips that interfere in phones
+        //$('[tip]').hover(showToolTip, hideToolTip);
     });
 </script>
 </body>
