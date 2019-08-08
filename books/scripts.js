@@ -242,8 +242,8 @@ var groups = [
         books: [
             {
                 name: "බුද්ධ ජයන්ති ත්‍රිපිටකය",
-                desc: "පාළි සහ සිංහල පරිවර්තනය PDF පොත් 57",
-                urls: [["https://www.mediafire.com/folder/najd8hdk6bqqf/Buddha_Jayanthi_Tipitaka", linkType.FOLDER, 885]],
+                desc: "පාළි සහ සිංහල පරිවර්තනය PDF පොත් 58",
+                urls: [["http://www.mediafire.com/folder/oo8eet91ax8py/බුද්ධ_ජයන්ති_ත්‍රිපිටකය", linkType.FOLDER, 5939]],
             },
             {
                 name: "සරළ සිංහල ත්‍රිපිටක පරිවර්තනය",
