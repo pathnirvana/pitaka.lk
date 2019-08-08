@@ -36,22 +36,37 @@ function addIndex() {
         'AN6': [27, 2, 27, '27-AN-Anguttara Nikaya 6'],
 
         'KN1': [28, 2, 27, '28-KN-Khuddakapatha Dhammapada Udana Itivuttaka'],
-        'KN2': [29, 2, 21, '29-KN-Suttanipato'],
-        'KN3': [30, 2, 27, '30-KN-Vimanavatthu Petavatthu'],
-        'KN4': [31, 2, 33, '31-KN-Theragatha'],
-        'KN5': [32, 2, 29, '32-KN-Jataka Pali 1'],
-        'KN6': [33, 2, 13, '33-KN-Jataka Pali 2'],
-        'KN7': [34, 2, 21, '34-KN-Jataka Pali 3'],
-        'KN8': [35, 2, 23, '35-KN-Mahaniddesa Pali'],
-        'KN9': [36, 2, 17, '36-KN-Cullaniddesa Pali'],
-        'KN10': [37, 2, 21, '37-KN-Patisambhidamaggappakarana 1'],
-        'KN11': [38, 2, 11, '38-KN-Patisambhidamaggappakarana 2'],
-        'KN12': [39, 2, 27, '39-KN-Apadana Thera Apadana 1'],
-        'KN13': [40, 2, 17, '40-KN-Apadana Thera Apadana 2'],
-        'KN14': [41, 2, 13, '41-KN-Apadana Theri Apadana'],
+        'KN2': [29, 3, 21, '29-KN-Suttanipato'],
+        'KN3': [30, 2, 21, '30-KN-Vimanavatthu Petavatthu'],
+        'KN4': [31, 3, 33, '31-KN-Theragatha'],
+        'KN4a': [61, 3, -316, '31-KN-Therigatha'],
+        'KN5': [32, 3, 29, '32-KN-Jataka Pali 1'],
+        'KN6': [33, 3, 13, '33-KN-Jataka Pali 2'],
+        'KN7': [34, 4, 21, '34-KN-Jataka Pali 3'],
+        'KN8': [35, 3, 23, '35-KN-Mahaniddesa Pali'],
+        'KN9': [36, 3, 17, '36-KN-Cullaniddesa Pali'],
+        'KN10': [37, 3, 21, '37-KN-Patisambhidamaggappakarana 1'],
+        'KN11': [38, 3, 11, '38-KN-Patisambhidamaggappakarana 2'],
+        'KN12': [39, 3, 27, '39-KN-Apadana Thera Apadana 1'],
+        'KN13': [40, 3, 17, '40-KN-Apadana Thera Apadana 2'],
+        'KN14': [41, 3, 13, '41-KN-Apadana Theri Apadana'],
         'KN15': [42, 2, 25, '42-KN-Buddhavamsa Chariyapitaka Pali'],
-        'KN16': [43, 2, 17, '43-KN-Nettippakarana'],
-        'KN17': [44, 2, 21, '44-KN-Petakopadeso'],
+        'KN16': [43, 3, 17, '43-KN-Nettippakarana'],
+        'KN17': [44, 3, 21, '44-KN-Petakopadeso'],
+
+        'AP1': [45, 2, 37, '45-AP-Dhammasanganippakarana'],
+        'AP2': [46, 2, 21, '46-AP-Vibhangappakarana 1'],
+        'AP3': [47, 2, 15, '47-AP-Vibhangappakarana 2'],
+        'AP4': [48, 2, 29, '48-AP-Kathavastuprakarana 1'],
+        'AP5': [49, 2, 11, '49-AP-Kathavastuprakarana 2'],
+        'AP6': [50, 2, 13, '50-AP-Kathavastuprakarana 3'],
+        'AP7': [51, 1, 15, '51-AP-Dhatukatha Puggalapannattippakarana'], 
+        'AP8': [52, 2, 23, '52-AP-Yamakappakarana 1'], 
+        'AP9': [53, 2, 19, '53-AP-Yamakappakarana 2-1'], 
+        'AP10': [54, 2, 15, '54-AP-Yamakappakarana 2-2'], 
+        'AP11': [55, 3, 67, '55-AP-Patthanappakarana 1'], 
+        'AP12': [56, 3, 13, '56-AP-Patthanappakarana 2'], 
+        'AP13': [57, 3, 17, '57-AP-Patthanappakarana 3']
     };
     // key is based on the original filename
     var key = this.documentFileName.split('.')[0].split('-')[0]; // remove extention
@@ -94,7 +109,8 @@ function addIndex() {
 
     // setting info fields
     this.info.Title = this.info.Subject = fileName;
-    this.info.Author = this.info.Creator = this.info.Producer = 'Scanned and PDF prepared by Janaka (Path Nirvana) path.nirvana@gmail.com';
+    this.info.Author = this.info.Creator = 'Scanned and PDF prepared by Janaka (Path Nirvana) path.nirvana@gmail.com';
+    this.info.Producer = 'https://pitaka.lk';
     // this.layout = 'TwoColumnLeft'; // this setting is not sticky - resets when file reopened
 
     /* Applying a Security Policy to a PDF Document */ 
@@ -107,14 +123,14 @@ function addIndex() {
         
         // First, Get the ID of SimplePassword security policy 
         var aPols = security.getSecurityPolicies(); 
-        for(var i=0; i<aPols.length; i++) { 
+        for (var i=0; i<aPols.length; i++) { 
             if(aPols[i].name == sPolicyName) { 
                 oMyPolicy = aPols[i]; 
                 break;
             } 
         } 
         
-        if(oMyPolicy != null) { 
+        if (oMyPolicy != null) { 
             // Now, Apply the security Policy 
             var rtn = this.encryptUsingPolicy({oPolicy: oMyPolicy });
             if(rtn.errorCode != 0) {
