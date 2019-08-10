@@ -20,6 +20,27 @@ i.ss-hide {font-style: normal;}
     }
 }
 
+.pirith-item { display: flex; flex-direction: row; flex-wrap: nowrap; border-top: 1px solid black; padding: 0.2rem; font-size: 1.2rem; }
+.pirith-item:hover { background-color: whitesmoke; }
+.pirith-item > * { padding: 0rem 0.5rem 0rem 0.5rem; }
+.pirith-num::after { content: '.' }
+.pirith-desc { flex: 1 1 auto; cursor: pointer;  }
+
+.pirith-duration {}
+
+.action-icons > * { padding: 0rem 0.5rem 0rem 0.5rem; cursor: pointer; }
+.action-icons > *:hover { font-weight: 900; color: blue; }
+.star-icon { font-family: 'FontAwesome'; color: black; }
+.star-icon::after { content: '\f006' }
+.star-icon.starred::after { content: '\f005'; color: gold; }
+
+audio { width: 100% }
+
+#pali-text-done { }
+#pali-text-rest { }
+#trans-text { }
+
+
 table {border: 1px solid black;}
 thead td { font-weight: bold; padding: 4pt; background-color: antiquewhite; }
 tr.result:nth-child(even) {background-color: whitesmoke; }
