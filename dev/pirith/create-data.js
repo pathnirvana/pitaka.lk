@@ -4,7 +4,7 @@ const assert = require('assert');
 const vkbeautify = require('vkbeautify');
 
 const rootFolder = 'pirith';
-const pirithToProcess = ['karaniya'];
+const pirithToProcess = ['karaniya', 'mahamangala'];
 const dataJson = {};
 
 const readSplitFile = fileName => {
@@ -18,15 +18,22 @@ function processPirith(pirithName) {
     const paliText = readSplitFile(`${rootFolder}/${pirithName}.txt`);
     assert(labels.length == paliText.length, `labels and paliText lengths are different for ${pirithName}`);
 
-    const transText = {};
-    readSplitFile(`${rootFolder}/${pirithName}-trans.txt`).map(line => line.split('#')).forEach(items => {
-        transText[items[0]] = items[1];
-    });
+    //const transText = new Array(labels.length);
+    //let prevTInd = 0;
+    const transText = readSplitFile(`${rootFolder}/${pirithName}-trans.txt`).map(line => line.length ? line : null);/* line.split('#')).forEach(items => {
+        if (items.length == 2) { // use the index specified in the line
+            prevTInd = Number(items[0]) - 1;
+            transText[prevTInd] = items[1];
+        } else { // just add one to the prev index
+            transText[++prevTInd] = items[0];
+        }
+    });*/
     dataJson[pirithName] = {
         'labels': labels,
         'pali': paliText, // todo: create seperate ones for each pali script
         'trans': transText,
     };
+    console.log(`processed ${pirithName}, num labels ${labels.length}`);
 }
 
 pirithToProcess.forEach(name => processPirith(name));
