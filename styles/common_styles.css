@@ -16,9 +16,50 @@ html, body {
     font-family: un-abhaya;
 }
 
+body {
+    --main-color: black;
+    --main-bcolor: rgb(243, 243, 243);
+    --special-color: darkred;
+    --special-bcolor: rgb(223, 221, 221);
+
+    --hover-bcolor: rgb(255, 207, 167);
+    --highlight-bcolor: yellow;
+    
+    --heading-color: brown;
+    --icon-color: rgb(70, 70, 170);
+    --border-color: rgb(255, 199, 176);
+    --link-color: darkblue;
+    --shadow-color: rgba(0,0,0,0.2);
+
+    color: var(--main-color); 
+    background-color: var(--main-bcolor);
+}
+body.dark { /* dark mode variables */
+    --main-color: white;
+    --main-bcolor: rgb(51, 51, 51);
+    --special-color: rgb(173, 216, 250);
+    --special-bcolor: rgb(90, 90, 90);
+
+    --hover-bcolor: rgb(0, 0, 0);
+    --highlight-bcolor: rgb(105, 105, 2);
+    
+    --heading-color: rgb(235, 223, 220); /* specific uses */
+    --icon-color: rgb(255, 253, 220);
+    --border-color: rgb(122, 122, 122);
+    --link-color: lightblue;
+    --shadow-color: rgba(255, 255, 255, 0.1);
+
+    color: var(--main-color); 
+    background-color: var(--main-bcolor);
+}
+
+body.dark .darkT { display: none; }
+body:not(.dark) .lightT { display: none; }
+a[href] { color: var(--link-color); }
+
 .title-bar {
     padding: 6pt 8pt 6pt 8pt; 
-    background-color: coral; 
+    background-color: var(--special-bcolor);
     font-size: 15pt;
     cursor: pointer;
     display: flex;
@@ -32,27 +73,21 @@ html, body {
     z-index: 9999; 
     display: none; 
     text-align: left;
-    background-color: lightsalmon;
-    -webkit-box-shadow: -8px 9px 42px 8px rgba(0,0,0,0.19);
-    -moz-box-shadow: -8px 9px 42px 8px rgba(0,0,0,0.19);
-    box-shadow: -8px 9px 42px 8px rgba(0,0,0,0.19);
+    background-color: var(--special-bcolor);
+    -webkit-box-shadow: -8px 9px 42px 8px var(--shadow-color);
+    -moz-box-shadow: -8px 9px 42px 8px var(--shadow-color);
+    box-shadow: -8px 9px 42px 8px var(--shadow-color);
 }
-.menu-list-item {
-    display: block;
-    padding: 5pt 8pt 5pt 5pt;
-    color: black;
-    text-decoration: none;
-}
-.menu-list-item:hover {
-    background-color: white;
-}
+a.menu-list-item { display: block;  padding: 5pt 8pt 5pt 5pt;  text-decoration: none;  cursor: pointer; color: var(--main-color); }
+a.menu-list-item:hover { background-color: var(--hover-bcolor); }
+i.fa { color: var(--icon-color); }
 
 #search-bar-div {
     display: flex;
     justify-content: center; 
     flex-flow: row nowrap;
     align-items: center;
-    box-shadow: 0px 10px 25px -3px rgba(0,0,0,0.3);
+    box-shadow: 0px 10px 25px -3px var(--shadow-color);
     z-index: 40;
     position: relative;
 }
@@ -62,30 +97,31 @@ html, body {
     font-family: un-abhaya;
     vertical-align: middle;
     margin: 2pt 1pt 2pt 1pt;
-    border: 1px solid lightsalmon;
+    border: 1px solid var(--border-color);
     max-width: 350pt;
     min-width: 70pt;
+    background-color: var(--main-bcolor);
+    color: var(--main-color);
     /*box-shadow: 0 3px 3px rgba(0,0,0,0.2);*/
 }
 
 a.button {
     margin: 2pt 1pt 2pt 1pt;
     text-align:center;
-    background-color: white;
     padding: 6px 5px 6px 5px;
     text-decoration: none;
     line-height: 1;
     /*border-radius: 4px;*/
-    border: 1px solid lightsalmon;
+    border: 1px solid var(--border-color);
     /*box-shadow: 0 3px 3px rgba(0,0,0,0.2);*/
     cursor: pointer;
     display: inline-block;
 }
 a.button:hover {
-    background-color: lightsalmon;
+    background-color: var(--hover-bcolor);
 }
 a.button:active, a.button.pressed {
-    background-color: gray;
+    background-color: var(--special-bcolor);
     box-shadow: none;
 }
 
@@ -98,14 +134,14 @@ a.button:active, a.button.pressed {
     width: auto;
     font-size: 10pt;
     z-index: 9999;
-    box-shadow: 0 3px 3px rgba(0,0,0,0.2);
+    box-shadow: 0 3px 3px var(--shadow-color);
 }
 
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #toast {
     display: none; /* Hidden by default. Visible on click */
-    background-color: black; /* Black background color */
-    color: white; /* White text color */
+    background-color: var(--main-color); /* Black background color */
+    color: var(--main-bcolor); /* White text color */
     text-align: center; /* Centered text */
     border-radius: 5pt; /* Rounded borders */
     padding: 5pt 10pt 5pt 10pt; /* Padding */
@@ -134,7 +170,7 @@ a.button:active, a.button.pressed {
 }
 
 #dialog-box {
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 10px var(--shadow-color);
     border-radius: 5px;
     background:#eee;
     /* make sure it has the highest z-index */

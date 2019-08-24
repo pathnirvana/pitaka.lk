@@ -270,6 +270,21 @@ function hideToolTip() {
     $('.tooltip').remove();
 }
 
+// set dark mode between 7pm and 6am
+function autoSetDarkMode() {
+    var hour = (new Date()).getHours();
+    if (hour >= 19 || hour <= 6) {
+        $('body').addClass('dark');
+    }
+}
+$('#dark-toggle').click(function (e) {
+    $('body').toggleClass('dark');
+    if ($('body').hasClass('dark')) {
+        showToast('රාත්‍රී අඳුරු තිරය ක්‍රියාත්මකයි');
+    } else {
+        showToast('ආලෝකමත් තිරය ක්‍රියාත්මකයි');
+    }
+});
 
  // todo consider moving these to pitakaTabs.js
  /*

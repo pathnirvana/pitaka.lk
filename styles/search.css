@@ -1,12 +1,12 @@
 #search-status {
     font-size: 10pt;
     font-style: italic;
-    color: darkblue;
+    color: var(--heading-color);
     padding: 5pt;
 }
 #search-filter-status {
     font-size: 9pt;
-    color: darkred;
+    color: var(--special-color);
 }
 
 #search-results {
@@ -14,24 +14,24 @@
     padding-left: 0pt;
     display: none;
     width: 100%;
-    background-color: white;
+    background-color: var(--main-bcolor);
 }
 #search-results thead {
     font-size: 15pt;
     font-weight: bold;
-    background: lightgrey;
+    background: var(--special-bcolor);
 }
 #search-results tr {
     font-size: 13pt;
     padding: 2pt 5pt 2pt 5pt;
-    border-top: 1pt solid;
+    border-top: 1pt solid var(--border-color);
 }
 #search-results tr:nth-child(even) {
-    background-color: antiquewhite;
+    background-color: var(--special-bcolor);
 }
-#search-results tr:hover {
-    background: lightgoldenrodyellow;
-}
+#search-results tr:hover { background: var(--hover-bcolor); }
+#search-results thead tr:hover { background: none; }
+
 #search-results td {
     padding: 0pt 5pt 0pt 5pt;
 }
@@ -45,7 +45,7 @@
 }
 
 .result-sutta-name {
-    color: darkblue;
+    color: var(--special-color);
     font-weight: bold;
     padding-right: 10pt;
     font-size: 12pt;
@@ -53,7 +53,7 @@
 }
 .result-parents {
     font-size: 11pt;
-    color: darkgreen;
+    color: var(--main-color);
 }
 .result-nikaya-name {
     font-size: 11pt;

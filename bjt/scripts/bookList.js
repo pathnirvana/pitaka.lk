@@ -27,25 +27,26 @@ function createPage(pageId, coll) {
     return page.append(img).append(linkSpan).append(pageNav);
 }
 
-var imgURLPrefix = 'books/';
+var imgURLPrefix = 'newbooks';
+var imageFileExt = getParameterByName('image_extention', 'jpg'); // if old books, change this to png
 var booksFolder = getParameterByName('books_folder', '');
 var loadFromRemote = getParameterByName('load_books_remote', 0);
 
 if (booksFolder) {
     if (loadFromRemote > 0) {
-        imgURLPrefix = 'https://pitaka.lk/bjt/books/'; //full path for android app without pages
+        imgURLPrefix = 'https://pitaka.lk/bjt/newbooks'; // full path for android app without pages
     } else {
-        imgURLPrefix = booksFolder;
+        imgURLPrefix = booksFolder; // could be books or newbooks
     }
 }
 console.log("Loading images from: " + imgURLPrefix);
 
 function getPageImageSrc(pageId) {
-    return imgURLPrefix +
+    return imgURLPrefix + '/' +
         getDef(curBook, 'folder', curBookId) + '/' +
         getDef(curBook, 'imagePrefix', defaultImgPrefix) +
         padZeros(pageId, 3) +
-        '.png';
+        '.' + imageFileExt;
 }
 
 // formatting number by adding zeros
@@ -172,41 +173,36 @@ function nextButtonClick() {
 }
 
 var hideCol = COLL.PALI;
-var userNumColls = false;
+var userNumColls = 2; // used only when width > 800
 
 function sideButtonClick() {
     $('div.page').toggle();
     hideCol = hideCol == COLL.PALI ? COLL.SINH : COLL.PALI;
 }
-
+function onePageView() {
+    $('div.page.' + hideCol).hide();
+    $('div.page > .page-navigation').show();
+}
+function twoPageView() {
+    $('div.page').show();
+    $('div.page > .page-navigation').hide();   
+}
 function handleResize() {
     if ($(window).width() < 800) {
-        $('div.page.' + hideCol).hide();
-        $('div.page > .page-navigation').show();
+        onePageView();
         $('#select-num-columns').hide();
-    } else if (!userNumColls) { // 2 columns
-        $('div.page').show();
-        $('div.page > .page-navigation').hide();
-        $('#select-num-columns').show();
     } else {
         $('#select-num-columns').show();
+        (userNumColls == 2) ? twoPageView() : onePageView();
     }
     // to make sure the overlay fills the screen and dialogbox aligned to center
     // only do it if the dialog box is not hidden
     if (!$('#dialog-box').is(':hidden')) repositionDialog();
 }
 
-var numOpenedColls = 2;
 function selectNumColumns(e) {
     if ($('#image-area').is(":hidden")) return;
-    userNumColls = true;
-    numOpenedColls = (numOpenedColls == 2) ? 1 : 2;
+    userNumColls = (userNumColls == 1) ? 2 : 1; 
     $(this).children().toggle();
-    if (numOpenedColls == 2) {
-        $('div.page').show();
-        $('div.page > .page-navigation').hide();
-    } else { // one column
-        $('div.page.' + hideCol).hide();
-        $('div.page > .page-navigation').show();
-    }
+    handleResize();
 }
