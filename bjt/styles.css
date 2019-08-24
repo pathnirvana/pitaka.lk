@@ -8,7 +8,7 @@
 
 a.page-navigation {
     position: absolute;
-    background-color: lightblue;
+    background-color: var(--special-bcolor);
     opacity: 0.25;
     z-index: 2;
     cursor: pointer;
@@ -17,10 +17,10 @@ a.page-navigation {
     
 }
 a.page-navigation:hover:active {
-    background-color: darkgray;
+    background-color: var(--main-bcolor);
 }
 a.page-navigation:hover {
-    background-color: lightgreen;
+    background-color: var(--hover-bcolor);
     opacity: 0.5;
 }
 a.page-navigation.top, a.page-navigation.bottom {
@@ -28,8 +28,8 @@ a.page-navigation.top, a.page-navigation.bottom {
     width: 100%;
     padding: 3pt 0 3pt 0;
 }
-a.page-navigation.top {    top: 0;}
-a.page-navigation.bottom {    bottom: 0;}
+a.page-navigation.top { top: 0; }
+a.page-navigation.bottom { bottom: 0; }
 
 a.page-navigation.left, a.page-navigation.right {
     writing-mode: vertical-lr;
@@ -37,8 +37,8 @@ a.page-navigation.left, a.page-navigation.right {
     height: 100%;
     padding: 0 3pt 0 3pt;
 }
-a.page-navigation.left {   left: 0;    }
-a.page-navigation.right {    right: 0;}
+a.page-navigation.left { left: 0; }
+a.page-navigation.right { right: 0; }
 
 #tree-window {
     position: absolute;
@@ -46,16 +46,16 @@ a.page-navigation.right {    right: 0;}
     left: 0;
     top: 0;
     max-height: 100%;
-    background-color: whitesmoke;
-    -webkit-box-shadow: 8px 9px 42px 8px rgba(0,0,0,0.19);
-    -moz-box-shadow: 8px 9px 42px 8px rgba(0,0,0,0.19);
-    box-shadow: 8px 9px 42px 8px rgba(0,0,0,0.19);
+    background-color: var(--special-bcolor);
+    -webkit-box-shadow: 8px 9px 42px 8px var(--shadow-color);
+    -moz-box-shadow: 8px 9px 42px 8px var(--shadow-color);
+    box-shadow: 8px 9px 42px 8px var(--shadow-color);
 }
 
 .page-pair {
     width:100%;
     display: flex;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--border-color);
 }
 .page-pair:last-of-type {
     border-bottom: none;
@@ -71,8 +71,9 @@ a.page-navigation.right {    right: 0;}
 .page > img {
     max-width:100%;
     height: auto;
-    
+    filter: grayscale(100%) contrast(110%) brightness(90%);
 }
+.dark .page > img { filter: invert(100%) contrast(70%) brightness(150%); }
 
 .page > .page-link {
     position: absolute;
@@ -80,11 +81,11 @@ a.page-navigation.right {    right: 0;}
     opacity: 0.5;
     right: 0;
     margin: 25pt 10pt 0 0;
-    color: lightblue;
+    color: var(--icon-color);
     font-size: 18pt;
     /*display: none; /* show when moouseover */
 }
 .page > .page-link:hover {
     cursor: pointer;
-    color: lightgreen;
+    color: var(--main-color);
 }

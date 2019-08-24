@@ -29,10 +29,10 @@ body {
 .text-section {
     font-size: 12pt;
     padding: 5px 10px 5px 10px;
-    background-color: white;
+    background-color: var(--main-bcolor);
 }
 
-.text-section .edit-textarea {
+/*.text-section .edit-textarea {
     width: 100%;
     height: 100%;
     padding-bottom: 0px;
@@ -42,26 +42,27 @@ body {
 
 .text-section .edit-textinput {
     background: lightgray;
-}
+}*/
 
 .text-section .share-icon {
     font-size: smaller;
     cursor: pointer;
-    color: lightblue;
+    color: var(--icon-color);
+    opacity: 50%;
     padding-left: 5pt;
 }
 .text-section .share-icon:hover {
-    color: blue;
+    color: var(--link-color); opacity: 100%;
 }
 .text-section .textbody .share-icon {
     float: left;
 }
 
 
-.text-section .span-links { position: absolute; cursor: pointer; color: lightgray; background-color: white; z-index: 99; padding: 0px 5px 0px 5px;}
-.text-section .span-links .fa:hover { color: lightcoral; }
+/*.text-section .span-links { position: absolute; cursor: pointer; color: lightgray; background-color: white; z-index: 99; padding: 0px 5px 0px 5px;}
+.text-section .span-links .fa:hover { color: lightcoral; }*/
 
-.text-section span.note { color: blue; }
+.text-section span.note { color: var(--special-color); }
 .text-section span.bold { font-weight: bold; }
 .text-section span.paranum { font-weight: normal; float: left; }
 .text-section span.paranum::after { font-weight: bold; content: "."; }
@@ -78,14 +79,14 @@ body {
 .text-section .specialcaption { font-size: 17pt; text-align: center; font-weight: bold } /* used for pannasaka bhagaya*/
 
 .text-section div.chapter { text-align:center; margin: 5px 0px 5px 0px; }
-.text-section span.chapter { font-size: 17pt; font-weight: bold; color: darkgoldenrod; }
+.text-section span.chapter { font-size: 17pt; font-weight: bold; color: var(--heading-color); }
 
 .text-section div.title { text-align:center; margin: 5px 0px 5px 0px; }
-.text-section span.title { font-size: 15pt; cursor: pointer; font-weight: bold; color: #000000; }
+.text-section span.title { font-size: 15pt; cursor: pointer; font-weight: bold; color: var(--special-color); }
 
 .text-section div.subhead { text-align:center; margin: 5px 0px 5px 0px;}
 .text-section span.subhead { font-size: 13pt; cursor: pointer; font-weight: bold;}
-.text-section span.subhead.sc_collapsed {color: #5423DB; }
+.text-section span.subhead.sc_collapsed {color: var(--link-color); }
 /*.text-section span.subhead.sc_collapsed::before {content: "+  "; color: blue;}*/
 
 .text-section div.subsubhead { text-align:center; font-weight: bold;  margin: 3px 0px 3px 0px;}

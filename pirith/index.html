@@ -15,12 +15,13 @@
 </head>
 <body>
 
-<div style="width: 100%; max-width: 800pt; margin: 0pt auto; height: 100%; display: flex; flex-flow: column; overflow: hidden; align-content: center;">
+<div style="width: 100%; max-width: 600pt; margin: 0pt auto; height: 100%; display: flex; flex-flow: column; overflow: hidden; align-content: center;">
     
     <div style="flex: 0 1 auto">
         <div class="title-bar">
             <i id="menu-toggle" class="fa fa-bars"></i>
             <div id="title-bar-text" style="flex: 1 1; text-align: center; font-weight: bold; font-size: 20px;">සෙත් පිරිත්</div>
+            <span id="star-toggle" class="star-icon"></span>
         </div>
         <div id="search-bar-div">
             <div id="menu-list" style="left: 0; top: 0;">
@@ -41,17 +42,12 @@
 
     <div id="scrolling-div" style="overflow-y: auto; position: relative; flex: 1 1 auto;">
         <div id="pirith-list"></div>
-        
-        <div style="position: relative; height: 100px;">
-            <div id="pali-text" style="position: absolute; height: 100px;"></div>
-            <div id="overlay" style="position: absolute; height: 100px; background-color: rgba(211, 135, 135, 0.459); opacity: 30%; z-index: -1;"></div>
-        </div>
-        <div id="trans-text"></div>
 
-        <div id="content-about" style="font-size: 14px; padding: 10px; text-align: center; background-color: beige;">
-            මෙහි නොමැති පොත් අඩවියට ධර්ම දානය පිණිස ඇතුළු කිරීමට අප වෙත ලියන්න admin <i class="fa fa-at"></i> pitaka.lk.<br>
-            යතුරුලියනය කල පොත් ඇසුරින් සැකසු අන්තර්ජාලය අනවශ්‍ය offline මෘදුකාංග <i class="fa fa-laptop"></i> <a href="http://www.mediafire.com/file/i1yb364mb56rd8n/typed-books-offline.zip/file">පරිඝනක සඳහා</a> සහ
-            <i class="fa fa-android"></i> <a href="https://play.google.com/store/apps/details?id=lk.pitaka.books">Android දුරකථන සඳහා</a> ලබාගන්න.<br>
+        <div id="content-about" style="font-size: 0.85rem; padding: 0.7rem; text-align: center; background-color: beige;">
+            පාලි පෙළ සහ සිංහල පරිවර්තනය උපුටා ගැනීම බුද්ධ ජයන්ති ත්‍රිපිටකයෙනි. <br>
+            මෙහි නොමැති වැදගත් පිරිත් ගැන හෝ යම් දෝෂයක් ගැන අපව දැනුවත් කිරීමට අප වෙත ලියන්න admin <i class="fa fa-at"></i> pitaka.lk.<br>
+            මේ පිරිත් ඇතුලත් කර සැකසු අන්තර්ජාලය අනවශ්‍ය offline මෘදුකාංග <i class="fa fa-laptop"></i> <a href="http://www.mediafire.com/file/i1yb364mb56rd8n/typed-books-offline.zip/file">පරිඝනක සඳහා</a> සහ
+            <i class="fa fa-android"></i> <a href="https://play.google.com/store/apps/details?id=lk.pitaka.chantings">Android දුරකථන සඳහා</a> ලබාගන්න.<br>
             ෴෴
         </div>
         
@@ -82,7 +78,8 @@
     $('audio').on('ended', pirithEnded);
     $('audio').on('pause', pirithPaused);
 
-    $('.title-bar').mouseup(function (e) {
+    $('#star-toggle').click(toggleStarred);
+    $('#menu-toggle').mouseup(function (e) {
         $('#menu-list').animate({height: 'toggle'}, 200);
         e.stopPropagation();
     });
