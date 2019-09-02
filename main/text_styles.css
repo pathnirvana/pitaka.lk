@@ -82,10 +82,10 @@ body {
 .text-section span.chapter { font-size: 17pt; font-weight: bold; color: var(--heading-color); }
 
 .text-section div.title { text-align:center; margin: 5px 0px 5px 0px; }
-.text-section span.title { font-size: 15pt; cursor: pointer; font-weight: bold; color: var(--special-color); }
+.text-section span.title { font-size: 15pt; cursor: pointer; font-weight: bold; color: var(--main-color); }
 
 .text-section div.subhead { text-align:center; margin: 5px 0px 5px 0px;}
-.text-section span.subhead { font-size: 13pt; cursor: pointer; font-weight: bold;}
+.text-section span.subhead { font-size: 13pt; cursor: pointer; font-weight: bold; color: var(--heading-color); }
 .text-section span.subhead.sc_collapsed {color: var(--link-color); }
 /*.text-section span.subhead.sc_collapsed::before {content: "+  "; color: blue;}*/
 
