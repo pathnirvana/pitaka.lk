@@ -122,7 +122,8 @@ function setLoadingError(xhr, targetUrl) {
     alert( msg + xhr.status + " " + xhr.statusText + ". Url: " + targetUrl);
 }
 
-var trSpanSelector = 'div>span:not(.note):not(.bold)'; // spans that should go in the table rows
+var trSpanSelector = 'div>span:not(.note):not(.bold)'; // spans that should go in the table rows 
+//bug - this skips the 'ending' since they are direct divs without spans
 function loadTextToTable(textDivs, tbody) {
     var paliSpans = textDivs['pali-cs'].find(trSpanSelector);
     var sinhSpans = textDivs['sinh-aps'] ? textDivs['sinh-aps'].find(trSpanSelector) : null;

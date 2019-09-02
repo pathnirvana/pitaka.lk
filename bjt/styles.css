@@ -71,7 +71,7 @@ a.page-navigation.right { right: 0; }
 .page > img {
     max-width:100%;
     height: auto;
-    filter: grayscale(100%) contrast(110%) brightness(90%);
+    filter: grayscale(100%) contrast(90%) brightness(95%);
 }
 .dark .page > img { filter: invert(100%) contrast(70%) brightness(150%); }
 
@@ -83,9 +83,7 @@ a.page-navigation.right { right: 0; }
     margin: 25pt 10pt 0 0;
     color: var(--icon-color);
     font-size: 18pt;
+    cursor: pointer;
     /*display: none; /* show when moouseover */
 }
-.page > .page-link:hover {
-    cursor: pointer;
-    color: var(--main-color);
-}
+.page > .page-link:hover {  color: var(--link-color); }

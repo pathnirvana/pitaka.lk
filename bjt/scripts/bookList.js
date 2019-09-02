@@ -27,16 +27,17 @@ function createPage(pageId, coll) {
     return page.append(img).append(linkSpan).append(pageNav);
 }
 
-var imgURLPrefix = 'newbooks';
-var imageFileExt = getParameterByName('image_extention', 'jpg'); // if old books, change this to png
-var booksFolder = getParameterByName('books_folder', '');
+var imgURLPrefix = 'newbooks'; // default for loading in the website
+var isAndroid = getParameterByName('is_android', 0); // if in the android webview app
+var imageFileExt = getParameterByName('image_extension', 'jpg'); // if old books, change this to png
 var loadFromRemote = getParameterByName('load_books_remote', 0);
+var booksFolder = getParameterByName('books_folder', '');
 
-if (booksFolder) {
+if (isAndroid) {
     if (loadFromRemote > 0) {
         imgURLPrefix = 'https://pitaka.lk/bjt/newbooks'; // full path for android app without pages
     } else {
-        imgURLPrefix = booksFolder; // could be books or newbooks
+        imgURLPrefix = booksFolder; // could be bjt_books or bjt_newbooks in either internal or sdcard storage
     }
 }
 console.log("Loading images from: " + imgURLPrefix);
