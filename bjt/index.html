@@ -50,7 +50,8 @@
                 <a id="select-num-columns" class="button" tip="තනි තීරුව හෝ තීරු දෙකක්ද යන්න"><i class="fa fa-columns fa-fw" style="display: none;"></i><i class="fa fa-window-maximize fa-fw"></i></a>
                 <input class="search-bar" type="text" placeholder="සොයන්න">
                 <a id="search-settings-button" class="button" tip="සෙවුම පොත් කිහිපයකට සීමා කරන්න" onclick="showBookSelectDialog(SF.name)"><i class="fa fa-wrench fa-lg"></i></a>
-                <a id="search-results-button" class="button" tip="කලින් සෙවුමේ ප්‍රතිපල පෙන්වන්න"><i class="fa fa-table fa-lg"></i><i class="ss-hide"> සෙවුම</i></a>
+                <a id="text-view-button" class="button tipright" tip="සූත්‍ර අන්තර්ගතය වෙත පිවිසෙන්න"><i class="fa fa-file-text-o fa-lg"></i><i class="ss-hide"> අන්තර්ගතය</i></a>
+                <a id="bookmark-button" class="button tipright" tip="තරුයෙදූ සූත්‍ර ලැයිස්තුව පෙන්වන්න"><i class="fa fa-star fa-lg" style="color: rgb(228, 194, 0);"></i><i class="ss-hide"> තරුයෙදූ</i></a>
 
                 <div id="menu-list" style="right: 0; top: 0;">
                     <a class="menu-list-item" href="intro.html?goto=about"><i class="fa fa-male fa-fw"></i> අප ගැන</a>
@@ -74,10 +75,11 @@
                     <ul id="three-pitaka-ul"></ul>
                 </div>
             </div>
+
             <div id="search-area" style="flex: 1 1 auto; overflow-y: auto; width: 100%;">
                 <div id="search-status" align="center">සෙවීම සඳහා උඩ කොටුවේ නම type කරන්න.</div>
                 <div id="search-filter-status" align="center"></div>
-                <table id="search-results">
+                <table id="search-results" class="results-table">
                     <thead>
                         <tr>
                             <td style="white-space: nowrap;"><span class="sort-action" by="book">
@@ -93,6 +95,17 @@
                     <tbody></tbody>
                 </table>
             </div>
+
+            <div id="bookmark-area" style="flex: 1 1 auto; overflow-y: auto; width: 100%;">
+                <div id="bookmark-status" align="center"></div>
+                <table id="bookmark-list" class="results-table">
+                    <thead>
+                        <tr><td style="white-space: nowrap;">පොත</td><td><i class="fa fa-search fa-fw"></i> නම</td></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
             <div style="flex: 1 1 auto; overflow-y: auto;">
                 <div id="image-area"  style="display: none;">
                     <a class="page-navigation top"><i class="fa fa-angle-up"></i> කළින් පිටුවට <i class="fa fa-angle-up"></i></a>
@@ -126,6 +139,24 @@
 <script src="../dialog/jquery.multi-select.js"></script>
 <script src="../dialog/dialog_select_book.js"></script>
 <script>
+    function showSearchArea() {
+        console.log('show search area');
+        $('#search-area, #search-settings-button').show();
+        $('#image-area, #select-num-columns').hide();
+        $('#bookmark-area').hide();
+    }
+    function showTextArea() {
+        console.log('show text area');
+        $('#search-area, #search-settings-button').hide();
+        $('#image-area, #select-num-columns').show();
+        $('#bookmark-area').hide();
+    }
+    function showBookmarkArea() {
+        console.log('show bookmark area');
+        $('#search-area, #search-settings-button').hide();
+        $('#image-area, #select-num-columns').hide();
+        $('#bookmark-area').show();
+    }
     $( document ).ready( function() {
         populateTree(); // load entries in the searchIndex to tree
         $('.pitaka-tree').pitakaTree();
@@ -161,8 +192,7 @@
         $('#select-num-columns').click(selectNumColumns);
 
         $('#search-results-button').click(function () {
-            $('#search-area').toggle();
-            $('#image-area').toggle();
+            showSearchArea();
         });
 
         // set startup location if specified in url params
@@ -176,10 +206,17 @@
         });
         clipb.on('success', e => showToast('link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.'));
         
-        $('.search-bar').focus(function (){ // show search area
-            $('#search-area').show();
-            $('#image-area').hide();
+        $('#text-view-button').click(function (e) {
+            showTextArea();
         });
+        $('#bookmark-button').click(function (e) {
+            displayBookmarks();
+            showBookmarkArea();
+        });
+        $('.search-bar').focus(function () { // show search area
+            showSearchArea();
+        });
+        
         $('span.sort-action').on('click', 'a', function () {
             var by = $(this).parent().attr('by');
             var order = $(this).attr('order');

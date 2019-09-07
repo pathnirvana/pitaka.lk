@@ -104,8 +104,7 @@ function navigateToLocation(bookId, pageId, name, origin) {
 
     $('#image-area').children('.page-pair').remove();
     $('#image-area').append(createPagePair(curBook.pageNumOffset + pageId));
-    $('#search-area').hide();
-    $('#image-area').show();
+    showTextArea();
     $('#image-area').scrollTop(0);
     handleResize();
 }
@@ -123,6 +122,8 @@ function navigateStartupLocation() {
             pageId--; // pageId should be even - open sinhala page
         }
         navigateToLocation(bookId, pageId, '', 'startup');
+    } else {
+        showSearchArea();
     }
 }
 
