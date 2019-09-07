@@ -121,6 +121,7 @@ function getStartupLocation() {
     var nodeId = getParameterByName('node', 0), nId = getParameterByName('n', 0),
         paragraphId = getParameterByName('para', 0), pId = getParameterByName('p', 0);
         nodeId = nodeId || nId; paragraphId = paragraphId || pId;
+    // colls no longer supported - open cs and aps in both cases
     /*colls = colls ? colls.split(',') : ['cs', 'aps'];
     var collNames = [];
     $.each(colls, function(_1, coll) {
@@ -179,24 +180,6 @@ function repositionDialog() {
 
     // assign values to the overlay and dialog box
     $('#dialog-overlay').css({height:maskHeight, width:maskWidth});
-}
-
-//Popup dialog
-function showDialog(dialogName, type) {
-    dialogSettings.type = type; // pass in to the dialog
-    $('#dialog-message').load(utilScriptPath + '../dialog/' + dialogName + '.html', function() {
-        $('#dialog-overlay').fadeIn('fast');
-        $('#dialog-box').slideDown('fast');
-        repositionDialog();
-        hideToolTip(); // for touch devices 
-    });
-}
-
-function closeDialog() {
-    $('#dialog-overlay').fadeOut('fast');
-    $('#dialog-box').slideUp('fast', function() {
-        $('#dialog-message').html('');
-    });
 }
 
 function copyTextAndShowToast(copyText, toastMsg) {
@@ -285,6 +268,17 @@ $('#dark-toggle').click(function (e) {
         showToast('ආලෝකමත් තිරය ක්‍රියාත්මකයි');
     }
 });
+
+//Popup dialog - moved to dialog
+/*function showDialog(dialogName, type) {
+    dialogSettings.type = type; // pass in to the dialog
+    $('#dialog-message').load(utilScriptPath + '../dialog/' + dialogName + '.html', function() {
+        $('#dialog-overlay').fadeIn('fast');
+        $('#dialog-box').slideDown('fast');
+        repositionDialog();
+        hideToolTip(); // for touch devices 
+    });
+}*/
 
  // todo consider moving these to pitakaTabs.js
  /*

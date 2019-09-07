@@ -48,15 +48,11 @@ body {
     font-size: smaller;
     cursor: pointer;
     color: var(--icon-color);
-    opacity: 50%;
+    opacity: 0.4;
     padding-left: 5pt;
 }
-.text-section .share-icon:hover {
-    color: var(--link-color); opacity: 100%;
-}
-.text-section .textbody .share-icon {
-    float: left;
-}
+.text-section .share-icon:hover { color: var(--link-color); opacity: 1; }
+.text-section .textbody .share-icon {  float: left; }
 
 
 /*.text-section .span-links { position: absolute; cursor: pointer; color: lightgray; background-color: white; z-index: 99; padding: 0px 5px 0px 5px;}

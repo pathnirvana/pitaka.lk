@@ -90,12 +90,16 @@
         </div>
         <div id="search-bar-div">
             <div id='select-column-buttons' style="display: inherit;">
-                <a id="select-pali-sinhala" class="button" tip="පාලි සිංහල අතර මාරු වෙන්න"><b class="pali-cs" style="color: green;">පාලි</b><b class="sinh-aps" style="display: none; color: firebrick;">සිංහල</b></a>
+                <a id="select-pali-sinhala" class="button" tip="පාලි සිංහල අතර මාරු වෙන්න">
+                    <b class="pali-cs" style="color: var(--main-color);">පාලි</b>
+                    <b class="sinh-aps" style="display: none; color: var(--heading-color);">සිංහල</b>
+                </a>
                 <a id="select-num-columns" class="button" tip="තනි තීරුව හෝ තීරු දෙකක්ද යන්න"><i class="fa fa-columns fa-fw" style="display: none;"></i><i class="fa fa-window-maximize fa-fw"></i></a>
             </div>
             <input class="search-bar" type="text" placeholder="සොයන්න">
             <a id="search-settings-button" class="button tipright" tip="සෙවුම පොත් කිහිපයකට සීමා කරන්න" onclick="showBookSelectDialog(1)"><i class="fa fa-wrench fa-lg action"></i></a>
-            <a id="search-results-button" class="button tipright" tip="කලින් සෙවුමේ ප්‍රතිපල පෙන්වන්න"><i class="fa fa-table fa-lg"></i><i class="ss-hide"> සෙවුම</i></a>
+            <a id="text-view-button" class="button tipright" tip="සූත්‍ර අන්තර්ගතය වෙත පිවිසෙන්න"><i class="fa fa-file-text-o fa-lg"></i><i class="ss-hide"> අන්තර්ගතය</i></a>
+            <a id="bookmark-button" class="button tipright" tip="තරුයෙදූ සූත්‍ර ලැයිස්තුව පෙන්වන්න"><i class="fa fa-star fa-lg" style="color: rgb(228, 194, 0);"></i><i class="ss-hide"> තරුයෙදූ</i></a>
             
             <div id="menu-list" style="right: 0; top: 0;">
                 <a class="menu-list-item" href="intro.html?goto=about"><i class="fa fa-male fa-fw"></i> අප ගැන</a>
@@ -120,7 +124,7 @@
         <div id="search-area" style="flex: 1 1 auto; overflow-y: auto;">
             <div id="search-status" align="center">සෙවීම සඳහා උඩ කොටුවේ නම type කරන්න.</div>
             <div id="search-filter-status" align="center"></div>
-            <table id="search-results">
+            <table id="search-results" class="results-table">
                 <thead>
                     <tr>
                         <td><i class="fa fa-search fa-fw"></i> ගැළපෙන වචන<span class="sort-action" by="nikaya">
@@ -129,6 +133,13 @@
                         </td>
                     </tr>
                 </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div id="bookmark-area" style="flex: 1 1 auto; overflow-y: auto;">
+            <div id="bookmark-status" align="center"></div>
+            <table id="bookmark-list" class="results-table">
                 <tbody></tbody>
             </table>
         </div>
@@ -167,12 +178,22 @@
     var userCloseColl = ''; // will be set when text is loaded
     var numOpenedColls = 2;
     function showSearchArea() {
-        $('#search-area').show();
+        console.log('show search area');
+        $('#search-area, #search-settings-button').show();
         $('#text-view-area, #select-column-buttons').hide();
+        $('#bookmark-area').hide();
     }
     function showTextArea() {
-        $('#search-area').hide();
+        console.log('show text area');
+        $('#search-area, #search-settings-button').hide();
         $('#text-view-area, #select-column-buttons').show();
+        $('#bookmark-area').hide();
+    }
+    function showBookmarkArea() {
+        console.log('show bookmark area');
+        $('#search-area, #search-settings-button').hide();
+        $('#text-view-area, #select-column-buttons').hide();
+        $('#bookmark-area').show();
     }
     function openLocationFromUrl() {
         // set startup location if specified in url params
@@ -190,7 +211,6 @@
             $(this).pitakaTree();
             openLocationFromUrl();
         });
-
 
         $('#menu-toggle').mousedown(function (e) {
             $('#menu-list').animate({height: 'toggle'}, 200);
@@ -243,8 +263,13 @@
         }
         $(window).resize(handleResize);
 
-        $('#search-results-button').click(function (e) {
-            $('#search-area, #text-view-area, #select-column-buttons').toggle();
+        $('#text-view-button').click(function (e) {
+            showTextArea();
+            //$('#search-area, #text-view-area, #select-column-buttons').toggle();
+        });
+        $('#bookmark-button').click(function (e) {
+            displayBookmarks();
+            showBookmarkArea();
         });
         $('.search-bar').focus(function (){
             showSearchArea();
