@@ -24,14 +24,14 @@ function createChildOptions(optElem, childIds, nameField) {
 var dialogBookSelectHtml = '\
     <div style="max-width: 500px">\
     <div id="dlg-get-link">\
-    <div class="title"><i class="fa fa-book fa-lg" style="color: #5423DB"></i> සෙවීම සීමා කරන්න</div>\
+    <div class="title"><i class="fa fa-book fa-lg"></i> සෙවීම සීමා කරන්න</div>\
     <p>මෙම තෝරන ලද පොත් වලට පමණක් සෙවීම සීමා වේ. Use this to filter the search results by books.</p>\
     <select id="optgroup" multiple="multiple" class="books-select"></select>\
     <p>පොතක් තේරීමට හෝ තෝරාගන්නා ලද පොතක් ඉවත් කිරීමට ඒ මත click කරන්න.</p>\
     </div>\
     <div style="text-align: center">\
-    <a href="#" class="button update-button" onclick="updateSelectedBooks()"><i class="fa fa-check fa-fw"></i>Save</a>\
-    <a href="#" class="button close-button" onclick="closeDialog()"><i class="fa fa-times fa-fw"></i>Cancel</a>\
+    <a class="button update-button" onclick="updateSelectedBooks()"><i class="fa fa-check fa-fw"></i>Save</a>\
+    <a class="button close-button" onclick="closeDialog()"><i class="fa fa-times fa-fw"></i>Cancel</a>\
     </div>\
     </div>';
 
@@ -62,4 +62,11 @@ function showBookSelectDialog(nameField) {
         }
     });
     $('#optgroup').multiSelect('select', _.map(optGroupValues, String));
+}
+
+function closeDialog() {
+    $('#dialog-overlay').fadeOut('fast');
+    $('#dialog-box').slideUp('fast', function() {
+        $('#dialog-message').html('');
+    });
 }

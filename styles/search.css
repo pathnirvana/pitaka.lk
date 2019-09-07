@@ -1,4 +1,4 @@
-#search-status {
+#search-status, #bookmark-status {
     font-size: 10pt;
     font-style: italic;
     color: var(--heading-color);
@@ -9,45 +9,36 @@
     color: var(--special-color);
 }
 
-#search-results {
+.results-table {
     margin: 0px;
     padding-left: 0pt;
     display: none;
     width: 100%;
     background-color: var(--main-bcolor);
 }
-#search-results thead {
+.results-table thead {
     font-size: 15pt;
     font-weight: bold;
     background: var(--special-bcolor);
 }
-#search-results tr {
+.results-table tr {
     font-size: 13pt;
     padding: 2pt 5pt 2pt 5pt;
     border-top: 1pt solid var(--border-color);
 }
-#search-results tr:nth-child(even) {
+.results-table tr:nth-child(even) {
     background-color: var(--special-bcolor);
 }
-#search-results tr:hover { background: var(--hover-bcolor); }
-#search-results thead tr:hover { background: none; }
+.results-table tr:hover { background: var(--hover-bcolor); }
+.results-table thead tr:hover { background: none; }
 
-#search-results td {
-    padding: 0pt 5pt 0pt 5pt;
-}
-#search-results span.action {
-    float: right;
-    color: blue;
-    cursor: pointer;
-}
-#search-results span.action i:hover {
-    color: red;
-}
+.results-table td { padding: 0pt 5pt 0pt 5pt; }
+.results-table span.action { float: right; color: blue; cursor: pointer; }
+.results-table span.action i:hover { color: red; }
 
 .result-sutta-name {
     color: var(--special-color);
     font-weight: bold;
-    padding-right: 10pt;
     font-size: 12pt;
     word-break: break-word;
 }
@@ -66,3 +57,12 @@ span.result-sutta-name:hover, span.result-parent-name:hover {
     cursor: pointer;
     text-decoration: underline;
 }
+
+.star-icon { /* appears in text too */
+    font-size: smaller;
+    cursor: pointer;
+    color: var(--icon-color);
+    opacity: 0.4;
+    padding-left: 5pt;
+}
+.star-icon.starred { color: rgb(228, 194, 0); opacity: 1; }

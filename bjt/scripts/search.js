@@ -33,8 +33,8 @@ function initSearchBar() {
     updateFilterStatusDisplay();
 
     // clicking on a result brings the bjt pages
-    $('#search-results').on('click', 'span.result-sutta-name,span.result-parent-name', function() {
-        $('.search-bar').val($(this).text());
+    $('.results-table').on('click', 'span.result-sutta-name,span.result-parent-name', function() {
+        //$('.search-bar').val($(this).text());
         navigateToIndex($(this).attr('index'), 'search');
     });
 }
@@ -93,7 +93,8 @@ function displaySearchResults() {
         var tr = $('<tr/>').attr('index', entry.index).addClass('result');
         tr.append(getBookNamePageNumberDisplay(entry));
         var namesTd = $('<td/>').addClass('result-sutta-name-parents').appendTo(tr);
-        namesTd.append($('<div/>').append(getSuttaNameDisplay(entry.index, 'result-sutta-name')).addClass('result-sutta-name'));
+        namesTd.append(
+            $('<div/>').addClass('result-sutta-name').append(getSuttaNameDisplay(entry.index, 'result-sutta-name'), createStarIcon(entry.index)));
         namesTd.append(getParentsDisplay(entry));
         //tr.append(getPageNumberDisplay(entry));
         tr.appendTo(table);
@@ -159,7 +160,8 @@ function searchDataSet() {
         console.log("found in cache");
     } else {
         // Search all singlish_combinations of translations from roman to sinhala
-        var words = isSinglishQuery(query) ? getPossibleMatches(query) : [query];
+        var words = isSinglishQuery(query) ? getPossibleMatches(query) : [];
+        if (!words.length) words = [query]; // if not singlish or no possible matches found
         // TODO: improve this code to ignore na na la la sha sha variations at the comparison
         var queryReg = new RegExp(words.join('|'), "i");
         for (var i = 0; i < searchIndex.length && results.length < resultSettings.maxResults; i++) {
@@ -210,4 +212,95 @@ function refreshCurrentSearchDisplay(by, order) {
     currentSort = {by: by, order: order == 'asc' ? 1 : -1};
     sortSearchResults();
     displaySearchResults();
+}
+
+/**
+ * Bookmarks related code
+ */
+var bookmarks = [];
+function loadBookmarks() {
+    bookmarks = JSON.parse(localStorage.getItem('bjt-bookmarks') || '[]');
+}
+function saveBookmarks() {
+    localStorage.setItem('bjt-bookmarks', JSON.stringify(bookmarks));
+}
+
+$('body').on('click', 'i.star-icon', function(e) {
+    var nodeId = $(this).parents('tr').attr('index');
+    var isAdded = toggleBookmark(nodeId);
+    $('tr[index='+nodeId+'] .star-icon').toggleClass('starred', isAdded); // all rendered star icons updated
+});
+loadBookmarks();
+
+function toggleBookmark(nodeId) {
+    nodeId = Number(nodeId);
+    var index = bookmarks.indexOf(nodeId);
+    if (index >= 0) {
+        bookmarks.splice(index, 1);
+    } else {
+        bookmarks.push(nodeId);
+    }
+    saveBookmarks();
+    return (index == -1); // true if the bookmark is added
+}
+
+function displayBookmarks() {
+    var table = $('#bookmark-list'), statusDiv = $('#bookmark-status');
+    table.hide().find('.result').remove();
+    
+    if (!bookmarks.length) {
+        statusDiv.text("ඔබ එකදු සූත්‍රයක් වත් තරු යොදා නැත. පිටුසන් තැබීම සඳහා සූත්‍රය නම අසල ඇති තරු ලකුණ ඔබන්න.");
+        return;
+    }
+    statusDiv.text("ඔබ විසින් තරුයෙදූ සූත්‍ර " + bookmarks.length + " ක් හමුවුනා.");
+    /*entries = _.map(bookmarks, function(nodeId) {
+        var info = searchIndex[nodeId];
+        return {
+            index: nodeId,
+            name: info[SL.sinhName], // get the sinh name always
+            nikaya: info[SL.parents][1], // nikaya - 2nd parent
+            parents: info[SL.parents].slice(2).sort(function (a, b) { return b - a; })
+        };
+    });*/
+
+    // extract entries
+    entries = _.map(bookmarks, function(ind) {
+        return {
+            index: ind,
+            name: searchIndex[ind][SF.name],
+            page: searchIndex[ind][SF.page],
+            book: searchIndex[ind][SF.book],
+            parents: getBJTParents(ind)
+        };
+    });
+
+    // add results
+    /*var tbody = table.children('tbody').first();
+    $.each(entries, function (_1, entry) {
+        var tr = $('<tr/>').attr('index', entry.index).addClass('result').attr('node-id', entry.index);
+        $('<td/>').appendTo(tr).append(getNikayaNameDisplay(entry.nikaya))
+            .append(getParentsDisplay(entry))
+            .append(getSuttaNameDisplay(entry.index, entry.name, 'result-sutta-name'))
+            .append(createStarIcon(entry.index));
+        tr.appendTo(tbody);
+    });*/
+
+
+    $.each(entries, function (_1, entry) {
+        var tr = $('<tr/>').attr('index', entry.index).addClass('result');
+        tr.append(getBookNamePageNumberDisplay(entry));
+        var namesTd = $('<td/>').addClass('result-sutta-name-parents').appendTo(tr);
+        namesTd.append(
+            $('<div/>').addClass('result-sutta-name').append(getSuttaNameDisplay(entry.index, 'result-sutta-name'), createStarIcon(entry.index)));
+        namesTd.append(getParentsDisplay(entry));
+        tr.appendTo(table);
+    });
+
+    table.slideDown('fast');
+}
+
+// when creating new star-icons
+function createStarIcon(nodeId) {
+    nodeId = Number(nodeId);
+    return $('<i/>').addClass('fa fa-star star-icon').toggleClass('starred', bookmarks.indexOf(nodeId) >= 0);
 }

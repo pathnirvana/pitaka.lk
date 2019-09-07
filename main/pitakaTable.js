@@ -144,6 +144,11 @@ function loadTextToTable(textDivs, tbody) {
         }
         tbody.append(tr);
     }
+
+    $('span.chapter, span.title, span.subhead').each(function(_1) { // add star icons
+        var nodeId = $(this).parents('tr').attr('node-id');
+        $(this).after(createStarIcon(nodeId));
+    });
     var shareIcon = $('<i/>').addClass('fa fa-share share-icon');
     $('span.chapter, span.title, span.subhead, span.paranum').after(shareIcon);
 }

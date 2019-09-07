@@ -44,8 +44,8 @@ function initSearchBar() {
     updateFilterStatusDisplay();
 
     // clicking on a result opens it up in the tabs
-    $('#search-results').on('click', '.result-sutta-name,.result-parent-name', function() {
-        $('.search-bar').val($(this).text());
+    $('.results-table').on('click', '.result-sutta-name,.result-parent-name', function() {
+        //$('.search-bar').val($(this).text());
         pitakaLkOpenLocation(createLocationObj($(this).attr('index'), 0), 'search');
     });
 }
@@ -102,10 +102,11 @@ function displaySearchResults() {
     // add results
     var tbody = table.children('tbody').first();
     $.each(entries, function (_1, entry) {
-        var tr = $('<tr/>').attr('index', entry.index).addClass('result');
+        var tr = $('<tr/>').attr('index', entry.index).addClass('result').attr('node-id', entry.index);
         $('<td/>').appendTo(tr).append(getNikayaNameDisplay(entry.nikaya))
             .append(getParentsDisplay(entry))
-            .append(getSuttaNameDisplay(entry.index, entry.name, 'result-sutta-name'));
+            .append(getSuttaNameDisplay(entry.index, entry.name, 'result-sutta-name'))
+            .append(createStarIcon(entry.index));
         tr.appendTo(tbody);
     });
     table.slideDown('fast');
@@ -161,7 +162,8 @@ function searchDataSet() {
         console.log('Results for query ' + query + ' found in cache of length ' + results.length);
     } else {
         // Search all singlish_combinations of translations from roman to sinhala
-        var words = isSinglishQuery(query) ? getPossibleMatches(query) : [query];
+        var words = isSinglishQuery(query) ? getPossibleMatches(query) : [];
+        if (!words.length) words = [query]; // if not singlish or no possible matches found
         // TODO: improve this code to ignore na na la la sha sha variations at the comparison
         var queryReg = new RegExp(words.join('|'), "i"), match = -1;
         $.each(searchIndex, function (i, info) {
@@ -229,4 +231,74 @@ function refreshCurrentSearchDisplay(by, order) {
     currentSort = {by: by, order: order == 'asc' ? 1 : -1};
     sortSearchResultsByLocation();
     displaySearchResults();
+}
+
+/**
+ * Bookmarks related code
+ */
+var bookmarks = [];
+function loadBookmarks() {
+    bookmarks = JSON.parse(localStorage.getItem('main-bookmarks') || '[]');
+}
+function saveBookmarks() {
+    localStorage.setItem('main-bookmarks', JSON.stringify(bookmarks));
+}
+
+$('body').on('click', 'i.star-icon', function(e) {
+    var nodeId = $(this).parents('tr').attr('node-id');
+    var isAdded = toggleBookmark(nodeId);
+    $('tr[node-id='+nodeId+'] .star-icon').toggleClass('starred', isAdded); // all rendered star icons updated
+    console.log((isAdded ? 'Adding' : 'Removing') + ' bookmark for ' + nodeId);
+});
+loadBookmarks();
+
+function toggleBookmark(nodeId) {
+    nodeId = Number(nodeId);
+    if (!searchIndex[nodeId]) return false; // some entries seems to be missing in the index. dont add them or will cause errors later
+    var index = bookmarks.indexOf(nodeId);
+    if (index >= 0) {
+        bookmarks.splice(index, 1);
+    } else {
+        bookmarks.push(nodeId);
+    }
+    saveBookmarks();
+    return (index == -1); // true if the bookmark is added
+}
+
+function displayBookmarks() {
+    var table = $('#bookmark-list'), statusDiv = $('#bookmark-status');
+    table.hide().find('.result').remove();
+    
+    if (!bookmarks.length) {
+        statusDiv.text("ඔබ එකදු සූත්‍රයක් වත් තරු යොදා නැත. පිටුසන් තැබීම සඳහා සූත්‍රය නම අසල ඇති තරු ලකුණ ඔබන්න.");
+        return;
+    }
+    statusDiv.text("ඔබ විසින් තරුයෙදූ සූත්‍ර " + bookmarks.length + " ක් හමුවුනා.");
+    entries = _.map(bookmarks, function(nodeId) {
+        var info = searchIndex[nodeId];
+        return {
+            index: nodeId,
+            name: info[SL.paliName], // get the pali name always since some do not have sinh names
+            nikaya: info[SL.parents][1], // nikaya - 2nd parent
+            parents: info[SL.parents].slice(2).sort(function (a, b) { return b - a; })
+        };
+    });
+
+    // add results
+    var tbody = table.children('tbody').first();
+    $.each(entries, function (_1, entry) {
+        var tr = $('<tr/>').attr('index', entry.index).addClass('result').attr('node-id', entry.index);
+        $('<td/>').appendTo(tr).append(getNikayaNameDisplay(entry.nikaya))
+            .append(getParentsDisplay(entry))
+            .append(getSuttaNameDisplay(entry.index, entry.name, 'result-sutta-name'))
+            .append(createStarIcon(entry.index));
+        tr.appendTo(tbody);
+    });
+    table.slideDown('fast');
+}
+
+// when creating new star-icons
+function createStarIcon(nodeId) {
+    nodeId = Number(nodeId);
+    return $('<i/>').addClass('fa fa-star star-icon').toggleClass('starred', bookmarks.indexOf(nodeId) >= 0);
 }
