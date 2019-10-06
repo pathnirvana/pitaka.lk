@@ -15,12 +15,12 @@ const pirithToProcess = {
     '9': '09-rathana',
     '10': '10-karaniya',
     '11': '11-khandha-parittam',
-    /*'12': '12-mettanisamsa',
+    '12': '12-mettanisamsa',
     '13': '13-mittanisamsa',
     '14': '14-mora-parittam',
     '15': '15-canda-parittam',
     '16': '16-suriya-parittam',
-    '17': '17-dhajagga-parittam',*/
+    '17': '17-dhajagga-parittam',
 };
 const dataJson = {};
 
