@@ -77,9 +77,9 @@ function refreshPirithList() {
 
         const item = CED('pirith-item').attr('name', name).attr('num', info[0]).append(details);
         if (name == curPirith) {
-            const pali = CED('pali').append(CES('past'), CES('present'), CES('future'));
-            const text = CED('pirith-text').append(pali, CED('trans')).attr('id', 'text');
-            item.append(text).addClass('active');
+            //const pali = CED('pali').append(CES('past'), CES('present'), CES('future'));
+            const text = CED('pirith-text').attr('id', 'text');//.append(pali, CED('trans'));
+            item.append($('#audio-controls-div'), text).addClass('active');
         }
         return item;
     });
@@ -188,6 +188,39 @@ function timeUpdated() {
     for (; i+1 < data.labels.length && audioElem.currentTime > data.labels[i+1][0]; i++);
     if (i < 0) return;
 
+    const curLabel = data.labels[i], curText = data.text[i];
+    const elapsedRatio = Math.min(1, (audioElem.currentTime - curLabel[0]) / (curLabel[1] - curLabel[0]) );
+    const ci = computeCi(curText, elapsedRatio);
+    $('#text').empty();
+    $('#text').append(renderTextRows(curText.slice(0, ci), 'past')); // ci not included
+    $('#text').append(renderTextRows([curText[ci]], 'present'));//.css('color', `rgb(${250 - elapsedRatio * 150}, ${elapsedRatio * 100}, ${elapsedRatio * 100})`);
+    $('#text').append(renderTextRows(curText.slice(ci + 1), 'future'));
+    //console.log(`time ${audioElem.currentTime}, label: ${i}, char: ${chars[ci]}`);
+}
+
+function renderTextRows(rows, className) {
+    return CED(`text-rows ${className}`).append(
+        rows.map(row => CED('text-row').append(
+            [CED('pali part').text(row[0]), CED('sinh part').text(row[1])])));
+}
+
+function computeCi(text, elapsedRatio) {
+    const total = text.reduce((acc, row) => acc + row[0].length, 0);
+    const elapsedTotal = total * elapsedRatio;
+    for (let i = 0, sum = 0; i < text.length; i++) {
+        sum = sum + text[i][0].length;
+        if (sum >= elapsedTotal) return i;
+    }
+    return text.length - 1;
+}
+
+/*function timeUpdated() {
+    if (!curPirith || !pirithData[curPirith]) return;
+    const data = pirithData[curPirith];
+    let i = -1;
+    for (; i+1 < data.labels.length && audioElem.currentTime > data.labels[i+1][0]; i++);
+    if (i < 0) return;
+
     const chars = breakCharacters(data.pali[i]);
     const curLabel = data.labels[i];
     const elapsedRatio = Math.min(1, (audioElem.currentTime - curLabel[0]) / (curLabel[1] - curLabel[0]) );
@@ -200,7 +233,7 @@ function timeUpdated() {
     while (!data.trans[ti]) ti--; // if null, get the previous one
     $('#text .trans').text(data.trans[ti]);
     //console.log(`time ${audioElem.currentTime}, label: ${i}, char: ${chars[ci]}`);
-}
+}*/
 
 function setupMediaSession(pirithName) {
     if (!('mediaSession' in navigator)) return;
@@ -208,7 +241,7 @@ function setupMediaSession(pirithName) {
     const metadata = {
         title: pirithList[pirithName][1], // TODO needs script change 
         artist: authorInfo[1],
-        //album: 'Whenever You Need Somebody',
+        album: 'පිරිත්',
     };
     metadata.artwork = authorInfo[2].map(size => {
         return { 

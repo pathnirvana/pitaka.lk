@@ -49,10 +49,8 @@ audio { width: 100% }
 .loop-icon::after { content: '\f01e' }
 .loop-icon.active::after { color: rgb(255, 94, 0); font-weight: 900; }
 
-#text { text-align: center; }
-#text > div { margin: 0.5rem 0.2rem 0.5rem 0.2rem; }
-#text .pali { color: black; font-size: 1.5rem; font-weight: bold; word-break: break-word; }
-#text .past { color: rgb(100, 100, 100); }
-#text .present { color: red; }
-#text .future { color: rgb(223, 0, 0); }
-#text .trans { color: brown;  font-size: 1.1rem; }
+.text-row .pali { font-size: 1.2rem; font-weight: bold; word-break: break-word; text-align: right; color: rgb(100, 100, 100); }
+.text-row .sinh { color: brown;  font-size: 1.1rem; text-align: left; }
+.text-row { display: flex; flex-flow: row; }
+.text-row .part { width: 50%; padding: 0.1rem 0.5rem; }
+.text-rows.present { background-color: blanchedalmond; border: 0.5px dashed black; padding: 5px;}

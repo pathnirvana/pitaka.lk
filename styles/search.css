@@ -59,7 +59,7 @@ span.result-sutta-name:hover, span.result-parent-name:hover {
 }
 
 .star-icon { /* appears in text too */
-    font-size: smaller;
+    /*font-size: smaller;*/
     cursor: pointer;
     color: var(--icon-color);
     opacity: 0.4;

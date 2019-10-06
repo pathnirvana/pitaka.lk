@@ -147,7 +147,7 @@ function createLocationObj(nodeId, paragraphId) {
 }
 
 function pitakaLkOpenLocation(loc, origin) {
-    console.log(loc);
+    console.log(JSON.stringify(loc));
     $('.pitaka-tree').pitakaTreeOpenBranch(loc.bookId);
     $.fn.pitakaTableOpenVagga(origin, loc.vaggaId, loc.nodeId, loc.paragraphId);
 }
@@ -232,7 +232,7 @@ function getOS() {
 var toolTipDelay = 1000, toolTipTimeoutConst;
 function showToolTip() {
     //var os = getOS();
-    //if (os == 'Android' || os == 'iOS') return; // no tooltips on mobile platform
+    if (os == 'Android' || os == 'iOS') return; // no tooltips on mobile platform
     toolTipTimeoutConst = setTimeout(_.bind(function () { // delay showing the tip
         var tipText = $(this).attr('tip');
         var tip = $('<span/>').addClass('tooltip').text(tipText).appendTo($('body'));
