@@ -19,6 +19,7 @@ i.ss-hide {font-style: normal;}
         display: none;
     }
 }
+#content-about { font-size: 0.85rem; padding: 0.7rem; text-align: center; background-color: beige; }
 
 audio { width: 100% }
 
@@ -32,16 +33,21 @@ audio { width: 100% }
 .pirith-num::after { content: '.' }
 .pirith-desc { flex: 1 1 auto; cursor: pointer; font-size: 0.8rem; }
 .pirith-desc > span { padding-right: 0.5rem; }
-.pirith-desc .duration {  }
+.pirith-desc .duration { text-decoration: none; }
+.pirith-desc .duration[href] { color: darkblue; }
+.pirith-desc .duration[href]:hover { text-decoration: underline; color: blue; }
 .pirith-desc .name { font-size: 1.2rem; }
 .pirith-item.active .name { font-weight: bold; color: rgba(141, 42, 3, 1); }
 
 
 .action-icons { display: flex; flex-wrap: nowrap; align-items: center; justify-content: center; }
-.action-icons > * { padding: 0rem 0.3rem 0rem 0.3rem; cursor: pointer; transition: 100ms; color:lightgray; }
-.action-icons > *:hover { font-weight: 900; color: rgb(67, 67, 252); }
+.action-icons span { padding: 0rem 0.3rem 0rem 0.3rem; cursor: pointer; transition: 100ms; color:lightgray; }
+.action-icons span:hover { font-weight: 900; color: rgb(67, 67, 252); }
 
 .action-group { display: flex; flex-direction: column; align-items: flex-start; justify-content: stretch; }
+.up-icon,.down-icon { font-family: 'FontAwesome'; }
+.up-icon::after { content: '\f077' }
+.down-icon::after { content: '\f078' }
 .star-icon { font-family: 'FontAwesome'; color: black; } /* star toggle in title bar too */
 .star-icon::after { content: '\f006' }
 .star-icon.starred::after { content: '\f005'; color: gold; }
@@ -51,6 +57,6 @@ audio { width: 100% }
 
 .text-row .pali { font-size: 1.2rem; font-weight: bold; word-break: break-word; text-align: right; color: rgb(100, 100, 100); }
 .text-row .sinh { color: brown;  font-size: 1.1rem; text-align: left; }
-.text-row { display: flex; flex-flow: row; }
+.text-row { display: flex; flex-flow: row; align-items: center; }
 .text-row .part { width: 50%; padding: 0.1rem 0.5rem; }
-.text-rows.present { background-color: blanchedalmond; border: 0.5px dashed black; padding: 5px;}
+.text-rows.present { background-color: blanchedalmond;  }

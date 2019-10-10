@@ -3,7 +3,13 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>පිරිත්</title>
-    <meta name="description" content="Buddhist Chanting of Sri Lanka මෙත්ත මංගල රතන සුත්‍ර නාඋයනේ අරියධම්ම">
+    <meta name="description" content="මෙත්ත මංගල රතන සුත්‍ර සෙත් පිරිත් පරිත්ත නාඋයනේ අරියධම්ම හිමි Chanting Pariththa Nauyane Ariyadhamma Thero Sinhala Sri Lanka">
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="සිංහල අර්ථ සහිත පිරිත්" /> <!--For facebook link previews -->
+    <meta property="og:image" content="https://pitaka.lk/pirith/artwork/logo-800.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="800" />
+    <meta property="og:image:height" content="800" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="icon" type="image/png" sizes="96x96" href="../images/favicon-96x96.png">
@@ -13,9 +19,9 @@
     <link rel="stylesheet" href="../styles/font-awesome.css"/>
     <link rel="stylesheet" href="styles.css"/>
 </head>
-<body>
+<body style="overflow: auto;">
 
-<div style="width: 100%; max-width: 600pt; margin: 0pt auto; height: 100%; display: flex; flex-flow: column; overflow-y: auto; align-content: center;">
+<div style="width: 100%; max-width: 600pt; margin: 0pt auto; height: 100%; display: flex; flex-flow: column; align-content: center;">
     
     <div style="flex: 0 1 auto">
         <div class="title-bar">
@@ -34,39 +40,28 @@
                 <a class="menu-list-item" href="https://www.facebook.com/pitaka.lk"><i style="color: blue;" class="fa fa-facebook fa-fw"></i> Facebook පිටුව</a>
             </div>
         </div>
-        <div id="audio-controls-div">
-            <audio controls></audio>
-            <div id="audio-buttons"></div>
-        </div>
     </div>
 
-    <!--<div id="scrolling-div" style="overflow-y: auto; position: relative; flex: 1 1 auto;">-->
-        <div id="pirith-list"></div>
+    <div id="pirith-list"></div>
 
-        <div id="content-about" style="font-size: 0.85rem; padding: 0.7rem; text-align: center; background-color: beige;">
-            පාලි පෙළ සහ සිංහල පරිවර්තනය උපුටා ගැනීම පිරුවානා පොත් වහන්සේගෙනි. යතුරුලියනයෙන් උපකාර කල සියලුදෙනාට පින් අයත් වේවා.<br>
-            මෙහි නොමැති වැදගත් පිරිත් ගැන හෝ යම් දෝෂයක් ගැන අපව දැනුවත් කිරීමට අප වෙත ලියන්න admin <i class="fa fa-at"></i> pitaka.lk.<br>
-            මේ පිරිත් ඇතුලත් කර සැකසු අන්තර්ජාලය අනවශ්‍ය offline මෘදුකාංග <i class="fa fa-laptop"></i> <a href="http://www.mediafire.com/file/...">පරිඝනක සඳහා</a> සහ
-            <i class="fa fa-android"></i> <a href="https://play.google.com/store/apps/details?id=lk.pitaka.chantings">Android දුරකථන සඳහා</a> ලබාගන්න.<br>
-            ෴෴
-        </div>
-        
-    <!--</div>-->
+    <div id="content-about">
+        මේ‍ ව්‍යායාමය නාඋයනේ අරියධම්ම හිමියන්ගේ ශ්‍රී නාමයට කෙරෙන උපහාරයක්ම වේවා. පාලි පෙළ සහ සිංහල පරිවර්තනය උපුටා ගැනීම පිරුවානා පොත් වහන්සේගෙනි. 
+        යතුරුලියනයෙන් උපකාර කල සියලුදෙනාට ද පින් අයත් වේවා. යම් දෝෂයක් ගැන අපව දැනුවත් කිරීමට අප වෙත ලියන්න admin <i class="fa fa-at"></i> pitaka.lk.<br>
+        මේ පිරිත් ඇතුලත් කර සැකසු අන්තර්ජාලය අනවශ්‍ය offline මෘදුකාංග <i class="fa fa-laptop"></i> <a href="http://www.mediafire.com/file/r5t5qych9uhe7rz/">පරිඝනක සඳහා</a> සහ
+        <i class="fa fa-android"></i> <a href="https://play.google.com/store/apps/details?id=lk.pitaka.chantings">Android දුරකථන සඳහා</a> ලබාගන්න.<br>
+        ෴෴
+    </div>
+
 </div>
 
-
-
 <script src="../scripts/jquery-1.11.1.min.js"></script>
-<script src="../scripts/utilities.js"></script>
-<script src="../scripts/singlish.js"></script>
-<script src="pirith-data-2.js"></script>
-<script src="scripts.js"></script>
+<script src="pirith-data.js?v=1"></script>
+<script src="scripts.js?v=1"></script>
 <script type="module">
     loadFromStorage();
     refreshPirithList();
     registerEvents();
 
-    audioElem.addEventListener('timeupdate', timeUpdated);
     if ('mediaSession' in navigator) {
         //navigator.mediaSession.setActionHandler('play', function() {});
         //navigator.mediaSession.setActionHandler('pause', function() {});
@@ -75,8 +70,6 @@
         navigator.mediaSession.setActionHandler('previoustrack', () => playNextPirith(-1));
         navigator.mediaSession.setActionHandler('nexttrack', () => playNextPirith(1));
     };
-    $('audio').on('ended', pirithEnded);
-    $('audio').on('pause', pirithPaused);
 
     $('#star-toggle').click(toggleStarred);
     $('#menu-toggle').mouseup(function (e) {

@@ -22,6 +22,21 @@ const pirithList = { // order, desc, author, length, count, isStarred, isLoop
     '15-canda-parittam':    [13, 'චන්ද පරිත්තං', 'ariyadhamma', '3:26'],
     '16-suriya-parittam':   [14, 'සූරිය පරිත්තං', 'ariyadhamma', '3:40'],
     '17-dhajagga-parittam': [15, 'ධජග්ග පරිත්තං', 'ariyadhamma', '11:13'],
+    '18-kassapa-bojjhanga':     [16, 'මහා කස්සප බොජ්ඣංග සුත්තං', 'ariyadhamma', '7:05'],
+    '19-moggallana-bojjhanga':  [17, 'මහා මොග්ගල්ලාන බොජ්ඣංග සුත්තං', 'ariyadhamma', '7:03'],
+    '20-chunda-bojjhanga':      [18, 'මහා චුන්ද බොජ්ඣංග සුත්තං', 'ariyadhamma', '6:53'],
+    '21-girimananda-suttam':    [19, 'ගිරිමානන්ද සුත්තං', 'ariyadhamma', '24:11'],
+    '22-isigili-suttam':        [20, 'ඉසිගිලි සුත්තං', 'ariyadhamma', '16:23'],
+    '23-dhammacakkappavattana': [21, 'ධම්මචක්කප්පවත්තන සුත්තං', 'ariyadhamma', '24:28'],
+    '24-mahasamaya-suttam':     [22, 'මහාසමය සුත්තං', 'ariyadhamma', '30:17'],
+    '25-alavaka-suttam':        [23, 'ආළවක සුත්තං', 'ariyadhamma', '9:40'],
+    '26-kasibharadvaja-suttam': [24, 'කසිභාරද්වාජ සුත්තං', 'ariyadhamma', '11:49'],
+    '27-parabhava-suttam':      [25, 'පරාභව සුත්තං', 'ariyadhamma', '10:00'],
+    '28-aggika-bharadvaja-suttam':  [26, 'අග්ගික භාරද්වාජ සුත්තං', 'ariyadhamma', '14:22'],
+    '29-saccavibhanga-suttam':      [27, 'සච්චවිභඞ්ග සුත්තං', 'ariyadhamma', '30:31'],
+    '30-atanatiya-suttam-1':        [28, 'ආටානාටිය සුත්තං 1', 'ariyadhamma', '41:02'],
+    '32-atanatiya-suttam-2':        [29, 'ආටානාටිය සුත්තං 2', 'ariyadhamma', '48:55'],
+    '35-tesattati-nyana-parittam':  [30, 'තෙසැත්තෑ ඤාණ පරිත්තං', 'ariyadhamma', '58:26'],
 };
 Object.keys(pirithList).forEach((name, ind) => { 
     pirithList[name][0] = ind; 
@@ -33,7 +48,7 @@ const authorList = {
 };
 const findPirithByNum = num => Object.keys(pirithList).find(name => pirithList[name][0] == num);
 
-const audioElem = document.querySelector('audio'), pirithListLength = Object.keys(pirithList).length;
+const audioElem = () => document.querySelector('audio'), pirithListLength = Object.keys(pirithList).length;
 
 function loadFromStorage() {
     const ar = localStorage.getItem('pirith-data');
@@ -66,20 +81,20 @@ function refreshPirithList() {
     .map(name => {
         const info = pirithList[name];
         const num = CES('pirith-num').text(info[0] + 1);
-        const desc = CES('pirith-desc').append(CES('name').text(info[1]), CES('duration').text(`(${info[3]})`));
+        const staticLink = $('<a/>').text(`(${info[3]})`).addClass('duration');
+        if (pirithData[name]) staticLink.attr('href', `pages/${name}.html`); // only if data exists
+        const desc = CES('pirith-desc').append(CES('name').text(info[1]), staticLink);
         const loopIcon = CES(info[6] ? 'loop-icon active' : 'loop-icon');
         const starIcon = CES(info[5] ? 'star-icon starred' : 'star-icon');
-        const moveIG = CES('action-group').append($('<i class="fa fa-chevron-up up-icon"></i>'),
-            $('<i class="fa fa-chevron-down down-icon"></i>'));
+        const moveIG = CED('action-group').append(CES('up-icon'), CES('down-icon'));
         const action = CES('action-icons').append(loopIcon, starIcon, moveIG)
         const count = CES('pirith-count').text(info[4]);
         const details = CED('pirith-details').append(num, desc, count, action);
 
         const item = CED('pirith-item').attr('name', name).attr('num', info[0]).append(details);
         if (name == curPirith) {
-            //const pali = CED('pali').append(CES('past'), CES('present'), CES('future'));
-            const text = CED('pirith-text').attr('id', 'text');//.append(pali, CED('trans'));
-            item.append($('#audio-controls-div'), text).addClass('active');
+            const text = CED('pirith-text').attr('id', 'text');
+            item.append($('<audio controls></audio>'), text).addClass('active');
         }
         return item;
     });
@@ -165,35 +180,36 @@ function pirithEnded() {
 }
 // pause event (seeking also seems to fire this event) - prevent incrementing of the count
 function pirithPaused() {
-    console.log(`${curPirith} paused at ${audioElem.currentTime}. duration: ${audioElem.duration}`);
+    console.log(`${curPirith} paused at ${audioElem().currentTime}. duration: ${audioElem().duration}`);
     // at the end of play the event is fired again - following condition filters those end events
-    if (Math.abs(audioElem.currentTime - audioElem.duration) > 0.01) playedPirith = null;
+    if (Math.abs(audioElem().currentTime - audioElem().duration) > 0.01) playedPirith = null;
 }
 
 // starts playing from the beginning
 function playPirith() {
     if (!curPirith) return;
-    audioElem.src = `audio/${curPirith}.mp3`;
-    audioElem.play().then(_ => setupMediaSession(curPirith));
+    refreshPirithList(); // render pirith text/audioElem in the curPirith item
+    audioElem().src = `audio/${curPirith}.mp3`;
+    audioElem().play().then(_ => setupMediaSession(curPirith));
+    $('audio').on('ended', pirithEnded).on('pause', pirithPaused).on('timeupdate', timeUpdated);
     $('#title-bar-text').text(pirithList[curPirith][1]);
-    refreshPirithList(); // render pirith text in the curPirith item
     playedPirith = curPirith;
     console.log(`${curPirith} playing.`);
 }
 
 function timeUpdated() {
-    if (!curPirith || !pirithData[curPirith]) return;
+    if (!curPirith || !pirithData[curPirith] || !audioElem()) return;
     const data = pirithData[curPirith];
     let i = -1;
-    for (; i+1 < data.labels.length && audioElem.currentTime > data.labels[i+1][0]; i++);
+    for (; i+1 < data.labels.length && audioElem().currentTime > data.labels[i+1][0]; i++);
     if (i < 0) return;
 
     const curLabel = data.labels[i], curText = data.text[i];
-    const elapsedRatio = Math.min(1, (audioElem.currentTime - curLabel[0]) / (curLabel[1] - curLabel[0]) );
+    const elapsedRatio = Math.min(1, (audioElem().currentTime - curLabel[0]) / (curLabel[1] - curLabel[0]) );
     const ci = computeCi(curText, elapsedRatio);
     $('#text').empty();
     $('#text').append(renderTextRows(curText.slice(0, ci), 'past')); // ci not included
-    $('#text').append(renderTextRows([curText[ci]], 'present'));//.css('color', `rgb(${250 - elapsedRatio * 150}, ${elapsedRatio * 100}, ${elapsedRatio * 100})`);
+    $('#text').append(renderTextRows([curText[ci]], 'present'));
     $('#text').append(renderTextRows(curText.slice(ci + 1), 'future'));
     //console.log(`time ${audioElem.currentTime}, label: ${i}, char: ${chars[ci]}`);
 }
@@ -214,29 +230,11 @@ function computeCi(text, elapsedRatio) {
     return text.length - 1;
 }
 
-/*function timeUpdated() {
-    if (!curPirith || !pirithData[curPirith]) return;
-    const data = pirithData[curPirith];
-    let i = -1;
-    for (; i+1 < data.labels.length && audioElem.currentTime > data.labels[i+1][0]; i++);
-    if (i < 0) return;
-
-    const chars = breakCharacters(data.pali[i]);
-    const curLabel = data.labels[i];
-    const elapsedRatio = Math.min(1, (audioElem.currentTime - curLabel[0]) / (curLabel[1] - curLabel[0]) );
-    const ci = Math.floor((chars.length - 1) * elapsedRatio);
-    $('#text .past').text(chars.slice(0, ci).join('')); // ci not included
-    $('#text .present').text(chars[ci]).css('color', `rgb(${250 - elapsedRatio * 150}, ${elapsedRatio * 100}, ${elapsedRatio * 100})`);
-    $('#text .future').text(chars.slice(ci + 1).join(''));
-
-    let ti = i;
-    while (!data.trans[ti]) ti--; // if null, get the previous one
-    $('#text .trans').text(data.trans[ti]);
-    //console.log(`time ${audioElem.currentTime}, label: ${i}, char: ${chars[ci]}`);
-}*/
-
 function setupMediaSession(pirithName) {
-    if (!('mediaSession' in navigator)) return;
+    if (!('mediaSession' in navigator)) {
+        console.log('No mediaSession support in navigator');
+        return;
+    }
     const authorInfo = authorList[pirithList[pirithName][2]];
     const metadata = {
         title: pirithList[pirithName][1], // TODO needs script change 
@@ -253,6 +251,7 @@ function setupMediaSession(pirithName) {
     navigator.mediaSession.metadata = new MediaMetadata(metadata);
 }
 
+/*
 // {} denotes a section that is not available in the audio
 const siCharRegex = new RegExp('(\{.+?\})|[අආඉඊඋඌඑඔ ,\.\-\?]|([ක-ෆ](\u0dca\u200d[රය])?[\u0dcaා-ො]?[ංඃ]?)', 'g');
 
@@ -262,4 +261,4 @@ function breakCharacters(word) {
         chars.push(match[0]);
     }
     return chars;
-}
+}*/
