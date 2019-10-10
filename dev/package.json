@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "jquery": "^3.4.1",
+    "jsdom": "^15.1.1",
     "vkbeautify": "^0.99.3"
   }
 }
