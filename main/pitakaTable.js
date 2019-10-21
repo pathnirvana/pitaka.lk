@@ -34,7 +34,7 @@ $.fn.registerTextClicks = function() {
             return url;
         }
     });
-    clipb.on('success', e => showToast('link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.'));
+    clipb.on('success', function(e) { showToast('link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.'); });
 }
 
 

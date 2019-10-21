@@ -29,6 +29,10 @@
 
         ga('create', 'UA-46817481-7', 'auto');
         ga('send', 'pageview');
+        window.onerror = function (msg, url, lineNo, columnNo, error) {
+            showToast(msg + ' : ' + url + ' : ' + lineNo, 5000);
+            return false;
+        }
     </script>
     <style>
         i.ss-hide { font-style: normal; }
@@ -204,7 +208,7 @@
                 return bjtLink;
             }
         });
-        clipb.on('success', e => showToast('link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.'));
+        clipb.on('success', function(e) { showToast('link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.'); });
         
         $('#text-view-button').click(function (e) {
             showTextArea();

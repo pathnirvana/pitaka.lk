@@ -194,10 +194,11 @@ function copyTextAndShowToast(copyText, toastMsg) {
     // After 3 seconds, remove the show class from DIV
     setTimeout(function(){ toast.fadeOut(); }, 3000);
 }
-function showToast(toastMsg) {
+function showToast(toastMsg, duration) {
     var toast = $('#toast').text(toastMsg).fadeIn(300);
-    // After 3 seconds, remove the show class from DIV
-    setTimeout(function(){ toast.fadeOut(); }, 3000);
+    // After duration miliseconds, remove the show class from DIV
+    var durationMS = duration || 3000; // incase of not defined use default 3000
+    setTimeout(function(){ toast.fadeOut(); }, durationMS);
 }
 
 // function to determine the browser OS
@@ -231,7 +232,7 @@ function getOS() {
 //var isAndroid = getParameterByName('android', 0);
 var toolTipDelay = 1000, toolTipTimeoutConst;
 function showToolTip() {
-    //var os = getOS();
+    var os = getOS();
     if (os == 'Android' || os == 'iOS') return; // no tooltips on mobile platform
     toolTipTimeoutConst = setTimeout(_.bind(function () { // delay showing the tip
         var tipText = $(this).attr('tip');
