@@ -11,7 +11,7 @@ const clipb = new ClipboardJS('.share-icon', {
         return `https://pitaka.lk/pirith/pages/${pirithName}.html`;
     }
 });
-clipb.on('success', e => showToast('link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.'));
+clipb.on('success', function(e) { showToast('link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.'); });
 
 function showToast(toastMsg) {
     var toast = $('#toast').text(toastMsg).show();
@@ -26,7 +26,7 @@ function setupMediaSession() {
         artist: authorInfo[1],
         album: 'පිරිත්',
     };
-    metadata.artwork = authorInfo[2].map(size => {
+    metadata.artwork = _.map(authorInfo[2], function(size) {
         return {
             src: `../artwork/ariyadhamma-${size}.png`,
             sizes: `${size}x${size}`, 

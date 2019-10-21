@@ -20,7 +20,7 @@ const clipb = new ClipboardJS('.share-icon', {
         return `https://pitaka.lk/dhammapada/${$(icon).attr('file-name') || ''}`;
     }
 });
-clipb.on('success', e => showToast('link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.'));
+clipb.on('success', function(e) { showToast('link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.'); });
 
 function showToast(toastMsg) {
     var toast = $('#toast').text(toastMsg).show();

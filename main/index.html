@@ -32,6 +32,10 @@
 
         ga('create', 'UA-46817481-2', 'auto');
         ga('send', 'pageview');
+        window.onerror = function (msg, url, lineNo, columnNo, error) {
+            showToast(msg + ' : ' + url + ' : ' + lineNo, 5000);
+            return false;
+        }
     </script>
     <style>
         i.ss-hide {
