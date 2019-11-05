@@ -232,6 +232,7 @@ function extractHtmlFiles() {
             book.files.push(book_to_html[book.name]);
         }
     });
+    //console.log(vkbeautify.json(JSON.stringify(book_to_html)));
 }
 
 var groups = [
