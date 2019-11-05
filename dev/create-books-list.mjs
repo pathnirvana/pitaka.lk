@@ -9,13 +9,14 @@ import fs from 'fs';
 import {passwords} from './passwords.mjs';
 import https from 'https';
 import crypto from 'crypto';
+import vkbeautify from 'vkbeautify';
 const MFDownloadBase = 'http://www.mediafire.com/file/';
 const MFApiBase = 'https://www.mediafire.com/api/';
 const MFResFormat = '&response_format=json';
 const MFCred = passwords.mediafire;
 const MFAppId = 40159;
-const MFTopFolder = '7er85ae44wr67';
-let collsToBeProcessed; // used to check if all folders are processed before writing entries to the file
+const MFTopFolder = 'obg343v943luq'; //'7clxluwuqkym7' (sudassana);// 'ogtho62dov6kn' (gunarathana); //'7er85ae44wr67' (books dw);
+let collsToBeProcessed = 0; // used to check if all folders are processed before writing entries to the file
 const entryMap = new Map(), entries = [];
 
 function parseFileName(fileName) {
@@ -36,17 +37,15 @@ function callWithData(res, callback)  {
         }
     });
 }
-function processTopFolder(session_token) {
+function processTopFolder(folder_key, session_token) {
     const otherParams = `content_type=folders&filter=public&details=yes`;
-    https.get(`${MFApiBase}folder/get_content.php?session_token=${session_token}&folder_key=${MFTopFolder}&${otherParams}&${MFResFormat}`, 
+    https.get(`${MFApiBase}folder/get_content.php?session_token=${session_token}&folder_key=${folder_key}&${otherParams}&${MFResFormat}`, 
         (res) => callWithData(res, (data) => processFolders(data.response.folder_content, session_token))
-        ).on('error', (e) => {
-            console.error(e);
-        });
+        ).on('error', (e) => console.error(e));
 }
 function processFolders(folder_content, session_token) {
     const otherParams = `content_type=files&filter=public&chunk_size=500`;
-    collsToBeProcessed = folder_content.folders.length;
+    collsToBeProcessed += folder_content.folders.length;
     folder_content.folders.forEach(folder => {
         const collDetails = {
             name: folder.name,
@@ -64,9 +63,10 @@ function processFolders(folder_content, session_token) {
         const folder_key = folder.folderkey;
         https.get(`${MFApiBase}folder/get_content.php?session_token=${session_token}&folder_key=${folder_key}&${otherParams}&${MFResFormat}`, 
             (res) => callWithData(res, (data) => createCollection(data.response.folder_content, folder.name))
-            ).on('error', (e) => {
-                console.error(e);
-            });
+            ).on('error', (e) => console.error(e));
+
+        // now process the folders inside this folder
+        processTopFolder(folder_key, session_token);
     });
     console.log(`Top Folder has ${collsToBeProcessed} folders.`);
 }
@@ -104,6 +104,7 @@ function writeEntries() {
     console.log(`Num entries: ${entries.length}`);
     const outputFile = 'books/books-list.js';
     fs.writeFileSync(outputFile, `var books_list = ${JSON.stringify(entries)};`, {encoding: 'utf8'});
+    fs.writeFileSync('./dev/mediafire-katukurunde.json', vkbeautify.json(JSON.stringify(entries)), {encoding: 'utf8'});
     console.log(`Wrote file ${outputFile}`);
 }
 
@@ -113,7 +114,7 @@ sha1.update(`${MFCred.email}${MFCred.password}${MFAppId}${MFCred.apiKey}`);
 const signature = sha1.digest('hex');
 
 https.get(`${MFApiBase}user/get_session_token.php?application_id=${MFAppId}&signature=${signature}&email=${MFCred.email}&password=${MFCred.password}&token_version=1&${MFResFormat}`, 
-    (res) => callWithData(res, (data) => processTopFolder(data.response.session_token))
+    (res) => callWithData(res, (data) => processTopFolder(MFTopFolder, data.response.session_token))
     ).on('error', (e) => {
         console.error(e);
     });
