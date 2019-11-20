@@ -1,0 +1,72 @@
+.pitaka-tree-container {
+    overflow: auto;
+    max-width: 250px;
+    top: 0;
+    left: 0;
+    background-color: var(--special-bcolor);
+    z-index: 4;
+}
+
+.pitaka-tree {
+    text-align: left;
+}
+
+.pitaka-tree a {
+	cursor: pointer;
+    font-size: 0.9rem;
+}
+.pitaka-tree > ul {
+    margin: 0;
+    padding: 5px;
+}
+.pitaka-tree ul {
+    list-style: none inside none;
+    /* change indentation width */
+    padding-left: 1rem;
+}
+/* bigger font for the first level only */
+.pitaka-tree > ul > li > a {
+    font-weight: bold;
+}
+.pitaka-tree li a {
+    display: block;
+    position: relative;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 0.15rem 0rem 0.15rem 0rem; 
+}
+.pitaka-tree li a:hover {
+    background-color: var(--hover-bcolor);
+	font-weight: bold;
+}
+.pitaka-tree li a:active {
+    background-color: var(--main-bcolor);
+}
+
+.pitaka-tree li[disabled] a {
+    color: gray;
+}
+
+.pitaka-tree ul li > a:before {
+    font-family: 'FontAwesome';
+    content: '\f0f6'; /* f016 15b file */
+    color: var(--link-color);
+    padding-right: 0.4rem;
+}
+
+.pitaka-tree ul li.parent > a:before {
+    color: var(--icon-color);
+    content: '\f114'; /* f07b  folder */
+}
+
+.pitaka-tree ul li.active > a:before {
+    color: var(--icon-color);
+    content: '\f07c'; /* f115  openfolder */
+}
+
+.pitaka-tree ul li ul {
+    display: none;
+}
+.pitaka-tree ul li ul li {
+    position: relative;
+}
