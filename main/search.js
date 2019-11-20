@@ -11,7 +11,7 @@ var SL = {
     parents: 4
 };
 
-var searchIndexUrl = 'text/sutta-list.json';
+var searchIndexUrl = '../main/text/sutta-list.json';
 
 var searchIndex = [];
 var searchPrevQuery = "";

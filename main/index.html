@@ -6,8 +6,8 @@
     <title>පිටක.lk Sinhala Tripitaka</title>
     <meta name="description" content="පාළි ත්‍රිපිටකය හා එහි සිංහල පරිවර්තනයන්. The Pali Tripitaka and Sinhala Translations.">
     <meta property="og:type" content="article" /> <!--For facebook link previews -->
-    <meta property="og:title" content="පිටක.lk Sinhala Tripitaka"/> <!-- will be set by js later -->
-    <meta property="og:description" content="පාළි ත්‍රිපිටකය හා එහි සිංහල පරිවර්තනයන්. The Pali Tripitaka and Sinhala Translations.">
+    <meta property="og:title" content=""/> <!-- will be set by nodejs server -->
+    <meta property="og:description" content=""> <!-- will be set by nodejs server -->
     <!--<meta property="og:image" content="https://pitaka.lk/images/favicon-96x96.png"/>
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="96" />
@@ -20,7 +20,7 @@
 
     <link rel="stylesheet" href="../styles/common_styles.css?v=1" />
     <link rel="stylesheet" href="../styles/tree_style.css?v=1" />
-    <link rel="stylesheet" href="./text_styles.css?v=1" />
+    <link rel="stylesheet" href="../main/text_styles.css?v=1" />
     <link rel="stylesheet" href="../styles/font-awesome.css?v=1"/>
     <link rel="stylesheet" href="../styles/search.css?v=1"/>
     <link rel="stylesheet" href="../dialog/multi-select.css?v=1"/>
@@ -125,7 +125,7 @@
             <div class="pitaka-tree"></div>
         </div>
 
-        <div id="search-area" style="flex: 1 1 auto; overflow-y: auto;">
+        <div id="search-area" style="flex: 1 1 auto; overflow-y: auto; display: none;">
             <div id="search-status" align="center">සෙවීම සඳහා උඩ කොටුවේ නම type කරන්න.</div>
             <div id="search-filter-status" align="center"></div>
             <table id="search-results" class="results-table">
@@ -141,7 +141,7 @@
             </table>
         </div>
 
-        <div id="bookmark-area" style="flex: 1 1 auto; overflow-y: auto;">
+        <div id="bookmark-area" style="flex: 1 1 auto; overflow-y: auto; display: none;">
             <div id="bookmark-status" align="center"></div>
             <table id="bookmark-list" class="results-table">
                 <tbody></tbody>
@@ -175,8 +175,8 @@
 <script src="../scripts/utilities.js?v=1"></script>
 <script src="../scripts/singlish.js?v=1"></script>
 <script src="../scripts/pitakaTree.js?v=1"></script>
-<script src="./search.js?v=1"></script>
-<script src="./pitakaTable.js?v=1"></script>
+<script src="../main/search.js?v=1"></script>
+<script src="../main/pitakaTable.js?v=1"></script>
 <script src="../dialog/jquery.multi-select.js?v=1"></script>
 <script src="../dialog/dialog_select_book.js?v=1"></script>
 <script>
@@ -201,21 +201,23 @@
         $('#text-view-area, #select-column-buttons').hide();
         $('#bookmark-area').show();
     }
-    function openLocationFromUrl() {
+    function openLocationFromUrl() { // only used in the android app
         // set startup location if specified in url params
         var location = getStartupLocation();
-        if (location) {
-            pitakaLkOpenLocation(location, 'startup');
-        } else {
+        if (!location) {
             showSearchArea();
+        } else if ($('.text-view-tbody').is(':empty')) { // text not already loaded by server
+            pitakaLkOpenLocation(location, 'startup');
+        } else { // loaded from server
+            userCloseColl = 'pali-cs';
         }
     }
 
     $( document ).ready( function() {
         console.log('OS detected: ' + getOS());
-        $('.pitaka-tree').load('text/main_toc_full.xml', function () {
+        $('.pitaka-tree').load('../main/text/main_toc_full.xml', function () {
             $(this).pitakaTree();
-            openLocationFromUrl();
+            openLocationFromUrl(); // for android when site links are opened with the app
         });
 
         $('#menu-toggle').mousedown(function (e) {
@@ -271,7 +273,6 @@
 
         $('#text-view-button').click(function (e) {
             showTextArea();
-            //$('#search-area, #text-view-area, #select-column-buttons').toggle();
         });
         $('#bookmark-button').click(function (e) {
             displayBookmarks();

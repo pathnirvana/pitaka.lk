@@ -45,7 +45,7 @@ $.fn.pitakaTableOpenVagga = function (origin, vaggaId, nodeId, paraId) {
     _.each(colls, function(coll) {
         var doneLoading = $.Deferred();
         deferred.push(doneLoading);
-        var targetUrl = 'text/' + coll + '/' + vaggaFileId;
+        var targetUrl = '../main/text/' + coll + '/' + vaggaFileId;
 
         textDivs[coll] = $('<div/>').load(targetUrl, '', function(response, status, xhr) {
             if (status == 'error') {
