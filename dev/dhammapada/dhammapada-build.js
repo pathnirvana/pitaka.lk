@@ -1,6 +1,12 @@
-// splits the mammoth output file to multiple html files
-// images and the pali gatha added
-// magick mogrify -resize 1000x1000 -background none -fill white -font 'Segoe-UI' -pointsize 50 -gravity south -stroke gray -strokewidth 1 -draw "text 0,100 'pitaka.lk/dhammapada'" -path output -quality 50 *.jpg
+/**
+ * splits the mammoth output file to multiple html files
+ * images and the pali gatha added
+ * magick mogrify -resize 1000x1000 -background none -fill white -font 'Segoe-UI' -pointsize 50 -gravity south -stroke gray -strokewidth 1 -draw "text 0,100 'pitaka.lk/dhammapada'" -path output -quality 50 *.jpg
+ * 
+ * run this script from the dev/dhammapada folder "node dhammapada-build.js"
+ * output written to the main pitaka/dhammapada folder
+ */
+
 
 const fs = require('fs');
 const assert = require('assert');
@@ -14,6 +20,7 @@ global.document = document;
 
 var $ = jQuery = require('jquery')(window);
 const MDI = (name, cls) => `<i class="material-icons ${cls}">${name}</i>`;
+const outputFolder = '../../dhammapada';
 
 const kathaDom = new JSDOM(fs.readFileSync('katha.html', { encoding: 'utf8' }));
 //const katha2Dom = new JSDOM(fs.readFileSync('katha2.html', { encoding: 'utf8' }));
@@ -28,7 +35,7 @@ const getKathaFileName = (ki) => (ki >= 1 && ki <= 305) ? `katha-${ki}.html` : '
 const getVaggaFileName = (vi) => (vi >= 1 && vi <= 26) ? `vagga-${vi}.html` : '';
 
 const indexDiv = $('<div/>').append(vaggas.map((vagga, vaggaInd) => processVagga(vagga, vaggaInd + 1))).addClass('vagga-links');
-writeIndexFile(indexDiv, 'output/index.html');
+writeIndexFile(indexDiv, outputFolder + '/index.html');
 
 function processVagga(vagga, vaggaInd) {
     const kathas = vagga.split('k').map(line => line.trim()).filter(line => line);
@@ -39,7 +46,7 @@ function processVagga(vagga, vaggaInd) {
     const vaggaNameDiv = $('<div/>').text(vaggaName).attr('id', `vagga-${vaggaInd}`).addClass('vagga-name');
     const vaggaDiv = $('<div/>').addClass('vagga').append(vaggaNameDiv);
     const kathaDivs = kathas.slice(1).map(katha => processKatha(katha, vaggaInd, vaggaName));
-    writeVaggaFile(vaggaDiv.append(kathaDivs, getVaggaLinks(vaggaInd)), `output/${getVaggaFileName(vaggaInd)}`, vaggaName);
+    writeVaggaFile(vaggaDiv.append(kathaDivs, getVaggaLinks(vaggaInd)), `${outputFolder}/${getVaggaFileName(vaggaInd)}`, vaggaName);
 
     return $('<a/>').addClass('vagga-link').attr('id', `vagga-${vaggaInd}`).attr('href', getVaggaFileName(vaggaInd)).append(
         $('<div/>').addClass('vagga-name').text(vaggaName));
@@ -82,7 +89,7 @@ function writeKathaFile(gathas, vaggaInd, vaggaName) {
     preContent = preContent.replace(/TITLEPLACEHOLDER/, kathaHeading.text().replace(/^[\d\-\.\w]*/g, '')); // set the title
     preContent = preContent.replace(/FIRSTPAINTINGPLACEHOLDER/, gathaDivs[0].attr('gatha-num')); // set image
     preContent = preContent.replace(/CONTENTPLACEHOLDER/, vkbeautify.xml(kathaBody.html())); // set the content
-    fs.writeFileSync('output/' + getKathaFileName(kathaIndex), preContent);
+    fs.writeFileSync(outputFolder + '/' + getKathaFileName(kathaIndex), preContent);
     return kathaTitle;
 }
 
