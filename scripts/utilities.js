@@ -103,64 +103,6 @@ function getParameterByName(name, defVal) {
     return results === null ? defVal : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-
-var CollectionsList = {
-    'pali-cs': { short: 'cs', medium: 'Chatta S', long: 'Chattha (Sixth) Sangayana Pali'},
-    'sinh-aps': { short: 'aps', medium: 'A P Soysa', long: 'A.P. de Soyza Sinhala' },
-    'sinh-kg': { short: 'kg', medium: 'K Gnanananda', long: 'Kiribathgoda Gnanananda Thero Sinhala'},
-    'sinh-bj': { short: 'bj', medium: 'B Jayanthi', long: 'Buddha Jayanthi Tripitaka Sinhala'}
-};
-
-var UrlParamNames = {
-    NODE: 'node',
-    PARA: 'para'
-};
-// e.g. location url pitaka.lk/15111/12/cs,kk
-// url rewritten pitaka.lk/?node=15111&para=12&coll=cs,kk
-function getStartupLocation() {
-    var nodeId = getParameterByName('node', 0), nId = getParameterByName('n', 0),
-        paragraphId = getParameterByName('para', 0), pId = getParameterByName('p', 0);
-        nodeId = nodeId || nId; paragraphId = paragraphId || pId;
-    // colls no longer supported - open cs and aps in both cases
-    /*colls = colls ? colls.split(',') : ['cs', 'aps'];
-    var collNames = [];
-    $.each(colls, function(_1, coll) {
-       for (var collName in CollectionsList) {
-           if (CollectionsList[collName].short == coll) {
-               collNames.push(collName);
-           }
-       }
-    });*/
-    if (!$.isNumeric(paragraphId)) {
-        paragraphId = 0;
-    }
-    if (!nodeId || !$.isNumeric(nodeId) || (+nodeId) < 1000) {
-        return false
-    }
-    return createLocationObj(nodeId, paragraphId);
-}
-
-function createLocationObj(nodeId, paragraphId) {
-    var bookId = nodeId.substr(0, 2), vaggaId = nodeId.length >= 4 ? nodeId.substr(0, 4) : (bookId + '10'); // select the first vagga of  the book if node==book
-    nodeId = (nodeId.length > 4) ? nodeId : 0; // incase node==vagga/book, nodeId is not needed
-    return { bookId: +(bookId), vaggaId: +(vaggaId), nodeId: +(nodeId), paragraphId: +(paragraphId)};
-}
-
-function pitakaLkOpenLocation(loc, origin) {
-    console.log(JSON.stringify(loc));
-    $('.pitaka-tree').pitakaTreeOpenBranch(loc.bookId);
-    $.fn.pitakaTableOpenVagga(origin, loc.vaggaId, loc.nodeId, loc.paragraphId);
-}
-
-// get the list of columns/collections in a tab
-function getCurrentColumns(tabId) {
-    var textDivs = $('.text-section', $(tabId)), columns = [];
-    $.each(textDivs, function(i, div){
-        columns.push($(div).attr('collection'));
-    });
-    return columns;
-}
-
  /**
   * DIALOG RELATED CODE
   */
@@ -270,19 +212,66 @@ $('#dark-toggle').click(function (e) {
     }
 });
 
-//Popup dialog - moved to dialog
-/*function showDialog(dialogName, type) {
-    dialogSettings.type = type; // pass in to the dialog
-    $('#dialog-message').load(utilScriptPath + '../dialog/' + dialogName + '.html', function() {
-        $('#dialog-overlay').fadeIn('fast');
-        $('#dialog-box').slideDown('fast');
-        repositionDialog();
-        hideToolTip(); // for touch devices 
-    });
-}*/
+
+// location related code
+var CollectionsList = {
+    'pali-cs': { short: 'cs', medium: 'Chatta S', long: 'Chattha (Sixth) Sangayana Pali'},
+    'sinh-aps': { short: 'aps', medium: 'A P Soysa', long: 'A.P. de Soyza Sinhala' },
+    'sinh-kg': { short: 'kg', medium: 'K Gnanananda', long: 'Kiribathgoda Gnanananda Thero Sinhala'},
+    'sinh-bj': { short: 'bj', medium: 'B Jayanthi', long: 'Buddha Jayanthi Tripitaka Sinhala'}
+};
+
+var UrlParamNames = {
+    NODE: 'node',
+    PARA: 'para'
+};
+// e.g. location url pitaka.lk/15111/12/cs,kk
+// url rewritten pitaka.lk/?node=15111&para=12&coll=cs,kk
+function getStartupLocation() {
+    var nodeId = getParameterByName('n', 0),
+        paragraphId = getParameterByName('p', 0);
+    // colls no longer supported - open cs and aps in both cases
+    /*colls = colls ? colls.split(',') : ['cs', 'aps'];
+    var collNames = [];
+    $.each(colls, function(_1, coll) {
+       for (var collName in CollectionsList) {
+           if (CollectionsList[collName].short == coll) {
+               collNames.push(collName);
+           }
+       }
+    });*/
+    if (!$.isNumeric(paragraphId)) {
+        paragraphId = 0;
+    }
+    if (!nodeId || !$.isNumeric(nodeId) || (+nodeId) < 1000) {
+        return false
+    }
+    return createLocationObj(nodeId, paragraphId);
+}
+
+function createLocationObj(nodeId, paragraphId) {
+    var bookId = nodeId.substr(0, 2), vaggaId = nodeId.length >= 4 ? nodeId.substr(0, 4) : (bookId + '10'); // select the first vagga of  the book if node==book
+    nodeId = (nodeId.length > 4) ? nodeId : 0; // incase node==vagga/book, nodeId is not needed
+    return { bookId: +(bookId), vaggaId: +(vaggaId), nodeId: +(nodeId), paragraphId: +(paragraphId)};
+}
+
+function pitakaLkOpenLocation(loc, origin) {
+    console.log(JSON.stringify(loc));
+    $('.pitaka-tree').pitakaTreeOpenBranch(loc.bookId);
+    $.fn.pitakaTableOpenVagga(origin, loc.vaggaId, loc.nodeId, loc.paragraphId);
+}
+
 
  // todo consider moving these to pitakaTabs.js
  /*
+ // get the list of columns/collections in a tab
+function getCurrentColumns(tabId) {
+    var textDivs = $('.text-section', $(tabId)), columns = [];
+    $.each(textDivs, function(i, div){
+        columns.push($(div).attr('collection'));
+    });
+    return columns;
+}
 function getTabHeader(tabId) {
     return $('[id="' + tabId + '"]', $('#main-tabs'));
 }
