@@ -2,6 +2,15 @@
  * run the server - listening to URLS of the form
  * pitaka.lk/main?n=15111&p=12
  * render the main/index.html while replacing the text table with prerendered text
+ * 
+ * For development run from the 'dev' folder
+ * nodemon -w  .\static-server\ .\static-server\server.js
+ * 
+ * For production first build the exe
+ * npx  pkg -t linux --output ../main/static-server static-server/server.js
+ * 
+ * Then run from inside the main folder
+ * pm2 start ./static-server
  */
 
 const fs = require('fs');
@@ -20,8 +29,8 @@ async function sendRenderedText(request, reply) {
 async function loadTextDoc(nodeId, paraId, reply) {
     const {text, title, desc} = await lt.getRenderedText(nodeId, paraId);
     let newHtml = indexHtml.replace(/<title>.+?<\/title>/, `<title>${title}</title>`);
-    newHtml = newHtml.replace('<meta property="og:title" content=""/>', `<meta property="og:title" content="${title}"/>`);
-    newHtml = newHtml.replace('<meta property="og:description" content=""/>', `<meta property="og:description" content="${desc}"/>`);
+    newHtml = newHtml.replace('<meta property="og:title" content="">', `<meta property="og:title" content="${title}">`);
+    newHtml = newHtml.replace('<meta property="og:description" content="">', `<meta property="og:description" content="${desc}">`);
     newHtml = newHtml.replace('<tbody id="text-view-tbody"></tbody>', '<tbody id="text-view-tbody">' + text + '</tbody>');
     reply.type('text/html');
     reply.send(newHtml);
@@ -42,7 +51,7 @@ fastify.get('/main', async (request, reply) => {
 
 // only for dev purposes
 fastify.register(require('fastify-static'), {
-    root: path.join(__dirname, '../..'),
+    root: path.join(process.cwd(), '..'),
     //prefix: '/public/', // optional: default '/'
 });
 // adding the following breaks the static serving above
@@ -54,7 +63,7 @@ fastify.ready(() => console.log(fastify.printRoutes()));
 // Run the server!
 fastify.listen(3080, function (err, address) {
     if (err) {
-        fastify.log.error(err)
+        console.log(err);
         process.exit(1)
     }
     console.log(`server listening on ${address}`)

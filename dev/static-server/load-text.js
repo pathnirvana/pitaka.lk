@@ -52,7 +52,6 @@ async function getRenderedText(nodeId, paraId) {
         if (paraId) {
             topTr = tbody.find('tr[para='+paraId+']').css('background-color', 'lightyellow');
         }
-        setScrollTop(topTr);
     }
     
     const html = vkbeautify.xml(tbody.html());
@@ -117,8 +116,4 @@ function getTableTd(span, coll) {
     return td;
 }
 
-// topElem should be an item in the table - probably no effect on server side
-function setScrollTop(topElem) {
-    $('#text-view-area').scrollTop($('#text-view-area').scrollTop() + topElem.position().top);
-}
 module.exports = { getRenderedText };
