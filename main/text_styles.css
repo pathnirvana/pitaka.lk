@@ -57,7 +57,7 @@ body {
 
 /*.text-section .span-links { position: absolute; cursor: pointer; color: lightgray; background-color: white; z-index: 99; padding: 0px 5px 0px 5px;}
 .text-section .span-links .fa:hover { color: lightcoral; }*/
-
+.text-section .highlight-para { background-color: var(--highlight-bcolor); }
 .text-section span.note { color: var(--special-color); }
 .text-section span.bold { font-weight: bold; }
 .text-section span.paranum { font-weight: normal; float: left; }

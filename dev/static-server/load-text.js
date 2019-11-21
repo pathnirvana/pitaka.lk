@@ -50,7 +50,7 @@ async function getRenderedText(nodeId, paraId) {
     if (topTr) {
         topTr.find('span.subhead').removeClass('sc_collapsed');
         if (paraId) {
-            topTr = tbody.find('tr[para='+paraId+']').css('background-color', 'lightyellow');
+            topTr = tbody.find('tr[para='+paraId+']').addClass('highlight-para');
         }
     }
     

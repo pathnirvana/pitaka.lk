@@ -28,6 +28,8 @@ async function loadTextDoc(nodeId, paraId, reply) {
     let newHtml = indexHtml.replace(/<title>.+?<\/title>/, `<title>${title}</title>`);
     newHtml = newHtml.replace('<meta property="og:title" content="">', `<meta property="og:title" content="${title}">`);
     newHtml = newHtml.replace('<meta property="og:description" content="">', `<meta property="og:description" content="${desc}">`);
+    const url = `https://pitaka.lk/main?n=${nodeId}${paraId ? '&p=' + paraId : ''}`;
+    newHtml = newHtml.replace('<meta property="og:url" content="">', `<meta property="og:url" content="${url}">`);
     newHtml = newHtml.replace('<tbody id="text-view-tbody"></tbody>', '<tbody id="text-view-tbody">' + text + '</tbody>');
     reply.type('text/html');
     reply.send(newHtml);
