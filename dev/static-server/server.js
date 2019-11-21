@@ -6,11 +6,8 @@
  * For development run from the 'dev' folder
  * nodemon -w  .\static-server\ .\static-server\server.js
  * 
- * For production first build the exe
- * npx  pkg -t linux --output ../main/static-server static-server/server.js
- * 
- * Then run from inside the main folder
- * pm2 start ./static-server
+ * For production run from inside the dev folder
+ * pm2 start ./static-server/server.js --name "pitaka.lk-server"
  */
 
 const fs = require('fs');
