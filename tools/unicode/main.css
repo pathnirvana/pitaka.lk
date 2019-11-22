@@ -12,7 +12,7 @@ div.mapping { margin: 5px; padding: 5px; border: 1px solid lightgray; border-rad
 div.section { margin: 15px 0px 15px 0px; }
 input[type=button] { font-family: Noto-Serif; }
 
-div.top-title { text-align: center; font-size: 2.5rem; margin: 1rem; color: darkblue; font-family: 'Arial' }
+div.top-title { text-align: center; font-size: 2.5rem; margin: 1rem; color: darkblue; font-family: 'Noto-Serif' }
 div.menu { display: flex; flex-direction: row; flex-wrap: nowrap; margin-bottom: 10px; font-size: 1.2rem; }
 a.menu-item { flex: 1; text-decoration: none; text-align: center; background-color: lightgrey; padding: 5px; border-radius: 6px 6px 0px 0px; border: 1px solid black; border-bottom: none; }
 a.menu-item.active { background-color: white; font-weight: bold; color: darkorange; }
