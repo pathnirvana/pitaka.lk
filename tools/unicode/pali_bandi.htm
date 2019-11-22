@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+		<meta charset="UTF-8">
+		<title>Pali bandi Akuru Generator</title>
+		<meta name="description" content="Convert Sinhala Unicode to Pali Conjunct Letters">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+    	<meta name="mobile-web-app-capable" content="yes">
+    	<link rel="icon" type="image/png" sizes="96x96" href="../../static/images/favicon-96x96.png">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+	  <link rel="stylesheet" href="main.css" />
+	</head>
+	
+	<body style="font-family: Noto-Serif">
+		<div class="top-container" style="margin: 0 auto; max-width: 800px; align-content: center; text-align: justify;">
+			<div class="top-title">Path Nirvana Unicode Tools</div>
+			<div class="menu">
+				<a class="menu-item" href="fm_to_unicode.htm">යුනිකේත පරිවර්තකය</a>
+				<a class="menu-item active" href="pali_bandi.htm">පාලි බැඳි අකුරු</a>
+				<a class="menu-item" href="create_unicode.htm">Create Unicode Fonts</a>
+			</div>
+			
+			<div>
+				ඉස්කෝල පොත, Noto සහ අප විසින් නිර්මාණය කල UN- වර්ගයේ යුනිකෝඩ් ෆොන්ට්ස් වල බැඳි අකුරු සඳහා පහසුකම් සපයා ඇත.
+				නමුත් විශේෂ පාලි අකුරු ඇත්තේ <a href="test_fonts">UN Abhaya</a> ෆොන්ට් එකේ පමණි.
+			</div>
+
+			<div class="section">
+					<div class="textbox-title">ඔබ ඇතුල් කල අකුරු</div>
+					<textarea class="input" onKeyUp="convertPali();" onClick="convertPali();" id="box1" rows="7"></textarea>
+			</div>
+				
+			<div class="section">
+				<div class="textbox-title">පාලි බැඳි අකුරු සහිතව</div>
+				<div class="check-box">
+					<input type="checkbox" id="remove-hal" onClick="convertPali();" value="1" checked><span>හල් කිරීම් ඉවත් කරන්න</span>
+				</div>
+				<div class="check-box">
+					<input type="checkbox" id="pali-specials" onClick="convertPali();" value="1" checked><span>විශේෂ පාලි අකුරු යොදන්න</span>
+				</div>
+				<textarea class="input" id="box2" rows="7"></textarea>
+				<input onClick="reset()" type="button" value="මකා දමන්න" style="color: red;"/>
+				<input onClick="copyText()" type="button" value="කොපි කර ගන්න"/>
+			</div>
+			
+			<div class="section">
+					<div class="textbox-title">හල් කිරීම් ඉවත් කිරීම</div>
+					<div>පාලි භාෂාවේ එන 'එ' සහ 'ඔ' යන අකුරු ශබ්ද වන්නේ 'ඒ' සහ 'ඕ' ලෙසයි. නමුත් ලියන්නේ හල් සලකුණ නොමැතිව බැවින් ඒ හල් කිරීම් ඉවත් කිරීම මෙහිදී සිදුවේ.</div>
+					<div class="mapping-list"><div class="mapping">ඒ > එ</div><div class="mapping">ඕ > ඔ</div><div class="mapping">කේ > කෙ</div><div class="mapping">කෝ > කො</div></div>
+			</div>
+
+			<div class="section">
+				<div class="textbox-title">විශේෂ පාලි අකුරු</div>
+				<div>පැරණි පාලි පොත්වල භාවිතා වන විශේෂ බැඳි අකුරු පහතින් දැක්වේ. මේ බැඳි අකුරු සඳහා පහසුකම් සපයා ඇත්තේ <a href="test_fonts">UN Abhaya</a> ෆොන්ට් එකේ පමනි.</div>
+				<div id="pali-specials-ol" class="mapping-list"></div>
+			</div>
+
+			<div class="section" style="text-align:center; font-weight:bold; font-family: UN-Abhaya; font-size: 16pt; background-color: rgb(255, 255, 242); border: 0.5px solid lightgray; border-radius: 10px;">
+				<p>අතීතං නාන‍්වාගමෙය්‍ය, නප‍්පටිකඞ‍්ඛෙ අනාගතං; යදතීතං පහීනං තං, අප‍්පත‍්තඤ්‍ච අනාගතං.</p>
+				<p>පච‍්චුප‍්පන‍්නඤ්‍ච යො ධම‍්මං, තත්‍ථ තත්‍ථ විපස‍්සති; අසංහීරං අසංකුප‍්පං, තං විද්‍වා මනුබ්‍රූහයෙ.</p>
+			</div>
+
+			<div class="bottom-bar">
+					<div>
+							© 2019 නිවන් මග - Path Nirvana (<a href="https://www.facebook.com/path.nirvana">www.facebook.com/path.nirvana</a>)
+					</div>		
+					<div style="color: red">Report any conversion errors to path.nirvana @ gmail</div>
+			</div>
+		</div>
+
+	<script language="javascript" type="text/javascript">
+		var text;
+		var paliSpecials = [ //conjuncts with special ligratures
+			['ක', 'ව'],
+			['ඤ', 'ච'],
+			['ඤ', 'ජ'],
+			['ඤ', 'ඡ'],
+			['ට', 'ඨ'],
+			['ණ', 'ඩ'],
+			['ත', 'ථ'],
+			['ත', 'ව'],
+			['න', 'ථ'],
+			['න', 'ද'],
+			['න', 'ධ'],
+			['ද', 'ධ'],
+			['ද', 'ව'],
+			['ම', 'බ'],
+		];
+		
+		function loadFunc() {
+			var testText = "නමෝතස්ස භගවතෝ අරහතෝ සම්මා සම්බුද්ධස්ස \nබ්භෝ ම්පෝ ම්ඵෝ ම්හෝ ය්යෝ ය්හෝ ල්ලෝ ල්හෝ ව්හෝ ස්මෝ ස්වෝ ස්සෝ හ්මෝ හ්වෝ";
+			testText += '\n';
+			for (key in paliSpecials) {
+				var chars = paliSpecials[key];
+				testText += (chars[0] + "\u0DCA" + chars[1] + "\u0DDD ");
+			}
+			document.getElementById('box1').value = testText;
+			convertPali();
+			// populate pali specials list
+			for (key in paliSpecials) {
+				var chars = paliSpecials[key];
+				var newElem = document.createElement('div'); newElem.className = 'mapping';
+				newElem.innerHTML = chars[0] + '\u0DCA' + chars[1] + ' > ' + chars[0] + '\u0DCA\u200D' + chars[1];
+				document.getElementById('pali-specials-ol').appendChild(newElem);
+			}
+		}
+		loadFunc();
+		
+		function convertPali() {
+			text = document.getElementById('box1').value;  
+			text = text.replace(/\u200C/g, ""); // remove 200c char that appears in tipitaka.org text
+			text = text.replace(/([ක-ෆ])\u0DCA([ක-ෆ])/g, '$1\u200D\u0DCA$2'); // adding a zwj between consos
+	
+			if (document.getElementById('remove-hal').checked) {
+				text = text.replace(/ඒ/g, 'එ');
+				text = text.replace(/ඕ/g, 'ඔ');
+				text = text.replace(/\u0DDA/g, "\u0DD9"); //ee => e
+				text = text.replace(/\u0DDD/g, "\u0DDC"); //oo => o
+			}
+			if (document.getElementById('pali-specials').checked) { // bandi -> conjunct for special pairs
+				for (key in paliSpecials) {
+					var chars = paliSpecials[key];
+					var re = new RegExp(chars[0] + "\u200D\u0DCA" + chars[1], "g");
+					text = text.replace(re, chars[0] + "\u0DCA\u200D" + chars[1]);
+				}
+			}	
+			document.getElementById('box2').value=text;
+		}
+		
+		function copyText() {
+			document.getElementById('box2').select();
+			document.execCommand("copy");
+		}
+		function reset() {
+			document.getElementById('box1').value = "";
+			document.getElementById('box2').value = "";
+		}
+		</script>
+	</body>
+	</html>
+	
+	<!--
+			// the pairs currently supported by the iskoola potha font
+	var bandi = [
+		['ක', 'ක'],
+		['ක', 'ඛ'],
+		['ඛ', 'ව'],
+		['ග', 'ග'],
+		['ග', 'ඝ'],
+		['ඞ', 'ක'],
+		['ඞ', 'ඛ'],
+		['ඞ', 'ග'],
+		['ඞ', 'ඝ'],
+		['ච', 'ච'],
+		['ච', 'ඡ'],
+		['ජ', 'ජ'],
+		['ජ', 'ඣ'],
+		['ඤ', 'ච'],
+		['ඤ', 'ඡ'],
+		['ඤ', 'ජ'],
+		['ඤ', 'ඣ'],
+		['ඤ', 'ඤ'],
+		['ට', 'ට'],
+		['ට', 'ඨ'],
+		['ඩ', 'ඩ'],
+		['ඩ', 'ඪ'],
+		['ණ', 'ට'],
+		['ණ', 'ඨ'],
+		['ණ', 'ඩ'],
+		['ණ', 'ණ'],
+		['ණ', 'හ'],
+		['ත', 'ත'],
+		['ත', 'ථ'],
+		['ත', 'ව'],
+		['ද', 'ද'],
+		['ද', 'ධ'],
+		['ද', 'ව'],
+		['ධ', 'ව'],
+		['න', 'ත'],
+		['න', 'ථ'],
+		['න', 'ද'],
+		['න', 'ධ'],
+		['න', 'න'],
+		['න', 'හ'],
+		['ප', 'ප'],
+		['ප', 'ඵ'],
+		['බ', 'බ'],
+		['බ', 'භ'],
+		['ම', 'ප'],
+		['ම', 'ඵ'],
+		['ම', 'බ'],
+		['ම', 'භ'],
+		['ම', 'ම'],
+		['ම', 'හ'],
+		['ය', 'ය'],
+		['ය', 'හ'],
+		['ල', 'ල'],
+		['ල', 'හ'],
+		['ව', 'හ'],
+		['ස', 'ම'],
+		['ස', 'ව'],
+		['ස', 'ස'],
+		['හ', 'ම'],
+		['හ', 'ව'],
+		['ළ', 'හ']
+	];
+	-->
+
+

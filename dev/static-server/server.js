@@ -38,7 +38,7 @@ async function loadTextDoc(nodeId, paraId, reply) {
 
 // pitaka.lk/main?n=15111&p=12 para is optional
 fastify.get('/main', async (request, reply) => {
-    const nodeId = request.query.n || request.query.node;
+    const nodeId = request.query.n;
     const paraId = request.query.p;
     if (!nodeId || isNaN(parseFloat(nodeId))) { // home page
         reply.type('text/html');
