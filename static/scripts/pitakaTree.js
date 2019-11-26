@@ -45,7 +45,6 @@ var pitakaTree = {
                 }
             } else {
                 if (li.attr('node-id')) {
-                    //$('#main-tabs').pitakaTabsOpenVagga('tree', li.attr('node-id'), [], li.attr('node-id'));
                     $.fn.pitakaTableOpenVagga('tree', li.attr('node-id'));
                 } else if (li.attr('search-id')) {
                     navigateToIndex(li.attr('search-id'), 'tree'); // for bjt tree
@@ -79,10 +78,6 @@ var pitakaTree = {
             }
         });
     },
-
-    /*setMaxHeight: function () {
-        $('#main-tree').css('max-height', $(window).innerHeight() - $('#main-tree').offset().top);
-    },*/
 
     getCollections: function(vaggaId) {
         return $('.pitaka-tree').find('li[node-id="'+ vaggaId +'"]').attr('collections').split(',');
