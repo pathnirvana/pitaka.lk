@@ -10,6 +10,7 @@
 }
 
 .results-table {
+    text-align: left;
     margin: 0px;
     padding-left: 0pt;
     display: none;
