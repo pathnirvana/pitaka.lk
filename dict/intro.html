@@ -58,7 +58,7 @@
     </style>
 </n>
 <body style="background-color: white; margin: 0pt">
-    <div align="center" style="height: 100%; display: flex; flex-flow: column; width: 100%; max-width: 800pt; margin: 0pt auto;">
+    <div style="text-align: center; height: 100%; display: flex; flex-flow: column; width: 100%; max-width: 800pt; margin: 0pt auto;">
 
         <div style="flex: 0 1 auto">
                 <div class="title-bar" onclick="location.href='index.html';">
@@ -67,7 +67,7 @@
                 </div>        
         </div>
     
-        <div id="content-div" align="justify" style="overflow-y: auto; position: relative; flex: 1 1 auto; padding: 5pt;">
+        <div id="content-div" style="text-align: justify; overflow-y: auto; position: relative; flex: 1 1 auto; padding: 5pt;">
         </div> 
     
 
@@ -159,17 +159,17 @@
         <div id="abbre" class="section">
             <span class="title"><i>සඞ්කෙත නිරූපණය</i></span>
             <div class="contents">
-                <table align="center" width="100%">
+                <table width="100%" style="text-align: center;">
                     <tbody>
-                        <tr align="center">
+                        <tr>
                             <td><h3><i>මඩිතියවෙල සිරි සුමඞ්ගල හිමි, පාලි-සිංහල ශබ්දකෝෂය</i></h3></td>
                             <td><h3><i>පොල්වත්තේ බුද්ධදත්ත හිමි, පාලි-සිංහල අකාරාදිය</i></h3></td>
                         </tr>
-                        <tr style="vertical-align: top;">
-                            <td><ul id="abbre-ul-sumangala"></ul>
+                        <tr style="vertical-align: top; text-align: left;">
+                            <td style="border: 1px solid green;"><ul id="abbre-ul-sumangala"></ul>
                                 <ul id="abbre-ul-sumangala-other"></ul>
                             </td>
-                            <td><ul id="abbre-ul-buddhadatta"></ul></td>
+                            <td style="border: 1px solid green;"><ul id="abbre-ul-buddhadatta"></ul></td>
                         </tr>
                     </tbody>
                 </table>
@@ -190,9 +190,9 @@
         
     </div>
     <script src="../static/scripts/jquery-3.4.1.min.js"></script>
-    <script src="../static/scripts/trie.js"></script>
     <script src="../static/scripts/utilities.js"></script>
     <script src="../static/scripts/singlish.js"></script>
+    <script src="scripts/trie.js"></script>
     <script src="scripts/storage.js"></script>
     <script>
         $( document ).ready( function() {
