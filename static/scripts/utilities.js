@@ -196,8 +196,13 @@ function hideToolTip() {
     $('.tooltip').remove();
 }
 
-// set dark mode between 7pm and 6am
+// set dark mode between 7pm and 6am unless user has manually set the mode before
 function autoSetDarkMode() {
+    var darkMode = localStorage.getItem('dark-mode')
+    if (darkMode) {
+        $('body').toggleClass('dark', darkMode == 'dark');
+        return;
+    }
     var hour = (new Date()).getHours();
     if (hour >= 19 || hour <= 6) {
         $('body').addClass('dark');
@@ -206,8 +211,10 @@ function autoSetDarkMode() {
 $('#dark-toggle').click(function (e) {
     $('body').toggleClass('dark');
     if ($('body').hasClass('dark')) {
+        localStorage.setItem('dark-mode', 'dark')
         showToast('රාත්‍රී අඳුරු තිරය ක්‍රියාත්මකයි');
     } else {
+        localStorage.setItem('dark-mode', 'light')
         showToast('ආලෝකමත් තිරය ක්‍රියාත්මකයි');
     }
 });
