@@ -9,41 +9,35 @@
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="icon" type="image/png" sizes="96x96" href="../../static/images/favicon-96x96.png">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-
+	
+	<style id="font-face"></style> <!-- filled by script -->
 	<link rel="stylesheet" href="main.css" />
 </head>
 
 <body style="font-family: Noto-Serif">
 	<div class="top-container" style="margin: 0 auto; max-width: 800px; align-content: center; text-align: justify;">
-		<div class="top-title">පිටක.lk Unicode Tools</div>
-		<div class="menu">
-			<a class="menu-item active" href="fm_to_unicode.htm">යුනිකේත පරිවර්තකය</a>
-			<a class="menu-item" href="pali_bandi.htm">පාලි බැඳි අකුරු</a>
-			<a class="menu-item" href="create_unicode.htm">Create Unicode Fonts</a>
-		</div>
+		<div id="top-contents" active="1"></div> <!--filled by script-->
 		
-		<p>මෙම පරිවර්තකය UCSC පරිවර්තකයේ ඇති සන්‍යක අකුරු හා යන්සය ඇතුළු බොහෝ වැරදි නිවැරදි කර ඇත. තවද FM වලින් ටයිප් කිරීමේදී සිදුවන වැරදි මේ යුනිකේත පරිවර්තකයේදී ඉබේ නිවැරදි වන ලෙස සකසා ඇත.</p>
-		<p><a href="test_fonts/index.htm">අලුත් සිංහල යුනිකෝඩ් ෆොන්ට්ස් මෙතැනින් download කරන්න. Download new sinhala unicode fonts here</a></p>
+		<p>මෙම පරිවර්තකය UCSC පරිවර්තකයේ ඇති සඤ්ඥක අකුරු හා යන්සය ඇතුළු බොහෝ වැරදි නිවැරදි කර ඇත. තවද FM වලින් ටයිප් කිරීමේදී සිදුවන වැරදි මේ යුනිකේත පරිවර්තකයේදී ඉබේ නිවැරදි වන ලෙස සකසා ඇත.</p>
+		<p><a href="./download_unicode.htm">අලුත් සිංහල යුනිකෝඩ් ෆොන්ට්ස් මෙතැනින් download කරන්න. Download new sinhala unicode fonts here</a></p>
 
 		<div class="section">
 			<div class="textbox-title">FM Abhaya - FM අභය</div>
-			<textarea class="input" onKeyUp="startText();" onClick="startText();" id="box1" rows="7"></textarea>
+			<textarea class="input" onKeyUp="startText();" onClick="startText();" id="box1" rows="7" style="font-family: FMAbhaya;"></textarea>
 		</div>
 
 		<div class="section">
 			<div class="textbox-title">Unicode - යුනිකේත</div>
-			<textarea class="input" id="box2" rows="7"></textarea>
-			<input onClick="reset()" type="button" value="මකා දමන්න" style="color: red;"/>
-			<input onClick="copyText()" type="button" value="කොපි කර ගන්න"/>
+			<textarea class="input apply-font" id="box2" rows="7"></textarea>
+			<input onClick="reset()" type="button" value="මකා දමන්න" style="color: red;" class="apply-font"/>
+			<input onClick="copyText()" type="button" value="කොපි කර ගන්න" class="apply-font"/>
 			<div id="error-box" style="overflow: hidden;"></div>
 		</div>
 			
-		<div class="bottom-bar">
-			<div>© 2020 පිටක.lk - Path Nirvana (<a href="https://www.facebook.com/pitaka.lk">facebook.com/pitaka.lk</a>)</div>		
-			<div style="color: rgb(160, 1, 1)">Report any conversion errors to pathnirvana @ gmail.com</div>
-		</div>
+		<div id="bottom-bar"></div>
 	</div>
-	  
+	
+	<script src="./font-face.js"></script>
 	<script language="javascript" type="text/javascript">
 
 	document.getElementById('box1').focus();
