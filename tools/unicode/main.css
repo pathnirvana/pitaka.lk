@@ -1,22 +1,26 @@
-@font-face { font-family:UN-Abhaya; src:url(un-abhaya-2019.ttf); font-weight: normal; }
+/*@font-face { font-family:UN-Abhaya; src:url(un-abhaya-2019.ttf); font-weight: normal; }
 @font-face { font-family:UN-Abhaya; src:url(un-abhaya-bold-2019.ttf); font-weight: bold; }
 @font-face { font-family:Noto-Serif; src:url(test_fonts/NotoSerifSinhala-Regular.ttf); font-weight: normal; }
-@font-face { font-family:Noto-Serif; src:url(test_fonts/NotoSerifSinhala-Bold.ttf); font-weight: bold; }
-@font-face { font-family:FMAbhaya; src:url(http://www.ucsc.cmb.ac.lk/ltrl/services/feconverter/eot/FMABHAY0.eot); }
+@font-face { font-family:Noto-Serif; src:url(test_fonts/NotoSerifSinhala-Bold.ttf); font-weight: bold; }*/
+@font-face { font-family:FMAbhaya; src:url(fonts/FMABHAYA.TTF); }
 
-
-div.textbox-title { font-weight: bold; margin-bottom: 4px; color: darkorange; }
-textarea.input { font-size: 14pt; width: 100%; font-family:UN-Abhaya; background-color: whitesmoke; }
-div.mapping-list { font-family: UN-Abhaya; display: flex; flex-wrap: wrap; }
-div.mapping { margin: 5px; padding: 5px; border: 1px solid lightgray; border-radius: 4px; font-weight: bold; font-size: 14pt; background-color: lightyellow;}
+body { 
+    font-size: 1.3rem; 
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+div.textbox-title { font-size: larger; margin-bottom: 4px; color: rgb(88, 49, 0); }
+textarea.input { width: 100%; background-color: whitesmoke; font-size: 1.3rem;}
+div.mapping-list { display: flex; flex-wrap: wrap; }
+div.mapping { margin: 5px; padding: 5px; border: 1px solid lightgray; border-radius: 4px; background-color: lightyellow;}
 div.section { margin: 15px 0px 15px 0px; }
-input[type=button] { font-family: Noto-Serif; }
+input[type=button] { font-size: 1.2rem; }
 
-div.top-title { text-align: center; font-size: 2.5rem; margin: 1rem; color: darkblue; font-family: 'Noto-Serif' }
-div.menu { display: flex; flex-direction: row; flex-wrap: nowrap; margin-bottom: 10px; font-size: 1.2rem; }
+div.top-title { text-align: center; font-size: 2.5rem; margin: 1.3rem; color: darkblue; }
+div.menu { display: flex; flex-direction: row; flex-wrap: nowrap; margin-bottom: 10px; }
 a.menu-item { flex: 1; text-decoration: none; text-align: center; background-color: lightgrey; padding: 5px; border-radius: 6px 6px 0px 0px; border: 1px solid black; border-bottom: none; }
-a.menu-item.active { background-color: white; font-weight: bold; color: darkorange; }
-div.bottom-bar { text-align: center; font-size: 0.9rem; border-top: 0.5px solid rgb(141, 133, 133); padding-top: 5px; }
+a.menu-item.active { background-color: white; font-size: larger; color: rgb(124, 68, 0); }
+#bottom-bar { text-align: center; font-size: 0.9rem; border-top: 0.5px solid rgb(141, 133, 133); padding-top: 5px; }
 
 #error-box.red { color: red; }
 #error-box.green { color:green; }

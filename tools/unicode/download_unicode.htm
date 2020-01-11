@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>Create Unicode Fonts from FM Fonts</title>
+	<meta name="description" content="How to easily build Sinhala Unicode Fonts">
+	
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes">
+	<link rel="icon" type="image/png" sizes="96x96" href="../../static/images/favicon-96x96.png">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style id="font-face"></style> <!-- filled by script -->
+	<link rel="stylesheet" href="main.css" />
+	<style>
+		.font { padding: 1.5rem 0rem; }
+		.first-line { display: flex; align-items: center; }
+		.font-name { font-size: 5rem; color: rgb(146, 80, 0); flex-grow: 1; }
+		.download-link { font-family: 'un-ganganee'; text-decoration: none; color: blue; font-size: 1.4rem; }
+		._1 { font-size: 3rem; }
+		._2 { font-size: 2rem; }
+		._3 { font-size: 1.5rem; }
+		.text { font-size: 1.2rem; }
+	</style>
+</head>
+	
+<body>
+	<div class="top-container" style="margin: 0 auto; max-width: 800px; align-content: center; text-align: justify;">
+		<div id="top-contents" active="3"></div> <!--filled by script-->
+
+		<div class="section" style="font-family: un-abhaya; font-size: 1rem;">
+			Much thanks to Mr. Pushpananda, the designer of the FM/Isi fonts, who gave us kind permission to use these fonts and post these online. His immense contribution to modern Sinhala through his FM fonts are much appreciated by everyone using his fonts.
+			If you wish to use these fonts for commercial purposes, please obtain a suitable licence from fontmaster@sltnet.lk.
+		</div>
+		
+		<div class="section" style="font-family: un-abhaya; font-size: 1rem;">
+			රේඵය, රකාරාංශය, යංසය, විශේෂ පාලි අකුරු හා බැඳී අකුරු ඇතුළුව සියලුම සිංහල අක්ෂර, පහත සියලු අකුරු මුහුණත් වලින් පෙන්විය හැකිය.
+			<br>
+			සීගිරි පර්‍වත මස්තකාරූඪ මනුෂ්‍යයෙකුට සෝදාහරණ සහිත ව හෙළයා ගේ ශෛල, වාරි, ගෘහ නිර්මාණ ශක්‍යතාව ද සෙල්බිතෙහි තැවරූ මඩස්තරයක ඇඳි නාරි චිත්‍රයන් ගෙන් සහ කැටපත්පවුරෙහි ලිඛිත කුරුටු ගීවලින් හෙළයා ගේ සෞන්දර්ය හැකියාව දු මනා සේ දැකගත හැක.
+		</div>
+
+		<div class="section" style="font-family: un-abhaya; font-size: 1.2rem;">
+			<a href="https://tipitaka.lk/library/460">සියලු අකුරු මුහුණත් භාගත කරගන්න.</a> zip ගොනුව ඇර ගෙන එහි ඇති සියලුම මුහුණත් install ස්ථාපනය කරගන්න.
+		</div>
+
+		<div id="font-render" class="section"></div>
+		
+		<div id="bottom-bar"></div>
+		<script src="./font-face.js"></script>
+		<script>
+			function renderFont(font) {
+				return `<div class="font" style="font-family: ${font[0]};" id="id-${font[0]}">
+					<div class="first-line">
+						<span class="font-name">${font[1]}</span>
+						<a class="download-link" href="./fonts/${font[0]}.ttf">භාගත ↓</a>
+					</div>
+					<div class="_1">ආර්‍ය්‍ය. වජ්‍රාසන ආරූඪ වූ ශ්‍රී ශක්‍ර දිව්‍ය</div>
+					<div class="_2">බුද්‍ධි “සම‍්මා සම‍්බුද‍්ධස‍්ස” ආර්‍ය්‍ය. වජ්‍රාසන ආරූඪ වූ ශ්‍රී ශක්‍ර දිව්‍ය රාජයා.</div>
+					<div class="_3">සීගිරි පර්‍වත මස්තකාරූඪ මනුෂ්‍යයෙකුට සෝදාහරණ සහිත ව හෙළයා ගේ ශෛල, වාරි, ගෘහ නිර්මාණ ශක්‍යතාව ද සෙල්බිතෙහි තැවරූ මඩස්තරයක ඇඳි නාරි චිත්‍රයන්</div>
+				</div>`;
+			}
+			document.getElementById('font-render').innerHTML = fontList.map(renderFont).join('');
+		</script>
+	</div>
+</body>
+</html>
+	
+
+
