@@ -25,7 +25,7 @@ const fontList = [
 ]
 const getFontFaceStyle = (f) => `@font-face {
         font-family: '${f[0]}'; 
-        src: local('###'), url('fonts/${f[0]}.ttf') format('truetype');
+        src: local('###'), url('./fonts/${f[0]}.ttf') format('truetype');
         font-weight: normal;
     }`;
 
