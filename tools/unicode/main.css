@@ -1,13 +1,11 @@
-/*@font-face { font-family:UN-Abhaya; src:url(un-abhaya-2019.ttf); font-weight: normal; }
-@font-face { font-family:UN-Abhaya; src:url(un-abhaya-bold-2019.ttf); font-weight: bold; }
-@font-face { font-family:Noto-Serif; src:url(test_fonts/NotoSerifSinhala-Regular.ttf); font-weight: normal; }
-@font-face { font-family:Noto-Serif; src:url(test_fonts/NotoSerifSinhala-Bold.ttf); font-weight: bold; }*/
 @font-face { font-family:FMAbhaya; src:url(fonts/FMABHAYA.TTF); }
 
 body { 
     font-size: 1.3rem; 
-    -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.01);
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
 }
 div.textbox-title { font-size: larger; margin-bottom: 4px; color: rgb(88, 49, 0); }
 textarea.input { width: 100%; background-color: whitesmoke; font-size: 1.3rem;}
@@ -18,8 +16,9 @@ input[type=button] { font-size: 1.2rem; }
 
 div.top-title { text-align: center; font-size: 2.5rem; margin: 1.3rem; color: darkblue; }
 div.menu { display: flex; flex-direction: row; flex-wrap: nowrap; margin-bottom: 10px; }
-a.menu-item { flex: 1; text-decoration: none; text-align: center; background-color: lightgrey; padding: 5px; border-radius: 6px 6px 0px 0px; border: 1px solid black; border-bottom: none; }
-a.menu-item.active { background-color: white; font-size: larger; color: rgb(124, 68, 0); }
+a.menu-item { font-size: 1.4rem; flex: 1; text-decoration: none; text-align: center; background-color: lightgrey; 
+    padding: 10px 5px; border-radius: 6px 6px 0px 0px; border: 1px solid black; border-bottom: none; }
+a.menu-item.active { background-color: white; color: rgb(124, 68, 0); }
 #bottom-bar { text-align: center; font-size: 0.9rem; border-top: 0.5px solid rgb(141, 133, 133); padding-top: 5px; }
 
 #error-box.red { color: red; }
