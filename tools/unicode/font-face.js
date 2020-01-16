@@ -6,6 +6,7 @@ const fontList = [
     ['UN-Bindumathi', 'බින්ඳුමතී'],
     ['UN-Imanee', 'ඉමාණී'],
     ['UN-Ganganee', 'ගංඟානී'],
+    ['UN-Agni', 'අග්නි'],
     ['UN-Derana', 'දෙරණ'],
     ['UN-Samantha', 'සමන්තා'],
     ['UN-Sandhyanee', 'සංධ්‍යානී'],
