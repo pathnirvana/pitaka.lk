@@ -43,6 +43,7 @@ topContElem.innerHTML = `<div class="top-title">පිටක.lk සිංහල 
         <a class="menu-item ${active != 1 || 'active'}" href="fm_to_unicode.htm">යුනිකේත පරිවර්තකය</a>
         <a class="menu-item ${active != 2 || 'active'}" href="pali_bandi.htm">පාලි බැඳි අකුරු</a>
         <a class="menu-item ${active != 3 || 'active'}" href="download_unicode.htm">අකුරු මුහුණත් ලබාගන්න</a>
+        <a class="menu-item ${active != 4 || 'active'}" href="keyboard.html">යතුරුපුවරුව</a>
     </div>
     <div style="text-align: center; padding: 5px; background-color: lightyellow; ">
         <span>Font එක තෝරන්න</span>
