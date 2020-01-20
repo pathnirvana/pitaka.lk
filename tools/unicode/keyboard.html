@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>Standard Sinhala Keyboard - Wijesekara</title>
+	<meta name="description" content="Official Keyboard used for typing Sinhala Unicode">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes">
+	<link rel="icon" type="image/png" sizes="96x96" href="../../static/images/favicon-96x96.png">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<style id="font-face"></style> <!-- filled by script -->
+	<link rel="stylesheet" href="main.css?v=1" />
+	<style>
+		#box1:focus { background-color: rgb(187, 241, 187); } 
+		
+		#keyboard { display: flex; flex-flow: column; }
+		.key-row { display: flex; flex-flow: row nowrap; }
+
+		.key { display: flex; flex-flow: row nowrap; 
+			border: 0.5px solid #000; width: 4rem; height: 4rem; cursor: pointer; 
+		}
+		.unmodified { background-color: lightgray; }
+		
+		.key-col { display: flex; flex-flow: column nowrap; padding: 0.4rem; }
+		.key-col._1 { flex-grow: 1; }
+		.key-col._2 { color: darkblue; }
+
+		.char { flex: 1 1 auto; }
+
+		#others { display: flex; flex-flow: column wrap; }
+		
+		#specials-table td { vertical-align: top; padding: 0.3rem 1rem; }
+
+		#box2 { color: darkgray; font-size: smaller; }
+	</style>
+</head>
+	
+<body>
+	<div class="top-container" style="margin: 0 auto; max-width: 800px; align-content: center; text-align: justify;">
+		<div id="top-contents" active="4"></div> <!--filled by script-->
+
+		<div class="section">
+			<div class="textbox-title">ඔබ ඇතුල් කල අකුරු</div>
+			<textarea class="input apply-font" id="box1" rows="7"></textarea>
+			<div class="input apply-font" id="box2" rows="7"></div>
+		</div>
+
+		<div class="section">
+			<div id="keyboard"></div>
+			<table id="specials-table" style="margin: 0.5rem;">
+				<tr style="color: brown; font-size: 1.2rem;">
+					<td>යතුරුපුවරුවේ ඇති සලකුණු</td><td>යතුරුපුවරුවේ නැති අකුරු</td>
+				</tr>
+				<tr>
+					<td id="symbols"></td><td id="others"></td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="section">
+			
+		</div>
+
+		<div id="bottom-bar"></div>
+	</div>
+
+	<script src="./font-face.js"></script>	
+	<script language="javascript" type="text/javascript">
+		const keymap = [
+			[
+				['~,`','\u0DBB\u0DCA\u200D,\u0DCA\u200D\u0DBB'], // repaya, rakar
+				['!,1', ''],
+				['@,2', ''],
+				['#,3', ''],
+				['$,4', ''],
+				['%,5', ''],
+				['^,6', ''],
+				['&,7', ''],
+				['*,8', ''],
+				['(,9', ''],
+				['),0', ''],
+				['_,-', ''],
+				['+,=', ''],
+				['Back space', '', 1.5],
+			],
+			[
+				['Tab', '', 1.5],
+				['Q,q', '\u0dd6,\u0dd4'],
+				['W,w', 'උ,අ'],
+				['E,e', '\u0dd1,\u0dd0'],
+				['R,r', 'ඍ,ර'],
+				['T,t', 'ඔ,එ'],
+				['Y,y', 'ශ,හ'],
+				['U,u', 'ඹ,ම'],
+				['I,i', 'ෂ,ස'],
+				['O,o', 'ධ,ද'],
+				['P,p', 'ඡ,ච'],
+				['{,[', 'ඥ,ඤ'],
+				['},]', ':,;'],
+				['|,\\', '🡂🡀,⇆'], // conjunct
+			],
+			[
+				['Lock', '', 1.7],
+				['A,a', '\u0ddf,\u0dca'],
+				['S,s', '\u0dd3,\u0dd2'],
+				['D,d', '\u0dd8,\u0dcf'],
+				['F,f', 'ෆ,\u0dd9'], // combuwa 
+				['G,g', 'ඨ,ට'],
+				['H,h', '\u{DCA}\u{200D}\u{DBA},ය'], // yansa
+				['J,j', 'ළු,ව'],
+				['K,k', 'ණ,න'],
+				['L,l', 'ඛ,ක'],
+				[':,;', 'ථ,ත'],
+				['\',\"', '‡,.'],
+				['Enter', '', 2],
+			],
+			[
+				['Shift', '', 2],
+				['Z,z', '\',\"'],
+				['X,x', '\u0d83,\u0d82'],
+				['C,c', 'ඣ,ජ'],
+				['V,v', 'ඪ,ඩ'],
+				['B,b', 'ඊ,ඉ'],
+				['N,n', 'භ,බ'],
+				['M,m', 'ඵ,ප'],
+				['<,‡', 'ළ,ල'], // ‡ used to indicate comma
+				['>,.', 'ඝ,ග'],
+				['?,/', ''],
+				['Shift', '', 2],
+			],
+			[
+				['Ctrl', '', 2],
+				['Alt', '', 2],
+				['Space', '', 6],
+				['AltGr', '\u25dc', 2], // saknknaka
+				['Ctrl', '', 2],
+			],
+		]
+
+		const charSplit = col => col.split(',').map(c => c == '‡' ? ',' : c)
+		const renderChar = c => `<div class="char">${c}</div>`
+		const renderKeyCol = (col) => charSplit(col).map(renderChar).join('')
+		const renderKey = (key) => {
+			const width = key.length > 2 ? key[2] : 1
+			const unmodified = !key[1] ? 'unmodified' : ''
+			const col0 = `<div class="key-col _1">${renderKeyCol(key[0])}</div>`
+			const col1 = `<div class="key-col _2">${renderKeyCol(key[1])}</div>`
+			return `<div class="key ${unmodified}" style="width: ${width * 4}rem">${col0 + col1}</div>`
+		}
+
+		const renderKeyRow = (row) => `<div class="key-row">${row.map(renderKey).join('')}</div>`
+		document.getElementById('keyboard').innerHTML = keymap.map(renderKeyRow).join('')
+
+
+		const symbols = [
+			['\u{DBB}\u{DCA}\u{200D}', 'රේඵය'],
+			['\u{DCA}\u{200D}\u{DBB}', 'රකාරාංශය'],
+			['\u{DCA}\u{200D}\u{DBA}', 'යංසය'],
+			['⇆', 'ත්‍ව ත්‍ථ න්‍ධ ආදී අකුරු බැඳීම'],
+			['🡂🡀', 'පාලි බැඳී අකුරු'],
+		]
+
+		const altGr = [
+			['ඳ', 'ද', 'o'],
+			['ඟ', 'ග', '.'],
+			['ඬ', 'ඩ', 'v'],
+			['ඦ', 'ජ', 'c'],
+			['ඞ', 'ං', 'x'],
+			['෴', '.', '\''],
+			['ඏ', 'ල', ','],
+			['ෳ', '\u0dca', 'a'],
+		]
+		const renderOther = e => `<div>
+			<span>${e[0]}</span>
+			<span> = AltGr + ${e[1]}</span>
+			<span> (${e[2]})</span>
+		</div>`
+
+		document.getElementById('symbols').innerHTML = 
+			symbols.map(e => `<div><span>${e[0]}</span> = <span>${e[1]}</span></div>`).join('')
+		document.getElementById('others').innerHTML = altGr.map(renderOther).join('')
+
+		const charToDest = {'⇆': '\u0dca\u200d', '🡂🡀': '\u200d\u0dca'}
+		const convertMap = {}, altGrMap = {}
+		function getConvertMap() {
+			const flat = [].concat.apply([], keymap)
+			flat.forEach(e => {
+				if (!e[1]) return;
+				const source = charSplit(e[0]), dest = charSplit(e[1])
+				if (source.length != dest.length) console.error(`length mismatch ${e}`)
+				source.forEach((s, i) => convertMap[s] = charToDest[dest[i]] || dest[i])
+			})
+		}
+		getConvertMap()
+		altGr.forEach(e => altGrMap[e[1]] = e[0])
+
+		let rightAltPressed = false
+		const box1 = document.getElementById('box1')
+		box1.focus()
+		box1.onkeydown = e => {
+			if (e.code == 'AltRight') {rightAltPressed = true; console.log('AltRight On')}
+
+			let dest = convertMap[e.key] 
+			if (!dest) return;
+			console.log(e)
+			if (rightAltPressed || (e.ctrlKey && e.altKey)) {
+				dest = altGrMap[dest] || dest // altgr pressed
+			} else if (e.ctrlKey || e.altKey) {
+				return; // other modifiers should not be processed
+			}
+			let text = box1.value.substr(0, box1.selectionStart) + dest + box1.value.substr(box1.selectionEnd)
+			const startLen = text.length
+			// dependent vowels
+			//text = text.replace(/\u200e\u0dd9([ක-ෆ])/g, '$1\u0dd9') // combuva - move back cant made to work
+			//text = text.replace(/\u0dd9((?:\u200d\u0dca|\u200d\u0dca)[ක-ෆ])/g, '$1\u0dd9') // combuva
+			text = text.replace(/\u0dd9\u0dca|\u0dca\u0dd9/g, '\u0dda') // ee - any order supported
+			text = text.replace(/\u0dd9\u0dcf|\u0dcf\u0dd9/g, '\u0ddc') // o
+			text = text.replace(/\u0dda\u0dcf|\u0dcf\u0dda|\u0ddc\u0dca|\u0dca\u0ddc/g, '\u0ddd') // oo
+			text = text.replace(/\u0dd9\u0ddf|\u0ddf\u0dd9/g, '\u0dde') // ou
+			text = text.replace(/\u0dd9\u0dd9/g, '\u0ddb') // ei
+			text = text.replace(/\u0dd8\u0dd8/g, '\u0df2') // iruu
+			// indept vowels
+			text = text.replace(/අ\u0dcf/g, 'ආ')
+			text = text.replace(/අ\u0dd0/g, 'ඇ')
+			text = text.replace(/අ\u0dd1/g, 'ඈ')
+			text = text.replace(/උ\u0ddf/g, 'ඌ')
+			text = text.replace(/ඍ\u0dd8/g, 'ඎ')
+			text = text.replace(/ඏ\u0ddf/g, 'ඐ')
+			text = text.replace(/එ\u0dca/g, 'ඒ')
+			text = text.replace(/එ\u0dd9/g, 'ඓ')
+			text = text.replace(/ඔ\u0dca/g, 'ඕ')
+			text = text.replace(/ඔ\u0ddf/g, 'ඖ')
+
+			let caretPos = box1.selectionStart
+			caretPos = caretPos + (text.length - startLen + dest.length);
+			// advance caret further - in case it falls near al or zwj etc
+			while (shouldAdvanceCaret(caretPos, text)) caretPos++
+			box1.value = text // this resets the selectionStart
+			box1.selectionStart = box1.selectionEnd = caretPos
+
+			e.stopPropagation();
+			e.preventDefault();
+		}
+		box1.onkeyup = e => {
+			if (e.code == 'AltRight') {
+				rightAltPressed = false; 
+				console.log('AltRight Off'); 
+			}
+
+			// debug
+			document.getElementById('box2').innerText =
+				box1.value.split('').map((c, i) => {
+					const r = (i == box1.selectionStart - 1) ? ' ‖' : ''
+					return (c >= 'අ' && c <= 'ෆ' ? c : c.charCodeAt(0).toString(16)) + r
+				}).join(' ')
+		}
+
+		function shouldAdvanceCaret(pos, text) {
+			if (pos == 0 || pos == text.length) return false;
+			// if preceding or next char is al or zwj
+			if (/\u0dca|\u200d/.test(text.charAt(pos - 1)) || /\u0dca|\u200d/.test(text.charAt(pos))) return true;
+			// if next char is deptV
+			return /[\u0dcf-\u0ddf]/.test(text.charAt(pos))
+		}
+
+	</script>
+</body>
+</html>
