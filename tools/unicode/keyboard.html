@@ -113,7 +113,7 @@
 				['K,k', 'ණ,න'],
 				['L,l', 'ඛ,ක'],
 				[':,;', 'ථ,ත'],
-				['\',\"', '‡,.'],
+				['\",\'', '‡,.'],
 				['Enter', '', 2],
 			],
 			[
@@ -258,7 +258,7 @@
 		}
 
 		function shouldAdvanceCaret(pos, text) {
-			if (pos == 0 || pos == text.length) return false;
+			if (pos == 0 || pos == text.length || /[^\u0d80-\u0dff]/.test(text.charAt(pos))) return false;
 			// if preceding or next char is al or zwj
 			if (/\u0dca|\u200d/.test(text.charAt(pos - 1)) || /\u0dca|\u200d/.test(text.charAt(pos))) return true;
 			// if next char is deptV

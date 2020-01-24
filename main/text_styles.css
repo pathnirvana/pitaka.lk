@@ -4,7 +4,7 @@
 body {
     margin-top: 0px;
     overflow: hidden;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.005);
+    /*text-shadow: 1px 1px 1px rgba(0,0,0,0.005);*/
     text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
 }
@@ -27,7 +27,7 @@ body {
 }*/
 
 .text-section {
-    font-size: 12pt;
+    /*font-size: 12pt;*/
     padding: 5px 10px 5px 10px;
     background-color: var(--main-bcolor);
 }
@@ -70,22 +70,22 @@ body {
 /* Namo tassa, and nitthita -- no unique structural distinction */
 .text-section .centered { text-align:center; }
 
-.text-section .nikaya { font-size: 23pt; text-align:center; font-weight: bold; margin: 7px 0px 7px 0px;}
-.text-section .book { font-size: 20pt; text-align:center; font-weight: bold; margin: 7px 0px 7px 0px;}
-.text-section .specialcaption { font-size: 17pt; text-align: center; font-weight: bold } /* used for pannasaka bhagaya*/
+.text-section .nikaya { font-size: 2rem; text-align:center; font-family: 'un-styled'; margin: 7px 0px 7px 0px;}
+.text-section .book { font-size: 1.7rem; text-align:center; font-family: 'un-styled'; margin: 7px 0px 7px 0px;}
+.text-section .specialcaption { font-size: 1.6rem; text-align: center; font-family: 'un-styled'; } /* used for pannasaka bhagaya*/
 
 .text-section div.chapter { text-align:center; margin: 5px 0px 5px 0px; }
-.text-section span.chapter { font-size: 17pt; font-weight: bold; color: var(--heading-color); }
+.text-section span.chapter { font-size: 1.3rem; /*font-weight: bold;*/ color: var(--heading-color); }
 
 .text-section div.title { text-align:center; margin: 5px 0px 5px 0px; }
-.text-section span.title { font-size: 15pt; cursor: pointer; font-weight: bold; color: var(--main-color); }
+.text-section span.title { font-size: 1.2rem; cursor: pointer; /*font-weight: bold;*/ color: var(--main-color); }
 
 .text-section div.subhead { text-align:center; margin: 5px 0px 5px 0px;}
-.text-section span.subhead { font-size: 13pt; cursor: pointer; font-weight: bold; color: var(--heading-color); }
+.text-section span.subhead { font-size: 1.05rem; cursor: pointer; /*font-weight: bold;*/ color: var(--heading-color); }
 .text-section span.subhead.sc_collapsed {color: var(--link-color); }
 /*.text-section span.subhead.sc_collapsed::before {content: "+  "; color: blue;}*/
 
-.text-section div.subsubhead { text-align:center; font-weight: bold;  margin: 3px 0px 3px 0px;}
+.text-section div.subsubhead { text-align:center; /*font-weight: bold;*/  margin: 3px 0px 3px 0px;}
 
 .text-section .paragraph {padding-top: 5px; padding-bottom: 5px; display: table; width: 100%;}
 
