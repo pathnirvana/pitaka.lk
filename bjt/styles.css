@@ -13,7 +13,7 @@ a.page-navigation {
     z-index: 2;
     cursor: pointer;
     text-decoration: none;
-    font-size: 14pt;
+    font-size: 1.1rem;
     
 }
 a.page-navigation:hover:active {
@@ -82,7 +82,7 @@ a.page-navigation.right { right: 0; }
     right: 0;
     margin: 25pt 10pt 0 0;
     color: var(--icon-color);
-    font-size: 18pt;
+    font-size: 1.4rem;
     cursor: pointer;
     /*display: none; /* show when moouseover */
 }
