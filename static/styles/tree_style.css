@@ -13,7 +13,6 @@
 
 .pitaka-tree a {
 	cursor: pointer;
-    font-size: 0.9rem;
 }
 .pitaka-tree > ul {
     margin: 0;
@@ -37,7 +36,7 @@
 }
 .pitaka-tree li a:hover {
     background-color: var(--hover-bcolor);
-	font-weight: bold;
+	/*font-weight: bold;*/
 }
 .pitaka-tree li a:active {
     background-color: var(--main-bcolor);
