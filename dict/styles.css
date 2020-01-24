@@ -13,8 +13,7 @@ html, body {
 }*/
 
 #search-status {
-    font-size: 13pt;
-    font-style: italic;
+    font-size: 0.8rem;
     color: darkblue;
     padding: 5pt;
 }
@@ -28,7 +27,7 @@ html, body {
     display: none;
 }
 #search-results li {
-    font-size: 13pt;
+    /*font-size: 13pt;*/
     list-style-type: none;
     padding: 2pt 5pt 2pt 5pt;
     border-top: 1px solid darkgray;
@@ -43,7 +42,8 @@ html, body {
 }
 .result-pali-word {
     color: black;
-    font-weight: bold;
+    /*font-weight: bold;*/
+    font-size: 1.1rem;
     padding-right: 10pt;
     cursor: pointer;
 }
@@ -68,7 +68,7 @@ html, body {
     content: '.';
 }
 .result i.dict-name {
-   font-size: 7pt;
+   font-size: 0.6rem;
    padding-right: 5pt;
 }
 .result i.buddhadatta {
