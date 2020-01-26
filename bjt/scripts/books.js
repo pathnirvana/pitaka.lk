@@ -409,6 +409,8 @@ function getBJTImageSrc(bookId, pageNum) {
     if (!bookInfo) return;
     var paddedPage = ("00" + (bookInfo.pageNumOffset + pageNum).toString()).slice(-3)
     return 'newbooks/' +
-        bookInfo.folder + '/' +
+        (bookInfo.folder || bookId) + '/' +
         bookInfo.imagePrefix + paddedPage + '.jpg';
 }
+
+//console.log(getBJTImageSrc(10,100))
