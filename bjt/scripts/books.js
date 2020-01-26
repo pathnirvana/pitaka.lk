@@ -407,7 +407,7 @@ var bjtBooksInfo = {
 function getBJTImageSrc(bookId, pageNum) {
     var bookInfo = bjtBooksInfo[bookId]
     if (!bookInfo) return;
-    var paddedPage = ("00" + (bookInfo.pageNumOffset + pageNum).toString()).slice(-3)
+    var paddedPage = ("00" + (bookInfo.pageNumOffset + Number(pageNum)).toString()).slice(-3)
     return 'newbooks/' +
         (bookInfo.folder || bookId) + '/' +
         bookInfo.imagePrefix + paddedPage + '.jpg';
