@@ -119,7 +119,7 @@ function getParentsDisplay(entry) {
     return div;
 }
 function getBookNamePageNumberDisplay(entry) {
-    var book = books[entry.book];
+    var book = bjtBooksInfo[entry.book];
     return $('<td/>').append($('<div/>').addClass('result-page-number').text(entry.book + '. ' + entry.page))
         .append($('<div/>').addClass('result-book-name').text(book.name));
 }
