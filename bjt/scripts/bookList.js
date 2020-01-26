@@ -91,7 +91,7 @@ function navigateToIndex(searchId, origin) {
 function navigateToLocation(bookId, pageId, name, origin) {
     // set the current book
     curBookId = bookId;
-    curBook = books[curBookId];
+    curBook = bjtBooksInfo[curBookId];
     // google analaytics - send node view
     ga('send', {
         hitType: 'event',

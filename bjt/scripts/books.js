@@ -2,7 +2,7 @@
  * Created by Janaka on 2016-11-12.
  */
 
-var books = {
+var bjtBooksInfo = {
     1: {
         name: 'පාරාජිකපාළි',
         maxPageId: 687,
@@ -403,3 +403,12 @@ var books = {
         imagePrefix: 'AP13_Page_'
     }
 };
+
+function getBJTImageSrc(bookId, pageNum) {
+    var bookInfo = bjtBooksInfo[bookId]
+    if (!bookInfo) return;
+    var paddedPage = ("00" + (bookInfo.pageNumOffset + pageNum).toString()).slice(-3)
+    return 'newbooks/' +
+        bookInfo.folder + '/' +
+        bookInfo.imagePrefix + paddedPage + '.jpg';
+}
