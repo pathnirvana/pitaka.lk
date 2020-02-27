@@ -19,7 +19,7 @@ global.document = document;
 
 var $ = jQuery = require('jquery')(window);
 const JC = (name, cls) => $(`<${name}/>`).addClass(cls);
-const MDI = (name, cls) => `<i class="material-icons ${cls}">${name}</i>`;
+const MDI = (name, cls) => `<i class="material-icons${cls ? ' ' + cls : ''}">${name}</i>`;
 const outputFolder = '../../books';
 
 const isNodeEmpty = (node) => node.textElem.length == 0;
@@ -27,31 +27,32 @@ const getNodeFileName = (node) => `${node.ids.join('-')}.html`; //${isNodeEmpty(
 
 const bookList = [
     { name: 'විශුද්ධි මාර්ගය', author: 'බුද්ධඝෝෂ හිමි', folder: 'vishuddhi-margaya', group: 1 }, 
-    { name: 'සිංහල මිලින්‍දප්‍ර‍ශ්නය', author: 'හීනටිකුඹුරේ සුමංගල හිමි', folder: 'milinda-prashnaya', group: 1 , gen: true},
-    { name: 'අටුවාකථාවස්තු', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'atuwakathawasthu', group: 1 , gen: true},
-    { name: 'බෞද්ධයාගේ අත්පොත', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bauddhayage-athpotha', group: 2 , gen: true},
+    { name: 'සිංහල මිලින්‍දප්‍ර‍ශ්නය', author: 'හීනටිකුඹුරේ සුමංගල හිමි', folder: 'milinda-prashnaya', group: 1 },
+    { name: 'අටුවාකථාවස්තු', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'atuwakathawasthu', group: 1 },
+    { name: 'බෞද්ධයාගේ අත්පොත', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bauddhayage-athpotha', group: 2 },
     { name: 'ධර්ම විනිශ්චය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'dharma-winishchaya', group: 2 },
     { name: 'පාරමිතා ප්‍ර‍කරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'paramitha-prakaranaya', group: 2 },
-    { name: 'සූවිසි මහ ගුණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'suvisi-gunaya', group: 2 , gen: true},
+    { name: 'සූවිසි මහ ගුණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'suvisi-gunaya', group: 2 },
     { name: 'අභිධර්මයේ මූලික කරුණු', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'abhidharmaye-mulika-karunu', group: 2 },
-    { name: 'අභිධර්ම මාර්ගය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'abhidharma-margaya', group: 2 , gen: true},
+    { name: 'අභිධර්ම මාර්ගය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'abhidharma-margaya', group: 2 },
     { name: 'චතුරාර්‍ය්‍ය සත්‍යය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'chathurarya-sathya', group: 2 },
     { name: 'පුණ්‍යෝපදේශය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'punyopadeshaya', group: 2 },
     { name: 'ශාසනාවතරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'shasanavatharanaya', group: 2 },
     { name: 'බෝධිපාක්ෂික ධර්ම විස්තරය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bodhi-pakshika-dharma', group: 2 },
-    { name: 'පටිච්ච සමුප්පාද විවරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'patichcha-samuppada-vivaranaya', group: 2, gen: true},
+    { name: 'පටිච්ච සමුප්පාද විවරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'patichcha-samuppada-vivaranaya', group: 2},
     { name: 'උපසම්පදා ශීලය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'upasampada-sheelaya', group: 2 },
     { name: 'උභය ප්‍රාතිමෝක්‍ෂය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'ubhaya-prathimokshaya', group: 2 },
     { name: 'වඤ්චක ධර්ම හා චිත්තෝපක්ලේශ ධර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'wanchaka-dharma', group: 2 },
+    { name: 'විදර්ශනා භාවනා ක්‍රමය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vidarshana-bhavana-kramaya', group: 2, gen: true },
     { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3 },
-    { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3, gen: true },
-    { name: 'සීහළවත්ථු', author: 'ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'sihala-vaththu', group: 3, gen: true },
-    { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3, gen: true },
+    { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3 },
+    { name: 'සීහළවත්ථු', author: 'ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'sihala-vaththu', group: 3 },
+    { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3 },
 ];
 
 let nodesAdded;
 bookList.forEach(book => {
-    if (!book.gen) return; // process only some books
+    //if (!book.gen) return; // process only some books
     const bookDom = new JSDOM(fs.readFileSync(`input/${book.folder}.html`, { encoding: 'utf8' }));
     const bookDoc = bookDom.window.document;
     const bookH1 = $('h1', bookDoc).get();
@@ -164,7 +165,7 @@ function writeIndexFile(book, nodeList, fileName) {
 }
 
 function genericWriteFile(fileName, title, desc, folder, contentDiv, tmplStr) {
-    const contentHtml = vkbeautify.xml(JC('div').append(contentDiv).html());
+    const contentHtml = JC('div').append(contentDiv).html() ///*vkbeautify.xml(); - "( with <strong vkb adds a space in between
     tmplStr = tmplStr.replace(/TITLEPLACEHOLDER/g, title);
     tmplStr = tmplStr.replace(/DESCPLACEHOLDER/g, desc);
     tmplStr = tmplStr.replace(/FOLDERPLACEHOLDER/g, folder);
