@@ -1,0 +1,5 @@
+p[style-name='gatha'] => div.gatha > p:fresh
+p[style-name='subhead'] => div.subhead > p:fresh
+#p:ordered-list(1) => p:fresh
+#p[style-name='List Paragraph'] => p:fresh
+
