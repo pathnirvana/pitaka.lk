@@ -1,13 +1,15 @@
 @font-face {
-    font-family: 'Noto Serif Sinhala';
-    src: url('NotoSerifSinhala-Regular.ttf') format('truetype');
+    font-family: 'UN-Abhaya';
+    src: local('###'), url('UN-Abhaya-6-110-kern.ttf') format('truetype');
     font-weight: normal;
 }
 @font-face {
-    font-family: 'Noto Serif Sinhala';
-    src: url('NotoSerifSinhala-Bold.ttf') format('truetype');
+    font-family: 'UN-Abhaya';
+    src: local('###'), url('UN-Abhaya-new-bold-6.ttf') format('truetype');
     font-weight: bold;
 }
+@font-face { font-family: 'styled'; src: local('###'), url('UN-Alakamanda-4-95.ttf') format('truetype'); font-weight: normal; }
+@font-face { font-family: 'heading'; src: local('###'), url('UN-Malithi-4.ttf') format('truetype'); font-weight: normal; }
 
 @font-face {
     font-family: 'Material Icons';
@@ -44,22 +46,29 @@
 }
 
 body {
-    font-family: 'Noto Serif Sinhala';
+    font-family: 'UN-Abhaya';
+    font-size: 18px;
     text-align: justify;
 }
 
-h1 { font-size: 1.5rem; }
-h2 { font-size: 1.3rem; }
-h3,h4 { font-size: 1.2rem; }
+.title-bar { flex: 1 1; text-align: center; padding: 5pt; display: flex; align-items: center; background-color: lightsalmon; font-size: 1.5rem; }
+.title-bar-text { font-family: 'styled'; font-size: 1.8rem; flex: 1; margin: 0 0.3rem 0 0.3rem; }
+.notice { text-align: center; padding: 5pt; font-family: 'heading'; } /* click help notice */
+
+.heading-bar { display: flex; align-items: center; font-family: 'heading'; }
+.heading-bar .share-icon { margin-left: 1rem; }
+h1 { font-size: 1.6rem; font-weight: normal; }
+h2 { font-size: 1.4rem; font-weight: normal; }
+h3,h4 { font-size: 1.3rem; font-weight: normal; }
 
 .subheadings { border-top: 0.5px dashed lightsalmon; margin-bottom: 0.5rem; }
 
 .TOC-container { padding: 0.2rem 0 0.2rem 0; }
 .TOC-text { display: flex; align-items: center; text-align: left;}
-.TOC-text[level="1"] { font-size: 1.1rem; padding: 0.2rem 0 0.2rem 0; }
-.TOC-text[level="2"] { font-size: 1rem; padding-left: 1.5rem; }
-.TOC-text[level="3"] { font-size: 0.9rem; padding-left: 3rem; }
-.TOC-text[level="4"] { font-size: 0.9rem; padding-left: 4rem; }
+.TOC-text[level="1"] { font-size: 1.3rem; padding: 0.2rem 0 0.2rem 0; }
+.TOC-text[level="2"] { font-size: 1.2rem; padding-left: 1.5rem; }
+.TOC-text[level="3"] { font-size: 1.1rem; padding-left: 3rem; }
+.TOC-text[level="4"] { font-size: 1.1rem; padding-left: 4rem; }
 .TOC-text:hover { background-color: whitesmoke; }
 .TOC-text.closed { font-weight: bold; }
 .TOC-text a { text-decoration: none; }
@@ -74,18 +83,18 @@ h3,h4 { font-size: 1.2rem; }
 .gatha { margin: 0.1rem 0 0.1rem 2rem; }
 .gatha > p { padding: 0; margin: 0; }
 
-.subhead { color:brown; font-weight: bold; font-size: 1.1rem; } /* headings that are not in TOC */
+.subhead { color:brown; font-weight: bold; font-size: 1.2rem; } /* headings that are not in TOC */
 
 img { max-width: 100%; }
 
 table td {border: 1px solid black; }
 
-ol.footnotes { border-top: 0.5px solid black; font-size: 0.75rem; column-width: 15rem; column-count: 2; padding-top: 3px; column-gap: 2rem;}
+ol.footnotes { border-top: 0.5px solid black; font-size: 0.9rem; column-width: 15rem; column-count: 2; padding-top: 3px; column-gap: 2rem;}
 ol.footnotes li p { margin: 4px 15px 4px 0px; }
 
 
 nav { text-align: center; display: flex; align-items: center; justify-content: center;  flex-wrap: wrap;}
-nav.top { font-size: 1.2rem; }
+nav.top { font-size: 1.3rem; }
 nav > a.button { margin: 0.15rem 0.25rem 0.15rem 0.25rem; }
 
 a.button {
@@ -126,11 +135,12 @@ a.button .material-icons { color: black; padding: 0 0.3rem 0 0.3rem; }
     transform: translateX(-50%);
     bottom: 30pt; /* 30px from the bottom */
 }
+#content-about { font-size: 0.9rem; padding: 10px; text-align: center; background-color: beige; }
 
 /**In the app-index.html */
 .group { text-align: center;  margin: 0.5rem; padding: 0.1rem; border: 1px solid white; background-color: whitesmoke; border-radius: 5px;}
 .group:hover { border-color: salmon; }
-.group-name { font-size: 1.3rem; font-weight: bold; color: brown; padding: 0.5rem; }
-.books-list .book { font-size: 1.3rem; padding: 0.5rem; display: flex; align-items: center;}
+.group-name { font-family: 'styled'; font-size: 1.7rem; color: brown; padding: 0.5rem; background-color: antiquewhite; }
+.books-list .book { font-size: 1.4rem; padding: 0.5rem; display: flex; align-items: center;}
 .books-list .book:hover { background-color: white; }
 .books-list .book a { text-decoration: none; flex: 1;}
