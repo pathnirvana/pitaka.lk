@@ -43,7 +43,8 @@ const bookList = [
     { name: 'උපසම්පදා ශීලය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'upasampada-sheelaya', group: 2 },
     { name: 'උභය ප්‍රාතිමෝක්‍ෂය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'ubhaya-prathimokshaya', group: 2 },
     { name: 'වඤ්චක ධර්ම හා චිත්තෝපක්ලේශ ධර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'wanchaka-dharma', group: 2 },
-    { name: 'විදර්ශනා භාවනා ක්‍රමය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vidarshana-bhavana-kramaya', group: 2, gen: true },
+    { name: 'විදර්ශනා භාවනා ක්‍රමය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vidarshana-bhavana-kramaya', group: 2},
+    { name: 'පොහොය දිනය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'pohoya-dinaya', group: 2, gen: true },
     { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3 },
     { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3 },
     { name: 'සීහළවත්ථු', author: 'ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'sihala-vaththu', group: 3 },
@@ -107,8 +108,8 @@ function writeBookFiles(book, children, rootFolder, tmplStr, nodeList) {
     children.forEach(node => {
         const contentDiv = JC('div', 'content').append(
             getTopLinks(node, book, nodeList), 
-            JC(`h${node.level}`).text(node.header.text()) // if the header can have footnotes will need to change to html
-                .append($(MDI('share', 'share-icon')).attr('file-name', getNodeFileName(node))),
+            JC('div', 'heading-bar').append(JC(`h${node.level}`).text(node.header.text()), // if the header can have footnotes will need to change to html
+                $(MDI('share', 'share-icon')).attr('file-name', getNodeFileName(node))),
             node.textElem,
             node.children.length ? createSubHeadingsDiv(node) : '',
             node.footnotes,
