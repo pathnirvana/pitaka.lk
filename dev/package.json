@@ -14,6 +14,7 @@
     "fastify-static": "^2.5.0",
     "jquery": "^3.4.1",
     "jsdom": "^15.1.1",
+    "mammoth": "^1.4.9",
     "vkbeautify": "^0.99.3"
   },
   "devDependencies": {
