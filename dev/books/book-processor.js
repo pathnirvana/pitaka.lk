@@ -8,6 +8,7 @@
  */ 
 
 const fs = require('fs');
+const mammoth = require("mammoth");
 const assert = require('assert');
 const vkbeautify = require('vkbeautify');
 
@@ -20,7 +21,15 @@ global.document = document;
 var $ = jQuery = require('jquery')(window);
 const JC = (name, cls) => $(`<${name}/>`).addClass(cls);
 const MDI = (name, cls) => `<i class="material-icons${cls ? ' ' + cls : ''}">${name}</i>`;
-const outputFolder = '../../books';
+const outputFolder = `${__dirname}/../../books`;
+
+const mammothOpts = {
+    styleMap: [
+        "p[style-name='gatha'] => div.gatha > p:fresh",
+        "p[style-name='subhead'] => div.subhead > p:fresh",
+        "b => b" // normally b => strong
+    ]
+};
 
 const isNodeEmpty = (node) => node.textElem.length == 0;
 const getNodeFileName = (node) => `${node.ids.join('-')}.html`; //${isNodeEmpty(node) ? '-1' : ''}.html`; // if empty point to the first child
@@ -44,17 +53,34 @@ const bookList = [
     { name: 'උභය ප්‍රාතිමෝක්‍ෂය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'ubhaya-prathimokshaya', group: 2 },
     { name: 'වඤ්චක ධර්ම හා චිත්තෝපක්ලේශ ධර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'wanchaka-dharma', group: 2 },
     { name: 'විදර්ශනා භාවනා ක්‍රමය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vidarshana-bhavana-kramaya', group: 2},
-    { name: 'පොහොය දිනය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'pohoya-dinaya', group: 2, gen: true },
+    { name: 'පොහොය දිනය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'pohoya-dinaya', group: 2},
+    { name: 'බෝධි පූජාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bodhi-poojawa', group: 2 },
     { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3 },
     { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3 },
     { name: 'සීහළවත්ථු', author: 'ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'sihala-vaththu', group: 3 },
-    { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3 },
+    { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3, gen: 'docx' },
 ];
 
+const reprocessAll = ''; // html or docx to reprocess all books
 let nodesAdded;
 bookList.forEach(book => {
-    //if (!book.gen) return; // process only some books
-    const bookDom = new JSDOM(fs.readFileSync(`input/${book.folder}.html`, { encoding: 'utf8' }));
+    if (!book.gen && !reprocessAll) return; // process only some books
+    if (book.gen == 'docx' || reprocessAll == 'docx') { // reprocess docx or read from file
+        console.log(`Regenerating html from docx ${book.folder}`);
+        (async () => {
+            const mRes = await mammoth.convertToHtml({path: `${__dirname}/input/${book.folder}.docx`}, mammothOpts);
+            fs.writeFileSync(`${__dirname}/input/${book.folder}.html`, mRes.value, {encoding: 'utf-8'});
+            processBook(book, mRes.value);
+        })();
+    } else {
+        processBook(book, fs.readFileSync(`${__dirname}/input/${book.folder}.html`, { encoding: 'utf8' }));
+    }
+});
+
+writeAppIndexFile();
+
+function processBook(book, html) {
+    const bookDom = new JSDOM(html);
     const bookDoc = bookDom.window.document;
     const bookH1 = $('h1', bookDoc).get();
     const footnotes = $("li[id^='footnote-']", bookDoc).get();
@@ -66,10 +92,9 @@ bookList.forEach(book => {
 
     if (!fs.existsSync(`${outputFolder}/${book.folder}`)) fs.mkdirSync(`${outputFolder}/${book.folder}`);
     writeIndexFile(book, nodeList, `${book.folder}/index.html`);
-    writeBookFiles(book, nodeList, book.folder, fs.readFileSync('pre-book.html', { encoding: 'utf8' }), nodeList);
+    writeBookFiles(book, nodeList, book.folder, fs.readFileSync(`${__dirname}/pre-book.html`, { encoding: 'utf8' }), nodeList);
     console.log(`Wrote files for ${book.name}; nodes added ${nodesAdded}`);
-});
-writeAppIndexFile();
+}
 
 function processTree(headers, level, parents, footnotes) {
     const nodes = [];
@@ -162,7 +187,8 @@ function createIndexDiv(node) {
 
 function writeIndexFile(book, nodeList, fileName) {
     const patunaDiv = $('<div/>').append(nodeList.map(node => createIndexDiv(node)));
-    genericWriteFile(fileName, book.name, book.author, book.folder, patunaDiv, fs.readFileSync('pre-index.html', { encoding: 'utf8' }));
+    genericWriteFile(fileName, book.name, book.author, book.folder, patunaDiv, 
+        fs.readFileSync(`${__dirname}/pre-index.html`, { encoding: 'utf8' }));
 }
 
 function genericWriteFile(fileName, title, desc, folder, contentDiv, tmplStr) {
@@ -175,7 +201,7 @@ function genericWriteFile(fileName, title, desc, folder, contentDiv, tmplStr) {
 }
 
 function writeAppIndexFile() {
-    let tmplStr = fs.readFileSync('pre-app-index.html', { encoding: 'utf8' }), groups = [];
+    let tmplStr = fs.readFileSync(`${__dirname}/pre-app-index.html`, { encoding: 'utf8' }), groups = [];
     bookList.forEach(book => {
         if (groups[book.group - 1]) {
             groups[book.group - 1].push(book);
