@@ -1,0 +1,11 @@
+@font-face { src: local('###'), url('../fonts/UN-Abhaya-6-110-kern.ttf') format('truetype'); font-weight: normal; font-family: 'sinhala'; }
+@font-face { src: local('###'), url('../fonts/AbhayaLibre-SemiBold.ttf') format('truetype'); font-weight: bold; font-family: 'sinhala'; }
+@font-face { src: local('###'), url('../fonts/UN-Alakamanda-4-95.ttf') format('truetype'); font-weight: normal; font-family: 'styled'; }
+
+body { font-family: 'sinhala' }
+audio { width: 100%; }
+.label { margin: 0.5rem; padding: 0.3rem; }
+.label.active { background-color: lightgoldenrodyellow; }
+.sentences { text-align: center; padding: 0.4rem; background-color: white; }
+.sentences .pali-sent { color: darkblue; margin-bottom: 0.2rem; }
+.sentences .sinh-sent { color: black; }
