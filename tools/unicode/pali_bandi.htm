@@ -103,7 +103,12 @@
 		function convertPali() {
 			text = document.getElementById('box1').value;  
 			text = text.replace(/\u200C/g, ""); // remove 200c char that appears in tipitaka.org text
+			// have to do twice to handle cases where hal occurs in two consecutive characters
+			// e.g. ⑴  න්ත්ව් (ntv) "ගන්ත්වා, අාගන්ත්වා, අංගන්ත්වෙව, මන්ත්වා"  (from diddeniye ariyadassana thero)
+			// ⑵ න්ද්ව් (ndv) "බින්ද්වාගමෙ,බින්ද්වාගමො"
+			// ⑶ ත්ථ්ව් (tthv) "වත්ථ්වෙත්ථ"
 			text = text.replace(/([ක-ෆ])\u0DCA([ක-ෆ])/g, '$1\u200D\u0DCA$2'); // adding a zwj between consos
+			text = text.replace(/([ක-ෆ])\u0DCA([ක-ෆ])/g, '$1\u200D\u0DCA$2'); 
 
 			if (document.getElementById('remove-hal').checked) {
 				text = text.replace(/ඒ/g, 'එ');
