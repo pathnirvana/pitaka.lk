@@ -2,10 +2,21 @@
 @font-face { src: local('###'), url('../fonts/AbhayaLibre-SemiBold.ttf') format('truetype'); font-weight: bold; font-family: 'sinhala'; }
 @font-face { src: local('###'), url('../fonts/UN-Alakamanda-4-95.ttf') format('truetype'); font-weight: normal; font-family: 'styled'; }
 
-body { font-family: 'sinhala' }
+body { font-family: 'sinhala'; background-color: seashell; }
 audio { width: 100%; }
-.label { margin: 0.5rem; padding: 0.3rem; }
-.label.active { background-color: lightgoldenrodyellow; }
-.sentences { text-align: center; padding: 0.4rem; background-color: white; }
-.sentences .pali-sent { color: darkblue; margin-bottom: 0.2rem; }
-.sentences .sinh-sent { color: black; }
+.title-bar { display: flex; flex-wrap: nowrap; justify-items: center; align-items: center; background-color:rgb(201, 142, 135); 
+    border-radius: 10px; padding: 0.5rem; }
+.home-link { padding-left: 5px; text-decoration: none; }
+#title-bar-text { text-align: center; font-size: 2rem; font-family: 'styled'; }
+
+table.label { width: 100%; table-layout: fixed; padding: 0.3rem; }
+table.label.active { background-color: lightgoldenrodyellow; }
+.text-row td { text-align: center; padding: 0rem 0.5rem; word-break: break-word; }
+.text-row .pali { font-size: 1.1rem; text-align: right; width: 50%; }
+.text-row .sinh { font-size: 1.1rem; color: blue; text-align: left; }
+
+.sentence td { padding: 0.7rem; background-color: rgb(235, 235, 235); word-break: break-word; }
+.sentence .pali { color: darkblue; text-align: right; }
+.sentence .sinh { color: black; text-align: left; }
+
+#content-about { font-size: 1.2rem; font-family: 'styled'; color: brown; text-align: center; padding: 2rem; }
