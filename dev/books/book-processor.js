@@ -4,6 +4,8 @@
  * output is written to the public pitaka/books folder
  * 
  * use mammoth as below from the input directory
+ * WARNING - unless you abosolutely have to do not reprocess existing docx files
+ * since local corrections have been made to html files which would be overwritten
  * npx mammoth book-name.docx book-name.html --style-map=mammoth-styles.txt
  */ 
 
