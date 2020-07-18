@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Popular Posts</title>
+    <!--<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">-->
+    <script src="https://pitaka.lk/static/scripts/jquery-3.4.1.min.js"></script>
+    <!--<script src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js" integrity="sha256-erF9fIMASEVmAWGdOmQi615Bmx0L/vWNixxTNDXS4FQ=" crossorigin="anonymous"></script>-->
+    <style>
+        img.thumb{
+            width:100%;
+            max-width:200px;
+        }
+        .ui-widget{
+            font-size:12px;
+        }
+    </style>
+</head>
+<body>
+<div id="fb-root"></div>
+<script>
+    const appId = '1529583637287988', appSecret = '43e6978ac3aed986e0d5215ccf5ee399' // TODO secret should not be shared in client
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '1529583637287988',
+            cookie     : true,
+            xfbml      : true,
+            version    : 'v2.8'
+        });
+        
+        FB.AppEvents.logPageView();   
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+
+    const PNPageId = 509526319114695;
+    let pageAccessToken = '';
+
+    // This is called with the results from from FB.getLoginStatus().
+    function statusChangeCallback(response) {
+        console.log('statusChangeCallback');
+        console.log(response);
+        // The response object is returned with a status field that lets the
+        // app know the current login status of the person.
+        // Full docs on the response object can be found in the documentation
+        // for FB.getLoginStatus().
+        if (response.status === 'connected') {
+            // Logged into your app and Facebook - get the page access token
+            FB.api(`/${PNPageId}?fields=access_token`, (response) => {
+                //get access token
+                pageAccessToken = response.access_token;
+                console.log(`Page token obtained for posting ${pageAccessToken}`);
+                $('#status').html('Thanks for logging in');
+            });
+            $("#fb_login_button").hide();
+        } else {
+            // The person is not logged into your app or we are unable to tell.
+            $('#status').html('Please log into the app');
+        }
+    }
+
+    // This function is called when someone finishes with the Login
+    // Button.  See the onlogin handler attached to it in the sample
+    // code below.
+    function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+    }
+
+    function addDurationToDate(old_date) {
+        var date = new Date(old_date); // make a copy
+        switch ($("#duration_select").val()) {
+            case "1 Week" :
+                date.setDate(date.getDate() + 7);
+                break;
+            case "1 Month":
+                date.setMonth(date.getMonth() + 1);
+                break;
+            case "3 Months":
+                date.setMonth(date.getMonth() + 3);
+                break;
+        }
+        return date;
+    }
+
+    var max_api_calls = 20;
+    var filtered = [];
+    function getPosts() {
+        filtered = []; // clear from the old getPosts
+        var options = "fields=comments.limit(1).summary(true),likes.limit(1).summary(true),shares,attachments,created_time,picture";
+        options += "&date_format=U&limit=100";
+        const from_date = new Date($("#from_date").val()), to_date = addDurationToDate(from_date); //.datepicker('getDate')
+		console.log('getPosts from date: ' + from_date + ' to date: ' + to_date);
+        var api_query = $("#page_select").val() + `/feed?${options}&since=${from_date / 1000}&until=${to_date / 1000}&access_token=${appId}|${appSecret}`;
+		console.log(`API query: ${api_query}`);
+        FB.api(api_query, function(response) {
+            procBatch(response, from_date, to_date, 1)
+        });
+    }
+
+    function procBatch(response, from_date, to_date, api_calls) { // handle this batch, request the next batch
+        if (response && !response.error) {
+            var stop = extractPosts(response['data'], from_date, to_date);
+            $("#posts_status").html(`API call ${api_calls} of ${max_api_calls}. Extracted ${filtered.length} posts.`);
+			console.log(response);
+            var api_query = response['paging'] ? response['paging']['next'] : "";
+			console.log(api_query);
+			console.log(stop);
+            if (!stop && api_query && api_calls < max_api_calls) {
+                FB.api(api_query, function(response) {
+                    procBatch(response, from_date, to_date, api_calls + 1);
+                });
+            } else { // end of batches, render
+                console.log("total api calls made " + api_calls);
+                renderPosts('combined', 0);
+                $("#posts_status").html(`Showing ${$("#max_show").val()} of ${filtered.length} posts from ${api_calls} API calls.`);
+            }
+        } else {
+            $("#posts_status").html("Response error: " + JSON.stringify(response));
+        }
+    }
+
+    function extractPosts(dataList, from_date, to_date) {
+        let stop = false;
+        dataList.forEach(datum => {
+            if (!datum.attachments) return;
+            const data = datum.attachments.data
+            if (!data.length || !data[0].target || !data[0].target.id) {
+                return; // continue
+            }
+            if (datum['created_time'] < from_date / 1000 || datum['created_time'] > to_date / 1000) {
+                console.log('created time: ' + datum['created_time'] + " outside range [" + from_date + ' : ' + to_date + ']');
+                stop = true;
+                return false; //break
+            }
+            var new_obj = {
+                'object_id': data[0].target.id,
+                'comments': datum['comments'] ? datum['comments']['summary']['total_count'] : 0,
+                'likes': datum['likes'] ? datum['likes']['summary']['total_count'] : 0,
+                'shares': datum['shares'] ? datum['shares']['count'] : 0,
+                'created_time': datum['created_time'],
+                'picture': datum['picture'],
+            };
+            new_obj['combined'] = combinedMetric(new_obj),
+            filtered.push(new_obj);
+        });
+        console.log("return extractPosts: " + stop);
+        return stop;
+    }
+
+    function combinedMetric(post) {
+        return post.likes + post.shares * 1.5 + post.comments * 3;
+    }
+    let current_sort_key = '';
+    let current_set = 0;
+    function renderNextSet() {
+        renderPosts(current_sort_key, current_set + 1);
+    }
+    function renderPrevSet() {
+        if (current_set > 0) {
+            renderPosts(current_sort_key, current_set - 1);
+        }
+    }
+    function renderPosts(sort_key, show_set) {
+        current_sort_key = sort_key;
+        current_set = show_set;
+
+        filtered.sort((a, b) => b[sort_key] - a[sort_key]);
+        const maxShow = $("#max_show").val();
+        const filtered_subset = filtered.slice(show_set * maxShow, (show_set + 1) * maxShow);
+
+        const table = $('#posts').children('tbody').empty();
+        filtered_subset.forEach((datum, i) => {
+            const created_time = new Date(datum.created_time * 1000);
+            table.append($('<tr/>').html(
+                    `<td>${i + 1}</td>
+                    <td><img src="${datum.picture}" class="thumb"></img></td>
+                    <td>${created_time.toDateString()}</td>
+                    <td>${datum.likes}</td>
+                    <td>${datum.comments}</td>
+                    <td>${datum.shares}</td>
+                    <td>${datum.combined}</td>
+                    <td><input type="button" onclick="viewPost(${datum.object_id})" value="View"></input></td>`
+            ));
+        });
+    }
+
+    let nextScheduleDate;
+    function viewPost(object_id) {
+        var api_query = `${object_id}?fields=height,width,images,name,id&access_token=${appId}|${appSecret}`;
+        FB.api(api_query, function(response) {
+            if (response && !response.error) {
+                // show dialog
+                $("#view_dialog_message").val(response.name);
+                $("#view_dialog_image").attr("src", response.images[0].source);
+                $("#view_dialog_download").attr("href", response.images[0].source);
+                //$("#schedule_date").datepicker('setDate', nextScheduleDate);
+                $("#schedule_status").val('');
+                openDialog();
+                /*dialog = $("#view_dialog").dialog({
+                    height: response.height * 500/response.width + 250,
+                    width: 550, modal: true,
+                    buttons: { Close: () => dialog.dialog( "close" ) }
+                });*/
+            }
+        });
+    }
+    
+    function schedulePost() {
+        FB.api('/path.nirvana/photos', 'POST', { 
+                "url":  $("#view_dialog_image").attr("src"),
+                "message": $("#view_dialog_message").val(),
+                "published": false, 
+                "scheduled_publish_time": $("#schedule_date").datepicker('getDate') / 1000 + $("#schedule_time").val() * 3600,
+                "access_token": pageAccessToken,
+            },
+            function(response) {
+                console.log(response);
+                if (!response.id) {
+                    alert(response);
+                } else {
+                    nextScheduleDate = $("#schedule_date").datepicker('getDate'); 
+                    nextScheduleDate.setDate(nextScheduleDate.getDate() + 1); // increment day by one
+                    console.log(nextScheduleDate);
+                    $("#schedule_status").val(`Posted id ${response.id}`);
+                }
+            }
+        );
+    }
+
+    $(function() {
+        /*$("#from_date").datepicker({
+            defaultDate: "-1m", changeMonth: true, changeYear: true, numberOfMonths: 1, dateFormat: "yy-mm-dd",
+			yearRange: "2011:+0",
+        });*/
+        $("#advance_duration").click(function(){
+            const from_date = new Date($("#from_date").val()) //datepicker('getDate');
+            $("#from_date").val(addDurationToDate(from_date).toISOString().split('T')[0])
+            //$("#from_date").datepicker('setDate', addDurationToDate(from_date));
+        });
+        /*$("#schedule_date").datepicker({
+            defaultDate: '+1d', changeMonth: true, changeYear: true, numberOfMonths: 1, dateFormat: "yy-mm-dd", 
+            yearRange: "+0:+1",
+        });*/
+    });
+    function openDialog() {
+        document.getElementById('view_dialog').style.display = 'flex'
+    }
+    function closeDialog() {
+        document.getElementById('view_dialog').style.display = 'none'
+    }
+    document.addEventListener('keydown', function (e) {
+        if (e.key == 'Escape') { closeDialog() }
+    });
+</script>
+
+<!--
+  Below we include the Login Button social plugin. This button uses
+  the JavaScript SDK to present a graphical Login button that triggers
+  the FB.login() function when clicked.
+  scope removed - manage_pages, publish_pages, 
+-->
+<div>
+    <fb:login-button id="fb_login_button" scope="email, pages_show_list, public_profile" onlogin="checkLoginState();"></fb:login-button>
+    <scan id="status"></scan>
+</div>
+<br>
+<div id="header_form">
+    <label for="page_select">Page</label>
+    <select id="page_select" name="page_select">
+        <option value="145864752175814">The Buddhist</option>
+        <option value="304963869518137">Meth Maga</option>
+        <option value="305784846203780">Dharma Danaya Pinisayi</option>
+        <option value="464902103859562">අරියමිත්ත දහම් සෙවන</option>
+        <option value="1422449197968257">Namo Buddhaya</option>
+        <option value="289518171124785">Muduna මුදුන</option>
+        <option value="169410076478021">Galigamuwe Gnanadeepa Thero</option>
+        <option value="452020351503241">Shraddha TV</option>
+		<option value="1568553106511186">නමෝ ගෞතම</option>
+        <option value="568105906718695">Amaa Suwa - අමා සුව</option>
+        <option value="1478983609059624">Bo Sewana</option>
+        <option value="401775133593635">ධර්මයෙන් නිවනට</option>
+        <option value="509526319114695">Path to Nirvana</option>
+    </select>
+
+    <label for="from_date">Posts From</label>
+    <input type="text" id="from_date" name="from_date" size="10" placeholder="yyyy-mm-dd">
+    <label for="duration_select">to</label>
+    <select id="duration_select" name="duration_select">
+        <option value="1 Week">1 Week</option>
+        <option value="1 Month" selected="selected">1 Month</option>
+        <option value="3 Months">3 Months</option>
+    </select>
+    <input type="button" id="advance_duration" value="Next Slot">
+    <input type="button" onclick="getPosts()" value="Get Posts">
+</div>
+<br>
+<div>
+    <label>Sort By : </label>
+    <input type="button" onclick="renderPosts('created_time', 0)" value="Time">
+    <input type="button" onclick="renderPosts('likes', 0)" value="Likes">
+    <input type="button" onclick="renderPosts('comments', 0)" value="Comments">
+    <input type="button" onclick="renderPosts('shares', 0)" value="Shares">
+    <input type="button" onclick="renderPosts('combined', 0)" value="Combined">
+    <label for="max_show">Max Show</label>
+    <input type="text" id="max_show" name="max_show" value="30" size="5">
+    <input type="button" onclick="renderPrevSet()" value="Prev <">
+    <input type="button" onclick="renderNextSet()" value="Next >">
+</div>
+<br>
+<div id="posts_status"></div>
+
+<div style="font-family: monospace">
+    <table id="posts" border="1"><thead>
+        <td>Seq #</td><td>Picture</td><td>Time</td><td>Likes</td><td>Comments</td><td>Shares</td>
+        <td>Combined</td><td>View Post</td>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<br>
+<div id="view_dialog" title="View Post" 
+    style="position: fixed; top: 0; display: none; flex-direction: column; background-color: antiquewhite; padding: 1rem; border: 2px solid black;">
+    <input type="button" onclick="closeDialog()" value="Close">
+    <textarea id="view_dialog_message" cols="65" rows="5"></textarea>
+    <img id="view_dialog_image" src="" width="500">
+    <a id="view_dialog_download" src="" target="_blank" download>Download Image</a>
+    <br>
+    <label for="schedule_date">Schedule Date</label>
+    <input type="text" id="schedule_date" name="schedule_date" size="10">
+    <label for="schedule_time">Hour</label>
+    <input type="text" id="schedule_time" name="schedule_time" size="5" value="15">
+    <input type="button" onclick="schedulePost()" value="Schedule">
+    <br>
+    <input type="text" id="schedule_status" size="25">
+</div>
+
+</body>
+</html>
