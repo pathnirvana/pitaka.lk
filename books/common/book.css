@@ -84,6 +84,7 @@ h3,h4 { font-size: 1.3rem; font-weight: normal; }
 .gatha > p { padding: 0; margin: 0; }
 
 .subhead { color:brown; font-weight: bold; font-size: 1.2rem; } /* headings that are not in TOC */
+.centered { text-align: center; }
 
 img { max-width: 100%; }
 
