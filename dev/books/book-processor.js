@@ -1,12 +1,14 @@
 /**
  * splits the mammoth output file to multiple html files
- * run as "node book-processor.js" from the dev/books folder
+ * run as "node dev/books/book-processor.js"
  * output is written to the public pitaka/books folder
  * 
  * use mammoth as below from the input directory
+ * npx mammoth book-name.docx book-name.html --style-map=mammoth-styles.txt
+ * 
  * WARNING - unless you abosolutely have to do not reprocess existing docx files
  * since local corrections have been made to html files which would be overwritten
- * npx mammoth book-name.docx book-name.html --style-map=mammoth-styles.txt
+ * 
  */ 
 
 const fs = require('fs');
@@ -29,6 +31,7 @@ const mammothOpts = {
     styleMap: [
         "p[style-name='gatha'] => div.gatha > p:fresh",
         "p[style-name='subhead'] => div.subhead > p:fresh",
+        "p[style-name='centered'] => div.centered > p:fresh",
         "b => b" // normally b => strong
     ]
 };
@@ -37,7 +40,8 @@ const isNodeEmpty = (node) => node.textElem.length == 0;
 const getNodeFileName = (node) => `${node.ids.join('-')}.html`; //${isNodeEmpty(node) ? '-1' : ''}.html`; // if empty point to the first child
 
 const bookList = [
-    { name: 'විශුද්ධි මාර්ගය', author: 'බුද්ධඝෝෂ හිමි', folder: 'vishuddhi-margaya', group: 1 }, 
+    { name: 'ගෞතම බුද්ධ චරිතය', author: 'බළන්ගොඩ ආනන්දමෛත්‍රෙය හිමි', folder: 'buddha-charithaya', group: 1, gen: 'docx' },
+    { name: 'විශුද්ධි මාර්ගය', author: 'බුද්ධඝෝෂ හිමි', folder: 'vishuddhi-margaya', group: 1 },
     { name: 'සිංහල මිලින්‍දප්‍ර‍ශ්නය', author: 'හීනටිකුඹුරේ සුමංගල හිමි', folder: 'milinda-prashnaya', group: 1 },
     { name: 'අටුවාකථාවස්තු', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'atuwakathawasthu', group: 1 },
     { name: 'බෞද්ධයාගේ අත්පොත', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bauddhayage-athpotha', group: 2 },
@@ -48,7 +52,7 @@ const bookList = [
     { name: 'අභිධර්ම මාර්ගය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'abhidharma-margaya', group: 2 },
     { name: 'චතුරාර්‍ය්‍ය සත්‍යය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'chathurarya-sathya', group: 2 },
     { name: 'පුණ්‍යෝපදේශය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'punyopadeshaya', group: 2 },
-    { name: 'ශාසනාවතරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'shasanavatharanaya', group: 2, gen: 'docx'  },
+    { name: 'ශාසනාවතරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'shasanavatharanaya', group: 2 },
     { name: 'බෝධිපාක්ෂික ධර්ම විස්තරය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bodhi-pakshika-dharma', group: 2 },
     { name: 'පටිච්ච සමුප්පාද විවරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'patichcha-samuppada-vivaranaya', group: 2},
     { name: 'උපසම්පදා ශීලය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'upasampada-sheelaya', group: 2 },
@@ -63,11 +67,11 @@ const bookList = [
     { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3},
 ];
 
-const reprocessAll = ''; // html or docx to reprocess all books
+const reprocessAll = false; // process all books even without the 'gen' prop
 let nodesAdded;
 bookList.forEach(book => {
     if (!book.gen && !reprocessAll) return; // process only some books
-    if (book.gen == 'docx' || reprocessAll == 'docx') { // reprocess docx or read from file
+    if (book.gen == 'docx') { // reprocess docx or read from file
         console.log(`Regenerating html from docx ${book.folder}`);
         (async () => {
             const mRes = await mammoth.convertToHtml({path: `${__dirname}/input/${book.folder}.docx`}, mammothOpts);
