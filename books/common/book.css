@@ -88,7 +88,7 @@ h3,h4 { font-size: 1.3rem; font-weight: normal; }
 
 img { max-width: 100%; }
 
-table td {border: 1px solid black; }
+table td { border: 1px solid black; padding: 0px 10px; line-height: 5px; }
 
 ol.footnotes { border-top: 0.5px solid black; font-size: 0.9rem; column-width: 15rem; column-count: 2; padding-top: 3px; column-gap: 2rem;}
 ol.footnotes li p { margin: 4px 15px 4px 0px; }
