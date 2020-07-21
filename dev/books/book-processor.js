@@ -152,10 +152,8 @@ function writeBookFiles(book, children, rootFolder, tmplStr, nodeList) {
             getBottomLinks(node)
         );
         //if (!isNodeEmpty(node)) // not write empty files
-        genericWriteFile(`${rootFolder}/${getNodeFileName(node)}`, 
-            `${node.header.text()} < ${book.name}`, // title
-            `${book.name} - ${book.author}`, // desc
-            book.folder, contentDiv, tmplStr);
+        genericWriteFile(`${rootFolder}/${getNodeFileName(node)}`, contentDiv, tmplStr,
+            { title: `${node.header.text()} < ${book.name}`, desc: `${book.name} - ${book.author}`, folder: book.folder })
         writeBookFiles(book, node.children, rootFolder, tmplStr, nodeList);
     });
 }
@@ -201,15 +199,15 @@ function createIndexDiv(node) {
 function writeIndexFile(book, nodeList, fileName) {
     const patunaDiv = $('<div/>').append(nodeList.map(node => createIndexDiv(node)));
     const nameAuthor = `${book.name} - ${book.author}`
-    genericWriteFile(fileName, nameAuthor, nameAuthor, book.folder, patunaDiv, 
-        fs.readFileSync(`${__dirname}/pre-index.html`, { encoding: 'utf8' }));
+    genericWriteFile(fileName, patunaDiv, fs.readFileSync(`${__dirname}/pre-index.html`, { encoding: 'utf8' }),
+        { title: nameAuthor, desc: nameAuthor, folder: book.folder, titleBar: book.name });
 }
 
-function genericWriteFile(fileName, title, desc, folder, contentDiv, tmplStr) {
+function genericWriteFile(fileName, contentDiv, tmplStr, placeholders) {
     const contentHtml = JC('div').append(contentDiv).html() ///*vkbeautify.xml(); - "( with <strong vkb adds a space in between
-    tmplStr = tmplStr.replace(/TITLEPLACEHOLDER/g, title);
-    tmplStr = tmplStr.replace(/DESCPLACEHOLDER/g, desc);
-    tmplStr = tmplStr.replace(/FOLDERPLACEHOLDER/g, folder);
+    for (key in placeholders) {
+        tmplStr = tmplStr.replace(new RegExp((key + 'placeholder').toUpperCase(), 'g'), placeholders[key]);    
+    }
     tmplStr = tmplStr.replace(/CONTENTPLACEHOLDER/, contentHtml)
     fs.writeFileSync(`${outputFolder}/${fileName}`, tmplStr);
 }
