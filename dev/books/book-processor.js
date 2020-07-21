@@ -12,6 +12,7 @@
  */ 
 
 const fs = require('fs');
+const fsExtra = require('fs-extra')
 const mammoth = require("mammoth");
 const assert = require('assert');
 const vkbeautify = require('vkbeautify');
@@ -96,7 +97,12 @@ function processBook(book, html) {
     assert(nodesAdded == $('h1,h2,h3,h4', bookDoc).length, `nodes added (${nodesAdded}) not equals num headers (${$('h1,h2,h3,h4', bookDoc).length})`);
     console.log(`Processing Book ${book.name} tree H1 = ${nodeList.length}`);
 
-    if (!fs.existsSync(`${outputFolder}/${book.folder}`)) fs.mkdirSync(`${outputFolder}/${book.folder}`);
+    const bookPath = `${outputFolder}/${book.folder}`
+    if (!fs.existsSync(bookPath)) {
+        fs.mkdirSync(bookPath) 
+    } else { // delete everything inside the directory
+        fsExtra.emptyDirSync(bookPath)
+    }
     writeIndexFile(book, nodeList, `${book.folder}/index.html`);
     writeBookFiles(book, nodeList, book.folder, fs.readFileSync(`${__dirname}/pre-book.html`, { encoding: 'utf8' }), nodeList);
     console.log(`Wrote files for ${book.name}; nodes added ${nodesAdded}`);
@@ -146,8 +152,10 @@ function writeBookFiles(book, children, rootFolder, tmplStr, nodeList) {
             getBottomLinks(node)
         );
         //if (!isNodeEmpty(node)) // not write empty files
-            genericWriteFile(`${rootFolder}/${getNodeFileName(node)}`, node.header.text(), `${book.name} - ${book.author}`, 
-                book.folder, contentDiv, tmplStr);
+        genericWriteFile(`${rootFolder}/${getNodeFileName(node)}`, 
+            `${node.header.text()} < ${book.name}`, // title
+            `${book.name} - ${book.author}`, // desc
+            book.folder, contentDiv, tmplStr);
         writeBookFiles(book, node.children, rootFolder, tmplStr, nodeList);
     });
 }
@@ -192,7 +200,8 @@ function createIndexDiv(node) {
 
 function writeIndexFile(book, nodeList, fileName) {
     const patunaDiv = $('<div/>').append(nodeList.map(node => createIndexDiv(node)));
-    genericWriteFile(fileName, book.name, book.author, book.folder, patunaDiv, 
+    const nameAuthor = `${book.name} - ${book.author}`
+    genericWriteFile(fileName, nameAuthor, nameAuthor, book.folder, patunaDiv, 
         fs.readFileSync(`${__dirname}/pre-index.html`, { encoding: 'utf8' }));
 }
 
