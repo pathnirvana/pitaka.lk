@@ -41,7 +41,8 @@ const isNodeEmpty = (node) => node.textElem.length == 0;
 const getNodeFileName = (node) => `${node.ids.join('-')}.html`; //${isNodeEmpty(node) ? '-1' : ''}.html`; // if empty point to the first child
 
 const bookList = [
-    { name: 'ගෞතම බුද්ධ චරිතය', author: 'බළන්ගොඩ ආනන්දමෛත්‍රෙය හිමි', folder: 'buddha-charithaya', group: 1, gen: 'docx' },
+    { name: 'ගෞතම බුද්ධ චරිතය', author: 'බළන්ගොඩ ආනන්දමෛත්‍රෙය හිමි', folder: 'buddha-charithaya', group: 1 },
+    { name: 'සතිපට්ඨාන විපස්සනා භාවනා', author: 'දෙවිනුවර ඤාණාවාස හිමි', folder: 'satipattana-vipassana', group: 1, gen: 'docx' },
     { name: 'විශුද්ධි මාර්ගය', author: 'බුද්ධඝෝෂ හිමි', folder: 'vishuddhi-margaya', group: 1 },
     { name: 'සිංහල මිලින්‍දප්‍ර‍ශ්නය', author: 'හීනටිකුඹුරේ සුමංගල හිමි', folder: 'milinda-prashnaya', group: 1 },
     { name: 'අටුවාකථාවස්තු', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'atuwakathawasthu', group: 1 },
