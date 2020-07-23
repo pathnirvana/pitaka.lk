@@ -42,7 +42,7 @@ const getNodeFileName = (node) => `${node.ids.join('-')}.html`; //${isNodeEmpty(
 
 const bookList = [
     { name: 'ගෞතම බුද්ධ චරිතය', author: 'බළන්ගොඩ ආනන්දමෛත්‍රෙය හිමි', folder: 'buddha-charithaya', group: 1 },
-    { name: 'සතිපට්ඨාන විපස්සනා භාවනා', author: 'දෙවිනුවර ඤාණාවාස හිමි', folder: 'satipattana-vipassana', group: 1, gen: 'docx' },
+    { name: 'සතිපට්ඨාන විපස්සනා භාවනා', author: 'දෙවිනුවර ඤාණාවාස හිමි', folder: 'satipattana-vipassana', group: 1 },
     { name: 'විශුද්ධි මාර්ගය', author: 'බුද්ධඝෝෂ හිමි', folder: 'vishuddhi-margaya', group: 1 },
     { name: 'සිංහල මිලින්‍දප්‍ර‍ශ්නය', author: 'හීනටිකුඹුරේ සුමංගල හිමි', folder: 'milinda-prashnaya', group: 1 },
     { name: 'අටුවාකථාවස්තු', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'atuwakathawasthu', group: 1 },
@@ -61,6 +61,7 @@ const bookList = [
     { name: 'උභය ප්‍රාතිමෝක්‍ෂය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'ubhaya-prathimokshaya', group: 2 },
     { name: 'වඤ්චක ධර්ම හා චිත්තෝපක්ලේශ ධර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'wanchaka-dharma', group: 2 },
     { name: 'විදර්ශනා භාවනා ක්‍රමය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vidarshana-bhavana-kramaya', group: 2},
+    { name: 'කෙලෙස් එක්දහස් පන්සියය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'keles-1500', group: 2, gen: 'docx' },
     { name: 'පොහොය දිනය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'pohoya-dinaya', group: 2},
     { name: 'බෝධි පූජාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bodhi-poojawa', group: 2 },
     { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3 },
