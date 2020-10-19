@@ -45,6 +45,10 @@
     vertical-align: middle;
 }
 
+.material-icons:after {
+    content: attr(mat-icon);
+}
+
 body {
     font-family: 'UN-Abhaya';
     font-size: 18px;
