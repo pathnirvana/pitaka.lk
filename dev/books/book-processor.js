@@ -71,7 +71,7 @@ const bookList = [
     { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3},
 ];
 
-const reprocessAll = false; // process all books even without the 'gen' prop
+const reprocessAll = true; // process all books even without the 'gen' prop
 let nodesAdded;
 bookList.forEach(book => {
     if (!book.gen && !reprocessAll) return; // process only some books
