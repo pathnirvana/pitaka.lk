@@ -19,7 +19,7 @@ const { document } = (new JSDOM('')).window;
 global.document = document;
 
 var $ = jQuery = require('jquery')(window);
-const MDI = (name, cls) => `<i class="material-icons ${cls}">${name}</i>`;
+const MDI = (name, cls) => `<i class="material-icons${cls ? ' ' + cls : ''}" mat-icon="${name}"></i>`;
 const outputFolder = '../../dhammapada';
 
 const kathaDom = new JSDOM(fs.readFileSync('katha.html', { encoding: 'utf8' }));
@@ -86,8 +86,8 @@ function writeKathaFile(gathas, vaggaInd, vaggaName) {
     const gathaDivs = gathas.map(gatha => processGatha(gatha, true));
     const kathaBody = $('<div/>').append(getBackLink(vaggaInd, vaggaName), kathaHeading, gathaDivs, kathaItems, getKathaLinks());
     let preContent = fs.readFileSync('pre-katha.html', { encoding: 'utf8' });
-    preContent = preContent.replace(/TITLEPLACEHOLDER/, kathaHeading.text().replace(/^[\d\-\.\w]*/g, '')); // set the title
-    preContent = preContent.replace(/FIRSTPAINTINGPLACEHOLDER/, gathaDivs[0].attr('gatha-num')); // set image
+    preContent = preContent.replace(/TITLEPLACEHOLDER/g, kathaHeading.text().replace(/^[\d\-\.\w]*/g, '')); // set the title
+    preContent = preContent.replace(/FIRSTPAINTINGPLACEHOLDER/g, gathaDivs[0].attr('gatha-num')); // set image
     preContent = preContent.replace(/CONTENTPLACEHOLDER/, vkbeautify.xml(kathaBody.html())); // set the content
     fs.writeFileSync(outputFolder + '/' + getKathaFileName(kathaIndex), preContent);
     return kathaTitle;
@@ -129,7 +129,7 @@ function getKathaHeading(kathaHead) {
 function writeVaggaFile(vaggaDiv, fileName, vaggaName) {
     const vaggaContent = vkbeautify.xml($('<div/>').append(vaggaDiv).html());
     let preContent = fs.readFileSync('pre-vagga.html', { encoding: 'utf8' });
-    preContent = preContent.replace(/TITLEPLACEHOLDER/, vaggaName.replace(/^[\d\-\.\w]*/g, '')); // set the title
+    preContent = preContent.replace(/TITLEPLACEHOLDER/g, vaggaName.replace(/^[\d\-\.\w]*/g, '')); // set the title
     preContent = preContent.replace(/CONTENTPLACEHOLDER/, vaggaContent); // set the content
     fs.writeFileSync(fileName, preContent);
 }
