@@ -64,7 +64,7 @@ const bookList = [
     { name: 'කෙලෙස් එක්දහස් පන්සියය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'keles-1500', group: 2 },
     { name: 'පොහොය දිනය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'pohoya-dinaya', group: 2},
     { name: 'බෝධි පූජාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bodhi-poojawa', group: 2 },
-    { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සිරි සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3, date:'1967-08-25', gen: 'docx' },
+    { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සිරි සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3, date:'1967-08-25' },
     { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3 },
     { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3 },
     { name: 'සීහළවත්ථු', author: 'ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'sihala-vaththu', group: 3 },
@@ -156,7 +156,7 @@ function writeBookFiles(book, children, rootFolder, tmplStr, nodeList) {
         );
         //if (!isNodeEmpty(node)) // not write empty files
         genericWriteFile(`${rootFolder}/${getNodeFileName(node)}`, contentDiv, tmplStr,
-            { title: `${node.header.text()} - ${book.name}`, desc: `${book.name} - ${book.author}`, folder: book.folder })
+            { title: `${node.header.text()} - ${book.name}`, desc: `${book.name} - ${book.author}`, folder: book.folder, imagetxt: node.header.text().toString().replace(/(^\d)|\.|\?/g,' ').trim() })
         writeBookFiles(book, node.children, rootFolder, tmplStr, nodeList);
     });
 }

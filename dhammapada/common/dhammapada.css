@@ -43,6 +43,10 @@
     vertical-align: middle;
 }
 
+.material-icons:after {
+    content: attr(mat-icon);
+}
+
 body { font-family: un-abhaya;  text-align: justify; }
 
 .vagga-links { display: flex; flex-wrap: wrap; align-items: center; justify-items: center; }
