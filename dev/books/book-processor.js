@@ -75,7 +75,7 @@ const reprocessAll = false; // process all books even without the 'gen' prop
 let nodesAdded;
 bookList.forEach(book => {
     if (!book.gen && !reprocessAll) return; // process only some books
-    if (book.gen == 'docx') { // reprocess docx or read from file
+    if (book.gen == 'docx') { // reprocess docx or read from file (WARNING - do not do this for existing files)
         console.log(`Regenerating html from docx ${book.folder}`);
         (async () => {
             const mRes = await mammoth.convertToHtml({path: `${__dirname}/input/${book.folder}.docx`}, mammothOpts);
