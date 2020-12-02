@@ -193,7 +193,7 @@
         });
     }
 
-    let nextScheduleDate;
+    let nextScheduleDate = new Date();
     function viewPost(object_id) {
         var api_query = `${object_id}?fields=height,width,images,name,id&access_token=${appId}|${appSecret}`;
         FB.api(api_query, function(response) {
