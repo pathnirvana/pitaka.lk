@@ -202,7 +202,7 @@
                 $("#view_dialog_message").val(response.name);
                 $("#view_dialog_image").attr("src", response.images[0].source);
                 $("#view_dialog_download").attr("href", response.images[0].source);
-                //$("#schedule_date").datepicker('setDate', nextScheduleDate);
+                $("#schedule_date").val(nextScheduleDate.toISOString().split('T')[0]) // YYYY-MM-DD format
                 $("#schedule_status").val('');
                 openDialog();
                 /*dialog = $("#view_dialog").dialog({
@@ -219,7 +219,7 @@
                 "url":  $("#view_dialog_image").attr("src"),
                 "message": $("#view_dialog_message").val(),
                 "published": false, 
-                "scheduled_publish_time": new Date($("#schedule_date").val()) / 1000 + ($("#schedule_time").val() * 3600), // .datepicker('getDate')
+                "scheduled_publish_time": new Date($("#schedule_date").val()) / 1000 + (($("#schedule_time").val() - 5.5) * 3600), // -5.5 for sri lanka timezone
                 "access_token": pageAccessToken,
             },
             function(response) {
@@ -227,7 +227,7 @@
                 if (!response.id) {
                     alert(response);
                 } else {
-                    nextScheduleDate = $("#schedule_date").datepicker('getDate'); 
+                    nextScheduleDate = new Date($("#schedule_date").val())
                     nextScheduleDate.setDate(nextScheduleDate.getDate() + 1); // increment day by one
                     console.log(nextScheduleDate);
                     $("#schedule_status").val(`Posted id ${response.id}`);
@@ -237,19 +237,10 @@
     }
 
     $(function() {
-        /*$("#from_date").datepicker({
-            defaultDate: "-1m", changeMonth: true, changeYear: true, numberOfMonths: 1, dateFormat: "yy-mm-dd",
-			yearRange: "2011:+0",
-        });*/
         $("#advance_duration").click(function(){
             const from_date = new Date($("#from_date").val()) //datepicker('getDate');
             $("#from_date").val(addDurationToDate(from_date).toISOString().split('T')[0])
-            //$("#from_date").datepicker('setDate', addDurationToDate(from_date));
         });
-        /*$("#schedule_date").datepicker({
-            defaultDate: '+1d', changeMonth: true, changeYear: true, numberOfMonths: 1, dateFormat: "yy-mm-dd", 
-            yearRange: "+0:+1",
-        });*/
     });
     function openDialog() {
         document.getElementById('view_dialog').style.display = 'flex'
