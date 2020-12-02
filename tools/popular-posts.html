@@ -219,7 +219,7 @@
                 "url":  $("#view_dialog_image").attr("src"),
                 "message": $("#view_dialog_message").val(),
                 "published": false, 
-                "scheduled_publish_time": $("#schedule_date").datepicker('getDate') / 1000 + $("#schedule_time").val() * 3600,
+                "scheduled_publish_time": new Date($("#schedule_date").val()) / 1000 + ($("#schedule_time").val() * 3600), // .datepicker('getDate')
                 "access_token": pageAccessToken,
             },
             function(response) {
