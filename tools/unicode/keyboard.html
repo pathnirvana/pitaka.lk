@@ -40,6 +40,13 @@
 <body>
 	<div class="top-container" style="margin: 0 auto; max-width: 800px; align-content: center; text-align: justify;">
 		<div id="top-contents" active="4"></div> <!--filled by script-->
+		<div style="text-align: center; padding: 5px; background-color: lightyellow;">
+			<span>Keyboard Layout යතුරුපුවරුව තෝරන්න</span>
+			<select class="apply-font" onchange="renderLayout(this.value)" id="layout-select" style="font-size: 1.5rem;">
+				<option value="sing">එසැණ සිංග්ලිෂ්</option>
+				<option value="wije">විජේසේකර</option>
+			</select>
+		</div>
 
 		<div class="section">
 			<div class="textbox-title">ඔබ ඇතුල් කල අකුරු</div>
@@ -70,148 +77,168 @@
 	<script language="javascript" type="text/javascript">
 		const keymap = [
 			[
-				['~,`','\u0DBB\u0DCA\u200D,\u0DCA\u200D\u0DBB'], // repaya, rakar
-				['!,1', ''],
-				['@,2', ''],
-				['#,3', ''],
-				['$,4', ''],
-				['%,5', ''],
-				['^,6', ''],
-				['&,7', ''],
-				['*,8', ''],
-				['(,9', ''],
-				['),0', ''],
-				['_,-', ''],
-				['+,=', ''],
-				['Back space', '', 1.5],
+				['~,`','ර\u0dca\u200d,\u0dca\u200dර', ''], // repaya, rakar
+				['!,1', '', ''],
+				['@,2', '', ''],
+				['#,3', '', ''],
+				['$,4', '', ''],
+				['%,5', '', ''],
+				['^,6', '', ''],
+				['&,7', '', ''],
+				['*,8', '', ''],
+				['(,9', '', ''],
+				['),0', '', ''],
+				['_,-', '', ''],
+				['+,=', '', ''],
+				['Back space', '', '', 1.5],
 			],
 			[
-				['Tab', '', 1.5],
-				['Q,q', '\u0dd6,\u0dd4'],
-				['W,w', 'උ,අ'],
-				['E,e', '\u0dd1,\u0dd0'],
-				['R,r', 'ඍ,ර'],
-				['T,t', 'ඔ,එ'],
-				['Y,y', 'ශ,හ'],
-				['U,u', 'ඹ,ම'],
-				['I,i', 'ෂ,ස'],
-				['O,o', 'ධ,ද'],
-				['P,p', 'ඡ,ච'],
-				['{,[', 'ඥ,ඤ'],
-				['},]', ':,;'],
-				['|,\\', '🡂🡀,⇆'], // conjunct
+				['Tab', '', '', 1.5],
+				['Q,q', '\u0dd6,\u0dd4', '\u0dd1,\u0dd0'],
+				['W,w', 'උ,අ', 'ෆ,ව'],
+				['E,e', '\u0dd1,\u0dd0', '\u0dda,\u0dd9'],
+				['R,r', 'ඍ,ර', '\u0dca\u200dර,ර'], // rakar and ra
+				['T,t', 'ඔ,එ', 'ථ,ත'],
+				['Y,y', 'ශ,හ', '\u0dca\u200dය,ය'], // yansa
+				['U,u', 'ඹ,ම', '\u0dd6,\u0dd4'],
+				['I,i', 'ෂ,ස', '\u0dd3,\u0dd2'],
+				['O,o', 'ධ,ද', '\u0ddd,\u0ddc'],
+				['P,p', 'ඡ,ච', 'ඵ,ප'],
+				['{,[', 'ඥ,ඤ', ''],
+				['},]', ':,;', ''],
+				['|,\\', '🡂🡀,⇆', ''], // conjunct
 			],
 			[
-				['Lock', '', 1.7],
-				['A,a', '\u0ddf,\u0dca'],
-				['S,s', '\u0dd3,\u0dd2'],
-				['D,d', '\u0dd8,\u0dcf'],
-				['F,f', 'ෆ,\u0dd9'], // combuwa 
-				['G,g', 'ඨ,ට'],
-				['H,h', '\u{DCA}\u{200D}\u{DBA},ය'], // yansa
-				['J,j', 'ළු,ව'],
-				['K,k', 'ණ,න'],
-				['L,l', 'ඛ,ක'],
-				[':,;', 'ථ,ත'],
-				['\",\'', '‡,.'],
-				['Enter', '', 2],
+				['Lock', '', '', 1.7],
+				['A,a', '\u0ddf,\u0dca', 'ශ,\u0dcf'],
+				['S,s', '\u0dd3,\u0dd2', 'ෂ,ස'],
+				['D,d', '\u0dd8,\u0dcf', 'ධ,ද'],
+				['F,f', 'ෆ,\u0dd9', '🡂🡀,\u0dca'],
+				['G,g', 'ඨ,ට', 'ඝ,ග'],
+				['H,h', '\u0dca\u200dය,ය', 'x,හ'], // yansa
+				['J,j', 'ළු,ව', 'ඣ,ජ'],
+				['K,k', 'ණ,න', 'ඛ,ක'],
+				['L,l', 'ඛ,ක', 'ළ,ල'],
+				[':,;', 'ථ,ත', ''],
+				['\",\'', '‡,.', ''],
+				['Enter', '', '', 2],
 			],
 			[
-				['Shift', '', 2],
-				['Z,z', '\',\"'],
-				['X,x', '\u0d83,\u0d82'],
-				['C,c', 'ඣ,ජ'],
-				['V,v', 'ඪ,ඩ'],
-				['B,b', 'ඊ,ඉ'],
-				['N,n', 'භ,බ'],
-				['M,m', 'ඵ,ප'],
-				['<,‡', 'ළ,ල'], // ‡ used to indicate comma
-				['>,.', 'ඝ,ග'],
-				['?,/', ''],
-				['Shift', '', 2],
+				['Shift', '', '', 2],
+				['Z,z', '\',\"', 'ඥ,ඤ'],
+				['X,x', '\u0d83,\u0d82', '\u0d83,\u0d82'], // same anusawara
+				['C,c', 'ඣ,ජ', 'ඡ,ච'],
+				['V,v', 'ඪ,ඩ', 'ඪ,ඩ'], // same
+				['B,b', 'ඊ,ඉ', 'භ,බ'],
+				['N,n', 'භ,බ', 'ණ,න'],
+				['M,m', 'ඵ,ප', 'ඹ,ම'],
+				['<,‡', 'ළ,ල', ''], // ‡ used to indicate comma
+				['>,.', 'ඝ,ග', ',.'],
+				['?,/', '', ''],
+				['Shift', '', '', 2],
 			],
 			[
-				['Ctrl', '', 2],
-				['Alt', '', 2],
-				['Space', '', 6],
-				['AltGr', '\u25dc', 2], // saknknaka
-				['Ctrl', '', 2],
+				['Ctrl', '', '', 2],
+				['Alt', '', '', 2],
+				['Space', '', '', 6],
+				['Alt', '', '', 2], // '\u25dc' saknknaka
+				['Ctrl', '', '', 2],
 			],
 		]
 
 		const charSplit = col => col.split(',').map(c => c == '‡' ? ',' : c)
 		const renderChar = c => `<div class="char">${c}</div>`
 		const renderKeyCol = (col) => charSplit(col).map(renderChar).join('')
+		let layout = 'sing' // default
 		const renderKey = (key) => {
-			const width = key.length > 2 ? key[2] : 1
+			const width = key.length > 3 ? key[3] : 1
 			const unmodified = !key[1] ? 'unmodified' : ''
 			const col0 = `<div class="key-col _1">${renderKeyCol(key[0])}</div>`
-			const col1 = `<div class="key-col _2">${renderKeyCol(key[1])}</div>`
+			const col1 = `<div class="key-col _2">${renderKeyCol(key[layout == 'sing' ? 2 : 1])}</div>`
 			return `<div class="key ${unmodified}" style="width: ${width * 4}rem">${col0 + col1}</div>`
 		}
 
-		const renderKeyRow = (row) => `<div class="key-row">${row.map(renderKey).join('')}</div>`
-		document.getElementById('keyboard').innerHTML = keymap.map(renderKeyRow).join('')
-
 
 		const symbols = [
-			['\u{DBB}\u{DCA}\u{200D}', 'රේඵය'],
-			['\u{DCA}\u{200D}\u{DBB}', 'රකාරාංශය'],
-			['\u{DCA}\u{200D}\u{DBA}', 'යංසය'],
-			['⇆', 'ත්‍ව ත්‍ථ න්‍ධ ආදී අකුරු බැඳීම'],
-			['🡂🡀', 'පාලි බැඳී අකුරු'],
+			['ර\u0dca\u200d', 'රේඵය', 'wije'],
+			['\u0dca\u200dර', 'රකාරාංශය'],
+			['\u0dca\u200dය', 'යංසය'],
+			['🡂🡀', 'ත්‍ව ත්‍ථ ආදී සහ පාලි බැඳි අකුරු', 'sing'],
+			['⇆', 'ත්‍ව ත්‍ථ න්‍ධ ආදී අකුරු බැඳීම', 'wije'],
+			['🡂🡀', 'පාලි බැඳී අකුරු', 'wije'],
 		]
 
 		const altGr = [
-			['ඳ', 'ද', 'o'],
-			['ඟ', 'ග', '.'],
-			['ඬ', 'ඩ', 'v'],
-			['ඦ', 'ජ', 'c'],
-			['ඞ', 'ං', 'x'],
-			['෴', '.', '\''],
-			['ඏ', 'ල', ','],
-			['ෳ', '\u0dca', 'a'],
+			['ර\u0dca\u200d', 'ර', 'sing'], // reph
+			['ෛ', '\u0dd2', 'sing'], // I - space dependent
+			['ෛ', '\u0dd9', 'sing'], // E - same as above
+			['ෞ', '\u0ddc', 'sing'], // O
+			['ෘ', '\u0dd4', 'sing'], // U, iru
+
+			['ඳ', 'ද'],
+			['ඟ', 'ග'],
+			['ඬ', 'ඩ'],
+			['ඦ', 'ජ'],
+			['ඞ', 'ං'],
+			['෴', '.'], // rarely used below
+			['ඏ', 'ල', 'wije'],
+			['ෟ', '\u0dcf', 'sing'], // gayanukitta - ඏ
+			['ෳ', '\u0dca'], // diga gayanukitta - ඐ
 		]
 		const renderOther = e => `<div>
 			<span>${e[0]}</span>
-			<span> = AltGr + ${e[1]}</span>
-			<span> (${e[2]})</span>
+			<span> = Alt + ${e[1]}</span>
 		</div>`
 
-		document.getElementById('symbols').innerHTML = 
-			symbols.map(e => `<div><span>${e[0]}</span> = <span>${e[1]}</span></div>`).join('')
-		document.getElementById('others').innerHTML = altGr.map(renderOther).join('')
+		function renderLayout(value) {
+			layout = value //document.getElementById('layout-select').value
+			const renderKeyRow = (row) => `<div class="key-row">${row.map(renderKey).join('')}</div>`
+			document.getElementById('keyboard').innerHTML = keymap.map(renderKeyRow).join('')
+
+			document.getElementById('symbols').innerHTML = symbols
+				.filter(ar => !ar[2] || ar[2] == layout)
+				.map(e => `<div><span>${e[0]}</span> = <span>${e[1]}</span></div>`).join('')
+			document.getElementById('others').innerHTML = altGr
+				.filter(ar => !ar[2] || ar[2] == layout)
+				.map(renderOther).join('')
+		}
+		renderLayout('sing')
+
+
 
 		const charToDest = {'⇆': '\u0dca\u200d', '🡂🡀': '\u200d\u0dca'}
-		const convertMap = {}, altGrMap = {}
-		function getConvertMap() {
-			const flat = [].concat.apply([], keymap)
+		function getConvertMap(layout) {
+			const flat = [].concat.apply([], keymap), main = {}, alt = {}, ki = (layout == 'sing') ? 2 : 1
 			flat.forEach(e => {
-				if (!e[1]) return;
-				const source = charSplit(e[0]), dest = charSplit(e[1])
+				if (!e[ki]) return;
+				const source = charSplit(e[0]), dest = charSplit(e[ki])
 				if (source.length != dest.length) console.error(`length mismatch ${e}`)
-				source.forEach((s, i) => convertMap[s] = charToDest[dest[i]] || dest[i])
+				source.forEach((s, i) => main[s] = charToDest[dest[i]] || dest[i])
 			})
+			altGr.filter(ar => !ar[2] || ar[2] == layout).forEach(e => alt[e[1]] = e[0])
+			return { main, alt }
 		}
-		getConvertMap()
-		altGr.forEach(e => altGrMap[e[1]] = e[0])
+		const layoutMappings = { 'sing': getConvertMap('sing'), 'wije': getConvertMap('wije') }
 
 		let rightAltPressed = false
 		const box1 = document.getElementById('box1')
 		box1.focus()
 		box1.onkeydown = e => {
-			if (e.code == 'AltRight') {rightAltPressed = true; console.log('AltRight On')}
+			if (e.code == 'AltRight') { rightAltPressed = true; console.log('AltRight On') }
 
-			let dest = convertMap[e.key] 
+			const mapping = layoutMappings[layout]
+			let dest = mapping.main[e.key] 
 			if (!dest) return;
 			console.log(e)
-			if (rightAltPressed || (e.ctrlKey && e.altKey)) {
-				dest = altGrMap[dest] || dest // altgr pressed
-			} else if (e.ctrlKey || e.altKey) {
+			if (rightAltPressed || e.altKey) { // (e.ctrlKey && - changed to just alt
+				dest = mapping.alt[dest] || dest // altgr pressed
+			} else if (e.ctrlKey) {
 				return; // other modifiers should not be processed
 			}
 			let text = box1.value.substr(0, box1.selectionStart) + dest + box1.value.substr(box1.selectionEnd)
 			const startLen = text.length
+
+			if (layout == 'sing') text = customSing(text)
 			// dependent vowels
 			//text = text.replace(/\u200e\u0dd9([ක-ෆ])/g, '$1\u0dd9') // combuva - move back cant made to work
 			//text = text.replace(/\u0dd9((?:\u200d\u0dca|\u200d\u0dca)[ක-ෆ])/g, '$1\u0dd9') // combuva
@@ -263,6 +290,35 @@
 			if (/\u0dca|\u200d/.test(text.charAt(pos - 1)) || /\u0dca|\u200d/.test(text.charAt(pos))) return true;
 			// if next char is deptV
 			return /[\u0dcf-\u0ddf]/.test(text.charAt(pos))
+		}
+
+		const deptToIndept = {
+			'ා': 'අ',
+			'ැ': 'ඇ',
+			'ෑ': 'ඈ',
+			'ි': 'ඉ',
+			'ී': 'ඊ',
+			'ු': 'උ',
+			'ූ': 'ඌ',
+			'ෙ': 'එ',
+			'ේ': 'ඒ',
+			'ෛ': 'ඓ',
+			'ො': 'ඔ',
+			'ෝ': 'ඕ',
+			'ෞ': 'ඖ',
+			'ෘ': 'ඍ',
+			'ෲ': 'ඎ',
+			'ෟ': 'ඏ',
+			'ෳ': 'ඐ',
+		}
+		const allDept = Object.keys(deptToIndept).join(''), 
+			beginVowel = new RegExp(`^[${allDept}]`, 'g'), spaceVowel = new RegExp(` [${allDept}]`, 'g')
+		function customSing(text) {
+			text = text.replace(/([කනත])\u200d\u0dca([ෂදධවථ])/g, '$1\u0dca\u200d$2')
+			text = text.replace(/(ද)\u200d\u0dca([ධව])/g, '$1\u0dca\u200d$2')
+			text = text.replace(beginVowel, (m) => deptToIndept[m])
+			text = text.replace(spaceVowel, (m) => ' ' + deptToIndept[m.trim()])
+			return text
 		}
 
 	</script>
