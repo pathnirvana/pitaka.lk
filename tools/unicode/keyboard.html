@@ -98,7 +98,7 @@
 				['W,w', 'උ,අ', 'ෆ,ව'],
 				['E,e', '\u0dd1,\u0dd0', '\u0dda,\u0dd9'],
 				['R,r', 'ඍ,ර', '\u0dca\u200dර,ර'], // rakar and ra
-				['T,t', 'ඔ,එ', 'ථ,ත'],
+				['T,t', 'ඔ,එ', 'ඨ,ට'],
 				['Y,y', 'ශ,හ', '\u0dca\u200dය,ය'], // yansa
 				['U,u', 'ඹ,ම', '\u0dd6,\u0dd4'],
 				['I,i', 'ෂ,ස', '\u0dd3,\u0dd2'],
@@ -119,13 +119,13 @@
 				['J,j', 'ළු,ව', 'ඣ,ජ'],
 				['K,k', 'ණ,න', 'ඛ,ක'],
 				['L,l', 'ඛ,ක', 'ළ,ල'],
-				[':,;', 'ථ,ත', ''],
+				[':,;', 'ථ,ත', 'ථ,ත'],
 				['\",\'', '‡,.', ''],
 				['Enter', '', '', 2],
 			],
 			[
 				['Shift', '', '', 2],
-				['Z,z', '\',\"', 'ඥ,ඤ'],
+				['Z,z', '\',\"', 'ඤ,ඥ'], // ඥ is more common
 				['X,x', '\u0d83,\u0d82', '\u0d83,\u0d82'], // same anusawara
 				['C,c', 'ඣ,ජ', 'ඡ,ච'],
 				['V,v', 'ඪ,ඩ', 'ඪ,ඩ'], // same
@@ -312,12 +312,13 @@
 			'ෳ': 'ඐ',
 		}
 		const allDept = Object.keys(deptToIndept).join(''), 
-			beginVowel = new RegExp(`^[${allDept}]`, 'g'), spaceVowel = new RegExp(` [${allDept}]`, 'g')
+			beginVowel = new RegExp(`^[${allDept}]`, 'g'), 
+			nonSingVowel = new RegExp(`([^\u0d80-\u0dff])([${allDept}])`, 'g')
 		function customSing(text) {
 			text = text.replace(/([කනත])\u200d\u0dca([ෂදධවථ])/g, '$1\u0dca\u200d$2')
 			text = text.replace(/(ද)\u200d\u0dca([ධව])/g, '$1\u0dca\u200d$2')
 			text = text.replace(beginVowel, (m) => deptToIndept[m])
-			text = text.replace(spaceVowel, (m) => ' ' + deptToIndept[m.trim()])
+			text = text.replace(nonSingVowel, (_m, g1, g2) => g1 + deptToIndept[g2])
 			return text
 		}
 
