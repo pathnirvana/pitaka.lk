@@ -148,3 +148,11 @@ a.button .material-icons { color: black; padding: 0 0.3rem 0 0.3rem; }
 .books-list .book { font-size: 1.4rem; padding: 0.5rem; display: flex; align-items: center;}
 .books-list .book:hover { background-color: white; }
 .books-list .book a { text-decoration: none; flex: 1;}
+
+
+/** styles used in the palibhashavatharana 1 book by ven ariyadassana **/
+table.max-width { max-width: 800px; border: 1px solid black }
+table.max-width tr { border: 1px solid black }
+table.max-width td { border: 1px solid black; padding: 2px;}
+table.max-width td.separator { background-color: lightgrey; width: 10px;}
+table.max-width thead { color: brown; background-color: yellow; text-align: center;}
