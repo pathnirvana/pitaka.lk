@@ -134,7 +134,7 @@ function dataLoadComplete(name, version) {
 
     $('#search-status > [dict="' + name + '"]').text('වචන ' + setting.data.length + ' කින් සමන්විත ' + setting.desc + ' සෙවීමට උඩ කොටුවේ type කරන්න.');
     if (!eventsRegistered) {
-        $('.search-bar').on('keyup compositionend search', function(e) {
+        $('.search-bar').on('keyup compositionend search focus', function(e) {
             performSearch(e, SearchType.PALI);
         });
         $('#sinhala-search-button').on('click', function(e) {
