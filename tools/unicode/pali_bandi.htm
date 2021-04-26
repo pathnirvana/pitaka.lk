@@ -34,7 +34,10 @@
 				<input type="checkbox" id="remove-hal" onClick="convertPali();" value="1" checked><span>හල් කිරීම් ඉවත් කරන්න</span>
 			</div>
 			<div class="check-box">
-				<input type="checkbox" id="pali-specials" onClick="convertPali();" value="1" checked><span>විශේෂ පාලි අකුරු යොදන්න</span>
+				<input type="checkbox" id="common-specials" onClick="convertPali();" value="1" checked><span>සුලබ බැඳි අකුරු යොදන්න</span>
+			</div>
+			<div class="check-box">
+				<input type="checkbox" id="rare-specials" onClick="convertPali();" value="0"><span>දුලබ බැඳි අකුරු යොදන්න</span>
 			</div>
 			<textarea class="input apply-font" id="box2" rows="7"></textarea>
 			<input onClick="reset()" type="button" value="මකා දමන්න" style="color: red;" class="apply-font"/>
@@ -42,15 +45,19 @@
 		</div>
 		
 		<div class="section">
-				<div class="textbox-title">හල් කිරීම් ඉවත් කිරීම</div>
-				<div>පාලි භාෂාවේ එන ‘එ’ සහ ‘ඔ’ යන අකුරු ශබ්ද වන්නේ ‘ඒ’ සහ ‘ඕ’ ලෙසයි. නමුත් ලියන්නේ හල් සලකුණ නොමැතිව බැවින් ඒ හල් කිරීම් ඉවත් කිරීම මෙහිදී සිදුවේ.</div>
-				<div class="mapping-list"><div class="mapping">ඒ > එ</div><div class="mapping">ඕ > ඔ</div><div class="mapping">කේ > කෙ</div><div class="mapping">කෝ > කො</div></div>
+			<div class="textbox-title">හල් කිරීම් ඉවත් කිරීම</div>
+			<div>පාලි භාෂාවේ එන ‘එ’ සහ ‘ඔ’ යන අකුරු ශබ්ද වන්නේ ‘ඒ’ සහ ‘ඕ’ ලෙසයි. නමුත් ලියන්නේ හල් සලකුණ නොමැතිව බැවින් ඒ හල් කිරීම් ඉවත් කිරීම මෙහිදී සිදුවේ.</div>
+			<div class="mapping-list"><div class="mapping">ඒ > එ</div><div class="mapping">ඕ > ඔ</div><div class="mapping">කේ > කෙ</div><div class="mapping">කෝ > කො</div></div>
 		</div>
 
 		<div class="section">
-			<div class="textbox-title">විශේෂ පාලි අකුරු</div>
-			<div>පැරණි පාලි පොත්වල භාවිතා වන විශේෂ බැඳි අකුරු පහතින් දැක්වේ. මේ බැඳි අකුරු සඳහා පහසුකම් සපයා ඇත්තේ <a href="./download_unicode.htm">UN වර්ගයේ</a> ෆොන්ට්ස් වල පමණි.</div>
-			<div id="pali-specials-ol" class="mapping-list"></div>
+			<div class="textbox-title">විශේෂ පාලි බැඳි අකුරු</div>
+			<div>පැරණි පාලි පොත්වල භාවිතා වන විශේෂ බැඳි අකුරු පහතින් දැක්වේ. මේ බැඳි අකුරු සඳහා පහසුකම් සපයා ඇත්තේ <a href="./download_unicode.htm">UN වර්ගයේ</a> ෆොන්ට්ස් වල පමණි. 
+				පළමු ලයිස්තුවේ සුලබ අකුරු ද දෙවැනි ලයිස්තුවේ දුලබ අකුරු ද දක්වා ඇත.</div>
+			<ol>
+				<li><div id="common-specials-ol" class="mapping-list"></div></li>
+				<li><div id="rare-specials-ol" class="mapping-list"></div></li>
+			</ol>
 		</div>
 
 		<div class="section" style="text-align:center; font-size: 1.4rem; background-color: rgb(255, 255, 242); border: 0.5px solid lightgray; border-radius: 10px;">
@@ -64,39 +71,38 @@
 	<script src="./font-face.js"></script>	
 	<script language="javascript" type="text/javascript">
 		var text;
-		var paliSpecials = [ //conjuncts with special ligratures
+		var commonSpecials = [ //conjuncts with special ligratures
 			['ක', 'ව'],
+			['ක', 'ෂ'],
+			['ත', 'ථ'],
+			['ත', 'ව'],
+			['න', 'ව'],
+			['න', 'ථ'],
+			['න', 'ද'],
+			['න', 'ධ'],
+		], rareSpecials = [ // broken to two lists based on bertrams email
 			['ඤ', 'ච'],
 			['ඤ', 'ජ'],
 			['ඤ', 'ඡ'],
 			['ට', 'ඨ'],
 			['ණ', 'ඩ'],
-			['ත', 'ථ'],
-			['ත', 'ව'],
-			['න', 'ථ'],
-			['න', 'ද'],
-			['න', 'ධ'],
 			['ද', 'ධ'],
 			['ද', 'ව'],
-			//['ම', 'බ'], - this was a mistake - font need to be edited to remove this
+			['ම', 'බ'], // this one is only used in sinhala and not used in pali
 		];
 		
 		function loadFunc() {
 			var testText = "නමෝතස්ස භගවතෝ අරහතෝ සම්මා සම්බුද්ධස්ස \nබ්භෝ ම්පෝ ම්ඵෝ ම්හෝ ය්යෝ ය්හෝ ල්ලෝ ල්හෝ ව්හෝ ස්මෝ ස්වෝ ස්සෝ හ්මෝ හ්වෝ";
 			testText += '\n';
-			for (key in paliSpecials) {
-				var chars = paliSpecials[key];
+			for (key in commonSpecials) {
+				var chars = commonSpecials[key];
 				testText += (chars[0] + "\u0DCA" + chars[1] + "\u0DDD ");
 			}
 			document.getElementById('box1').value = testText;
 			convertPali();
 			// populate pali specials list
-			for (key in paliSpecials) {
-				var chars = paliSpecials[key];
-				var newElem = document.createElement('div'); newElem.className = 'mapping';
-				newElem.innerHTML = chars[0] + '\u0DCA' + chars[1] + ' > ' + chars[0] + '\u0DCA\u200D' + chars[1];
-				document.getElementById('pali-specials-ol').appendChild(newElem);
-			}
+			populateSpecials('common-specials-ol', commonSpecials);
+			populateSpecials('rare-specials-ol', rareSpecials);
 		}
 		loadFunc();
 		
@@ -116,16 +122,30 @@
 				text = text.replace(/\u0DDA/g, "\u0DD9"); //ee => e
 				text = text.replace(/\u0DDD/g, "\u0DDC"); //oo => o
 			}
-			if (document.getElementById('pali-specials').checked) { // bandi -> conjunct for special pairs
-				for (key in paliSpecials) {
-					var chars = paliSpecials[key];
-					var re = new RegExp(chars[0] + "\u200D\u0DCA" + chars[1], "g");
-					text = text.replace(re, chars[0] + "\u0DCA\u200D" + chars[1]);
-				}
+			if (document.getElementById('common-specials').checked) { // bandi -> conjunct for special pairs
+				text = convertSpecials(text, commonSpecials);
 			}	
+			if (document.getElementById('rare-specials').checked) { // bandi -> conjunct for special pairs
+				text = convertSpecials(text, rareSpecials);
+			}
 			document.getElementById('box2').value=text;
 		}
-		
+		function convertSpecials(text, specials) {
+			for (key in specials) {
+				var chars = specials[key];
+				var re = new RegExp(chars[0] + "\u200D\u0DCA" + chars[1], "g");
+				text = text.replace(re, chars[0] + "\u0DCA\u200D" + chars[1]);
+			}
+			return text;
+		}
+		function populateSpecials(listId, specials) {
+			for (key in specials) {
+				var chars = specials[key];
+				var newElem = document.createElement('div'); newElem.className = 'mapping';
+				newElem.innerHTML = chars[0] + '\u0DCA' + chars[1] + ' > ' + chars[0] + '\u0DCA\u200D' + chars[1];
+				document.getElementById(listId).appendChild(newElem);
+			}
+		}
 		function copyText() {
 			document.getElementById('box2').select();
 			document.execCommand("copy");
