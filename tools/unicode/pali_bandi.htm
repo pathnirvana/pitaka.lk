@@ -34,10 +34,13 @@
 				<input type="checkbox" id="remove-hal" onClick="convertPali();" value="1" checked><span>හල් කිරීම් ඉවත් කරන්න</span>
 			</div>
 			<div class="check-box">
-				<input type="checkbox" id="common-specials" onClick="convertPali();" value="1" checked><span>සුලබ බැඳි අකුරු යොදන්න</span>
+				<input type="checkbox" id="common-specials" onClick="convertPali();" value="1" checked><span>සුලබ බැඳි අකුරු (common conjuncts) යොදන්න</span>
 			</div>
 			<div class="check-box">
-				<input type="checkbox" id="rare-specials" onClick="convertPali();" value="0"><span>දුලබ බැඳි අකුරු යොදන්න</span>
+				<input type="checkbox" id="rare-specials" onClick="convertPali();" value="0"><span>දුලබ බැඳි අකුරු (rare conjuncts) යොදන්න</span>
+			</div>
+			<div class="check-box">
+				<input type="checkbox" id="reph-yansa-rakar" onClick="convertPali();" value="1" checked><span>රේඵය යංසය හා රකාරංශය යොදන්න</span>
 			</div>
 			<textarea class="input apply-font" id="box2" rows="7"></textarea>
 			<input onClick="reset()" type="button" value="මකා දමන්න" style="color: red;" class="apply-font"/>
@@ -89,6 +92,7 @@
 			['ද', 'ධ'],
 			['ද', 'ව'],
 			['ම', 'බ'], // this one is only used in sinhala and not used in pali
+			['ඞ', 'ග', 'ඟ'],
 		];
 		
 		function loadFunc() {
@@ -98,6 +102,7 @@
 				var chars = commonSpecials[key];
 				testText += (chars[0] + "\u0DCA" + chars[1] + "\u0DDD ");
 			}
+			testText += "\nඅර්ත්ථ ආර්ය්ය න්යාය බ්රූ බ්රහ්මචර්ය්යාව";
 			document.getElementById('box1').value = testText;
 			convertPali();
 			// populate pali specials list
@@ -128,13 +133,17 @@
 			if (document.getElementById('rare-specials').checked) { // bandi -> conjunct for special pairs
 				text = convertSpecials(text, rareSpecials);
 			}
+			if (document.getElementById('reph-yansa-rakar').checked) { 
+				text = text.replace(/([ර])\u200D\u0DCA([ක-ෆ])/g, (m, p1, p2) => p1 + "\u0DCA\u200D" + p2); // for reph
+				text = text.replace(/([ක-ෆ])\u200D\u0DCA([රය])/g, (m, p1, p2) => p1 + "\u0DCA\u200D" + p2); // yansa rakar
+			}
 			document.getElementById('box2').value=text;
 		}
 		function convertSpecials(text, specials) {
 			for (key in specials) {
 				var chars = specials[key];
 				var re = new RegExp(chars[0] + "\u200D\u0DCA" + chars[1], "g");
-				text = text.replace(re, chars[0] + "\u0DCA\u200D" + chars[1]);
+				text = text.replace(re, chars[2] || chars[0] + "\u0DCA\u200D" + chars[1]);
 			}
 			return text;
 		}
@@ -142,7 +151,7 @@
 			for (key in specials) {
 				var chars = specials[key];
 				var newElem = document.createElement('div'); newElem.className = 'mapping';
-				newElem.innerHTML = chars[0] + '\u0DCA' + chars[1] + ' > ' + chars[0] + '\u0DCA\u200D' + chars[1];
+				newElem.innerHTML = chars[0] + '\u0DCA' + chars[1] + ' > ' + (chars[2] || (chars[0] + '\u0DCA\u200D' + chars[1]));
 				document.getElementById(listId).appendChild(newElem);
 			}
 		}
