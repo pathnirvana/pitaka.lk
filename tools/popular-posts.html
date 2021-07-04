@@ -95,7 +95,7 @@
     var filtered = [];
     function getPosts() {
         filtered = []; // clear from the old getPosts
-        var options = "fields=comments.limit(1).summary(true),likes.limit(1).summary(true),shares,attachments,created_time,picture";
+        var options = "fields=comments.summary(true).limit(0),likes.summary(true).limit(0),shares,attachments,created_time,picture";
         options += "&date_format=U&limit=100";
         const from_date = new Date($("#from_date").val()), to_date = addDurationToDate(from_date); //.datepicker('getDate')
 		console.log('getPosts from date: ' + from_date + ' to date: ' + to_date);
@@ -279,6 +279,7 @@
         <option value="568105906718695">Amaa Suwa - අමා සුව</option>
         <option value="1478983609059624">Bo Sewana</option>
         <option value="401775133593635">ධර්මයෙන් නිවනට</option>
+        <option value="SadahamAmawessa">Sadaham Amawessa සදහම් අමාවැස්ස</option>
         <option value="509526319114695">Path to Nirvana</option>
     </select>
 
