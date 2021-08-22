@@ -22,7 +22,7 @@ var $ = jQuery = require('jquery')(window);
 const MDI = (name, cls) => `<i class="material-icons ${cls}">${name}</i>`;
 const outputFolder = '../../dhammapada';
 
-const kathaDom = new JSDOM(fs.readFileSync('katha.html', { encoding: 'utf8' }));
+const kathaDom = new JSDOM(fs.readFileSync('dhammapada_full.html', { encoding: 'utf8' }));
 //const katha2Dom = new JSDOM(fs.readFileSync('katha2.html', { encoding: 'utf8' }));
 const kathaDoc = kathaDom.window.document;// katha2Doc = katha2Dom.window.document;
 const kathaH1 = $('h1', kathaDoc); console.log(`num kathas = ${kathaH1.length}`);
@@ -85,8 +85,8 @@ function writeKathaFile(gathas, vaggaInd, vaggaName) {
     const kathaItems = $('<div/>').addClass('katha-items').append(kathaHeading.nextUntil('h1'));
     const gathaDivs = gathas.map(gatha => processGatha(gatha, true));
     const kathaBody = $('<div/>').append(getBackLink(vaggaInd, vaggaName), kathaHeading, gathaDivs, kathaItems, getKathaLinks());
-    let preContent = fs.readFileSync('pre-katha.html', { encoding: 'utf8' });
-    preContent = preContent.replace(/TITLEPLACEHOLDER/, kathaHeading.text().replace(/^[\d\-\.\w]*/g, '')); // set the title
+    let preContent = fs.readFileSync('tmpl-katha.html', { encoding: 'utf8' });
+    preContent = preContent.replace(/TITLEPLACEHOLDER/, kathaHeading.text().replace(/^[\d\-\.\s]*/g, '')); // set the title
     preContent = preContent.replace(/FIRSTPAINTINGPLACEHOLDER/, gathaDivs[0].attr('gatha-num')); // set image
     preContent = preContent.replace(/CONTENTPLACEHOLDER/, vkbeautify.xml(kathaBody.html())); // set the content
     fs.writeFileSync(outputFolder + '/' + getKathaFileName(kathaIndex), preContent);
@@ -116,7 +116,7 @@ function getPainting(gathaNumber, isFull) {
 
 function writeIndexFile(indexDiv, fileName) {
     const indexContent = vkbeautify.xml($('<div/>').append(indexDiv).html());
-    fs.writeFileSync(fileName, fs.readFileSync('pre-index.html', { encoding: 'utf8' }).replace(/CONTENTPLACEHOLDER/, indexContent));
+    fs.writeFileSync(fileName, fs.readFileSync('tmpl-index.html', { encoding: 'utf8' }).replace(/CONTENTPLACEHOLDER/, indexContent));
 }
 function getKathaHeading(kathaHead) {
     assert(/^(\d+)[\-\.]{1}(\d+)/.exec(kathaHead.text()), `katha heading '${kathaHead.text()}' does not follow the standard`);
@@ -128,8 +128,8 @@ function getKathaHeading(kathaHead) {
 
 function writeVaggaFile(vaggaDiv, fileName, vaggaName) {
     const vaggaContent = vkbeautify.xml($('<div/>').append(vaggaDiv).html());
-    let preContent = fs.readFileSync('pre-vagga.html', { encoding: 'utf8' });
-    preContent = preContent.replace(/TITLEPLACEHOLDER/, vaggaName.replace(/^[\d\-\.\w]*/g, '')); // set the title
+    let preContent = fs.readFileSync('tmpl-vagga.html', { encoding: 'utf8' });
+    preContent = preContent.replace(/TITLEPLACEHOLDER/g, vaggaName.replace(/^[\d\-\.\s]*/g, '')); // set the title
     preContent = preContent.replace(/CONTENTPLACEHOLDER/, vaggaContent); // set the content
     fs.writeFileSync(fileName, preContent);
 }
