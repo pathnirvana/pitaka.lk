@@ -38,7 +38,7 @@ const mammothOpts = {
         "b => b" // normally b => strong
     ]
 }
-const wordDocList = ['ss2'], reProcessWordDoc = false;
+const wordDocList = ['ss2'], reProcessWordDoc = true;
 (async () => {
     let htmlStr = ''
     for(const wordFile of wordDocList) {

@@ -76,12 +76,19 @@ a.katha:hover { background-color: whitesmoke; cursor: pointer;}
 
 .share-icon:hover { visibility: visible; color: blue; cursor: pointer;}
 
-div.katha-items p { margin: 5pt; }
+/* div.katha-items > p { margin: 5pt; } */
 /* for items within the katha-items */
-.pali-gatha { padding: 0.5rem; color: brown; }
-.sinhala-kavi { padding: 0.5rem; }
+.pali-gatha { margin: 0.5rem; color: brown; }
+.sinhala-kavi { margin: 0.5rem; }
+.pali-gatha > p, .sinhala-kavi > p { padding: 0 0 0 .5rem; margin: 0; }
 .katha-ending { text-align: center; color: darkblue; }
 .katha-ending::after { content: '෴' }
+
+table td { border: 1px solid black; padding: 10px 10px; text-align: left; }
+td > p { padding: 0; margin: 0; }
+
+ol.footnotes { border-top: 0.5px solid black; font-size: 0.9rem; column-width: 15rem; column-count: 2; padding-top: 3px; column-gap: 2rem;}
+ol.footnotes li p { margin: 4px 15px 4px 0px; }
 
 nav.top { text-align: center; }
 nav.bottom { text-align: center; padding: 0.5rem; }
