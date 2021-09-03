@@ -7,7 +7,6 @@
  * output written to the main pitaka/dhammapada folder
  */
 
-
 const fs = require('fs');
 const assert = require('assert');
 const vkbeautify = require('vkbeautify');
@@ -19,12 +18,12 @@ const { document } = (new JSDOM('')).window;
 global.document = document;
 
 var $ = jQuery = require('jquery')(window);
-const MDI = (name, cls) => `<i class="material-icons ${cls}">${name}</i>`;
+const JC = (name, cls) => $(`<${name}/>`).addClass(cls);
+const MDI = (name, cls = '') => $(`<span class="material-icons ${cls}">${name}</span>`)
 const outputFolder = '../../dhammapada';
 
 const kathaDom = new JSDOM(fs.readFileSync('dhammapada_full.html', { encoding: 'utf8' }));
-//const katha2Dom = new JSDOM(fs.readFileSync('katha2.html', { encoding: 'utf8' }));
-const kathaDoc = kathaDom.window.document;// katha2Doc = katha2Dom.window.document;
+const kathaDoc = kathaDom.window.document;
 const kathaH1 = $('h1', kathaDoc); console.log(`num kathas = ${kathaH1.length}`);
 
 const lines = fs.readFileSync('gatha.txt', { encoding: 'utf8' });
@@ -35,7 +34,7 @@ const getKathaFileName = (ki) => (ki >= 1 && ki <= 305) ? `katha-${ki}.html` : '
 const getVaggaFileName = (vi) => (vi >= 1 && vi <= 26) ? `vagga-${vi}.html` : '';
 
 const indexDiv = $('<div/>').append(vaggas.map((vagga, vaggaInd) => processVagga(vagga, vaggaInd + 1))).addClass('vagga-links');
-writeIndexFile(indexDiv, outputFolder + '/index.html');
+writeIndexFile(indexDiv, outputFolder + '/index-old.html');
 
 function processVagga(vagga, vaggaInd) {
     const kathas = vagga.split('k').map(line => line.trim()).filter(line => line);
@@ -94,21 +93,30 @@ function writeKathaFile(gathas, vaggaInd, vaggaName) {
 }
 
 function getBackLink(vaggaInd, vaggaName) {
-    const vaggaLink = $('<a/>').addClass('button').attr('href', `${getVaggaFileName(vaggaInd)}#katha-${kathaIndex}`).text(`${vaggaName} වෙතට`);
-    const indexLink = $('<a/>').addClass('button').attr('href', `index.html#vagga-${vaggaInd}`).text(`මුල් පිටුවට`);
-    return $('<nav/>').addClass('top').append(vaggaLink, indexLink);
+    return JC('nav', 'top').append(
+        getNavButton('', `index-old.html#vagga-${vaggaInd}`, `මුල් පිටුවට`, 'home'),
+        getNavButton('', `${getVaggaFileName(vaggaInd)}#katha-${kathaIndex}`, `${vaggaName} වෙතට`, 'arrow_upward'),
+    );
 }
 function getKathaLinks() {
-    const prevLink = $('<a/>').addClass('button prev').attr('href', getKathaFileName(kathaIndex - 1)).text('කලින් කතාවට');
-    const nextLink = $('<a/>').addClass('button next').attr('href', getKathaFileName(kathaIndex + 1)).text('ඊළඟ කතාවට');
-    return $('<nav/>').addClass('bottom').append(prevLink, nextLink);
+    return JC('nav', 'bottom').append(
+        getNavButton('prev', getKathaFileName(kathaIndex - 1), 'කලින් කතාවට', 'arrow_back'),
+        getNavButton('next', getKathaFileName(kathaIndex + 1), 'ඊළඟ කතාවට', 'arrow_forward', true)
+    );
 }
 function getVaggaLinks(vaggaInd) {
-    const prevLink = $('<a/>').addClass('button prev').attr('href', getVaggaFileName(vaggaInd - 1)).text('කලින් වර්ගයට');
-    const indexLink = $('<a/>').addClass('button').attr('href', `index.html#vagga-${vaggaInd}`).text(`මුල් පිටුවට`);
-    const nextLink = $('<a/>').addClass('button next').attr('href', getVaggaFileName(vaggaInd + 1)).text('ඊළඟ වර්ගයට');
-    return $('<nav/>').addClass('bottom').append(prevLink, indexLink, nextLink);
+    return JC('nav', 'bottom').append(
+        getNavButton('prev', getVaggaFileName(vaggaInd - 1), 'කලින් වර්ගයට', 'arrow_back'),
+        getNavButton('', `index-old.html#vagga-${vaggaInd}`, `මුල් පිටුවට`, 'home'),
+        getNavButton('next', getVaggaFileName(vaggaInd + 1), 'ඊළඟ වර්ගයට', 'arrow_forward', true),
+    );
 }
+function getNavButton(cls, href, text, icon, iconRight = false) {
+    const children = [MDI(icon), JC('span', 'button-text').text(text)]
+    if (iconRight) children.reverse()
+    return JC('a', `button ${cls}`).attr('href', href).append(children)
+}
+
 function getPainting(gathaNumber, isFull) {
     const src = `${isFull ? 'paintings' : 'thumbs'}/${gathaNumber}.jpg`;
     return $('<div/>').addClass('painting').attr('is-full', isFull).append($('<img/>').attr('src', src));
@@ -122,7 +130,7 @@ function getKathaHeading(kathaHead) {
     assert(/^(\d+)[\-\.]{1}(\d+)/.exec(kathaHead.text()), `katha heading '${kathaHead.text()}' does not follow the standard`);
     const kathaTitle = kathaHead.text().replace(/^(\d+)[\-\.]{1}(\d+)/, '$1-$2');
     kathaHead.text(kathaTitle).addClass('katha')
-        .append($(MDI('share', 'share-icon')).attr('file-name', getKathaFileName(kathaIndex)));
+        .append(MDI('share', 'share-icon').attr('file-name', getKathaFileName(kathaIndex)));
     return [kathaTitle, kathaHead];
 }
 
