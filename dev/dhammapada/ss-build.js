@@ -43,11 +43,11 @@ const mammothOpts = {
         "b => b" // normally b => strong
     ]
 }
-const wordDocList = ['ss1', 'ss2', 'ss3'], reProcessWordDoc = false;
+const wordDocList = ['ss1', 'ss2', 'ss3'], reProcessWordDoc = true;
 (async () => {
     let vaggaLinks = '', vaggaInd = 0
     for(const wordFile of wordDocList) {
-        console.log(`converted ${wordFile} to html using mammoth`)
+        console.log(`converting ${wordFile} to html using mammoth`)
         const htmlStr = (await getHtmlStr(wordFile))
     
         const htmlDom = new JSDOM(htmlStr);
