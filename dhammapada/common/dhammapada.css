@@ -51,6 +51,7 @@ body { font-family: un-abhaya;  font-size: 18px; text-align: justify; }
 .vagga-link { flex-basis: 48%; flex-grow: 1; text-align: center; padding: 0.5rem 0rem 0.5rem 0rem; border: 1px solid oldlace; border-radius: 6px; text-decoration: none; }
 .vagga-link:hover { background-color: whitesmoke;}
 .vagga-name { font-size: 1.5rem; font-weight: bold; color: darkblue; text-align: center; }
+.vagga .vagga-name { padding: .5rem 0 .5rem 0; }
 .vagga-link .vagga-name { font-size: 1.2rem; }
 
 .pali p,.sinhala p { padding: 0rem;  margin: 0; }
@@ -84,7 +85,7 @@ a.katha:hover { background-color: whitesmoke; cursor: pointer;}
 .katha-ending { text-align: center; color: darkblue; }
 .katha-ending::after { content: '෴' }
 
-table td { padding: 10px 10px; text-align: left; } /* border: 1px solid black; */
+table td { padding: 10px 10px; text-align: justify; vertical-align: top; } /* border: 1px solid black; */
 td > p { padding: 0; margin: 0; }
 
 ol.footnotes { border-top: 0.5px solid black; font-size: 0.9rem; column-width: 15rem; column-count: 2; padding-top: 3px; column-gap: 2rem;}
