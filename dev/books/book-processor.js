@@ -6,7 +6,7 @@
  * use mammoth as below from the input directory
  * npx mammoth book-name.docx book-name.html --style-map=mammoth-styles.txt
  * 
- * WARNING - unless you abosolutely have to do not reprocess existing docx files
+ * DANGER - unless you abosolutely have to do not reprocess existing docx files
  * since local corrections have been made to html files which would be overwritten
  * 
  */ 
@@ -15,7 +15,7 @@ const fs = require('fs');
 const fsExtra = require('fs-extra')
 const mammoth = require("mammoth");
 const assert = require('assert');
-const vkbeautify = require('vkbeautify');
+const pretty = require('pretty');
 
 var jsdom = require('jsdom');
 const { JSDOM } = jsdom;
@@ -64,23 +64,23 @@ const bookList = [
     { name: 'කෙලෙස් එක්දහස් පන්සියය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'keles-1500', group: 2 },
     { name: 'පොහොය දිනය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'pohoya-dinaya', group: 2},
     { name: 'බෝධි පූජාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bodhi-poojawa', group: 2 },
-    { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සිරි සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3 },
+    { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සිරි සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3},
     { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3 },
-    { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3 },
+    { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3},
     { name: 'සීහළවත්ථු', author: 'ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'sihala-vaththu', group: 3 },
     { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3},
-    { name: 'පාලිභාශාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3, gen: 'html' },
+    { name: 'පාලිභාශාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3, gen: 'html'},
 ];
 
 const reprocessAll = false; // process all books even without the 'gen' prop
 let nodesAdded;
 bookList.forEach(book => {
     if (!book.gen && !reprocessAll) return; // process only some books
-    if (book.gen == 'docx') { // reprocess docx or read from file (WARNING - do not do this for existing files)
+    if (book.gen == 'docx') { // reprocess docx or read from file (DANGER: do not do this for existing files)
         console.log(`Regenerating html from docx ${book.folder}`);
         (async () => {
             const mRes = await mammoth.convertToHtml({path: `${__dirname}/input/${book.folder}.docx`}, mammothOpts);
-            fs.writeFileSync(`${__dirname}/input/${book.folder}.html`, vkbeautify.xml(mRes.value), {encoding: 'utf-8'});
+            fs.writeFileSync(`${__dirname}/input/${book.folder}.html`, pretty(mRes.value), {encoding: 'utf-8'});
             processBook(book, mRes.value);
         })();
     } else {
@@ -208,7 +208,7 @@ function writeIndexFile(book, nodeList, fileName) {
 }
 
 function genericWriteFile(fileName, contentDiv, tmplStr, placeholders) {
-    const contentHtml = JC('div').append(contentDiv).html() ///*vkbeautify.xml(); - "( with <strong vkb adds a space in between
+    const contentHtml = pretty(JC('div').append(contentDiv).html()) /// vkbeautify.xml() was replaced by pretty - vkb breaks strong tags while pretty keeps them inline
     for (key in placeholders) {
         tmplStr = tmplStr.replace(new RegExp((key + 'placeholder').toUpperCase(), 'g'), placeholders[key]);    
     }
@@ -232,7 +232,7 @@ function writeAppIndexFile() {
                 MDI('share', 'share-icon hover-icon')
             );
         }));
-        tmplStr = tmplStr.replace(new RegExp(`GROUPPLACEHOLDER${ind + 1}`), vkbeautify.xml(gDiv.html()));
+        tmplStr = tmplStr.replace(new RegExp(`GROUPPLACEHOLDER${ind + 1}`), pretty(gDiv.html()));
     });
     fs.writeFileSync(outputFolder + '/app-index.html', tmplStr);
 }
