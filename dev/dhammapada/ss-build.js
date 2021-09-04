@@ -43,7 +43,7 @@ const mammothOpts = {
         "b => b" // normally b => strong
     ]
 }
-const wordDocList = ['ss1', 'ss2', 'ss3'], reProcessWordDoc = true;
+const wordDocList = ['ss1', 'ss2', 'ss3'], reProcessWordDoc = false; // DANGER: lot of local changes had been made to html files. do not reprocess word files
 (async () => {
     let vaggaLinks = '', vaggaInd = 0
     for(const wordFile of wordDocList) {
@@ -114,8 +114,8 @@ function getGathaPart(gatha, className) {
 }
 
 function writeKathaFile(gathas, vaggaInd, vaggaName) {
-    const [kathaTitle, kathaHead] = getKathaHeading($(kathaH2[kathaIndexLocal]));
     kathaIndex++; kathaIndexLocal++;
+    const [kathaTitle, kathaHead] = getKathaHeading($(kathaH2[kathaIndexLocal - 1]));
     const kathaItems = JC('div', 'katha-items').append(kathaHead.nextUntil('h1,h2'));
     //console.log(kathaItems.text())
     if (!kathaItems.children().last().is('.katha-ending')) console.log(`last of the katha items is not an ending for ${kathaTitle}`)
@@ -139,7 +139,7 @@ function getKathaHeading(kathaHead) {
     // adds the katha number to the title and delete the number from the dom
     const kathaTitle = numText.replace(/^(\d+)\s*[-–]\s*(\d+)/, '$1-$2') + ' ' + kathaHead.text()
     kathaHead.next().remove()
-    kathaHead.text(kathaTitle).addClass('katha').append(MDI('share', 'share-icon').attr('file-name', getKathaFileName(kathaIndex)));
+    kathaHead.text(kathaTitle).addClass('katha').append(MDI('share', 'share-icon').attr('file-name', 'ss/' + getKathaFileName(kathaIndex)));
     return [kathaTitle, kathaHead];
 }
 
