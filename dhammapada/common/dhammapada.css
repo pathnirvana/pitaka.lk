@@ -91,6 +91,8 @@ td > p { padding: 0; margin: 0; }
 ol.footnotes { border-top: 0.5px solid black; font-size: 0.9rem; column-width: 15rem; column-count: 2; padding-top: 3px; column-gap: 2rem;}
 ol.footnotes li p { margin: 4px 15px 4px 0px; }
 
+audio { height: 40px; }
+
 nav.top { text-align: center; }
 nav.bottom { text-align: center; padding: 0.5rem; }
 a.button {

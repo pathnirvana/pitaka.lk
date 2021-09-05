@@ -60,7 +60,7 @@ const bookList = [
     { name: 'උපසම්පදා ශීලය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'upasampada-sheelaya', group: 2 },
     { name: 'උභය ප්‍රාතිමෝක්‍ෂය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'ubhaya-prathimokshaya', group: 2 },
     { name: 'වඤ්චක ධර්ම හා චිත්තෝපක්ලේශ ධර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'wanchaka-dharma', group: 2 },
-    { name: 'විදර්ශනා භාවනා ක්‍රමය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vidarshana-bhavana-kramaya', group: 2},
+    { name: 'විදර්ශනා භාවනා ක්‍රමය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vidarshana-bhavana-kramaya', group: 2, gen: 'html'},
     { name: 'කෙලෙස් එක්දහස් පන්සියය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'keles-1500', group: 2 },
     { name: 'පොහොය දිනය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'pohoya-dinaya', group: 2},
     { name: 'බෝධි පූජාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bodhi-poojawa', group: 2 },
@@ -69,7 +69,7 @@ const bookList = [
     { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3},
     { name: 'සීහළවත්ථු', author: 'ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'sihala-vaththu', group: 3 },
     { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3},
-    { name: 'පාලිභාශාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3, gen: 'html'},
+    { name: 'පාලිභාශාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3},
 ];
 
 const reprocessAll = false; // process all books even without the 'gen' prop
