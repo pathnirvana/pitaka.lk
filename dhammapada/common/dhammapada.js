@@ -27,3 +27,25 @@ function showToast(toastMsg) {
     // After 3 seconds, remove the show class from DIV
     setTimeout(function(){ toast.hide(); }, 3000);
 }
+
+// gatha audio playing code
+const audios = document.querySelectorAll('audio');
+
+// Pause all <audio> elements except for the one that started playing.
+function pauseOtherAudios({ target }) {
+  for (const audio of audios) {
+    if (audio !== target) {
+      audio.pause();
+    }
+  }
+}
+function playNextAudio({ target }) {
+    const nextIndex = parseInt($(target).attr('gatha-num')) + 1
+    const nextAudio = $(`audio[gatha-num='${nextIndex}']`)
+    if (nextAudio.length) nextAudio[0].play()
+}
+// Add event listeners to all audios
+for (const audio of audios) {
+  audio.addEventListener('play', pauseOtherAudios);
+  audio.addEventListener('ended', playNextAudio);
+}

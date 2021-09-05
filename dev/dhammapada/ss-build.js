@@ -80,32 +80,34 @@ function processVagga(vagga, vaggaInd) {
     assert(vaggaName.split('\n').length == 1, `multiline vagga heading ${vaggaName}`);
 
     const vaggaNameDiv = JC('div', 'vagga-name').text(vaggaName).attr('id', `vagga-${vaggaInd}`)
+        .append(MDI('share', 'share-icon').attr('file-name', 'ss/' + getVaggaFileName(vaggaInd)))
     const vaggaDiv = JC('div', 'vagga').append(vaggaNameDiv);
-    const kathaDivs = kathas.slice(1).map(katha => processKatha(katha, vaggaInd, vaggaName));
+    const kathaDivs = kathas.slice(1).map((katha, i) => processKatha(katha, vaggaInd, vaggaName, i == 0));
     writeVaggaFile(vaggaDiv.append(kathaDivs, getVaggaLinks(vaggaInd)), outputFolder + getVaggaFileName(vaggaInd), vaggaName);
 
     return JC('a', 'vagga-link').attr('id', `vagga-${vaggaInd}`).attr('href', 'ss/' + getVaggaFileName(vaggaInd))
         .append(JC('div', 'vagga-name').text(vaggaName));
 }
 
-function processKatha(katha, vaggaInd, vaggaName) {
+function processKatha(katha, vaggaInd, vaggaName, firstKatha = false) {
     const gathas = katha.split('g').map(line => line.trim()).filter(line => line);
     const kathaTitle = writeKathaFile(gathas, vaggaInd, vaggaName);
     const kathaDiv = JC('a', 'katha').attr('href', getKathaFileName(kathaIndex)).attr('id', `katha-${kathaIndex}`);
-    kathaDiv.append(JC('div', 'katha-title').text(kathaTitle), gathas.map(gatha => getGatha(gatha, false)));
+    kathaDiv.append(JC('div', 'katha-title').text(kathaTitle), gathas.map((gatha, i) => getGatha(gatha, false, firstKatha && i == 0)));
     return kathaDiv; // for the vagga file
 }
 
-function getGatha(gatha, isFull = false) {
+function getGatha(gatha, isFull = false, firstGatha = false) {
     const parts = gatha.split('#').map(line => line.trim()).filter(line => line);
     assert(parts.length == 2, `gatha ${gatha} has more than 2 parts ${parts.length}`);
     assert(/^\d+$/.exec(parts[0].split('\r\n')[0]), `pali gatha part ${parts[0]} does not start with a number`);
     const gathaNumber = Number(parts[0].split('\r\n')[0]); 
     assert(isFull || gathaNumber == ++gathaChecker, `incorrect gatha number ${gathaNumber}. Should be ${gathaChecker}`);
-    const gathaPali = getGathaPart(parts[0], 'pali'), gathaSinh = getGathaPart(parts[1], 'sinhala');
+    const gathaPali = getGathaPart(parts[0], 'pali'), gathaSinh = getGathaPart(parts[1], 'sinhala'),
+        gathaAudio = getGathaAudio(gathaNumber, firstGatha)
     const gathaPainting = getPainting(gathaNumber, isFull);
     return JC('div', 'gatha').attr('gatha-num', gathaNumber).attr('is-full', isFull)
-        .append(JC('div', 'gatha-parts').append(gathaPali, gathaSinh), gathaPainting)
+        .append(JC('div', 'gatha-parts').append(gathaAudio, gathaPali, gathaSinh), gathaPainting)
 }
 
 function getGathaPart(gatha, className) {
@@ -113,14 +115,21 @@ function getGathaPart(gatha, className) {
     return JC('div', className).append(lines.filter(line => !/^\d+$/.exec(line)).map(line => $('<p/>').text(line)));
 }
 
+function getGathaAudio(gathaNumber, isFirstGatha) {
+    if (gathaNumber > 145) return '' // only 10 vaggas have recordings so far
+    const audio = $('<audio/>').attr('gatha-num', gathaNumber).prop('controls', true)
+    if (isFirstGatha) audio.prop('autoplay', true)
+    return audio.append($('<source/>').attr('src', `../recordings/${gathaNumber}.mp3`))
+}
+
 function writeKathaFile(gathas, vaggaInd, vaggaName) {
     kathaIndex++; kathaIndexLocal++;
     const [kathaTitle, kathaHead] = getKathaHeading($(kathaH2[kathaIndexLocal - 1]));
     const kathaItems = JC('div', 'katha-items').append(kathaHead.nextUntil('h1,h2'));
-    //console.log(kathaItems.text())
+    
     if (!kathaItems.children().last().is('.katha-ending')) console.log(`last of the katha items is not an ending for ${kathaTitle}`)
     addFootnotesTo(kathaItems)
-    const gathaDivs = gathas.map(gatha => getGatha(gatha, true));
+    const gathaDivs = gathas.map((gatha, i) => getGatha(gatha, true, i == 0));
     const kathaBody = $('<div/>').append(
         getBackLink(vaggaInd, vaggaName), kathaHead, gathaDivs, kathaItems, getKathaLinks());
     let tmpl = fs.readFileSync(inputFolder + 'tmpl-katha.html', { encoding: 'utf8' });
