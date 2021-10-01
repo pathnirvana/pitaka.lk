@@ -43,7 +43,8 @@ const mammothOpts = {
         "b => b" // normally b => strong
     ]
 }
-const wordDocList = ['ss1', 'ss2', 'ss3'], reProcessWordDoc = false; // DANGER: lot of local changes had been made to html files. do not reprocess word files
+const wordDocList = ['ss1', 'ss2', 'ss3']
+const reProcessWordDoc = false; // DANGER: lot of local changes had been made to html files. do not reprocess word files
 (async () => {
     let vaggaLinks = '', vaggaInd = 0
     for(const wordFile of wordDocList) {
@@ -65,11 +66,11 @@ const wordDocList = ['ss1', 'ss2', 'ss3'], reProcessWordDoc = false; // DANGER: 
 
 async function getHtmlStr(wordFile) {
     const filePrefix = inputFolder + wordFile
-    if (reProcessWordDoc) {
-        const mRes = await mammoth.convertToHtml({path: `${filePrefix}.docx`}, mammothOpts);
-        fs.writeFileSync(`${filePrefix}.html`, vkbeautify.xml(mRes.value), {encoding: 'utf-8'});
-        return mRes.value
-    } 
+    // if (reProcessWordDoc) { // check DANGER above
+    //     const mRes = await mammoth.convertToHtml({path: `${filePrefix}.docx`}, mammothOpts);
+    //     fs.writeFileSync(`${filePrefix}.html`, vkbeautify.xml(mRes.value), {encoding: 'utf-8'});
+    //     return mRes.value
+    // } 
     return fs.readFileSync(`${filePrefix}.html`, {encoding: 'utf-8'})
 }
 
@@ -116,7 +117,7 @@ function getGathaPart(gatha, className) {
 }
 
 function getGathaAudio(gathaNumber, isFirstGatha) {
-    if (gathaNumber > 145) return '' // only 10 vaggas have recordings so far
+    assert(gathaNumber > 0 && gathaNumber <= 423, `gathaNumber (${gathaNumber}) is out of range`)
     const audio = $('<audio/>').attr('gatha-num', gathaNumber).prop('controls', true)
     if (isFirstGatha) audio.prop('autoplay', true)
     return audio.append($('<source/>').attr('src', `../recordings/${gathaNumber}.mp3`))

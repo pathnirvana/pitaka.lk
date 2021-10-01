@@ -7,7 +7,7 @@
  * output written to the main pitaka/dhammapada folder
  */
 
-const fs = require('fs');
+const fs = require('fs'), path = require('path')
 const assert = require('assert');
 const vkbeautify = require('vkbeautify');
 
@@ -20,13 +20,13 @@ global.document = document;
 var $ = jQuery = require('jquery')(window);
 const JC = (name, cls) => $(`<${name}/>`).addClass(cls);
 const MDI = (name, cls = '') => $(`<span class="material-icons ${cls}">${name}</span>`)
-const outputFolder = '../../dhammapada';
+const outputFolder = path.join(__dirname, '../../dhammapada')
 
-const kathaDom = new JSDOM(fs.readFileSync('dhammapada_full.html', { encoding: 'utf8' }));
+const kathaDom = new JSDOM(fs.readFileSync(__dirname + '/dhammapada_full.html', { encoding: 'utf8' }));
 const kathaDoc = kathaDom.window.document;
 const kathaH1 = $('h1', kathaDoc); console.log(`num kathas = ${kathaH1.length}`);
 
-const lines = fs.readFileSync('gatha.txt', { encoding: 'utf8' });
+const lines = fs.readFileSync(__dirname + '/gatha.txt', { encoding: 'utf8' });
 let vaggas = lines.split('@'); console.log(`num of vaggas ${vaggas.length}`); //vaggas = vaggas.slice(0, 6); //ONLY TAKE THE FIRST
 
 let kathaIndex = 0, gathaChecker = 0;
@@ -44,31 +44,32 @@ function processVagga(vagga, vaggaInd) {
 
     const vaggaNameDiv = $('<div/>').text(vaggaName).attr('id', `vagga-${vaggaInd}`).addClass('vagga-name');
     const vaggaDiv = $('<div/>').addClass('vagga').append(vaggaNameDiv);
-    const kathaDivs = kathas.slice(1).map(katha => processKatha(katha, vaggaInd, vaggaName));
+    const kathaDivs = kathas.slice(1).map((katha, i) => processKatha(katha, vaggaInd, vaggaName, i == 0));
     writeVaggaFile(vaggaDiv.append(kathaDivs, getVaggaLinks(vaggaInd)), `${outputFolder}/${getVaggaFileName(vaggaInd)}`, vaggaName);
 
     return $('<a/>').addClass('vagga-link').attr('id', `vagga-${vaggaInd}`).attr('href', getVaggaFileName(vaggaInd)).append(
         $('<div/>').addClass('vagga-name').text(vaggaName));
 }
 
-function processKatha(katha, vaggaInd, vaggaName) {
+function processKatha(katha, vaggaInd, vaggaName, firstKatha = false) {
     const gathas = katha.split('g').map(line => line.trim()).filter(line => line);
     const kathaTitle = writeKathaFile(gathas, vaggaInd, vaggaName);
     const kathaDiv = $('<a/>').addClass('katha').attr('href', getKathaFileName(kathaIndex)).attr('id', `katha-${kathaIndex}`);
-    kathaDiv.append($('<div/>').html(kathaTitle).addClass('katha-title'), gathas.map(gatha => processGatha(gatha, false)));
+    kathaDiv.append($('<div/>').html(kathaTitle).addClass('katha-title'), gathas.map((gatha, i) => processGatha(gatha, false, firstKatha && i == 0)));
     return kathaDiv;
 }
 
-function processGatha(gatha, isFull = false) {
+function processGatha(gatha, isFull = false, firstGatha = false) {
     const parts = gatha.split('#').map(line => line.trim()).filter(line => line);
     assert(parts.length == 2, `gatha ${gatha} has more than 2 parts ${parts.length}`);
     assert(/^\d+$/.exec(parts[0].split('\r\n')[0]), `pali gatha part ${parts[0]} does not start with a number`);
     const gathaNumber = Number(parts[0].split('\r\n')[0]); 
     assert(isFull || gathaNumber == ++gathaChecker, `incorrect gatha number ${gathaNumber}. Should be ${gathaChecker}`);
-    const gathaPali = processGathaPart(parts[0], 'pali'), gathaSinh = processGathaPart(parts[1], 'sinhala');
+    const gathaPali = processGathaPart(parts[0], 'pali'), gathaSinh = processGathaPart(parts[1], 'sinhala'),
+        gathaAudio = getGathaAudio(gathaNumber, firstGatha)
     const gathaPainting = getPainting(gathaNumber, isFull);
     return $('<div/>').addClass('gatha').attr('gatha-num', gathaNumber).attr('is-full', isFull).append(
-        $('<div/>').addClass('gatha-parts').append(gathaPali, gathaSinh), 
+        $('<div/>').addClass('gatha-parts').append(gathaAudio, gathaPali, gathaSinh), 
         gathaPainting);
 }
 
@@ -84,12 +85,19 @@ function writeKathaFile(gathas, vaggaInd, vaggaName) {
     const kathaItems = $('<div/>').addClass('katha-items').append(kathaHeading.nextUntil('h1'));
     const gathaDivs = gathas.map(gatha => processGatha(gatha, true));
     const kathaBody = $('<div/>').append(getBackLink(vaggaInd, vaggaName), kathaHeading, gathaDivs, kathaItems, getKathaLinks());
-    let preContent = fs.readFileSync('tmpl-katha.html', { encoding: 'utf8' });
+    let preContent = fs.readFileSync(__dirname + '/tmpl-katha.html', { encoding: 'utf8' });
     preContent = preContent.replace(/TITLEPLACEHOLDER/, kathaHeading.text().replace(/^[\d\-\.\s]*/g, '')); // set the title
     preContent = preContent.replace(/FIRSTPAINTINGPLACEHOLDER/, gathaDivs[0].attr('gatha-num')); // set image
     preContent = preContent.replace(/CONTENTPLACEHOLDER/, vkbeautify.xml(kathaBody.html())); // set the content
     fs.writeFileSync(outputFolder + '/' + getKathaFileName(kathaIndex), preContent);
     return kathaTitle;
+}
+
+function getGathaAudio(gathaNumber, isFirstGatha) {
+    assert(gathaNumber > 0 && gathaNumber <= 423, `gathaNumber (${gathaNumber}) is out of range`)
+    const audio = $('<audio/>').attr('gatha-num', gathaNumber).prop('controls', true)
+    if (isFirstGatha) audio.prop('autoplay', true)
+    return audio.append($('<source/>').attr('src', `recordings/${gathaNumber}.mp3`))
 }
 
 function getBackLink(vaggaInd, vaggaName) {
@@ -124,7 +132,7 @@ function getPainting(gathaNumber, isFull) {
 
 function writeIndexFile(indexDiv, fileName) {
     const indexContent = vkbeautify.xml($('<div/>').append(indexDiv).html());
-    fs.writeFileSync(fileName, fs.readFileSync('tmpl-index.html', { encoding: 'utf8' }).replace(/CONTENTPLACEHOLDER/, indexContent));
+    fs.writeFileSync(fileName, fs.readFileSync(__dirname + '/tmpl-index.html', { encoding: 'utf8' }).replace(/CONTENTPLACEHOLDER/, indexContent));
 }
 function getKathaHeading(kathaHead) {
     assert(/^(\d+)[\-\.]{1}(\d+)/.exec(kathaHead.text()), `katha heading '${kathaHead.text()}' does not follow the standard`);
@@ -136,7 +144,7 @@ function getKathaHeading(kathaHead) {
 
 function writeVaggaFile(vaggaDiv, fileName, vaggaName) {
     const vaggaContent = vkbeautify.xml($('<div/>').append(vaggaDiv).html());
-    let preContent = fs.readFileSync('tmpl-vagga.html', { encoding: 'utf8' });
+    let preContent = fs.readFileSync(__dirname + '/tmpl-vagga.html', { encoding: 'utf8' });
     preContent = preContent.replace(/TITLEPLACEHOLDER/g, vaggaName.replace(/^[\d\-\.\s]*/g, '')); // set the title
     preContent = preContent.replace(/CONTENTPLACEHOLDER/, vaggaContent); // set the content
     fs.writeFileSync(fileName, preContent);
