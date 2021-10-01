@@ -5,7 +5,7 @@ console.log('running from folder ' + __dirname)
 let gathaNumber = 1
 for (let vagga = 1; vagga <= 26; vagga++) {
     const vaggaFolder = path.join(__dirname, vagga.toString())
-    if (!fs.existsSync(vaggaFolder)) return
+    if (!fs.existsSync(vaggaFolder)) console.error(`vagga folder ${vaggaFolder} does not exist`)
 
     const files = fs.readdirSync(vaggaFolder)
     const mp3Files = files.filter(file => path.extname(file).toLowerCase() === '.mp3')
@@ -21,4 +21,4 @@ for (let vagga = 1; vagga <= 26; vagga++) {
     // process.exit()
 }
 
-console.log('total files processed ' + gathaNumber - 1)
+console.log(`total files processed ${gathaNumber - 1}, should be 423`)
