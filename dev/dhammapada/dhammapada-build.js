@@ -3,7 +3,7 @@
  * images and the pali gatha added
  * magick mogrify -resize 1000x1000 -background none -fill white -font 'Segoe-UI' -pointsize 50 -gravity south -stroke gray -strokewidth 1 -draw "text 0,100 'pitaka.lk/dhammapada'" -path output -quality 50 *.jpg
  * 
- * run this script from the dev/dhammapada folder "node dhammapada-build.js"
+ * "node dev/dhammapada/dhammapada-build.js"
  * output written to the main pitaka/dhammapada folder
  */
 
