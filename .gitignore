@@ -1,3 +1,4 @@
 bjt/books
 dev/passwords.mjs
 **/node_modules
+.DS_Store
