@@ -60,11 +60,12 @@ const bookList = [
     { name: 'පටිච්ච සමුප්පාද විවරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'patichcha-samuppada-vivaranaya', group: 2},
     { name: 'උපසම්පදා ශීලය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'upasampada-sheelaya', group: 2 },
     { name: 'උභය ප්‍රාතිමෝක්‍ෂය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'ubhaya-prathimokshaya', group: 2 },
-    { name: 'වඤ්චක ධර්ම හා චිත්තෝපක්ලේශ ධර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'wanchaka-dharma', group: 2 },
+    { name: 'වඤ්චක හා චිත්තෝපක්ලේශ ධර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'wanchaka-dharma', group: 2 },
     { name: 'විදර්ශනා භාවනා ක්‍රමය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vidarshana-bhavana-kramaya', group: 2},
     { name: 'කෙලෙස් එක්දහස් පන්සියය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'keles-1500', group: 2 },
     { name: 'පොහොය දිනය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'pohoya-dinaya', group: 2},
     { name: 'බෝධි පූජාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bodhi-poojawa', group: 2 },
+    { name: 'චත්තාළීසාකාර විපස්සනා භාවනාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'chaththalisakara-vipassana', group: 2 },
 
     { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සිරි සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3},
     { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3 },
