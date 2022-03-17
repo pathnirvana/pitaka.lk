@@ -16,7 +16,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     container:
-      image: docker://pandoc/core:2.9
+      image: docker://pandoc/minimal:2.17.0.1-ubuntu
       options: --entrypoint=sh
     env:
       working-directory: ./
@@ -29,8 +29,9 @@ jobs:
     steps:
       - name: Upgrade GIT
         run: |
-          add-apt-repository ppa:git-core/ppa -y
           apt-get update -y
+          apt-get install software-properties-common -y
+          add-apt-repository ppa:git-core/ppa -y
           apt-get install git -y
           git --version
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
