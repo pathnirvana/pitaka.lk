@@ -45,13 +45,10 @@ jobs:
       - name: Install dependencies
         working-directory: ${{env.working-directory}}
         run: |
-          python3.9 -m venv .venv
-          source .venv/bin/activate
           pip install -r tools/document_converters/requirements/requirements.txt
       - name: Convert HTMLs
         working-directory: ${{env.working-directory}}
         run: |
-          source .venv/bin/activate
           ./tools/document_converters/convert_all.sh ${{ github.event.inputs.output_format }}
       - name: Upload artifacts
         uses: actions/upload-artifact@master
