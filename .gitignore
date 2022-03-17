@@ -5,3 +5,5 @@ dev/passwords.mjs
 **/.venv
 **/output/**
 **/__pycache__
+!**output
+!**/output/.gitkeep
