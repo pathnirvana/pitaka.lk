@@ -35,7 +35,6 @@ def main(input_root_folder=input_root_folder, output_format=output_format):
                 f'{filename}', 
                 output_format, 
                 outputfile=str(Path(output_root_folder).joinpath(change_ext(filename))),
-                # f'{output_root_folder}/{foldername}/{change_ext(filename)}',
                 filters=[str(Path(os.path.dirname(__file__)).joinpath("filters").joinpath(filter))]
             )
 

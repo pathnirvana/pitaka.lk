@@ -50,6 +50,8 @@ jobs:
       - name: Convert HTMLs
         working-directory: ${{env.working-directory}}
         run: |
+          chmod +x tools/document_converters/convert.sh
+          chmod +x tools/document_converters/convert_all.sh
           ./tools/document_converters/convert_all.sh ${{ github.event.inputs.output_format }}
       - name: Upload artifacts
         uses: actions/upload-artifact@master
