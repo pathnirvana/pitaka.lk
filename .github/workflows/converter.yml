@@ -1,0 +1,51 @@
+name: HTML converter
+
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      output_format:
+        description: 'Which format you want the htmls to be converted to'
+        # Default value if no value is explicitly provided
+        default: 'asciidoc'
+        # Input has to be provided for the workflow to run
+        required: true
+
+jobs:
+ convert html documents:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./
+ 
+    strategy:
+      matrix:
+        python-version: [3.9]
+  
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    - name: Build CC_API with Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      working-directory: ${{env.working-directory}}
+      run: |
+        python -m pip install --upgrade pip
+        python -m venv .venv
+        source .venv/bin/activate
+        pip install -r tools/document_converters/requirements/requirements.txt
+    - name: Convert HTMLs
+      working-directory: ${{env.working-directory}}
+      uses: docker://pandoc/core:2.9
+      run: |
+        source .venv/bin/activate
+        ./tools/document_converters/convert_all.sh ${{ github.event.inputs.output_format }}
+    - name: Upload artifacts
+      uses: actions/upload-artifact@master
+      with:
+        name: output
+        path: tools/document_converters/output
