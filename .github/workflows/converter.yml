@@ -15,6 +15,9 @@ jobs:
  convert html documents:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    container:
+      image: docker://pandoc/core:2.9
+      options: --entrypoint=sh
     env:
       working-directory: ./
  
@@ -40,7 +43,6 @@ jobs:
         pip install -r tools/document_converters/requirements/requirements.txt
     - name: Convert HTMLs
       working-directory: ${{env.working-directory}}
-      uses: docker://pandoc/core:2.9
       run: |
         source .venv/bin/activate
         ./tools/document_converters/convert_all.sh ${{ github.event.inputs.output_format }}
