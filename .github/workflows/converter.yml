@@ -27,28 +27,34 @@ jobs:
   
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v3
-      with:
-        ref: 'master'
-    - name: Setup Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      working-directory: ${{env.working-directory}}
-      run: |
-        python -m pip install --upgrade pip
-        python -m venv .venv
-        source .venv/bin/activate
-        pip install -r tools/document_converters/requirements/requirements.txt
-    - name: Convert HTMLs
-      working-directory: ${{env.working-directory}}
-      run: |
-        source .venv/bin/activate
-        ./tools/document_converters/convert_all.sh ${{ github.event.inputs.output_format }}
-    - name: Upload artifacts
-      uses: actions/upload-artifact@master
-      with:
-        name: output
-        path: tools/document_converters/output
+      - name: Upgrade GIT
+        run: |
+          add-apt-repository ppa:git-core/ppa -y
+          apt-get update -y
+          apt-get install git -y
+          git --version
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          ref: 'master'
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        working-directory: ${{env.working-directory}}
+        run: |
+          python -m pip install --upgrade pip
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r tools/document_converters/requirements/requirements.txt
+      - name: Convert HTMLs
+        working-directory: ${{env.working-directory}}
+        run: |
+          source .venv/bin/activate
+          ./tools/document_converters/convert_all.sh ${{ github.event.inputs.output_format }}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@master
+        with:
+          name: output
+          path: tools/document_converters/output
