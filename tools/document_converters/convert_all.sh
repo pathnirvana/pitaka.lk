@@ -2,7 +2,7 @@
 
 # You can use either the main.py or this script.
 
-locations=( 
+locations=(
     "books/abhidharma-chandrikava"
     "books/abhidharma-margaya"
     "books/abhidharmaye-mulika-karunu"
@@ -34,6 +34,7 @@ locations=(
     "books/vidarshana-bhavana-kramaya"
     "books/vishuddhi-margaya"
     "books/wanchaka-dharma"
+    "dhammapada" 
 )
 
 output_format=${1}
