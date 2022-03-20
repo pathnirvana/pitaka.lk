@@ -16,6 +16,7 @@
 - Python3.9
 - Pandoc 2.17.1.1
 - pip 20.2.3
+## Instructions
 
 ```sh
 cd /path/to/pitaka.lk
@@ -24,9 +25,10 @@ source .venv/bin/activate
 pip install -r tools/document_converters/requirements/requirements.txt
 ```
 
-## Instructions
-
 - [Install Pandoc 2.17.1.1](https://pandoc.org/installing.html)
+
+### Using convert_all.sh
+
 - You can use `convert_all.sh` for converting multiple books at once. Locations are specified in the script itself. This will generate one output file per book by combining all the input htmls.
 
 Command format:
@@ -39,6 +41,8 @@ Example usage:
 ./tools/document_converters/convert_all.sh asciidoc panflute_filter
 ```
 
+### Using convert.sh
+
 - Or you can use `convert.sh` for converting a single book. This will also generate one output file by combining all the input htmls.
 
 Command format:
@@ -50,6 +54,8 @@ Example usage:
 ```sh
 ./tools/document_converters/convert.sh books/abhidharma-chandrikava abhidharma-chandrikava.epub epub panflute_filter
 ```
+
+### Using main.py
 
 - Or you can use `main.py` for converting a single book from a folder or converting a single input file. This will generate multiple output files.
 - This script is using pypandoc for calling the pandoc engine internally. This is a Python wrapper for the pandoc executable. I couldn't find a way to pass multiple input files to pandoc using pypandoc wrapper. Above shell scripts directly call pandoc. So we can pass multiple input files in the above commands.
