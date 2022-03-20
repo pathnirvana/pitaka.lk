@@ -1,4 +1,6 @@
-#! /bin/bash
+#!/bin/bash
+
+# You can use either the main.py or this script.
 
 locations=( 
     "books/abhidharma-chandrikava"
@@ -34,13 +36,13 @@ locations=(
     "books/wanchaka-dharma"
 )
 
-output_format=${1:-'asciidoc'}
-filter=${2:-'panflute_filter'}
+output_format=${1}
+filter=${2}
 
 for i in "${locations[@]}"
 do
     split_file=(${i//// })
-    output_file_name=(${split_file[1]}.${output_format})
+    output_file_name=(${split_file[-1]}.${output_format})
     echo "Processing $i -> output file ${output_file_name}"
-    sh tools/document_converters/convert.sh $i $output_file_name $output_format $filter
+    bash tools/document_converters/convert.sh $i $output_file_name $output_format $filter
 done

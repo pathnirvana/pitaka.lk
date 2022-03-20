@@ -7,7 +7,7 @@ on:
       output_format:
         description: 'Which format you want the htmls to be converted to'
         # Default value if no value is explicitly provided
-        default: 'asciidoc'
+        default: 'epub'
         # Input has to be provided for the workflow to run
         required: true
 

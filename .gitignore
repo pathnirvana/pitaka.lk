@@ -7,3 +7,4 @@ dev/passwords.mjs
 **/__pycache__
 !**output
 !**/output/.gitkeep
+**/.pytest_cache

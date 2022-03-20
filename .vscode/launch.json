@@ -10,8 +10,10 @@
             "request": "launch",
             "program": "tools/document_converters/main.py",
             "args": [
-                "books/abhidharma-chandrikava",
-                "asciidoc"
+                "-f",
+                "books/abhidharma-chandrikava/1.html",
+                "-p",
+                "panflute_filter.py",
             ],
             "console": "integratedTerminal",
             "justMyCode": false,
