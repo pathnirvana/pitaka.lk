@@ -74,6 +74,7 @@ const bookList = [
     { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3},
     { name: 'පාලිභාශාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3},
     { name: 'අභිධර්ම චන්ද්‍රිකාව', author: 'මාතර ශ්‍රී ධර්මවංශ හිමි', folder: 'abhidharma-chandrikava', group: 3},
+    { name: 'අමාවතුර', author: 'ගුරුළුගෝමී', folder: 'amawathura', group: 3},
 ];
 
 const reprocessAll = false; // process all books even without the 'gen' prop
