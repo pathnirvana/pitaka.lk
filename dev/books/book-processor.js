@@ -32,6 +32,7 @@ const mammothOpts = {
     styleMap: [
         "p[style-name='gatha'] => div.gatha > p:fresh",
         "p[style-name='subhead'] => div.subhead > p:fresh",
+        "p[style-name='largefont'] => div.largefont > p:fresh",
         "p[style-name='centered'] => div.centered > p:fresh",
         "b => b" // normally b => strong
     ]
@@ -66,6 +67,7 @@ const bookList = [
     { name: 'පොහොය දිනය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'pohoya-dinaya', group: 2},
     { name: 'බෝධි පූජාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bodhi-poojawa', group: 2 },
     { name: 'චත්තාළීසාකාර විපස්සනා භාවනාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'chaththalisakara-vipassana', group: 2 },
+    { name: 'විනය කර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vinaya-karma', group: 2 },
 
     { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සිරි සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3},
     { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3 },
