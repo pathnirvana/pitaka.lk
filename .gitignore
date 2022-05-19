@@ -2,3 +2,9 @@ bjt/books
 dev/passwords.mjs
 **/node_modules
 .DS_Store
+**/.venv
+**/output/**
+**/__pycache__
+!**output
+!**/output/.gitkeep
+**/.pytest_cache

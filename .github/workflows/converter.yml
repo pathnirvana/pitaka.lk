@@ -1,0 +1,60 @@
+name: HTML converter
+
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      output_format:
+        description: 'Which format you want the htmls to be converted to'
+        # Default value if no value is explicitly provided
+        default: 'epub'
+        # Input has to be provided for the workflow to run
+        required: true
+
+jobs:
+ convert_html_documents:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    container:
+      image: docker://pandoc/minimal:2.17.0.1-ubuntu
+      options: --entrypoint=/bin/bash
+    env:
+      working-directory: ./
+ 
+    strategy:
+      matrix:
+        python-version: [3.9]
+  
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Upgrade GIT
+        run: |
+          apt-get update -y
+          apt-get install software-properties-common -y
+          add-apt-repository ppa:git-core/ppa -y
+          apt-get install git -y
+          git --version
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          ref: 'master'
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        working-directory: ${{env.working-directory}}
+        run: |
+          python3.9 -m pip install --upgrade pip
+          pip install -r tools/document_converters/requirements/requirements.txt
+      - name: Convert HTMLs
+        working-directory: ${{env.working-directory}}
+        run: |
+          chmod +x tools/document_converters/convert.sh
+          chmod +x tools/document_converters/convert_all.sh
+          ./tools/document_converters/convert_all.sh ${{ github.event.inputs.output_format }} panflute_filter
+      - name: Upload artifacts
+        uses: actions/upload-artifact@master
+        with:
+          name: output
+          path: tools/document_converters/output
