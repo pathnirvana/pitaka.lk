@@ -77,6 +77,8 @@ const bookList = [
     { name: 'පාලිභාශාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3},
     { name: 'අභිධර්ම චන්ද්‍රිකාව', author: 'මාතර ශ්‍රී ධර්මවංශ හිමි', folder: 'abhidharma-chandrikava', group: 3},
     { name: 'අමාවතුර', author: 'ගුරුළුගෝමී', folder: 'amawathura', group: 3},
+    { name: 'අනාගත වංශය මෙතේ බුදුසිරිත', author: 'විල්ගම්මුල සංඝරාජ හිමි', folder: 'anagatha-vanshaya', group: 3, gen: 'docx' },
+    
 ];
 
 const reprocessAll = false; // process all books even without the 'gen' prop
