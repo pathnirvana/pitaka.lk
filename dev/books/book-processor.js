@@ -68,6 +68,7 @@ const bookList = [
     { name: 'බෝධි පූජාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bodhi-poojawa', group: 2 },
     { name: 'චත්තාළීසාකාර විපස්සනා භාවනාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'chaththalisakara-vipassana', group: 2 },
     { name: 'විනය කර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vinaya-karma', group: 2 },
+    { name: 'සතිපට්ඨාන භාවනා ක්‍ර‍මය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'sathipttana-bhavana-kramaya', group: 2, gen: 'docx' },
 
     { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සිරි සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3},
     { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3 },
