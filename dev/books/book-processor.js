@@ -79,8 +79,7 @@ const bookList = [
     { name: 'අභිධර්ම චන්ද්‍රිකාව', author: 'මාතර ශ්‍රී ධර්මවංශ හිමි', folder: 'abhidharma-chandrikava', group: 3},
     { name: 'අමාවතුර', author: 'ගුරුළුගෝමී', folder: 'amawathura', group: 3},
     { name: 'අනාගත වංශය මෙතේ බුදුසිරිත', author: 'විල්ගම්මුල සංඝරාජ හිමි', folder: 'anagatha-vanshaya', group: 3 },
-    { name: 'ජිනකාලමාලී ප්‍රකරණය', author: 'රත්නපඤ්ඤ හිමි', folder: 'jinakalamali-prakaranaya', group: 3, gen: 'docx' },
-    
+    { name: 'ජිනකාලමාලී ප්‍රකරණය', author: 'රත්නපඤ්ඤ හිමි', folder: 'jinakalamali-prakaranaya', group: 3 },
 ];
 
 const reprocessAll = false; // process all books even without the 'gen' prop
