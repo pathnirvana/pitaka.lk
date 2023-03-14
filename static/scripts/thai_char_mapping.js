@@ -27,7 +27,7 @@ var th_specials = [
     //['ඕ', 'ō', '??'] //normal thai uses the short form
 
     /* special replacements */
-    ['ඞ්‌', 'งฺ'], // not used in combi
+    ['ඞ්', 'งฺ'], // not used in combi
     ['ඞ‌', 'ง'], // non pali
     ['ිං', 'ึ', 1], // කිං - single char in thai side
     ['ං', 'ํ'],
