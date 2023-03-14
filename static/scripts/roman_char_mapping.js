@@ -3,7 +3,7 @@
 var ro_specials = [
     /* VOWELS */
     ['ඓ', 'ai'], // sinhala only begin - only kai and ai occurs in reality
-    ['ඖ', 'au'], // ambiguous conversions e.g. f+au = ka+u = kau, a+u = au but only kau and au occurs in reality
+    ['ඖ', 'au'], // ambiguous conversions e.g. k+au = ka+u = kau, a+u = au but only kau and au occurs in reality
     ['ඍ', 'ṛ'],
     ['ඎ', 'ṝ'],
     //['ඏ', 'ḷ'], // removed because conflicting with ළ් and very rare
@@ -23,7 +23,7 @@ var ro_specials = [
     ['ඕ', 'ō'],
 
     /* SPECIALS */
-    ['ඞ්‌', 'ṅ'], // not used in combi
+    ['ඞ්', 'ṅ'], // not used in combi
     ['ං', 'ṁ'], ['ං', 'ṃ', 1], // IAST, use both
     ['ඃ', 'ḥ'], ['ඃ', 'Ḥ', 1] // sinhala only
 ];
