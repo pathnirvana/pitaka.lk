@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Gnanavansa Thero's Hal Tool</title>
+  </head>
+  <body>
+    <h1>Gnanavansa Thero's Hal Tool</h1>
+    <h3>This tool makes short e and o vowels long in the sinhala pali text except when the said vowels are not followed by a hal consonant.</h3>
+    <label for="textarea1">Input Text:</label><br>
+    <textarea id="textarea1" name="textarea1" rows="10" cols="80"></textarea><br>
+    <button onclick="replaceText()">Replace Hal</button><br>
+    <label for="textarea2">Output Text:</label><br>
+    <textarea id="textarea2" name="textarea2" rows="10" cols="80"></textarea><br>
+    <script>
+      function replaceText() {
+        // Get the input text from the first textarea
+        var inputText = document.getElementById("textarea1").value;
+
+        // Replace dependent vowel "o" with "oo" only if not followed by a hal letter
+        inputText = inputText.replace(/ො(?![ක-ෆ]්)/g, "ෝ");
+        inputText = inputText.replace(/ො$/g, "ෝ"); // end of the text not matched by previous
+        inputText = inputText.replace(/ඔ(?![ක-ෆ]්)/g, "ඕ");
+
+        // Replace dependent vowel "e" with "ee"
+        inputText = inputText.replace(/ෙ(?![ක-ෆ]්)/g, "ේ");
+        inputText = inputText.replace(/ෙ$/g, "ේ");
+        inputText = inputText.replace(/එ(?![ක-ෆ]්)/g, "ඒ");
+
+        // Copy the modified text to the second textarea
+        document.getElementById("textarea2").value = inputText;
+      }
+    </script>
+  </body>
+</html>
