@@ -14,7 +14,7 @@
     "fastify-static": "^2.5.0",
     "fs-extra": "^9.0.1",
     "jquery": "^3.4.1",
-    "jsdom": "^15.1.1",
+    "jsdom": "^16.5.0",
     "mammoth": "^1.4.9",
     "pretty": "^2.0.0",
     "vkbeautify": "^0.99.3"
