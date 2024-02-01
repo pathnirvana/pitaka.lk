@@ -6,7 +6,7 @@
  * use mammoth as below from the input directory
  * npx mammoth book-name.docx book-name.html --style-map=mammoth-styles.txt
  * 
- * DANGER - unless you abosolutely have to do not reprocess existing docx files
+ * DANGER - unless you absolutely have to do not reprocess existing docx files
  * since local corrections have been made to html files which would be overwritten
  * 
  */ 
@@ -16,6 +16,8 @@ const fsExtra = require('fs-extra')
 const mammoth = require("mammoth");
 const assert = require('assert');
 const pretty = require('pretty');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec); // makes exec awaitable
 
 var jsdom = require('jsdom');
 const { JSDOM } = jsdom;
@@ -45,10 +47,10 @@ const bookList = [
     { name: 'ගෞතම බුද්ධ චරිතය', author: 'බළන්ගොඩ ආනන්දමෛත්‍රෙය හිමි', folder: 'buddha-charithaya', group: 1  },
     { name: 'සතිපට්ඨාන විපස්සනා භාවනා', author: 'දෙවිනුවර ඤාණාවාස හිමි', folder: 'satipattana-vipassana', group: 1 },
     { name: 'විශුද්ධි මාර්ගය', author: 'බුද්ධඝෝෂ හිමි', folder: 'vishuddhi-margaya', group: 1 },
-    { name: 'සිංහල මිලින්‍දප්‍ර‍ශ්නය', author: 'හීනටිකුඹුරේ සුමංගල හිමි', folder: 'milinda-prashnaya', group: 1 },
+    { name: 'සිංහල මිලින්‍දප්‍ර‍ශ්නය', author: 'හීනටිකුඹුරේ සුමංගල හිමි', folder: 'milinda-prashnaya', group: 1, files: ['වෙනත්', 2027, 594], gen: 'files' },
     { name: 'අටුවාකථාවස්තු', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'atuwakathawasthu', group: 1 },
     
-    { name: 'බෞද්ධයාගේ අත්පොත', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bauddhayage-athpotha', group: 2 },
+    { name: 'බෞද්ධයාගේ අත්පොත', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bauddhayage-athpotha', group: 2, files: ['rerukane', 465, 502], gen: 'files' },
     { name: 'ධර්ම විනිශ්චය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'dharma-winishchaya', group: 2 },
     { name: 'පාරමිතා ප්‍ර‍කරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'paramitha-prakaranaya', group: 2  },
     { name: 'සූවිසි මහ ගුණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'suvisi-gunaya', group: 2 },
@@ -70,9 +72,9 @@ const bookList = [
     { name: 'විනය කර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vinaya-karma', group: 2 },
     { name: 'සතිපට්ඨාන භාවනා ක්‍ර‍මය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'sathipttana-bhavana-kramaya', group: 2 },
 
-    { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සිරි සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3},
-    { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3 },
-    { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3},
+    { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සිරි සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3, files: ['වෙනත්', 2024, 769], gen: 'files' }, //html, pdf
+    { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3, files: ['වෙනත්', 2025], gen: 'files' },
+    { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3, files: ['ඉපැරණි පොත්', 2026, 'test'], gen: 'files' },
     { name: 'සීහළවත්ථු', author: 'ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'sihala-vaththu', group: 3 },
     { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3},
     { name: 'පාලිභාශාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3},
@@ -85,25 +87,55 @@ const bookList = [
 
 const reprocessAll = false; // process all books even without the 'gen' prop
 let nodesAdded;
-bookList.forEach(book => {
-    if (!book.gen && !reprocessAll) return; // process only some books
-    if (book.gen == 'docx') { // reprocess docx or read from file (DANGER: do not do this for existing files)
-        console.log(`Regenerating html from docx ${book.folder}`);
-        (async () => {
+(async () => {
+    for (const book of bookList) {
+        if (!book.gen && !reprocessAll) continue; // process only some books
+        if (book.gen == 'docx') { // reprocess docx or read from file (DANGER: do not do this for existing files)
+            console.log(`Regenerating html from docx ${book.folder}`);
             const mRes = await mammoth.convertToHtml({path: `${__dirname}/input/${book.folder}.docx`}, mammothOpts);
             fs.writeFileSync(`${__dirname}/input/${book.folder}.html`, pretty(mRes.value), {encoding: 'utf-8'});
-            processBook(book, mRes.value);
-        })();
-    } else if (book.gen == 'html') {
-        processBook(book, fs.readFileSync(`${__dirname}/input/${book.folder}.html`, { encoding: 'utf8' }));
+            generateHTML(book, mRes.value);
+        } else {
+            const bookDom = new JSDOM(fs.readFileSync(`${__dirname}/input/${book.folder}.html`, { encoding: 'utf8' }));
+            const bookDoc = bookDom.window.document;
+            if (book.gen == 'html') {
+                generateHTML(book, bookDoc); // generate split html pages for books website/app
+            } else if (book.gen == 'files') {
+                await generateFiles(book, bookDoc) // generate pdf and full-html files for library from error-corrected html files
+            }
+        }
     }
-});
-
+})();
 writeAppIndexFile();
 
-function processBook(book, html) {
-    const bookDom = new JSDOM(html);
-    const bookDoc = bookDom.window.document;
+async function generateFiles(book, bookDoc) {
+    const bookHeaders = $('h1,h2,h3,h4', bookDoc).get(), toc = JC('ul', 'TOC-container'), filePath = `${__dirname}/files/${book.files[0]}`
+    if (!fs.existsSync(filePath)) fs.mkdirSync(filePath) 
+    bookHeaders.forEach((_elem, ind) => {
+        const elem = $(_elem), hrefId = `toc-ind-${ind}`
+        elem.attr('id', hrefId).addClass('sinh-toc')
+        const link = JC('a', 'TOC').attr('href', '#' + hrefId).text(elem.text())
+        toc.append(JC('li', elem.prop('tagName')).append(link))
+    })
+
+    const placeholders = { title: book.name, desc: `${book.name} - ${book.author}`, author: book.author, 
+        toc: pretty(JC('div').append(toc).html()), content: bookDoc.body.innerHTML, style: 'print-pdf.css' }
+    let tmplStr = fs.readFileSync(`${__dirname}/pre-file.html`, 'utf-8')
+    for (const key in placeholders) {
+        tmplStr = tmplStr.replace(new RegExp((key + 'placeholder').toUpperCase(), 'g'), placeholders[key]);    
+    }
+    const fileBase = `${filePath}/${book.name}`, author = book.group != 2 ? ` - ${book.author}` : '', 
+        htmlFile = `${fileBase}${author}{${book.files[1]}}.html`
+    fs.writeFileSync(htmlFile, tmplStr, { encoding: 'utf8' })
+    console.log(`wrote ${fileBase} for html`)
+    if (book.files.length > 2) {
+        // puppeteer headless chrome can also be used but it does not generate pdf bookmarks for TOC, hence weasyprint
+        await exec(`weasyprint "${htmlFile}" "${fileBase}${author}{${book.files[2]}}.pdf"`);
+        console.log(`wrote ${fileBase} for pdf`)
+    }
+}
+
+function generateHTML(book, bookDoc) {
     const bookH1 = $('h1', bookDoc).get();
     const footnotes = $("li[id^='footnote-']", bookDoc).get();
     

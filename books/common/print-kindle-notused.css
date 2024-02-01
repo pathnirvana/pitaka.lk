@@ -1,0 +1,117 @@
+@font-face {
+    font-family: 'UN-Abhaya';
+    src: local('###'), url('UN-Abhaya.ttf') format('truetype');
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'UN-Abhaya';
+    src: local('###'), url('UN-Abhaya-new-bold-6.ttf') format('truetype');
+    font-weight: bold;
+}
+@font-face { font-family: 'styled'; src: local('###'), url('UN-Alakamanda-4-95.ttf') format('truetype'); font-weight: normal; }
+@font-face { font-family: 'heading'; src: local('###'), url('UN-Malithi-4.ttf') format('truetype'); font-weight: normal; }
+
+body {
+    font-family: 'UN-Abhaya';
+    font-size: 15px;
+    text-align: justify;
+    line-height: 1.2;
+}
+
+@media print {
+    @page {
+      size: 90mm 123mm;
+      margin: 7mm 3mm 3mm 3mm;
+      counter-reset: footnote;
+      @footnote {
+        float: bottom;
+      }
+    }
+
+    @page:first {
+        @top-left {
+            content: normal;
+        }
+        @top-right {
+            content: normal;
+        }
+    }
+    /* @page:nth(1 of body) { not supported
+        @top-left { content: normal; }
+        @top-right { content: normal; }
+    } */
+    @page:nth(2) { /* second page (patuna page) */
+        @top-left { content: normal; }
+    }
+
+    @page { 
+        @top-right {
+            content: string(chapter);
+            font-size: 0.7rem;
+            font-family: "UN-Abhaya";
+            margin-right: 2mm;
+            /* content: element(pageHeader); not clickable in kindle */
+        }
+        @top-left {
+            content: counter(page);
+            font-size: 0.7rem;
+            margin-left: 2mm;
+        }
+    }
+    #toc-header{
+        position: running(pageHeader);
+        display: block !important;
+    }
+}
+::footnote-marker { color: blue; }
+::footnote-call { font-variant-position: normal; }
+span.footnote { float: footnote; font-size: 0.8rem; }
+#toc-header { display: none; } 
+#toc-header a { text-decoration: none; font-size: 0.8rem; margin-right: 0.7cm; }
+
+div.title { font-size: 2.5rem; margin-top: 3rem; margin-bottom: 5rem; text-align: center; color: brown; }
+div.author { font-size: 1.3rem; margin: 2rem;  text-align: center; page-break-after: always; }
+div.patuna-title { font-size: 2rem; margin: 0rem 0rem 1rem 0rem; }
+ul.TOC-container { list-style: none; }
+
+h1 {
+    page-break-before: always;
+    bookmark-level: none;
+    page: body;
+}
+h1.sinh-toc { string-set: chapter content(); }
+h1.roman-toc {  bookmark-level: 1; page-break-before: avoid; font-size: 0.01rem; position: absolute; color: rgba(255, 255, 255, 0); }
+  
+h1, h2, h3, h4, h5, .subhead {
+    page-break-after: avoid;
+  }
+
+h2 { bookmark-level: 2; }
+h3 { bookmark-level: 3; }
+h4 { bookmark-level: 4; }
+  
+table, figure {
+    page-break-inside: avoid;
+  }
+  
+/*
+Following styles copied from the book.css
+*/
+h1 { font-size: 1.6rem; font-weight: normal; }
+h2 { font-size: 1.4rem; font-weight: normal; }
+h3,h4 { font-size: 1.3rem; font-weight: normal; }
+
+.gatha { margin: 0.1rem 0 0.1rem 2rem; }
+.gatha > p { padding: 0; margin: 0; }
+
+.subhead { color:brown; font-weight: bold; font-size: 1.2rem; } /* headings that are not in TOC */
+.subhead > p { padding: 0; margin: 0; }
+
+.largefont { font-size: larger; } /* used for largepali sections in vinaya karma book for now */
+
+.centered { text-align: center; }
+
+img { max-width: 100%; }
+
+table td { border: 1px solid black; padding: 10px 10px; text-align: left; }
+td > p { padding: 0; margin: 0; }

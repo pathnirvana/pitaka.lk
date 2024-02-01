@@ -1,5 +1,7 @@
 bjt/books
 dev/passwords.mjs
+dev/books/files
+dev/books/new to be added
 **/node_modules
 .DS_Store
 .vscode
