@@ -44,13 +44,13 @@ const isNodeEmpty = (node) => node.textElem.length == 0;
 const getNodeFileName = (node) => `${node.ids.join('-')}.html`; //${isNodeEmpty(node) ? '-1' : ''}.html`; // if empty point to the first child
 
 const bookList = [
-    { name: 'ගෞතම බුද්ධ චරිතය', author: 'බළන්ගොඩ ආනන්දමෛත්‍රෙය හිමි', folder: 'buddha-charithaya', group: 1  },
-    { name: 'සතිපට්ඨාන විපස්සනා භාවනා', author: 'දෙවිනුවර ඤාණාවාස හිමි', folder: 'satipattana-vipassana', group: 1 },
-    { name: 'විශුද්ධි මාර්ගය', author: 'බුද්ධඝෝෂ හිමි', folder: 'vishuddhi-margaya', group: 1 },
-    { name: 'සිංහල මිලින්‍දප්‍ර‍ශ්නය', author: 'හීනටිකුඹුරේ සුමංගල හිමි', folder: 'milinda-prashnaya', group: 1, files: ['වෙනත්', 2027, 594], gen: 'files' },
-    { name: 'අටුවාකථාවස්තු', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'atuwakathawasthu', group: 1 },
+    { name: 'ගෞතම බුද්ධ චරිතය', author: 'බළන්ගොඩ ආනන්ද මෛත්‍රෙය හිමි', folder: 'buddha-charithaya', group: 1, files: ['වෙනත්', 2028, 2029], gen: '' }, //html, pdf
+    { name: 'සතිපට්ඨාන විපස්සනා භාවනා', author: 'දෙවිනුවර ඤාණාවාස හිමි', folder: 'satipattana-vipassana', group: 1, files: ['භාවනා කමටහන්', 2030, 755], gen: '' },
+    { name: 'විශුද්ධි මාර්ගය', author: 'මාතර ධර්මවංශ හිමි', folder: 'vishuddhi-margaya', group: 1, files: ['භාවනා කමටහන්', 2031, '', 413], gen: '' },
+    { name: 'සිංහල මිලින්‍දප්‍ර‍ශ්නය', author: 'හීනටිකුඹුරේ සුමංගල හිමි', folder: 'milinda-prashnaya', group: 1, files: ['වෙනත්', 2027, 594], gen: '' },
+    { name: 'අටුවාකථාවස්තු', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'atuwakathawasthu', group: 1, files: ['වෙනත්', 2032, 2033], gen: '' },
     
-    { name: 'බෞද්ධයාගේ අත්පොත', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bauddhayage-athpotha', group: 2, files: ['rerukane', 465, 502], gen: 'files' },
+    { name: 'බෞද්ධයාගේ අත්පොත', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bauddhayage-athpotha', group: 2, files: ['rerukane', 465, 502], gen: '' },
     { name: 'ධර්ම විනිශ්චය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'dharma-winishchaya', group: 2 },
     { name: 'පාරමිතා ප්‍ර‍කරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'paramitha-prakaranaya', group: 2  },
     { name: 'සූවිසි මහ ගුණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'suvisi-gunaya', group: 2 },
@@ -72,17 +72,17 @@ const bookList = [
     { name: 'විනය කර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vinaya-karma', group: 2 },
     { name: 'සතිපට්ඨාන භාවනා ක්‍ර‍මය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'sathipttana-bhavana-kramaya', group: 2 },
 
-    { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සිරි සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3, files: ['වෙනත්', 2024, 769], gen: 'files' }, //html, pdf
-    { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3, files: ['වෙනත්', 2025], gen: 'files' },
-    { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3, files: ['ඉපැරණි පොත්', 2026, 'test'], gen: 'files' },
-    { name: 'සීහළවත්ථු', author: 'ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'sihala-vaththu', group: 3 },
-    { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3},
-    { name: 'පාලිභාශාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3},
-    { name: 'අභිධර්ම චන්ද්‍රිකාව', author: 'මාතර ශ්‍රී ධර්මවංශ හිමි', folder: 'abhidharma-chandrikava', group: 3},
-    { name: 'අමාවතුර', author: 'ගුරුළුගෝමී', folder: 'amawathura', group: 3},
-    { name: 'අනාගත වංශය මෙතේ බුදුසිරිත', author: 'විල්ගම්මුල සංඝරාජ හිමි', folder: 'anagatha-vanshaya', group: 3 },
-    { name: 'ජිනකාලමාලී ප්‍රකරණය', author: 'රත්නපඤ්ඤ හිමි', folder: 'jinakalamali-prakaranaya', group: 3 },
-    { name: 'කුණාල ජාතකය - උන්මාදිනී', author: '', folder: 'kunala-jathaka', group: 3 },
+    { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3, files: ['වෙනත්', 2024, 769], gen: '' },
+    { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3, files: ['වෙනත්', 2025, '', 534], gen: '' },
+    { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3, files: ['ඉපැරණි පොත්', 2026, '', 64], gen: '' },
+    { name: 'සීහළවත්ථු', author: 'ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'sihala-vaththu', group: 3, files: ['ඉපැරණි පොත්', 2034, '', 74], gen: '' },
+    { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3, files: ['වෙනත්', 2035, '', 603], gen: '' },
+    { name: 'පාලිභාෂාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3, files: ['පාලි ඉගෙනුම', 2036, '', 164], gen: ''},
+    { name: 'අභිධර්ම චන්ද්‍රිකාව', author: 'මාතර ශ්‍රී ධර්මවංශ හිමි', folder: 'abhidharma-chandrikava', group: 3, files: ['අභිධර්ම', 2037, 943], gen: ''},
+    { name: 'අමාවතුර', author: 'ගුරුළුගෝමී', folder: 'amawathura', group: 3, files: ['ඉපැරණි පොත්', 2038, 54], gen: ''},
+    { name: 'අනාගත වංශය මෙතේ බුදුසිරිත', author: 'විල්ගම්මුල සංඝරාජ හිමි', folder: 'anagatha-vanshaya', group: 3, files: ['වෙනත්', 2039, 952], gen: '' },
+    { name: 'ජිනකාලමාලී ප්‍රකරණය', author: 'රත්නපඤ්ඤ හිමි', folder: 'jinakalamali-prakaranaya', group: 3, files: ['ඉපැරණි පොත්', 2040, 2041], gen: '' },
+    { name: 'කුණාල ජාතකය - උන්මාදිනී', author: '', folder: 'kunala-jathaka', group: 3, files: ['සූත්‍ර', 2042, '', 648], gen: '' },
 ];
 
 const reprocessAll = false; // process all books even without the 'gen' prop
@@ -94,12 +94,12 @@ let nodesAdded;
             console.log(`Regenerating html from docx ${book.folder}`);
             const mRes = await mammoth.convertToHtml({path: `${__dirname}/input/${book.folder}.docx`}, mammothOpts);
             fs.writeFileSync(`${__dirname}/input/${book.folder}.html`, pretty(mRes.value), {encoding: 'utf-8'});
-            generateHTML(book, mRes.value);
+            generateWebpages(book, mRes.value);
         } else {
             const bookDom = new JSDOM(fs.readFileSync(`${__dirname}/input/${book.folder}.html`, { encoding: 'utf8' }));
             const bookDoc = bookDom.window.document;
-            if (book.gen == 'html') {
-                generateHTML(book, bookDoc); // generate split html pages for books website/app
+            if (book.gen == 'web') {
+                generateWebpages(book, bookDoc); // generate split html pages for books website/app
             } else if (book.gen == 'files') {
                 await generateFiles(book, bookDoc) // generate pdf and full-html files for library from error-corrected html files
             }
@@ -120,22 +120,22 @@ async function generateFiles(book, bookDoc) {
 
     const placeholders = { title: book.name, desc: `${book.name} - ${book.author}`, author: book.author, 
         toc: pretty(JC('div').append(toc).html()), content: bookDoc.body.innerHTML, style: 'print-pdf.css' }
-    let tmplStr = fs.readFileSync(`${__dirname}/pre-file.html`, 'utf-8')
+    let tmplStr = fs.readFileSync(`${__dirname}/pre-html-file.html`, 'utf-8')
     for (const key in placeholders) {
         tmplStr = tmplStr.replace(new RegExp((key + 'placeholder').toUpperCase(), 'g'), placeholders[key]);    
     }
-    const fileBase = `${filePath}/${book.name}`, author = book.group != 2 ? ` - ${book.author}` : '', 
+    const fileBase = `${filePath}/${book.name}`, author = book.group != 2 && book.author ? ` - ${book.author}` : '', 
         htmlFile = `${fileBase}${author}{${book.files[1]}}.html`
     fs.writeFileSync(htmlFile, tmplStr, { encoding: 'utf8' })
     console.log(`wrote ${fileBase} for html`)
-    if (book.files.length > 2) {
+    if (book.files[2]) {
         // puppeteer headless chrome can also be used but it does not generate pdf bookmarks for TOC, hence weasyprint
         await exec(`weasyprint "${htmlFile}" "${fileBase}${author}{${book.files[2]}}.pdf"`);
         console.log(`wrote ${fileBase} for pdf`)
     }
 }
 
-function generateHTML(book, bookDoc) {
+function generateWebpages(book, bookDoc) {
     const bookH1 = $('h1', bookDoc).get();
     const footnotes = $("li[id^='footnote-']", bookDoc).get();
     
@@ -247,7 +247,7 @@ function writeIndexFile(book, nodeList, fileName) {
     const patunaDiv = $('<div/>').append(nodeList.map(node => createIndexDiv(node)));
     const nameAuthor = `${book.name} - ${book.author}`
     genericWriteFile(fileName, patunaDiv, fs.readFileSync(`${__dirname}/pre-index.html`, { encoding: 'utf8' }),
-        { title: nameAuthor, desc: nameAuthor, folder: book.folder, titleBar: book.name });
+        { title: nameAuthor, desc: nameAuthor, folder: book.folder, titleBar: book.name, htmlId: book.files[1], pdfId: book.files[2] || book.files[3] });
 }
 
 function genericWriteFile(fileName, contentDiv, tmplStr, placeholders) {
