@@ -71,6 +71,7 @@ const bookList = [
     { name: 'චත්තාළීසාකාර විපස්සනා භාවනාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'chaththalisakara-vipassana', group: 2 },
     { name: 'විනය කර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vinaya-karma', group: 2 },
     { name: 'සතිපට්ඨාන භාවනා ක්‍ර‍මය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'sathipttana-bhavana-kramaya', group: 2 },
+    { name: 'නිර්වාණ විනිශ්චය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'nirvana-vinishchaya', group: 2, files: ['rerukane', 1043, 1044], gen: 'files' },
 
     { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3, files: ['වෙනත්', 2024, 769], gen: '' },
     { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3, files: ['වෙනත්', 2025, '', 534], gen: '' },
@@ -93,8 +94,7 @@ let nodesAdded;
         if (book.gen == 'docx') { // reprocess docx or read from file (DANGER: do not do this for existing files)
             console.log(`Regenerating html from docx ${book.folder}`);
             const mRes = await mammoth.convertToHtml({path: `${__dirname}/input/${book.folder}.docx`}, mammothOpts);
-            fs.writeFileSync(`${__dirname}/input/${book.folder}.html`, pretty(mRes.value), {encoding: 'utf-8'});
-            generateWebpages(book, mRes.value);
+            fs.writeFileSync(`${__dirname}/input/${book.folder}.html`, pretty(mRes.value), {encoding: 'utf-8'})
         } else {
             const bookDom = new JSDOM(fs.readFileSync(`${__dirname}/input/${book.folder}.html`, { encoding: 'utf8' }));
             const bookDoc = bookDom.window.document;
