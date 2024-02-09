@@ -52,8 +52,10 @@ body {
 
 #toc-header { display: none; } 
 #toc-header a { text-decoration: none; font-size: 1rem; margin-right: 0.7cm; }
-div.title { font-size: 2.5rem; margin-top: 3rem; margin-bottom: 5rem; text-align: center; color: brown; }
-div.author { font-size: 1.3rem; margin: 2rem;  text-align: center; page-break-after: always; }
+div.first-page { text-align: center; page-break-after: always; }
+div.title { font-size: 2.5rem; margin-top: 3rem; margin-bottom: 5rem;  color: brown; }
+div.author { font-size: 1.5rem; margin: 2rem; }
+div.info { font-size: 1rem; margin: 2rem; }
 div.patuna-title { font-size: 2rem; margin: 0rem 0rem 1rem 0rem; }
 
 .TOC-container { list-style: none; padding-left: 0rem; line-height: 1.4; }
