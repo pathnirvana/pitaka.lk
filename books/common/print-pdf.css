@@ -54,8 +54,8 @@ body {
 #toc-header a { text-decoration: none; font-size: 1rem; margin-right: 0.7cm; }
 div.first-page { text-align: center; page-break-after: always; }
 div.title { font-size: 2.5rem; margin-top: 3rem; margin-bottom: 5rem;  color: brown; }
-div.author { font-size: 1.5rem; margin: 2rem; }
-div.info { font-size: 1rem; margin: 2rem; }
+div.author { font-size: 1.5rem; margin: 2rem; color: darkgreen;}
+div.info { font-size: 1rem; margin-top: 4rem; }
 div.patuna-title { font-size: 2rem; margin: 0rem 0rem 1rem 0rem; }
 
 .TOC-container { list-style: none; padding-left: 0rem; line-height: 1.4; }
@@ -74,7 +74,7 @@ h4 { bookmark-level: 4; }
 table, figure { page-break-inside: avoid; }
 sup a { text-decoration: none; font-size: small; } /* footnote pointer */
 
-table.chitta { border-collapse: collapse; }
+table.collapse { border-collapse: collapse; }
 /*
 Following styles copied from the book.css
 */
