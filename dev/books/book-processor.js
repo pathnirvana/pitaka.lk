@@ -44,49 +44,49 @@ const isNodeEmpty = (node) => node.textElem.length == 0;
 const getNodeFileName = (node) => `${node.ids.join('-')}.html`; //${isNodeEmpty(node) ? '-1' : ''}.html`; // if empty point to the first child
 
 const bookList = [
-    { name: 'ගෞතම බුද්ධ චරිතය', author: 'බළන්ගොඩ ආනන්ද මෛත්‍රෙය හිමි', folder: 'buddha-charithaya', group: 1, files: ['වෙනත්', 2028, 2029], gen: '' }, //html, pdf
-    { name: 'සතිපට්ඨාන විපස්සනා භාවනා', author: 'දෙවිනුවර ඤාණාවාස හිමි', folder: 'satipattana-vipassana', group: 1, files: ['භාවනා කමටහන්', 2030, 755], gen: '' },
-    { name: 'විශුද්ධි මාර්ගය', author: 'මාතර ධර්මවංශ හිමි', folder: 'vishuddhi-margaya', group: 1, files: ['භාවනා කමටහන්', 2031, '', 413], gen: '' },
-    { name: 'සිංහල මිලින්‍දප්‍ර‍ශ්නය', author: 'හීනටිකුඹුරේ සුමංගල හිමි', folder: 'milinda-prashnaya', group: 1, files: ['වෙනත්', 2027, 594], gen: '' },
-    { name: 'අටුවාකථාවස්තු', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'atuwakathawasthu', group: 1, files: ['වෙනත්', 2032, 2033], gen: '' },
+    { name: 'ගෞතම බුද්ධ චරිතය', author: 'බළන්ගොඩ ආනන්ද මෛත්‍රෙය හිමි', folder: 'buddha-charithaya', group: 1, files: ['වෙනත්', 1028, 1029], gen: '' }, //html, pdf, non-gen pdf
+    { name: 'සතිපට්ඨාන විපස්සනා භාවනා', author: 'දෙවිනුවර ඤාණාවාස හිමි', folder: 'satipattana-vipassana', group: 1, files: ['භාවනා කමටහන්', 1030, 755], gen: '' },
+    { name: 'විශුද්ධි මාර්ගය', author: 'මාතර ධර්මවංශ හිමි', folder: 'vishuddhi-margaya', group: 1, files: ['භාවනා කමටහන්', 1031, '', 413], gen: '' },
+    { name: 'සිංහල මිලින්‍දප්‍ර‍ශ්නය', author: 'හීනටිකුඹුරේ සුමංගල හිමි', folder: 'milinda-prashnaya', group: 1, files: ['වෙනත්', 1027, 594], gen: '' },
+    { name: 'අටුවාකථාවස්තු', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'atuwakathawasthu', group: 1, files: ['වෙනත්', 1032, 1033], gen: '' },
     
-    { name: 'බෞද්ධයාගේ අත්පොත', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bauddhayage-athpotha', group: 2, files: ['rerukane', 465, 502], gen: '' },
-    { name: 'ධර්ම විනිශ්චය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'dharma-winishchaya', group: 2 },
-    { name: 'පාරමිතා ප්‍ර‍කරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'paramitha-prakaranaya', group: 2  },
-    { name: 'සූවිසි මහ ගුණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'suvisi-gunaya', group: 2 },
-    { name: 'අභිධර්මයේ මූලික කරුණු', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'abhidharmaye-mulika-karunu', group: 2 },
-    { name: 'අභිධර්ම මාර්ගය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'abhidharma-margaya', group: 2 },
-    { name: 'චතුරාර්‍ය්‍ය සත්‍යය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'chathurarya-sathya', group: 2 },
-    { name: 'පුණ්‍යෝපදේශය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'punyopadeshaya', group: 2 },
-    { name: 'ශාසනාවතරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'shasanavatharanaya', group: 2 },
-    { name: 'බෝධිපාක්ෂික ධර්ම විස්තරය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bodhi-pakshika-dharma', group: 2 },
-    { name: 'පටිච්ච සමුප්පාද විවරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'patichcha-samuppada-vivaranaya', group: 2},
-    { name: 'උපසම්පදා ශීලය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'upasampada-sheelaya', group: 2 },
-    { name: 'උභය ප්‍රාතිමෝක්‍ෂය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'ubhaya-prathimokshaya', group: 2 },
-    { name: 'වඤ්චක හා චිත්තෝපක්ලේශ ධර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'wanchaka-dharma', group: 2 },
-    { name: 'විදර්ශනා භාවනා ක්‍රමය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vidarshana-bhavana-kramaya', group: 2 },
-    { name: 'කෙලෙස් එක්දහස් පන්සියය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'keles-1500', group: 2 },
-    { name: 'පොහොය දිනය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'pohoya-dinaya', group: 2},
-    { name: 'බෝධි පූජාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bodhi-poojawa', group: 2 },
-    { name: 'චත්තාළීසාකාර විපස්සනා භාවනාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'chaththalisakara-vipassana', group: 2 },
-    { name: 'විනය කර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vinaya-karma', group: 2 },
-    { name: 'සතිපට්ඨාන භාවනා ක්‍ර‍මය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'sathipttana-bhavana-kramaya', group: 2 },
-    { name: 'නිර්වාණ විනිශ්චය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'nirvana-vinishchaya', group: 2, files: ['rerukane', 1043, 1044], gen: 'files' },
+    { name: 'බෞද්ධයාගේ අත්පොත', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bauddhayage-athpotha', group: 2, files: ['rrk', 465, 502], gen: '' },
+    { name: 'ධර්ම විනිශ්චය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'dharma-winishchaya', group: 2, files: ['rrk', 471, 492], gen: '' },
+    { name: 'පාරමිතා ප්‍ර‍කරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'paramitha-prakaranaya', group: 2, files: ['rrk', 473, 496], gen: '' },
+    { name: 'සූවිසි මහ ගුණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'suvisi-gunaya', group: 2, files: ['rrk', 479, 513], gen: '' },
+    { name: 'අභිධර්මයේ මූලික කරුණු', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'abhidharmaye-mulika-karunu', group: 2, files: ['rrk', 464, 485], gen: '' },
+    { name: 'අභිධර්ම මාර්ගය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'abhidharma-margaya', group: 2, files: ['rrk', 463, 484], gen: '' },
+    { name: 'චතුරාර්‍ය්‍ය සත්‍යය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'chathurarya-sathya', group: 2, files: ['rrk', 470, 491], gen: '' },
+    { name: 'පුණ්‍යෝපදේශය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'punyopadeshaya', group: 2, files: ['rrk', 476, 497], gen: '' },
+    { name: 'ශාසනාවතරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'shasanavatharanaya', group: 2, files: ['rrk', 478, 510], gen: '' },
+    { name: 'බෝධිපාක්ෂික ධර්ම විස්තරය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bodhi-pakshika-dharma', group: 2, files: ['rrk', 466, 501], gen: '' },
+    { name: 'පටිච්ච සමුප්පාද විවරණය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'patichcha-samuppada-vivaranaya', group: 2, files: ['rrk', 474, 495], gen: ''},
+    { name: 'උපසම්පදා ශීලය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'upasampada-sheelaya', group: 2, files: ['rrk', 481, 487], gen: '' },
+    { name: 'උභය ප්‍රාතිමෝක්‍ෂය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'ubhaya-prathimokshaya', group: 2, files: ['rrk', 480, 488], gen: '' },
+    { name: 'වඤ්චක හා චිත්තෝපක්ලේශ ධර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'wanchaka-dharma', group: 2, files: ['rrk', 483, 507], gen: '' },
+    { name: 'විදර්ශනා භාවනා ක්‍රමය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vidarshana-bhavana-kramaya', group: 2, files: ['rrk', 482, 508], gen: '' },
+    { name: 'කෙලෙස් එක්දහස් පන්සියය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'keles-1500', group: 2, files: ['rrk', 472, 489], gen: '' },
+    { name: 'පොහොය දිනය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'pohoya-dinaya', group: 2, files: ['rrk', 475, 498], gen: '' },
+    { name: 'බෝධි පූජාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bodhi-poojawa', group: 2, files: ['rrk', 467, 500], gen: '' },
+    { name: 'චත්තාළීසාකාර විපස්සනා භාවනාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'chaththalisakara-vipassana', group: 2, files: ['rrk', 469, 490], gen: '' },
+    { name: 'විනය කර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vinaya-karma', group: 2, files: ['rrk', 945, 944], gen: '' },
+    { name: 'සතිපට්ඨාන භාවනා ක්‍ර‍මය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'sathipttana-bhavana-kramaya', group: 2, files: ['rrk', 947, 511], gen: 'files' },
+    { name: 'නිර්වාණ විනිශ්චය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'nirvana-vinishchaya', group: 2, files: ['rrk', 1043, 1044], gen: '' },
 
-    { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3, files: ['වෙනත්', 2024, 769], gen: '' },
-    { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3, files: ['වෙනත්', 2025, '', 534], gen: '' },
-    { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3, files: ['ඉපැරණි පොත්', 2026, '', 64], gen: '' },
-    { name: 'සීහළවත්ථු', author: 'ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'sihala-vaththu', group: 3, files: ['ඉපැරණි පොත්', 2034, '', 74], gen: '' },
-    { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3, files: ['වෙනත්', 2035, '', 603], gen: '' },
-    { name: 'පාලිභාෂාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3, files: ['පාලි ඉගෙනුම', 2036, '', 164], gen: ''},
-    { name: 'අභිධර්ම චන්ද්‍රිකාව', author: 'මාතර ශ්‍රී ධර්මවංශ හිමි', folder: 'abhidharma-chandrikava', group: 3, files: ['අභිධර්ම', 2037, 943], gen: ''},
-    { name: 'අමාවතුර', author: 'ගුරුළුගෝමී', folder: 'amawathura', group: 3, files: ['ඉපැරණි පොත්', 2038, 54], gen: ''},
-    { name: 'අනාගත වංශය මෙතේ බුදුසිරිත', author: 'විල්ගම්මුල සංඝරාජ හිමි', folder: 'anagatha-vanshaya', group: 3, files: ['වෙනත්', 2039, 952], gen: '' },
-    { name: 'ජිනකාලමාලී ප්‍රකරණය', author: 'රත්නපඤ්ඤ හිමි', folder: 'jinakalamali-prakaranaya', group: 3, files: ['ඉපැරණි පොත්', 2040, 2041], gen: '' },
-    { name: 'කුණාල ජාතකය - උන්මාදිනී', author: '', folder: 'kunala-jathaka', group: 3, files: ['සූත්‍ර', 2042, '', 648], gen: '' },
+    { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3, files: ['වෙනත්', 1024, 769], gen: '' },
+    { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3, files: ['වෙනත්', 1025, '', 534], gen: '' },
+    { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3, files: ['ඉපැරණි පොත්', 1026, '', 64], gen: '' },
+    { name: 'සීහළවත්ථු', author: 'ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'sihala-vaththu', group: 3, files: ['ඉපැරණි පොත්', 1034, '', 74], gen: '' },
+    { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3, files: ['වෙනත්', 1035, '', 603], gen: '' },
+    { name: 'පාලිභාෂාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3, files: ['පාලි ඉගෙනුම', 1036, '', 164], gen: ''},
+    { name: 'අභිධර්ම චන්ද්‍රිකාව', author: 'මාතර ශ්‍රී ධර්මවංශ හිමි', folder: 'abhidharma-chandrikava', group: 3, files: ['අභිධර්ම', 1037, 943], gen: ''},
+    { name: 'අමාවතුර', author: 'ගුරුළුගෝමී', folder: 'amawathura', group: 3, files: ['ඉපැරණි පොත්', 1038, 54], gen: ''},
+    { name: 'අනාගත වංශය මෙතේ බුදුසිරිත', author: 'විල්ගම්මුල සංඝරාජ හිමි', folder: 'anagatha-vanshaya', group: 3, files: ['වෙනත්', 1039, 952], gen: '' },
+    { name: 'ජිනකාලමාලී ප්‍රකරණය', author: 'රත්නපඤ්ඤ හිමි', folder: 'jinakalamali-prakaranaya', group: 3, files: ['ඉපැරණි පොත්', 1040, 1041], gen: '' },
+    { name: 'කුණාල ජාතකය - උන්මාදිනී', author: '', folder: 'kunala-jathaka', group: 3, files: ['සූත්‍ර', 1042, '', 648], gen: '' },
 ];
 
-const reprocessAll = false; // process all books even without the 'gen' prop
+const reprocessAll = false; // process all books even without the 'gen' prop as 'web'
 let nodesAdded;
 (async () => {
     for (const book of bookList) {
@@ -98,10 +98,10 @@ let nodesAdded;
         } else {
             const bookDom = new JSDOM(fs.readFileSync(`${__dirname}/input/${book.folder}.html`, { encoding: 'utf8' }));
             const bookDoc = bookDom.window.document;
-            if (book.gen == 'web') {
-                generateWebpages(book, bookDoc); // generate split html pages for books website/app
-            } else if (book.gen == 'files') {
+            if (book.gen == 'files') {
                 await generateFiles(book, bookDoc) // generate pdf and full-html files for library from error-corrected html files
+            } else { // if (book.gen == 'web')
+                generateWebpages(book, bookDoc); // generate split html pages for books website/app
             }
         }
     }
@@ -118,7 +118,7 @@ async function generateFiles(book, bookDoc) {
         toc.append(JC('li', elem.prop('tagName')).append(link))
     })
 
-    const placeholders = { title: book.name, desc: `${book.name} - ${book.author}`, author: book.author, 
+    const placeholders = { title: book.name, desc: `${book.name} - ${book.author}`, author: book.author, folder: book.folder,
         toc: pretty(JC('div').append(toc).html()), content: bookDoc.body.innerHTML, style: 'print-pdf.css' }
     let tmplStr = fs.readFileSync(`${__dirname}/pre-html-file.html`, 'utf-8')
     for (const key in placeholders) {
