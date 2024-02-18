@@ -32,7 +32,7 @@ const outputFolder = `${__dirname}/../../books`;
 
 const mammothOpts = {
     styleMap: [
-        "p[style-name='gatha'] => div.gatha > p:fresh",
+        "p[style-name='Quote,gatha'] => div.gatha > p:fresh",
         "p[style-name='subhead'] => div.subhead > p:fresh",
         "p[style-name='largefont'] => div.largefont > p:fresh",
         "p[style-name='centered'] => div.centered > p:fresh",
@@ -49,6 +49,7 @@ const bookList = [
     { name: 'විශුද්ධි මාර්ගය', author: 'මාතර ධර්මවංශ හිමි', folder: 'vishuddhi-margaya', group: 1, files: ['භාවනා කමටහන්', 1031, '', 413], gen: '' },
     { name: 'සිංහල මිලින්‍දප්‍ර‍ශ්නය', author: 'හීනටිකුඹුරේ සුමංගල හිමි', folder: 'milinda-prashnaya', group: 1, files: ['වෙනත්', 1027, 594], gen: '' },
     { name: 'අටුවාකථාවස්තු', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'atuwakathawasthu', group: 1, files: ['වෙනත්', 1032, 1033], gen: '' },
+    { name: 'ශමථ විදර්ශනා භාවනා මාර්ගය', author: 'මාතර ඥාණාරාම හිමි', folder: 'bhavana-margaya', group: 1, files: ['භාවනා කමටහන්', 1048, 1049], gen: 'files' },
     
     { name: 'බෞද්ධයාගේ අත්පොත', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bauddhayage-athpotha', group: 2, files: ['rrk', 465, 502], gen: '' },
     { name: 'ධර්ම විනිශ්චය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'dharma-winishchaya', group: 2, files: ['rrk', 471, 492], gen: '' },
@@ -70,7 +71,7 @@ const bookList = [
     { name: 'බෝධි පූජාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bodhi-poojawa', group: 2, files: ['rrk', 467, 500], gen: '' },
     { name: 'චත්තාළීසාකාර විපස්සනා භාවනාව', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'chaththalisakara-vipassana', group: 2, files: ['rrk', 469, 490], gen: '' },
     { name: 'විනය කර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vinaya-karma', group: 2, files: ['rrk', 945, 944], gen: '' },
-    { name: 'සතිපට්ඨාන භාවනා ක්‍ර‍මය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'sathipttana-bhavana-kramaya', group: 2, files: ['rrk', 947, 511], gen: 'files' },
+    { name: 'සතිපට්ඨාන භාවනා ක්‍ර‍මය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'sathipttana-bhavana-kramaya', group: 2, files: ['rrk', 947, 511], gen: '' },
     { name: 'නිර්වාණ විනිශ්චය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'nirvana-vinishchaya', group: 2, files: ['rrk', 1043, 1044], gen: '' },
 
     { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3, files: ['වෙනත්', 1024, 769], gen: '' },
