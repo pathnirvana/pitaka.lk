@@ -49,7 +49,7 @@ const bookList = [
     { name: 'විශුද්ධි මාර්ගය', author: 'මාතර ධර්මවංශ හිමි', folder: 'vishuddhi-margaya', group: 1, files: ['භාවනා කමටහන්', 1031, '', 413], gen: '' },
     { name: 'සිංහල මිලින්‍දප්‍ර‍ශ්නය', author: 'හීනටිකුඹුරේ සුමංගල හිමි', folder: 'milinda-prashnaya', group: 1, files: ['වෙනත්', 1027, 594], gen: '' },
     { name: 'අටුවාකථාවස්තු', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'atuwakathawasthu', group: 1, files: ['වෙනත්', 1032, 1033], gen: '' },
-    { name: 'ශමථ විදර්ශනා භාවනා මාර්ගය', author: 'මාතර ඥාණාරාම හිමි', folder: 'bhavana-margaya', group: 1, files: ['භාවනා කමටහන්', 1048, 1049], gen: 'files' },
+    { name: 'ශමථ විදර්ශනා භාවනා මාර්ගය', author: 'මාතර ඥාණාරාම හිමි', folder: 'bhavana-margaya', group: 1, files: ['භාවනා කමටහන්', 1048, 1049], gen: '' },
     
     { name: 'බෞද්ධයාගේ අත්පොත', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'bauddhayage-athpotha', group: 2, files: ['rrk', 465, 502], gen: '' },
     { name: 'ධර්ම විනිශ්චය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'dharma-winishchaya', group: 2, files: ['rrk', 471, 492], gen: '' },
@@ -79,7 +79,7 @@ const bookList = [
     { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3, files: ['ඉපැරණි පොත්', 1026, '', 64], gen: '' },
     { name: 'සීහළවත්ථු', author: 'ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'sihala-vaththu', group: 3, files: ['ඉපැරණි පොත්', 1034, '', 74], gen: '' },
     { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3, files: ['වෙනත්', 1035, '', 603], gen: '' },
-    { name: 'පාලිභාෂාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3, files: ['පාලි ඉගෙනුම', 1036, '', 164], gen: ''},
+    { name: 'පාලිභාෂාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3, files: ['පාලි ඉගෙනුම', 1036, '', 164], gen: 'web'},
     { name: 'අභිධර්ම චන්ද්‍රිකාව', author: 'මාතර ශ්‍රී ධර්මවංශ හිමි', folder: 'abhidharma-chandrikava', group: 3, files: ['අභිධර්ම', 1037, 943], gen: ''},
     { name: 'අමාවතුර', author: 'ගුරුළුගෝමී', folder: 'amawathura', group: 3, files: ['ඉපැරණි පොත්', 1038, 54], gen: ''},
     { name: 'අනාගත වංශය මෙතේ බුදුසිරිත', author: 'විල්ගම්මුල සංඝරාජ හිමි', folder: 'anagatha-vanshaya', group: 3, files: ['වෙනත්', 1039, 952], gen: '' },
