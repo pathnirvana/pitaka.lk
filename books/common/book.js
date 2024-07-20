@@ -49,12 +49,12 @@ document.addEventListener("DOMContentLoaded", () => {
             '--accent-color': '#2F4F4F',
             '--text-color': '#ffffff',
             '--info-color': '#FFB74D',
-            '--error-color': 'rosybrown',
+            '--error-color': 'turquoise',
         }
     };
-    
+    const themeKeyName = 'books-app-theme'
     const updateColors = () => {
-        const root = document.documentElement, theme = localStorage.getItem('theme') || 'light' 
+        const root = document.documentElement, theme = localStorage.getItem(themeKeyName) || 'light' 
         for (const property in cssColors[theme]) {
             root.style.setProperty(property, cssColors[theme][property]);
         }
@@ -65,8 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (toggleButton) {
         toggleButton.addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
-            const theme = localStorage.getItem('theme') == 'dark' ? 'light' : 'dark'
-            localStorage.setItem('theme', theme);
+            const theme = localStorage.getItem(themeKeyName) == 'dark' ? 'light' : 'dark'
+            localStorage.setItem(themeKeyName, theme);
             updateColors()
         });
     }
