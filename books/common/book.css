@@ -17,7 +17,7 @@
     font-weight: 400;
     src: local('Material Icons'),
       local('MaterialIcons-Regular'),
-      url('MaterialIcons-Regular.woff2') format('woff2');
+      url('material-icons.woff2') format('woff2');
 }
 .material-icons {
     font-family: 'Material Icons';
@@ -45,13 +45,23 @@
     vertical-align: middle;
 }
 
+:root {
+    --background-color: #ffffff;
+    --accent-color: #2196F3;
+    --hover-background-color: #000000;
+    --text-color: #212121;
+    --info-color: blue;
+    --error-color: brown;
+}
 body {
     font-family: 'UN-Abhaya';
     font-size: 18px;
     text-align: justify;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
-
-.title-bar { flex: 1 1; text-align: center; padding: 5pt; display: flex; align-items: center; background-color: lightsalmon; font-size: 1.5rem; }
+a { color: var(--info-color);}
+.title-bar { flex: 1 1; text-align: center; padding: 5pt; display: flex; align-items: center; background-color: var(--accent-color); font-size: 1.5rem; }
 .title-bar-text { font-family: 'styled'; font-size: 1.8rem; flex: 1; margin: 0 0.3rem 0 0.3rem; }
 .notice { text-align: center; padding: 5pt; font-family: 'heading'; } /* click help notice */
 
@@ -61,7 +71,8 @@ h1 { font-size: 1.6rem; font-weight: normal; }
 h2 { font-size: 1.4rem; font-weight: normal; }
 h3,h4 { font-size: 1.3rem; font-weight: normal; }
 
-.subheadings { border-top: 0.5px dashed lightsalmon; margin-bottom: 0.5rem; }
+/* TOC at the end of the text */
+.subheadings { border-top: 0.5px dashed var(--accent-color); margin-bottom: 0.5rem; }
 
 .TOC-container { padding: 0.2rem 0 0.2rem 0; }
 .TOC-text { display: flex; align-items: center; text-align: left;}
@@ -69,7 +80,7 @@ h3,h4 { font-size: 1.3rem; font-weight: normal; }
 .TOC-text[level="2"] { font-size: 1.2rem; padding-left: 1.5rem; }
 .TOC-text[level="3"] { font-size: 1.1rem; padding-left: 3rem; }
 .TOC-text[level="4"] { font-size: 1.1rem; padding-left: 4rem; }
-.TOC-text:hover { background-color: whitesmoke; }
+.TOC-text:hover { background-color: var(--hover-background-color); }
 .TOC-text.closed { font-weight: bold; }
 .TOC-text a { text-decoration: none; }
 .TOC-text .material-icons { cursor: pointer; margin: 0 0.25rem 0 0.25rem; }
@@ -78,7 +89,7 @@ h3,h4 { font-size: 1.3rem; font-weight: normal; }
 .hover-icon { visibility: hidden; }
 *:hover > .hover-icon { visibility: visible; }
 
-.share-icon:hover { visibility: visible; color: blue; cursor: pointer;}
+.share-icon:hover { visibility: visible; color: var(--info-color); cursor: pointer;}
 
 .gatha { margin: 0.1rem 0 0.1rem 2rem; }
 .gatha > p { padding: 0; margin: 0; }
@@ -106,12 +117,12 @@ nav > a.button { margin: 0.15rem 0.25rem 0.15rem 0.25rem; }
 a.button {
     margin: 2pt 1pt 2pt 1pt;
     text-align:center;
-    background-color: white;
+    background-color: var(--background-color);
     padding: 6px 5px 6px 5px;
     text-decoration: none;
     line-height: 1;
     border-radius: 4px;
-    border: 1px solid lightsalmon;
+    border: 1px solid var(--accent-color);
     box-shadow: 0 3px 3px rgba(0,0,0,0.2);
     cursor: pointer;
     display: inline-flex;
@@ -119,13 +130,13 @@ a.button {
     justify-items: center;
 }
 a.button:hover {
-    background-color: lightsalmon;
+    background-color: var(--accent-color);
 }
 a.button:active, a.button.pressed {
     background-color: gray;
     box-shadow: none;
 }
-a.button .material-icons { color: black; padding: 0 0.3rem 0 0.3rem; }
+a.button .material-icons { color: var(--text-color); padding: 0 0.3rem 0 0.3rem; }
 
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #toast {
@@ -141,20 +152,19 @@ a.button .material-icons { color: black; padding: 0 0.3rem 0 0.3rem; }
     transform: translateX(-50%);
     bottom: 30pt; /* 30px from the bottom */
 }
-#content-about { font-size: 0.9rem; padding: 10px; text-align: center; background-color: beige; }
+#content-about { font-size: 0.9rem; padding: 10px; text-align: center; background-color: var(--hover-background-color); }
 
 /**In the app-index.html */
-.group { text-align: center;  margin: 0.5rem; padding: 0.1rem; border: 1px solid white; background-color: whitesmoke; border-radius: 5px;}
-.group:hover { border-color: salmon; }
-.group-name { font-family: 'styled'; font-size: 1.7rem; color: brown; padding: 0.5rem; background-color: antiquewhite; }
+.group { text-align: center;  margin: 0.5rem; padding: 0.1rem; border: 1px solid var(--text-color);  border-radius: 5px;}
+.group-name { font-family: 'styled'; font-size: 1.7rem; color: var(--error-color); padding: 0.5rem; background-color: var(--hover-background-color); }
 .books-list .book { font-size: 1.4rem; padding: 0.5rem; display: flex; align-items: center;}
-.books-list .book:hover { background-color: white; }
+.books-list .book:hover { background-color: var(--hover-background-color); }
 .books-list .book a { text-decoration: none; flex: 1;}
 
 
 /** styles used in the palibhashavatharana 1 book by ven ariyadassana **/
-table.max-width { max-width: 800px; border: 1px solid black }
-table.max-width tr { border: 1px solid black }
-table.max-width td { border: 1px solid black; padding: 2px;}
-table.max-width td.separator { background-color: lightgrey; width: 10px;}
-table.max-width thead { color: brown; background-color: yellow; text-align: center;}
+table.max-width { max-width: 800px; border: 1px solid var(--text-color) }
+table.max-width tr { border: 1px solid var(--text-color) }
+table.max-width td { border: 1px solid var(--text-color); padding: 2px;}
+table.max-width td.separator { background-color: var(--info-color); width: 10px;}
+table.max-width thead { color: var(--error-color); background-color: var(--accent-color); text-align: center;}

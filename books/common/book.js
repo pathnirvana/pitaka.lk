@@ -32,3 +32,42 @@ function showToast(toastMsg) {
     // After 3 seconds, remove the show class from DIV
     setTimeout(function(){ toast.hide(); }, 3000);
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const cssColors = {
+        light: {
+            '--background-color': '#ffffff',
+            '--hover-background-color': '#eeeeee',
+            '--accent-color': 'lightsalmon',
+            '--text-color': '#000000',
+            '--info-color': 'blue', // used for links too
+            '--error-color': 'brown',
+        },
+        dark: {
+            '--background-color': '#212121',
+            '--hover-background-color': '#111111',
+            '--accent-color': '#2F4F4F',
+            '--text-color': '#ffffff',
+            '--info-color': '#FFB74D',
+            '--error-color': 'rosybrown',
+        }
+    };
+    
+    const updateColors = () => {
+        const root = document.documentElement, theme = localStorage.getItem('theme') || 'light' 
+        for (const property in cssColors[theme]) {
+            root.style.setProperty(property, cssColors[theme][property]);
+        }
+    }
+    updateColors() // initial set
+
+    const toggleButton = document.getElementById('dark-mode-toggle');
+    if (toggleButton) {
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const theme = localStorage.getItem('theme') == 'dark' ? 'light' : 'dark'
+            localStorage.setItem('theme', theme);
+            updateColors()
+        });
+    }
+});
