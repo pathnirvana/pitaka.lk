@@ -94,7 +94,7 @@ h3,h4 { font-size: 1.3rem; font-weight: normal; }
 .gatha { margin: 0.1rem 0 0.1rem 2rem; }
 .gatha > p { padding: 0; margin: 0; }
 
-.subhead { color:brown; font-weight: bold; font-size: 1.2rem; } /* headings that are not in TOC */
+.subhead { color:var(--error-color); font-weight: bold; font-size: 1.2rem; } /* headings that are not in TOC */
 .subhead > p { padding: 0; margin: 0; }
 
 .largefont { font-size: larger; } /* used for largepali sections in vinaya karma book for now */
@@ -166,5 +166,5 @@ a.button .material-icons { color: var(--text-color); padding: 0 0.3rem 0 0.3rem;
 table.max-width { max-width: 800px; border: 1px solid var(--text-color) }
 table.max-width tr { border: 1px solid var(--text-color) }
 table.max-width td { border: 1px solid var(--text-color); padding: 2px;}
-table.max-width td.separator { background-color: var(--info-color); width: 10px;}
-table.max-width thead { color: var(--error-color); background-color: var(--accent-color); text-align: center;}
+table.max-width td.separator { background-color: var(--hover-background-color); width: 10px;}
+table.max-width thead { color: var(--error-color); text-align: center;}
