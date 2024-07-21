@@ -2,10 +2,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>TITLEPLACEHOLDER</title>
-    <meta name="description" content="DESCPLACEHOLDER">
-    <meta property="og:title" content="TITLEPLACEHOLDER"> <!--For facebook link previews -->
-    <meta property="og:type" content="article">
+    <title>බෞද්ධ පොත්</title>
+    <meta name="description" content="යතුරුලියනය කල බෞද්ධ පොත් සහිත මෘදුකාංග ඔබගේ පරිගණකයට සහ ජංගම දුරකතනයට ලබා ගන්න.">
+    <meta property="og:type" content="book">
+    <meta property="og:title" content="බෞද්ධ පොත් පහසුවෙන් කියවන්න"> <!--For facebook link previews -->
     <meta property="og:image" content="https://pitaka.lk/books/common/og-books-500x300.png">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="500">
@@ -13,22 +13,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" type="image/png" sizes="96x96" href="../common/favicon-96x96.png">
-    <link rel="stylesheet" href="../common/book.css"/>
+    <link rel="icon" type="image/png" sizes="96x96" href="common/favicon-96x96.png">
+    <link rel="stylesheet" href="common/book.css"/>
 </head>
 <body>
-    <div book-folder="FOLDERPLACEHOLDER" style="width: 100%; max-width: 800pt; margin: 0pt auto; height: 100%; display: flex; flex-flow: column; align-content: center;">
+    <div book-folder="." style="width: 100%; max-width: 600pt; margin: 0pt auto; height: 100%; display: flex; flex-flow: column; align-content: center;">
         <div class="title-bar">
-            <a href="../app-index.html" style="line-height: 1px;"><i class="material-icons" style="color: var(--text-color);">home</i></a>
-            <span class="title-bar-text">TITLEBARPLACEHOLDER</span>
-            <i class="material-icons share-icon">share</i>
+            <a href="https://tipitaka.lk/library/" style="line-height: 1px;"><i class="material-icons" style="color: var(--text-color);">library_books</i></a>
+            <span class="title-bar-text">බෞද්ධ පොත්</span>
+            <!-- <i class="material-icons share-icon" file-name="app-index.html">share</i> -->
+            <i class="material-icons" id="dark-mode-toggle" style="cursor: pointer;">dark_mode</i>
         </div>
-        <div class="notice">පොතේ ඒ ඒ පරිච්ඡේද වලට පිවිසෙන්න පටුන මත click කරන්න.</div>
-        CONTENTPLACEHOLDER
+        <div class="notice">පොත් වලට පිවිසෙන්න පොතේ නම මත click කරන්න.</div>
+        <div class="group">
+            <div class="group-name">ත්‍රිපිටකය ආශ්‍රිත පොත්</div>
+            <div class="books-list">
+                GROUPPLACEHOLDER1
+            </div>
+        </div>
+        <div class="group">
+            <div class="group-name">රේරුකානේ චන්දවිමල හිමි</div>
+            <div class="books-list">
+                GROUPPLACEHOLDER2
+            </div>
+        </div>
+        <div class="group">
+            <div class="group-name">වෙනත් පොත්</div>
+            <div class="books-list">
+                GROUPPLACEHOLDER3
+            </div>
+        </div>
         <div id="content-about">
-            මෙම පොත සම්පූර්ණ එක වෙබ් පිටුවක් ලෙස <a href="https://tipitaka.lk/library/HTMLIDPLACEHOLDER">මෙතනින්</a> කියවන්න.
-            මෙම පොත PDF එකක් ලෙස <a href="https://tipitaka.lk/library/PDFIDPLACEHOLDER">මෙතනින්</a> කියවන්න.
-            <br>
             ධර්ම දානය පිණිස බෙදාහැරීමට <i class="material-icons">link</i> link එකක් copy කර ගැනීම සඳහා <i class="material-icons">share</i> මත click කරන්න.
             <br>
             මෙම පොත් ඔබගේ <i class="material-icons">laptop</i> පරිගණකයේ අන්තර්ජාලය නැතිව <i class="material-icons">cloud_off</i> කියවීම සඳහා <a href="https://tipitaka.lk/library/461">මේ ගොනුව</a> භාගත කරගන්න.
@@ -39,8 +54,8 @@
         </div>
     </div>
     <div id="toast"></div>
-    <script src="../common/jquery-3.4.1.min.js"></script>
-    <script src="../common/clipboard.min.js"></script>
-    <script src="../common/book.js"></script>
+    <script src="common/jquery-3.4.1.min.js"></script>
+    <script src="common/clipboard.min.js"></script>
+    <script src="common/book.js"></script>
 </body>
 </html>

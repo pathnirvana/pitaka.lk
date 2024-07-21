@@ -107,7 +107,7 @@ let nodesAdded;
         }
     }
 })();
-writeAppIndexFile();
+writeTopIndexFile();
 
 async function generateFiles(book, bookDoc) {
     const bookHeaders = $('h1,h2,h3,h4', bookDoc).get(), toc = JC('ul', 'TOC-container'), filePath = `${__dirname}/files/${book.files[0]}`
@@ -215,7 +215,7 @@ function createSubHeadingsDiv(node) {
 function getTopLinks(node, book, nodeList) {
     let curNode = {children: nodeList};
     return JC('nav', 'top').append(
-        JC('a', 'button').append(MDI('home')).attr('href', '../app-index.html'), 
+        JC('a', 'button').append(MDI('home')).attr('href', '../index.html'), 
         MDI('navigate_next'),
         JC('a', 'button').append(MDI('toc'), book.name).attr('href', `index.html#${node.ids.join('-')}`), 
         MDI('navigate_next'),
@@ -247,7 +247,7 @@ function createIndexDiv(node) {
 function writeIndexFile(book, nodeList, fileName) {
     const patunaDiv = $('<div/>').append(nodeList.map(node => createIndexDiv(node)));
     const nameAuthor = `${book.name} - ${book.author}`
-    genericWriteFile(fileName, patunaDiv, fs.readFileSync(`${__dirname}/pre-index.html`, { encoding: 'utf8' }),
+    genericWriteFile(fileName, patunaDiv, fs.readFileSync(`${__dirname}/pre-book-index.html`, { encoding: 'utf8' }),
         { title: nameAuthor, desc: nameAuthor, folder: book.folder, titleBar: book.name, htmlId: book.files[1], pdfId: book.files[2] || book.files[3] });
 }
 
@@ -260,8 +260,8 @@ function genericWriteFile(fileName, contentDiv, tmplStr, placeholders) {
     fs.writeFileSync(`${outputFolder}/${fileName}`, tmplStr);
 }
 
-function writeAppIndexFile() {
-    let tmplStr = fs.readFileSync(`${__dirname}/pre-app-index.html`, { encoding: 'utf8' }), groups = [];
+function writeTopIndexFile() {
+    let tmplStr = fs.readFileSync(`${__dirname}/pre-index.html`, { encoding: 'utf8' }), groups = [];
     bookList.forEach(book => {
         if (groups[book.group - 1]) {
             groups[book.group - 1].push(book);
@@ -278,6 +278,6 @@ function writeAppIndexFile() {
         }));
         tmplStr = tmplStr.replace(new RegExp(`GROUPPLACEHOLDER${ind + 1}`), pretty(gDiv.html()));
     });
-    fs.writeFileSync(outputFolder + '/app-index.html', tmplStr);
+    fs.writeFileSync(outputFolder + '/index.html', tmplStr);
 }
 
