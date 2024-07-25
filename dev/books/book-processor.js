@@ -162,7 +162,7 @@ function processTree(headers, level, parents, footnotes) {
     headers.forEach((_elem, ind) => {
         const elem = $(_elem);
         const textElem = elem.nextUntil('h1,h2,h3,h4')
-        const newNode = {ids: [...parents, ind + 1], level, header: elem, title: elem.text().trim(), children: [], textElem};
+        const newNode = {ids: [...parents, ind + 1], level, header: elem, headerText: elem.text().trim(), children: [], textElem};
         elem.attr('file', getNodeFileName(newNode)); // used in finding prev/next nodes if (!isNodeEmpty(newNode))
         if (level + 1 <= 4) {
             const nextUntil = 'h1' + (level > 1 ? ',h2' : '') + (level > 2 ? ',h3' : ''); 
