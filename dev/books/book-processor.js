@@ -20,6 +20,7 @@ const util = require('util');
 const exec = util.promisify(require('child_process').exec); // makes exec awaitable
 
 var jsdom = require('jsdom');
+const { get } = require('jquery');
 const { JSDOM } = jsdom;
 const { window } = new JSDOM();
 const { document } = (new JSDOM('')).window;
@@ -78,7 +79,7 @@ const bookList = [
     { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3, files: ['වෙනත්', 1025, '', 534], gen: '' },
     { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3, files: ['ඉපැරණි පොත්', 1026, '', 64], gen: '' },
     { name: 'සීහළවත්ථු', author: 'ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'sihala-vaththu', group: 3, files: ['ඉපැරණි පොත්', 1034, '', 74], gen: '' },
-    { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3, files: ['වෙනත්', 1035, '', 603], gen: '' },
+    { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3, files: ['වෙනත්', 1035, '', 603], gen: 'web' },
     { name: 'පාලිභාෂාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3, files: ['පාලි ඉගෙනුම', 1036, '', 164], gen: 'web'},
     { name: 'අභිධර්ම චන්ද්‍රිකාව', author: 'මාතර ශ්‍රී ධර්මවංශ හිමි', folder: 'abhidharma-chandrikava', group: 3, files: ['අභිධර්ම', 1037, 943], gen: ''},
     { name: 'අමාවතුර', author: 'ගුරුළුගෝමී', folder: 'amawathura', group: 3, files: ['ඉපැරණි පොත්', 1038, 54], gen: ''},
@@ -193,9 +194,10 @@ function writeBookFiles(book, children, rootFolder, tmplStr, nodeList) {
         const contentDiv = JC('div', 'content').append(
             getTopLinks(node, book, nodeList), 
             JC('div', 'heading-bar').append(JC(`h${node.level}`).text(node.header.text()), // if the header can have footnotes will need to change to html
+                getBookmarkIcon(node, {book, nodeList}),
                 $(MDI('share', 'share-icon')).attr('file-name', getNodeFileName(node))),
             node.textElem,
-            node.children.length ? createSubHeadingsDiv(node) : '',
+            node.children.length ? createSubHeadingsDiv(node, {book, nodeList}) : '',
             node.footnotes,
             getBottomLinks(node)
         );
@@ -206,10 +208,10 @@ function writeBookFiles(book, children, rootFolder, tmplStr, nodeList) {
     });
 }
 
-function createSubHeadingsDiv(node) {
+function createSubHeadingsDiv(node, context) {
     return JC('div', 'TOC-container subheadings').append(
         JC('div', 'TOC-text').text('අනු මාතෘකා').attr('level', 2),
-        JC('div', 'TOC-children').append(node.children.map(c => createIndexDiv(c))));
+        JC('div', 'TOC-children').append(node.children.map(c => createIndexDiv(c, context))));
 }
 
 function getTopLinks(node, book, nodeList) {
@@ -234,18 +236,28 @@ function getBottomLinks(node) {
         (next.length ? JC('a', 'button next').html(`${next.text()} ${MDI('arrow_forward')}`).attr('href', next.attr('file')) : '')
     );
 }
+function getBookmarkIcon(node, {book, nodeList}, extraClass) {
+    let curNode = {children: nodeList}
+    const headings = node.ids.map(id => {
+        curNode = curNode.children[id - 1];
+        return curNode.header.text()
+    })
+    return $(MDI('star_outline', 'star-icon ' + extraClass)).attr('data-bookmark', 
+        JSON.stringify({ ids: node.ids, headings, book: {name: book.name, folder: book.folder} }))
+}
 
-function createIndexDiv(node) {
+function createIndexDiv(node, context) {
     const link = JC('a', 'TOC').attr('href', getNodeFileName(node)).attr('level', node.level).text(node.header.text());
     const icon = node.children.length ? MDI('expand_less', 'parent') : MDI('keyboard_arrow_right', 'leaf hover-icon');
+    const starIcon = getBookmarkIcon(node, context, 'hover-icon')
     const shareIcon = $(MDI('share', 'share-icon hover-icon')).attr('file-name', getNodeFileName(node));
     return JC('div', 'TOC-container').attr('id', node.ids.join('-')).append(
-        JC('div', 'TOC-text').append(icon, link, shareIcon).attr('level', node.level),
-        JC('div', 'TOC-children').append(node.children.map(c => createIndexDiv(c))));
+        JC('div', 'TOC-text').append(icon, link, starIcon, shareIcon).attr('level', node.level),
+        JC('div', 'TOC-children').append(node.children.map(c => createIndexDiv(c, context))));
 }
 
 function writeIndexFile(book, nodeList, fileName) {
-    const patunaDiv = $('<div/>').append(nodeList.map(node => createIndexDiv(node)));
+    const patunaDiv = $('<div/>').append(nodeList.map(node => createIndexDiv(node, {book, nodeList})));
     const nameAuthor = `${book.name} - ${book.author}`
     genericWriteFile(fileName, patunaDiv, fs.readFileSync(`${__dirname}/pre-book-index.html`, { encoding: 'utf8' }),
         { title: nameAuthor, desc: nameAuthor, folder: book.folder, titleBar: book.name, htmlId: book.files[1], pdfId: book.files[2] || book.files[3] });
