@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>තරු යෙදූ | බෞද්ධ පොත්</title>
+    <meta name="description" content="යතුරුලියනය කල බෞද්ධ පොත් සහිත මෘදුකාංග ඔබගේ පරිගණකයට සහ ජංගම දුරකතනයට ලබා ගන්න.">
+    <meta property="og:type" content="book">
+    <meta property="og:title" content="තරු යෙදූ මාතෘකා වෙත පිවිසෙන්න"> <!--For facebook link previews -->
+    <meta property="og:image" content="https://pitaka.lk/books/common/og-books-500x300.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="500">
+    <meta property="og:image:height" content="300">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/png" sizes="96x96" href="common/favicon-96x96.png">
+    <link rel="stylesheet" href="common/book.css"/>
+    <style>
+        .bookmarks tr { max-width: 800px; border-collapse: collapse; }
+        /* Alternating row background colors */
+        .bookmarks tbody tr:nth-child(even) { background-color: var(--hover-background-color); }
+        .bookmarks tbody tr:nth-child(odd) { background-color: var(--background-color);  }
+
+        .bookmarks th, .bookmarks td { border: none; padding: 5px 10px; }
+        .bookmarks th { color: var(--error-color); }
+
+        .bookmarks tbody tr:hover { background-color: var(--hover-background-color); }
+        .bookmarks a { text-decoration: none; }
+        .bookmarks .star-icon { padding-left: 0.5rem; }
+    </style>
+</head>
+<body>
+    <div book-folder="." style="width: 100%; max-width: 600pt; margin: 0pt auto; height: 100%; display: flex; flex-flow: column; align-content: center;">
+        <div class="title-bar">
+            <a href="./index.html" style="line-height: 1px;"><i class="material-icons title-icon">home</i></a>
+            <span class="title-bar-text">තරු යෙදූ මාතෘකා</span>
+            <i class="material-icons title-icon" id="dark-mode-toggle">dark_mode</i>
+        </div>
+        <div class="notice">සටහන් තැබීමට මාතෘකා ඉදිරියෙන් ඇති තරු ලකුණ <i class="material-icons">star_outline</i> මත ඔබන්න.</div>
+
+        <table class="bookmarks">
+            <thead>
+                <tr>
+                    <th>දිනය</th>                    
+                    <th>පොත</th>
+                    <th>මාතෘකාව</th>
+                </tr>
+            </thead>
+            <tbody id="bookmarksBody">
+            </tbody>
+        </table>
+
+    </div>
+    <div id="toast"></div>
+    <script src="common/jquery-3.4.1.min.js"></script>
+    <script src="common/clipboard.min.js"></script>
+    <script src="common/book.js"></script>
+    <script>
+        // sort by timestamp and then bookname
+        const trs = Object.values(bookmarks).sort((a, b) => b.time - a.time || a.book.name.localeCompare(b.book.name)).map(b => {
+            const titles = b.ids.map((id, i) => `<a href=${getBookmarkHref(b.book.folder, b.ids.slice(0, i + 1))}>${b.headings[i]}</a>`)
+                .join(`<i class="material-icons">navigate_next</i>`)
+            return `<tr>
+                <td>${new Date(b.time).toISOString().slice(0, 10)}</td>
+                <td><a href="${b.book.folder}/index.html">${b.book.name}</a></td>
+                <td>${titles}<i class="material-icons star-icon" data-bookmark='${JSON.stringify(b)}'>star</i></td>
+            </tr>`
+        }).join('\n')
+
+        document.getElementById('bookmarksBody').innerHTML = trs
+    </script>
+</body>
+</html>

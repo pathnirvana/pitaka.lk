@@ -33,33 +33,63 @@ function showToast(toastMsg) {
     setTimeout(function(){ toast.hide(); }, 3000);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    const cssColors = {
-        light: {
-            '--background-color': '#ffffff',
-            '--hover-background-color': '#eeeeee',
-            '--accent-color': 'lightsalmon',
-            '--text-color': '#000000',
-            '--info-color': 'blue', // used for links too
-            '--error-color': 'brown',
-        },
-        dark: {
-            '--background-color': '#212121',
-            '--hover-background-color': '#111111',
-            '--accent-color': '#2F4F4F',
-            '--text-color': '#ffffff',
-            '--info-color': '#FFB74D',
-            '--error-color': 'turquoise',
-        }
-    };
-    const themeKeyName = 'books-app-theme'
-    const updateColors = () => {
-        const root = document.documentElement, theme = localStorage.getItem(themeKeyName) || 'light' 
-        for (const property in cssColors[theme]) {
-            root.style.setProperty(property, cssColors[theme][property]);
-        }
+const cssColors = {
+    light: {
+        '--background-color': '#ffffff',
+        '--hover-background-color': '#eeeeee',
+        '--accent-color': 'lightsalmon',
+        '--text-color': '#000000',
+        '--info-color': 'blue', // used for links too
+        '--error-color': 'brown',
+    },
+    dark: {
+        '--background-color': '#212121',
+        '--hover-background-color': '#111111',
+        '--accent-color': '#2F4F4F',
+        '--text-color': '#ffffff',
+        '--info-color': '#FFB74D',
+        '--error-color': 'turquoise',
     }
-    updateColors() // initial set
+};
+const themeKeyName = 'books-app-theme', bookmarksKeyName = 'books-app-bookmarks'
+const updateColors = () => {
+    const root = document.documentElement, theme = localStorage.getItem(themeKeyName) || 'light' 
+    for (const property in cssColors[theme]) {
+        root.style.setProperty(property, cssColors[theme][property]);
+    }
+}
+
+const bookmarks = JSON.parse(localStorage.getItem(bookmarksKeyName) || '{}')
+const getBookmarkHref = (folder, ids) => `${folder}/${ids.join('-')}.html`
+const toggleBookmark = (icon) => {
+    const info = JSON.parse(icon.dataset.bookmark), key = getBookmarkHref(info.book.folder, info.ids)
+    if (icon.classList.contains('active')) {
+        icon.classList.remove('active')
+        icon.textContent = 'star_outline'
+        delete bookmarks[key]
+        showToast('එම මාතෘකාවේ තරුව ඉවත් කළා.')
+    } else {
+        icon.classList.add('active')
+        icon.textContent = 'star'
+        bookmarks[key] = { ...info, time: Date.now() }
+        showToast('එම මාතෘකාවට තරුවක් එකතු කළා.')
+    }
+    localStorage.setItem(bookmarksKeyName, JSON.stringify(bookmarks))
+}
+const updateBookmarks = () => {
+    document.querySelectorAll('.star-icon').forEach(icon => {
+        console.log(icon.dataset.bookmark)
+        const info = JSON.parse(icon.dataset.bookmark), key = getBookmarkHref(info.book.folder, info.ids)
+        if (bookmarks[key]) {
+            icon.textContent = 'star'
+            icon.classList.add('active')
+        }
+    })
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    updateColors() // initially set the theme
+    updateBookmarks() // intially set the bookmarks
 
     const toggleButton = document.getElementById('dark-mode-toggle');
     if (toggleButton) {
@@ -70,4 +100,5 @@ document.addEventListener("DOMContentLoaded", () => {
             updateColors()
         });
     }
+    document.querySelectorAll('.star-icon').forEach(icon => icon.addEventListener('click', (event) => toggleBookmark(event.target)))
 });
