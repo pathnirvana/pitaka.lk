@@ -63,10 +63,12 @@ body {
 a { color: var(--info-color);}
 .title-bar { flex: 1 1; text-align: center; padding: 5pt; display: flex; align-items: center; background-color: var(--accent-color); font-size: 1.5rem; }
 .title-bar-text { font-family: 'styled'; font-size: 1.8rem; flex: 1; margin: 0 0.3rem 0 0.3rem; }
+.title-icon { margin: 0 0.25rem 0 0.25rem; cursor: pointer; color: var(--text-color); }
+.title-icon:hover { color: var(--info-color); }
 .notice { text-align: center; padding: 5pt; font-family: 'heading'; } /* click help notice */
 
 .heading-bar { display: flex; align-items: center; font-family: 'heading'; }
-.heading-bar .share-icon { margin-left: 1rem; }
+.heading-bar .material-icons { margin-left: 0.5rem; }
 h1 { font-size: 1.6rem; font-weight: normal; }
 h2 { font-size: 1.4rem; font-weight: normal; }
 h3,h4 { font-size: 1.3rem; font-weight: normal; }
@@ -83,13 +85,16 @@ h3,h4 { font-size: 1.3rem; font-weight: normal; }
 .TOC-text:hover { background-color: var(--hover-background-color); }
 .TOC-text.closed { font-weight: bold; }
 .TOC-text a { text-decoration: none; }
-.TOC-text .material-icons { cursor: pointer; margin: 0 0.25rem 0 0.25rem; }
+.TOC-text .material-icons { cursor: pointer; margin: 0 0 0 0.5rem; }
 .TOC-text:hover .material-icons.parent { color: red; }
 
 .hover-icon { visibility: hidden; }
 *:hover > .hover-icon { visibility: visible; }
 
-.share-icon:hover { visibility: visible; color: var(--info-color); cursor: pointer;}
+.share-icon:hover { visibility: visible; color: var(--info-color); cursor: pointer; }
+.star-icon:hover { visibility: visible; color: var(--info-color); cursor: pointer; }
+.star-icon.active { visibility: visible; color: var(--error-color); }
+.heading-icon:hover { color: var(--info-color); cursor: pointer; }
 
 .gatha { margin: 0.1rem 0 0.1rem 2rem; }
 .gatha > p { padding: 0; margin: 0; }
