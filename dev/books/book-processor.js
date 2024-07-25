@@ -162,7 +162,7 @@ function processTree(headers, level, parents, footnotes) {
     headers.forEach((_elem, ind) => {
         const elem = $(_elem);
         const textElem = elem.nextUntil('h1,h2,h3,h4')
-        const newNode = {ids: [...parents, ind + 1], level, header: elem, children: [], textElem};
+        const newNode = {ids: [...parents, ind + 1], level, header: elem, title: elem.text().trim(), children: [], textElem};
         elem.attr('file', getNodeFileName(newNode)); // used in finding prev/next nodes if (!isNodeEmpty(newNode))
         if (level + 1 <= 4) {
             const nextUntil = 'h1' + (level > 1 ? ',h2' : '') + (level > 2 ? ',h3' : ''); 
@@ -193,7 +193,7 @@ function writeBookFiles(book, children, rootFolder, tmplStr, nodeList) {
     children.forEach(node => {
         const contentDiv = JC('div', 'content').append(
             getTopLinks(node, book, nodeList), 
-            JC('div', 'heading-bar').append(JC(`h${node.level}`).text(node.header.text()), // if the header can have footnotes will need to change to html
+            JC('div', 'heading-bar').append(JC(`h${node.level}`).text(node.headerText), // if the header can have footnotes will need to change to html
                 getBookmarkIcon(node, {book, nodeList}),
                 $(MDI('share', 'share-icon')).attr('file-name', getNodeFileName(node))),
             node.textElem,
@@ -203,7 +203,7 @@ function writeBookFiles(book, children, rootFolder, tmplStr, nodeList) {
         );
         //if (!isNodeEmpty(node)) // not write empty files
         genericWriteFile(`${rootFolder}/${getNodeFileName(node)}`, contentDiv, tmplStr,
-            { title: `${node.header.text()} - ${book.name}`, desc: `${book.name} - ${book.author}`, folder: book.folder })
+            { title: `${node.headerText} - ${book.name}`, desc: `${book.name} - ${book.author}`, folder: book.folder })
         writeBookFiles(book, node.children, rootFolder, tmplStr, nodeList);
     });
 }
@@ -223,7 +223,7 @@ function getTopLinks(node, book, nodeList) {
         MDI('navigate_next'),
         node.ids.slice(0, -1).map(id => {
             curNode = curNode.children[id - 1];
-            return JC('a', 'button').attr('href', getNodeFileName(curNode)).text(curNode.header.text()).prop('outerHTML');
+            return JC('a', 'button').attr('href', getNodeFileName(curNode)).text(curNode.headerText).prop('outerHTML');
         }).join(MDI('navigate_next'))
     );
 }
@@ -240,14 +240,14 @@ function getBookmarkIcon(node, {book, nodeList}, extraClass) {
     let curNode = {children: nodeList}
     const headings = node.ids.map(id => {
         curNode = curNode.children[id - 1];
-        return curNode.header.text()
+        return curNode.headerText
     })
     return $(MDI('star_outline', 'star-icon ' + extraClass)).attr('data-bookmark', 
         JSON.stringify({ ids: node.ids, headings, book: {name: book.name, folder: book.folder} }))
 }
 
 function createIndexDiv(node, context) {
-    const link = JC('a', 'TOC').attr('href', getNodeFileName(node)).attr('level', node.level).text(node.header.text());
+    const link = JC('a', 'TOC').attr('href', getNodeFileName(node)).attr('level', node.level).text(node.headerText);
     const icon = node.children.length ? MDI('expand_less', 'parent') : MDI('keyboard_arrow_right', 'leaf hover-icon');
     const starIcon = getBookmarkIcon(node, context, 'hover-icon')
     const shareIcon = $(MDI('share', 'share-icon hover-icon')).attr('file-name', getNodeFileName(node));
