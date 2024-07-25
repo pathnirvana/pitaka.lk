@@ -26,7 +26,7 @@
 
         .bookmarks tbody tr:hover { background-color: var(--hover-background-color); }
         .bookmarks a { text-decoration: none; }
-        .bookmarks .star-icon { padding-left: 0.5rem; }
+        .bookmarks .material-icons { padding: 0 0.3rem 0 0.3rem; }
     </style>
 </head>
 <body>
@@ -42,8 +42,7 @@
             <thead>
                 <tr>
                     <th>දිනය</th>                    
-                    <th>පොත</th>
-                    <th>මාතෘකාව</th>
+                    <th>පොත / මාතෘකාව</th>
                 </tr>
             </thead>
             <tbody id="bookmarksBody">
@@ -57,13 +56,14 @@
     <script src="common/book.js"></script>
     <script>
         // sort by timestamp and then bookname
+        const navigateNext = '<i class="material-icons">keyboard_double_arrow_right</i>'
         const trs = Object.values(bookmarks).sort((a, b) => b.time - a.time || a.book.name.localeCompare(b.book.name)).map(b => {
             const titles = b.ids.map((id, i) => `<a href=${getBookmarkHref(b.book.folder, b.ids.slice(0, i + 1))}>${b.headings[i]}</a>`)
-                .join(`<i class="material-icons">navigate_next</i>`)
+                .join(navigateNext)
             return `<tr>
                 <td>${new Date(b.time).toISOString().slice(0, 10)}</td>
-                <td><a href="${b.book.folder}/index.html">${b.book.name}</a></td>
-                <td>${titles}<i class="material-icons star-icon" data-bookmark='${JSON.stringify(b)}'>star</i></td>
+                <td><a href="${b.book.folder}/index.html">${b.book.name}</a>${navigateNext}${titles}
+                    <i class="material-icons star-icon" data-bookmark='${JSON.stringify(b)}'>star</i></td>
             </tr>`
         }).join('\n')
 

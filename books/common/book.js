@@ -78,7 +78,6 @@ const toggleBookmark = (icon) => {
 }
 const updateBookmarks = () => {
     document.querySelectorAll('.star-icon').forEach(icon => {
-        console.log(icon.dataset.bookmark)
         const info = JSON.parse(icon.dataset.bookmark), key = getBookmarkHref(info.book.folder, info.ids)
         if (bookmarks[key]) {
             icon.textContent = 'star'
