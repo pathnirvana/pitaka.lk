@@ -33,12 +33,12 @@ const outputFolder = `${__dirname}/../../books`;
 
 const mammothOpts = {
     styleMap: [
-        "p[style-name='Quote,gatha'] => div.gatha > p:fresh",
+        "b => b", // normally b => strong
+        "p[style-name='gatha'] => div.gatha > p:fresh",
         "p[style-name='subhead'] => div.subhead > p:fresh",
         "p[style-name='largefont'] => div.largefont > p:fresh",
         "p[style-name='centered'] => div.centered > p:fresh",
-        "b => b" // normally b => strong
-    ]
+    ],
 };
 
 const isNodeEmpty = (node) => node.textElem.length == 0;
@@ -79,13 +79,14 @@ const bookList = [
     { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3, files: ['වෙනත්', 1025, '', 534], gen: '' },
     { name: 'රසවාහිනී', author: 'රන්ජිත් වනරත්න', folder: 'rasawahini', group: 3, files: ['ඉපැරණි පොත්', 1026, '', 64], gen: '' },
     { name: 'සීහළවත්ථු', author: 'ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'sihala-vaththu', group: 3, files: ['ඉපැරණි පොත්', 1034, '', 74], gen: '' },
-    { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3, files: ['වෙනත්', 1035, '', 603], gen: 'web' },
-    { name: 'පාලිභාෂාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3, files: ['පාලි ඉගෙනුම', 1036, '', 164], gen: 'web'},
+    { name: 'ත්‍රිපිටක, අටුවා, ටීකා හා පාළි', author: 'දිද්දෙණියේ අරියදස්සන හිමි', folder: 'atuwa-tika-pali', group: 3, files: ['වෙනත්', 1035, '', 603], gen: '' },
+    { name: 'පාලිභාෂාවතරණය 1', author: 'පොල්වත්තේ බුද්ධදත්ත හිමි', folder: 'palibhashavatharanaya-1', group: 3, files: ['පාලි ඉගෙනුම', 1036, '', 164], gen: ''},
     { name: 'අභිධර්ම චන්ද්‍රිකාව', author: 'මාතර ශ්‍රී ධර්මවංශ හිමි', folder: 'abhidharma-chandrikava', group: 3, files: ['අභිධර්ම', 1037, 943], gen: ''},
     { name: 'අමාවතුර', author: 'ගුරුළුගෝමී', folder: 'amawathura', group: 3, files: ['ඉපැරණි පොත්', 1038, 54], gen: ''},
     { name: 'අනාගත වංශය මෙතේ බුදුසිරිත', author: 'විල්ගම්මුල සංඝරාජ හිමි', folder: 'anagatha-vanshaya', group: 3, files: ['වෙනත්', 1039, 952], gen: '' },
     { name: 'ජිනකාලමාලී ප්‍රකරණය', author: 'රත්නපඤ්ඤ හිමි', folder: 'jinakalamali-prakaranaya', group: 3, files: ['ඉපැරණි පොත්', 1040, 1041], gen: '' },
     { name: 'කුණාල ජාතකය - උන්මාදිනී', author: '', folder: 'kunala-jathaka', group: 3, files: ['සූත්‍ර', 1042, '', 648], gen: '' },
+    { name: 'පූජාවලිය', author: 'වේරගොඩ අමරමෝලි හිමි', folder: 'pujawaliya', group: 3, files: ['ඉපැරණි පොත්', 1148, 1149], gen: ''},
 ];
 
 const reprocessAll = false; // process all books even without the 'gen' prop as 'web'
@@ -96,6 +97,7 @@ let nodesAdded;
         if (book.gen == 'docx') { // reprocess docx or read from file (DANGER: do not do this for existing files)
             console.log(`Regenerating html from docx ${book.folder}`);
             const mRes = await mammoth.convertToHtml({path: `${__dirname}/input/${book.folder}.docx`}, mammothOpts);
+            console.log(mRes.messages)
             fs.writeFileSync(`${__dirname}/input/${book.folder}.html`, pretty(mRes.value), {encoding: 'utf-8'})
         } else {
             const bookDom = new JSDOM(fs.readFileSync(`${__dirname}/input/${book.folder}.html`, { encoding: 'utf8' }));
