@@ -49,10 +49,10 @@ fastify.get('/main', async (request, reply) => {
 });
 
 // only for dev purposes
-fastify.register(require('fastify-static'), {
-    root: path.join(process.cwd(), '..'),
+//fastify.register(require('fastify-static'), {
+//    root: path.join(process.cwd(), '..'),
     //prefix: '/public/', // optional: default '/'
-});
+//});
 // adding the following breaks the static serving above
 //fastify.get('/:node(^\\d+)/', sendRenderedText); // support for old urls
 //fastify.get('/:node(^\\d+)/:para(^\\d+)', sendRenderedText);
