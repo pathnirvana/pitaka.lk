@@ -87,9 +87,9 @@ var dataSettings = {
         url: 'data/sumangala_data.json',
         desc: 'මඩිතියවෙල සිරි සුමඞ්ගල හිමි, පාලි-සිංහල ශබ්දකෝෂය',
         entryInd: {
-            PAGE: 0,
-            PALI: 1,
-            SINH: 2  
+            PALI: 0,
+            SINH: 1,
+            PAGE: 2,
         },
         data: [],
         dataLoaded: false,
