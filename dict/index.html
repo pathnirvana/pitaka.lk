@@ -78,7 +78,7 @@
         });
         
 	    // when abbreviations are mouseover-ed show a tooltip with the desc	
-        $('#search-results').on('mouseover', 'i', function() {
+        $('#search-results').on('mouseover', 'i,r', function() {
             // first remove all existing abbreviation tooltips
             $('i').next('.tooltip').remove();
             
@@ -106,7 +106,7 @@
          * when abbreviations are clicked trigger their mouseover event then fade the tooltip
          * (this is friendly to touch interfaces)
          */
-        $('#search-results').on('click', 'i', function() {
+        $('#search-results').on('click', 'i,r', function() {
             $(this).mouseover();
             
             // after a slight 2 second fade, fade out the tooltip for 1 second
@@ -116,7 +116,7 @@
         });
 	
         // Remove the tooltip on abbreviation mouseout
-        $('#search-results').on('mouseout', 'i', function() {	
+        $('#search-results').on('mouseout', 'i,r', function() {	
             $(this).next('.tooltip').remove();
         });	
 
