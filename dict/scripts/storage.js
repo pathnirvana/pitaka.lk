@@ -61,7 +61,7 @@ var SearchType = {
     PALI: 'p',
     SINH: 's'
 };
-var versionUrl = 'data/data_version.json';
+var versionUrl = 'data_version.json';
 
 var resultSettings = {
     minQueryLength: 2,
@@ -72,7 +72,7 @@ var resultSettings = {
 
 var dataSettings = {
     "buddhadatta": {
-        url: 'data/buddhadatta_data.json',
+        url: 'data/buddhadatta_dict.json',
         desc: 'පොල්වත්තේ බුද්ධදත්ත හිමි, පාලි-සිංහල අකාරාදිය',
         entryInd: {
             PAGE: -1, // not exist
@@ -84,7 +84,7 @@ var dataSettings = {
         trie: new Trie()
     },
     "sumangala": {
-        url: 'data/sumangala_data.json',
+        url: 'data/sumangala_dict.json',
         desc: 'මඩිතියවෙල සිරි සුමඞ්ගල හිමි, පාලි-සිංහල ශබ්දකෝෂය',
         entryInd: {
             PALI: 0,

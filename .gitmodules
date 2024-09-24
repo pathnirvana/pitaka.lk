@@ -1,0 +1,3 @@
+[submodule "dict/data"]
+	path = dict/data
+	url = https://github.com/pnfo/pali-sinhala-dictionary.git
