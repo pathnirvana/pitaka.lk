@@ -54,17 +54,17 @@ html, body {
     background-color: yellow;
 }
 
-.result-sinhala-meaning i {
+.result-sinhala-meaning r {
     font-style: normal;
     /*font-size: 12pt;*/
     color: coral;
     border-bottom: 1px dotted #666;
 	cursor: help;
 }
-.result-sinhala-meaning i.c1 {
+.result-sinhala-meaning r.c1 {
     color: orangered;
 }
-.result-sinhala-meaning i::after {
+.result-sinhala-meaning r::after {
     content: '.';
 }
 .result i.dict-name {
