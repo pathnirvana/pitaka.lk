@@ -74,6 +74,7 @@ const bookList = [
     { name: 'විනය කර්ම', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'vinaya-karma', group: 2, files: ['rrk', 945, 944], gen: '' },
     { name: 'සතිපට්ඨාන භාවනා ක්‍ර‍මය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'sathipttana-bhavana-kramaya', group: 2, files: ['rrk', 947, 511], gen: '' },
     { name: 'නිර්වාණ විනිශ්චය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'nirvana-vinishchaya', group: 2, files: ['rrk', 1043, 1044], gen: '' },
+    { name: 'පට්ඨාන මහා පකරණ සන්නය', author: 'රේරුකානේ චන්දවිමල හිමි', folder: 'pattana-pakarana-sannaya', group: 2, files: ['rrk', 1169, 1170], gen: '' },
 
     { name: 'පොහොය වර්ණනාව', author: 'මාපලගම සෝමිස්සර හිමි', folder: 'pohoya-varnanava', group: 3, files: ['වෙනත්', 1024, 769], gen: '' },
     { name: 'කර්ම විපාක', author: 'රිදියගම සුධම්මාභිවංශ හිමි', folder: 'karma-vipaka', group: 3, files: ['වෙනත්', 1025, '', 534], gen: '' },
@@ -87,6 +88,7 @@ const bookList = [
     { name: 'ජිනකාලමාලී ප්‍රකරණය', author: 'රත්නපඤ්ඤ හිමි', folder: 'jinakalamali-prakaranaya', group: 3, files: ['ඉපැරණි පොත්', 1040, 1041], gen: '' },
     { name: 'කුණාල ජාතකය - උන්මාදිනී', author: '', folder: 'kunala-jathaka', group: 3, files: ['සූත්‍ර', 1042, '', 648], gen: '' },
     { name: 'පූජාවලිය', author: 'වේරගොඩ අමරමෝලි හිමි', folder: 'pujawaliya', group: 3, files: ['ඉපැරණි පොත්', 1148, 1149], gen: ''},
+    { name: 'සද්ධර්‍මරත්නාවලිය', author: 'ධර්‍මසේන හිමි', folder: 'saddharma-rathnavaliya', group: 3, files: ['ඉපැරණි පොත්', 1171, 1172], gen: 'files'},
 ];
 
 const reprocessAll = false; // process all books even without the 'gen' prop as 'web'
