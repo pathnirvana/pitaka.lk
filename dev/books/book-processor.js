@@ -45,7 +45,8 @@ const isNodeEmpty = (node) => node.textElem.length == 0;
 const getNodeFileName = (node) => `${node.ids.join('-')}.html`; //${isNodeEmpty(node) ? '-1' : ''}.html`; // if empty point to the first child
 
 const bookList = [
-    { name: 'ගෞතම බුද්ධ චරිතය', author: 'බළන්ගොඩ ආනන්ද මෛත්‍රෙය හිමි', folder: 'buddha-charithaya', group: 1, files: ['වෙනත්', 1028, 1029], gen: '' }, //html, pdf, non-gen pdf
+    { name: 'පන්සිය පණස් ජාතකය', author: 'වේරගොඩ අමරමෝලි හිමි', folder: 'pansiya-panas-jathaka', group: 1, files: ['වෙනත්', 1174, 1175], gen: 'html' }, //html, pdf, non-gen pdf
+    { name: 'ගෞතම බුද්ධ චරිතය', author: 'බළන්ගොඩ ආනන්ද මෛත්‍රෙය හිමි', folder: 'buddha-charithaya', group: 1, files: ['වෙනත්', 1028, 1029], gen: '' },
     { name: 'සතිපට්ඨාන විපස්සනා භාවනා', author: 'දෙවිනුවර ඤාණාවාස හිමි', folder: 'satipattana-vipassana', group: 1, files: ['භාවනා කමටහන්', 1030, 755], gen: '' },
     { name: 'විශුද්ධි මාර්ගය', author: 'මාතර ධර්මවංශ හිමි', folder: 'vishuddhi-margaya', group: 1, files: ['භාවනා කමටහන්', 1031, '', 413], gen: '' },
     { name: 'සිංහල මිලින්‍දප්‍ර‍ශ්නය', author: 'හීනටිකුඹුරේ සුමංගල හිමි', folder: 'milinda-prashnaya', group: 1, files: ['වෙනත්', 1027, 594], gen: '' },
@@ -88,7 +89,7 @@ const bookList = [
     { name: 'ජිනකාලමාලී ප්‍රකරණය', author: 'රත්නපඤ්ඤ හිමි', folder: 'jinakalamali-prakaranaya', group: 3, files: ['ඉපැරණි පොත්', 1040, 1041], gen: '' },
     { name: 'කුණාල ජාතකය - උන්මාදිනී', author: '', folder: 'kunala-jathaka', group: 3, files: ['සූත්‍ර', 1042, '', 648], gen: '' },
     { name: 'පූජාවලිය', author: 'වේරගොඩ අමරමෝලි හිමි', folder: 'pujawaliya', group: 3, files: ['ඉපැරණි පොත්', 1148, 1149], gen: ''},
-    { name: 'සද්ධර්‍මරත්නාවලිය', author: 'ධර්‍මසේන හිමි', folder: 'saddharma-rathnavaliya', group: 3, files: ['ඉපැරණි පොත්', 1171, 1172], gen: 'files'},
+    { name: 'සද්ධර්ම රත්නාවලිය', author: 'ධර්මසේන හිමි', folder: 'saddharma-rathnavaliya', group: 3, files: ['ඉපැරණි පොත්', 1171, 1172], gen: ''},
 ];
 
 const reprocessAll = false; // process all books even without the 'gen' prop as 'web'
