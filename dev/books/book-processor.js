@@ -45,7 +45,9 @@ const isNodeEmpty = (node) => node.textElem.length == 0;
 const getNodeFileName = (node) => `${node.ids.join('-')}.html`; //${isNodeEmpty(node) ? '-1' : ''}.html`; // if empty point to the first child
 
 const bookList = [
-    { name: 'පන්සිය පණස් ජාතකය', author: 'වේරගොඩ අමරමෝලි හිමි', folder: 'pansiya-panas-jathaka', group: 1, files: ['වෙනත්', 1174, 1175], gen: 'html' }, //html, pdf, non-gen pdf
+    { name: 'පන්සිය පණස් ජාතකය', author: 'වේරගොඩ අමරමෝලි හිමි', folder: 'pansiya-panas-jathaka', group: 1, files: ['වෙනත්', '', ''], gen: '' }, //html, pdf, non-gen pdf
+    { name: 'මහාවංශය', author: 'සිංහල පරිවර්තනය', folder: 'mahavanshaya', group: 1, files: ['ඉපැරණි පොත්', 1176, 1177, 60], gen: '' },
+    { name: 'පැරණි බුදුසිරිත', author: 'සම්පිණ්ඩිතමහානිදානය', folder: 'sampinditha-mahanidanaya', group: 1, files: ['වෙනත්', 1174, 1175, 768], gen: 'html' },
     { name: 'ගෞතම බුද්ධ චරිතය', author: 'බළන්ගොඩ ආනන්ද මෛත්‍රෙය හිමි', folder: 'buddha-charithaya', group: 1, files: ['වෙනත්', 1028, 1029], gen: '' },
     { name: 'සතිපට්ඨාන විපස්සනා භාවනා', author: 'දෙවිනුවර ඤාණාවාස හිමි', folder: 'satipattana-vipassana', group: 1, files: ['භාවනා කමටහන්', 1030, 755], gen: '' },
     { name: 'විශුද්ධි මාර්ගය', author: 'මාතර ධර්මවංශ හිමි', folder: 'vishuddhi-margaya', group: 1, files: ['භාවනා කමටහන්', 1031, '', 413], gen: '' },
