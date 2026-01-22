@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pali Picture Dictionary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #f39c12;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', 'Noto Sans Sinhala', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 1000px;
+            z-index: 10;
+        }
+
+        h1 {
+            color: var(--dark);
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        button {
+            border: none;
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: inherit;
+        }
+
+        button:active { transform: scale(0.95); }
+
+        .toggle-btn { background-color: var(--light); color: var(--dark); }
+        .toggle-btn.active { background-color: var(--primary); color: white; }
+        
+        .action-btn { background-color: var(--dark); color: white; }
+        .action-btn:hover { opacity: 0.9; }
+
+        /* --- Grid/Card Container --- */
+        .container-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        /* --- Card Styles --- */
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding-bottom: 15px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+        .image-container {
+            width: 100%;
+            padding-top: 80%;
+            position: relative;
+            background-color: #fff;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .sprite-img {
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            /* Background Image is now set in JS */
+            background-size: 500% 400%; 
+            background-repeat: no-repeat;
+        }
+
+        .text-content {
+            padding: 10px 10px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: opacity 0.3s;
+        }
+
+        .quiz-active .text-content { opacity: 0; filter: blur(5px); }
+        .quiz-active .card:hover .text-content,
+        .quiz-active .card:active .text-content { opacity: 1; filter: blur(0); }
+
+        .pali-word { font-size: 1.4rem; font-weight: 700; color: #d35400; margin: 5px 0 2px 0; }
+        .meaning { font-size: 1rem; color: #7f8c8d; font-weight: 600; }
+
+        /* --- Mobile Navigation --- */
+        .nav-arrow {
+            display: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--dark);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-size: 24px;
+            z-index: 20;
+            border: none;
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .nav-prev { left: 0; }
+        .nav-next { right: 0; }
+
+        /* --- Mobile Responsive Styles --- */
+        @media (max-width: 768px) {
+            body { padding: 10px; justify-content: start; }
+            
+            .grid-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 60vh; 
+            }
+
+            .card {
+                display: none; 
+                width: 100%;
+                max-width: 300px;
+                height: auto;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            }
+
+            .card.active { display: flex; }
+            .nav-arrow { display: flex; }
+            .container-wrapper { padding: 0 60px; box-sizing: border-box; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Pali Learner</h1>
+        <div class="controls">
+            <button class="toggle-btn active" id="btn-si" onclick="setLanguage('si')">🇱🇰 Sinhala</button>
+            <button class="toggle-btn" id="btn-en" onclick="setLanguage('en')">🇬🇧 English</button>
+            <button class="action-btn" onclick="toggleQuiz()">👁️ Quiz</button>
+            <button class="action-btn" onclick="shuffleCards()">🔀 Shuffle</button>
+        </div>
+    </header>
+
+    <div class="container-wrapper">
+        <button class="nav-arrow nav-prev" onclick="navigate(-1)">&#10094;</button>
+        <div class="grid-container" id="app"></div>
+        <button class="nav-arrow nav-next" onclick="navigate(1)">&#10095;</button>
+    </div>
+
+    <script>
+        // --- DATA SECTION ---
+        
+        // Words 1-20 (Sprite 1)
+        const set1 = [
+            { id: 1,  pali: "අස්ස", paliRom: "Assa",     si: "අශ්වයා",  en: "Horse",   row: 0, col: 0 },
+            { id: 2,  pali: "ගාම",  paliRom: "Gāma",     si: "ගම",      en: "Village", row: 0, col: 1 },
+            { id: 3,  pali: "ගොණ",  paliRom: "Goṇa",     si: "ගොනා",    en: "Bull",    row: 0, col: 2 },
+            { id: 4,  pali: "රුක්ඛ", paliRom: "Rukkha",   si: "ගස",      en: "Tree",    row: 0, col: 3 },
+            { id: 5,  pali: "සුනඛ", paliRom: "Sunakha",  si: "බල්ලා",   en: "Dog",     row: 0, col: 4 },
+            { id: 6,  pali: "චන්ද", paliRom: "Canda",    si: "හඳ",      en: "Moon",    row: 1, col: 0 },
+            { id: 7,  pali: "සීහ",  paliRom: "Sīha",     si: "සිංහයා",  en: "Lion",    row: 1, col: 1 },
+            { id: 8,  pali: "සූරිය", paliRom: "Sūriya",   si: "හිරු",     en: "Sun",     row: 1, col: 2 },
+            { id: 9,  pali: "මිග",  paliRom: "Miga",     si: "මුවා",    en: "Deer",    row: 1, col: 3 },
+            { id: 10, pali: "පාසාණ", paliRom: "Pāsāṇa",  si: "ගල",      en: "Rock",    row: 1, col: 4 },
+            { id: 11, pali: "අජ",   paliRom: "Aja",      si: "එළුවා",   en: "Goat",    row: 2, col: 0 },
+            { id: 12, pali: "ලොක",  paliRom: "Loka",     si: "ලොව",     en: "World",   row: 2, col: 1 },
+            { id: 13, pali: "වානර", paliRom: "Vānara",   si: "වඳුරා",   en: "Monkey",  row: 2, col: 2 },
+            { id: 14, pali: "ආලොක", paliRom: "Āloka",    si: "එළිය",    en: "Light",   row: 2, col: 3 },
+            { id: 15, pali: "සකුණ", paliRom: "Sakuṇa",   si: "පක්‍ෂියා", en: "Bird",    row: 2, col: 4 },
+            { id: 16, pali: "මඤ්ච", paliRom: "Mañca",    si: "ඇඳ",      en: "Bed",     row: 3, col: 0 },
+            { id: 17, pali: "කාක",  paliRom: "Kāka",     si: "කාක්කා",  en: "Crow",    row: 3, col: 1 },
+            { id: 18, pali: "ආකාස", paliRom: "Ākāsa",    si: "අහස",     en: "Sky",     row: 3, col: 2 },
+            { id: 19, pali: "වරාහ", paliRom: "Varāha",   si: "ඌරා",     en: "Pig",     row: 3, col: 3 },
+            { id: 20, pali: "මග්ග", paliRom: "Magga",    si: "මාර්ගය",  en: "Road",    row: 3, col: 4 }
+        ];
+
+        // Words 21-40 (Sprite 2)
+        const set2 = [
+            { id: 21, pali: "බුද්ධ",    paliRom: "Buddha",    si: "බුදුරජ",       en: "The Buddha",   row: 0, col: 0 },
+            { id: 22, pali: "ධම්ම",     paliRom: "Dhamma",    si: "ධර්මය",       en: "Doctrine",     row: 0, col: 1 },
+            { id: 23, pali: "සංඝ",      paliRom: "Saṅgha",    si: "සංඝයා",       en: "Monk",         row: 0, col: 2 },
+            { id: 24, pali: "මනුස්ස",   paliRom: "Manussa",   si: "මිනිසා",       en: "Man",          row: 0, col: 3 },
+            { id: 25, pali: "දෙව",      paliRom: "Deva",      si: "දෙවියා",       en: "Deity",        row: 0, col: 4 },
+            { id: 26, pali: "වාණිජ",    paliRom: "Vāṇija",    si: "වෙළෙන්දා",     en: "Merchant",     row: 1, col: 0 },
+            { id: 27, pali: "ලෙඛක",     paliRom: "Lekhaka",   si: "ලියන්නා",      en: "Writer",       row: 1, col: 1 },
+            { id: 28, pali: "චොර",      paliRom: "Cora",      si: "සොරා",        en: "Thief",        row: 1, col: 2 },
+            { id: 29, pali: "මිත්ත",    paliRom: "Mitta",     si: "මිතුරා",       en: "Friend",       row: 1, col: 3 },
+            { id: 30, pali: "භූපාල",    paliRom: "Bhūpāla",   si: "රජ",          en: "King",         row: 1, col: 4 },
+            { id: 31, pali: "කස්සක",    paliRom: "Kassaka",   si: "ගොවියා",       en: "Farmer",       row: 2, col: 0 },
+            { id: 32, pali: "කම්මකාර",  paliRom: "Kammakāra", si: "කම්කරුවා",     en: "Worker",       row: 2, col: 1 },
+            { id: 33, pali: "ගොපාල",    paliRom: "Gopāla",    si: "ගොපල්ලා",      en: "Cowherd",      row: 2, col: 2 },
+            { id: 34, pali: "රජක",      paliRom: "Rajaka",    si: "රෙදිසෝදන්නා",   en: "Washerman",    row: 2, col: 3 },
+            { id: 35, pali: "දාස",      paliRom: "Dāsa",      si: "දාසයා",        en: "Servant",      row: 2, col: 4 },
+            { id: 36, pali: "පුත්ත",    paliRom: "Putta",     si: "පුත්‍ර‍යා",       en: "Son",          row: 3, col: 0 },
+            { id: 37, pali: "කුමාර",    paliRom: "Kumāra",    si: "කුමරා (ළමයා)", en: "Prince/Boy",   row: 3, col: 1 },
+            { id: 38, pali: "හත්ථ",     paliRom: "Hattha",    si: "අත",          en: "Hand",         row: 3, col: 2 },
+            { id: 39, pali: "පාද",      paliRom: "Pāda",      si: "පය",          en: "Foot",         row: 3, col: 3 },
+            { id: 40, pali: "කාය",      paliRom: "Kāya",      si: "කය (සිරුර)",   en: "Body",         row: 3, col: 4 }
+        ];
+
+        // MERGE LISTS
+        const initialWords = [...set1, ...set2];
+
+        // --- APP LOGIC ---
+
+        let words = [...initialWords];
+        let currentLang = 'si';
+        let quizMode = false;
+        let activeIndex = 0;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSwipeSound() {
+            if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(300, audioCtx.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.15);
+            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.15);
+        }
+
+        function renderCards() {
+            const container = document.getElementById('app');
+            container.innerHTML = '';
+
+            words.forEach((word, index) => {
+                const paliText = currentLang === 'si' ? word.pali : word.paliRom;
+                const meaningText = currentLang === 'si' ? word.si : word.en;
+                
+                // Sprite Positioning Logic
+                const posX = (word.col / 4) * 100;
+                const posY = (word.row / 3) * 100;
+
+                // --- NEW: Select correct image based on ID ---
+                // IDs 1-20 use the first image, IDs 21+ use the second
+                const imageSource = word.id <= 20 ? 'pali-sprite.jpeg' : 'pali-sprite-2.jpeg';
+
+                const activeClass = index === activeIndex ? 'active' : '';
+
+                const cardHTML = `
+                    <div class="card ${activeClass}" id="card-${index}">
+                        <div class="image-container">
+                            <!-- We set the background-image dynamically here -->
+                            <div class="sprite-img" 
+                                 style="background-image: url('${imageSource}'); 
+                                        background-position: ${posX}% ${posY}%;">
+                            </div>
+                        </div>
+                        <div class="text-content">
+                            <div class="pali-word">${paliText}</div>
+                            <div class="meaning">${meaningText}</div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+
+            updateQuizMode();
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.getElementById('btn-si').classList.toggle('active', lang === 'si');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            renderCards();
+        }
+
+        function toggleQuiz() {
+            quizMode = !quizMode;
+            updateQuizMode();
+        }
+
+        function updateQuizMode() {
+            const container = document.getElementById('app');
+            if(quizMode) {
+                container.classList.add('quiz-active');
+            } else {
+                container.classList.remove('quiz-active');
+            }
+        }
+
+        function shuffleCards() {
+            for (let i = words.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [words[i], words[j]] = [words[j], words[i]];
+            }
+            activeIndex = 0;
+            renderCards();
+        }
+
+        function navigate(direction) {
+            playSwipeSound();
+            document.getElementById(`card-${activeIndex}`).classList.remove('active');
+            activeIndex += direction;
+            if (activeIndex < 0) activeIndex = words.length - 1;
+            if (activeIndex >= words.length) activeIndex = 0;
+            document.getElementById(`card-${activeIndex}`).classList.add('active');
+        }
+
+        // Initialize
+        renderCards();
+
+    </script>
+</body>
+</html>
