@@ -3,27 +3,40 @@
     src: local('###'), url('UN-Abhaya.ttf') format('truetype');
     font-weight: normal;
 }
+
 @font-face {
     font-family: 'UN-Abhaya';
     src: local('###'), url('UN-Abhaya-new-bold-6.ttf') format('truetype');
     font-weight: bold;
 }
-@font-face { font-family: 'styled'; src: local('###'), url('UN-Alakamanda-4-95.ttf') format('truetype'); font-weight: normal; }
-@font-face { font-family: 'heading'; src: local('###'), url('UN-Malithi-4.ttf') format('truetype'); font-weight: normal; }
+
+@font-face {
+    font-family: 'styled';
+    src: local('###'), url('UN-Alakamanda-4-95.ttf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'heading';
+    src: local('###'), url('UN-Malithi-4.ttf') format('truetype');
+    font-weight: normal;
+}
 
 @font-face {
     font-family: 'Material Icons';
     font-style: normal;
     font-weight: 400;
     src: local('Material Icons'),
-      local('MaterialIcons-Regular'),
-      url('material-icons.woff2') format('woff2');
+        local('MaterialIcons-Regular'),
+        url('material-icons.woff2') format('woff2');
 }
+
 .material-icons {
     font-family: 'Material Icons';
     font-weight: normal;
     font-style: normal;
-    /*font-size: 24px;*/  /* Preferred icon size */
+    /*font-size: 24px;*/
+    /* Preferred icon size */
     display: inline-block;
     line-height: 1;
     text-transform: none;
@@ -31,15 +44,15 @@
     word-wrap: normal;
     white-space: nowrap;
     direction: ltr;
-  
+
     /* Support for all WebKit browsers. */
     -webkit-font-smoothing: antialiased;
     /* Support for Safari and Chrome. */
     text-rendering: optimizeLegibility;
-  
+
     /* Support for Firefox. */
     -moz-osx-font-smoothing: grayscale;
-  
+
     /* Support for IE. */
     font-feature-settings: 'liga';
     vertical-align: middle;
@@ -53,131 +66,398 @@
     --info-color: blue;
     --error-color: brown;
 }
+
 body {
     font-family: 'UN-Abhaya';
     font-size: 18px;
     text-align: justify;
     background-color: var(--background-color);
     color: var(--text-color);
+    margin: 0;
+    padding: 0;
 }
-a { color: var(--info-color);}
-.title-bar { flex: 1 1; text-align: center; padding: 5pt; display: flex; align-items: center; background-color: var(--accent-color); font-size: 1.5rem; }
-.title-bar-text { font-family: 'styled'; font-size: 1.8rem; flex: 1; margin: 0 0.3rem 0 0.3rem; }
-.title-icon { margin: 0 0.25rem 0 0.25rem; cursor: pointer; color: var(--text-color); }
-.title-icon:hover { color: var(--info-color); }
-.notice { text-align: center; padding: 5pt; font-family: 'heading'; } /* click help notice */
 
-.heading-bar { display: flex; align-items: center; font-family: 'heading'; }
-.heading-bar .material-icons { margin-left: 0.5rem; }
-h1 { font-size: 1.6rem; font-weight: normal; }
-h2 { font-size: 1.4rem; font-weight: normal; }
-h3,h4 { font-size: 1.3rem; font-weight: normal; }
+a {
+    color: var(--info-color);
+}
+
+.title-bar {
+    flex: 1 1;
+    text-align: center;
+    padding: 5pt;
+    display: flex;
+    align-items: center;
+    background-color: var(--accent-color);
+    font-size: 1.5rem;
+}
+
+.title-bar-text {
+    font-family: 'styled';
+    font-size: 1.8rem;
+    flex: 1;
+    margin: 0 0.3rem 0 0.3rem;
+}
+
+.title-icon {
+    margin: 0 0.25rem 0 0.25rem;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+.title-icon:hover {
+    color: var(--info-color);
+}
+
+div.content {
+    padding: 5pt;
+    line-height: 1.25;
+}
+
+.notice {
+    text-align: center;
+    padding: 5pt;
+    font-family: 'heading';
+}
+
+/* click help notice */
+
+.heading-bar {
+    display: flex;
+    align-items: center;
+    font-family: 'heading';
+}
+
+.heading-bar .material-icons {
+    margin-left: 0.5rem;
+}
+
+h1 {
+    font-size: 1.6rem;
+    font-weight: normal;
+}
+
+h2 {
+    font-size: 1.4rem;
+    font-weight: normal;
+}
+
+h3,
+h4 {
+    font-size: 1.3rem;
+    font-weight: normal;
+}
 
 /* TOC at the end of the text */
-.subheadings { border-top: 0.5px dashed var(--accent-color); margin-bottom: 0.5rem; }
+.subheadings {
+    border-top: 0.5px dashed var(--accent-color);
+    margin-bottom: 0.5rem;
+}
 
-.TOC-container { padding: 0.2rem 0 0.2rem 0; }
-.TOC-text { display: flex; align-items: center; text-align: left;}
-.TOC-text[level="1"] { font-size: 1.3rem; padding: 0.2rem 0 0.2rem 0; }
-.TOC-text[level="2"] { font-size: 1.2rem; padding-left: 1.5rem; }
-.TOC-text[level="3"] { font-size: 1.1rem; padding-left: 3rem; }
-.TOC-text[level="4"] { font-size: 1.1rem; padding-left: 4rem; }
-.TOC-text:hover { background-color: var(--hover-background-color); }
-.TOC-text.closed { font-weight: bold; }
-.TOC-text a { text-decoration: none; }
-.TOC-text .material-icons { cursor: pointer; margin: 0 0 0 0.5rem; }
-.TOC-text:hover .material-icons.parent { color: red; }
+.TOC-container {
+    padding: 0.2rem 0 0.2rem 0;
+}
 
-.hover-icon { visibility: hidden; }
-*:hover > .hover-icon { visibility: visible; }
+.TOC-text {
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
 
-.share-icon:hover { visibility: visible; color: var(--info-color); cursor: pointer; }
-.star-icon:hover { visibility: visible; color: var(--info-color); cursor: pointer; }
-.star-icon.active { visibility: visible; color: var(--error-color); }
-.heading-icon:hover { color: var(--info-color); cursor: pointer; }
+.TOC-text[level="1"] {
+    font-size: 1.3rem;
+    padding: 0.2rem 0 0.2rem 0;
+}
 
-.gatha { margin: 0.1rem 0 0.1rem 2rem; }
-.gatha > p { padding: 0; margin: 0; }
+.TOC-text[level="2"] {
+    font-size: 1.2rem;
+    padding-left: 1.5rem;
+}
 
-.subhead { color:var(--error-color); font-weight: bold; font-size: 1.2rem; } /* headings that are not in TOC */
-.subhead > p { padding: 0; margin: 0; }
+.TOC-text[level="3"] {
+    font-size: 1.1rem;
+    padding-left: 3rem;
+}
 
-.largefont { font-size: larger; } /* used for largepali sections in vinaya karma book for now */
+.TOC-text[level="4"] {
+    font-size: 1.1rem;
+    padding-left: 4rem;
+}
 
-.centered { text-align: center; }
+.TOC-text:hover {
+    background-color: var(--hover-background-color);
+}
 
-img { max-width: 100%; }
+.TOC-text.closed {
+    font-weight: bold;
+}
+
+.TOC-text a {
+    text-decoration: none;
+}
+
+.TOC-text .material-icons {
+    cursor: pointer;
+    margin: 0 0 0 0.5rem;
+}
+
+.TOC-text:hover .material-icons.parent {
+    color: red;
+}
+
+.hover-icon {
+    visibility: hidden;
+}
+
+*:hover>.hover-icon {
+    visibility: visible;
+}
+
+.share-icon:hover {
+    visibility: visible;
+    color: var(--info-color);
+    cursor: pointer;
+}
+
+.star-icon:hover {
+    visibility: visible;
+    color: var(--info-color);
+    cursor: pointer;
+}
+
+.star-icon.active {
+    visibility: visible;
+    color: var(--error-color);
+}
+
+.heading-icon:hover {
+    color: var(--info-color);
+    cursor: pointer;
+}
+
+.gatha {
+    margin: 0.1rem 0 0.1rem 2rem;
+}
+
+.gatha>p {
+    padding: 0;
+    margin: 0;
+}
+
+.subhead {
+    color: var(--error-color);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* headings that are not in TOC */
+.subhead>p {
+    padding: 0;
+    margin: 0;
+}
+
+.largefont {
+    font-size: larger;
+}
+
+/* used for largepali sections in vinaya karma book for now */
+
+.centered {
+    text-align: center;
+}
+
+img {
+    max-width: 100%;
+}
 
 /* Jathaka Images */
-.image-placeholder { text-align: center; margin: 20px 0;}
-.image-placeholder img { width:100%; height:auto; display:block; border-radius:8px; margin-bottom: 5px;}
-.image-placeholder .img-label { font-size: 1rem; font-style: italic; color: var(--info-color); }
+.image-placeholder {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.image-placeholder img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    margin-bottom: 5px;
+}
+
+.image-placeholder .img-label {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--info-color);
+}
 
 /* Gatha numbers from mahavansa */
-span.gatha-number { font-size: 0.6em; vertical-align: baseline; position: relative; top: -0.6em; /* Moves it up */ margin-left: 1px;}
+span.gatha-number {
+    font-size: 0.6em;
+    vertical-align: baseline;
+    position: relative;
+    top: -0.6em;
+    /* Moves it up */
+    margin-left: 1px;
+}
 
-table td { border: 1px solid black; padding: 10px 10px; text-align: left; }
-td > p { padding: 0; margin: 0; }
+table td {
+    border: 1px solid black;
+    padding: 10px 10px;
+    text-align: left;
+}
 
-ol.footnotes { border-top: 0.5px solid black; font-size: 0.9rem; column-width: 15rem; column-count: 2; padding-top: 3px; column-gap: 2rem;}
-ol.footnotes li p { margin: 4px 15px 4px 0px; }
+td>p {
+    padding: 0;
+    margin: 0;
+}
+
+ol.footnotes {
+    border-top: 0.5px solid black;
+    font-size: 0.9rem;
+    column-width: 15rem;
+    column-count: 2;
+    padding-top: 3px;
+    column-gap: 2rem;
+}
+
+ol.footnotes li p {
+    margin: 4px 15px 4px 0px;
+}
 
 
-nav { text-align: center; display: flex; align-items: center; justify-content: center;  flex-wrap: wrap;}
-nav.top { font-size: 1.3rem; }
-nav > a.button { margin: 0.15rem 0.25rem 0.15rem 0.25rem; }
+nav {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+nav.top {
+    font-size: 1.3rem;
+}
+
+nav>a.button {
+    margin: 0.15rem 0.25rem 0.15rem 0.25rem;
+}
 
 a.button {
     margin: 2pt 1pt 2pt 1pt;
-    text-align:center;
+    text-align: center;
     background-color: var(--background-color);
     padding: 6px 5px 6px 5px;
     text-decoration: none;
     line-height: 1;
     border-radius: 4px;
     border: 1px solid var(--accent-color);
-    box-shadow: 0 3px 3px rgba(0,0,0,0.2);
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-items: center;
 }
+
 a.button:hover {
     background-color: var(--accent-color);
 }
-a.button:active, a.button.pressed {
+
+a.button:active,
+a.button.pressed {
     background-color: gray;
     box-shadow: none;
 }
-a.button .material-icons { color: var(--text-color); padding: 0 0.3rem 0 0.3rem; }
+
+a.button .material-icons {
+    color: var(--text-color);
+    padding: 0 0.3rem 0 0.3rem;
+}
 
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #toast {
-    display: none; /* Hidden by default. Visible on click */
-    background-color: black; /* Black background color */
-    color: white; /* White text color */
-    text-align: center; /* Centered text */
-    border-radius: 5pt; /* Rounded borders */
-    padding: 5pt 10pt 5pt 10pt; /* Padding */
-    position: fixed; /* Sit on top of the screen */
-    z-index: 1000; /* Add a z-index if needed */
-    left: 50%; /* Center the snackbar */
+    display: none;
+    /* Hidden by default. Visible on click */
+    background-color: black;
+    /* Black background color */
+    color: white;
+    /* White text color */
+    text-align: center;
+    /* Centered text */
+    border-radius: 5pt;
+    /* Rounded borders */
+    padding: 5pt 10pt 5pt 10pt;
+    /* Padding */
+    position: fixed;
+    /* Sit on top of the screen */
+    z-index: 1000;
+    /* Add a z-index if needed */
+    left: 50%;
+    /* Center the snackbar */
     transform: translateX(-50%);
-    bottom: 30pt; /* 30px from the bottom */
+    bottom: 30pt;
+    /* 30px from the bottom */
 }
-#content-about { font-size: 0.9rem; padding: 10px; text-align: center; background-color: var(--hover-background-color); }
+
+#content-about {
+    font-size: 0.9rem;
+    padding: 10px;
+    text-align: center;
+    background-color: var(--hover-background-color);
+}
 
 /**In the app-index.html */
-.group { text-align: center;  margin: 0.5rem; padding: 0.1rem; border: 1px solid var(--text-color);  border-radius: 5px;}
-.group-name { font-family: 'styled'; font-size: 1.7rem; color: var(--error-color); padding: 0.5rem; background-color: var(--hover-background-color); }
-.books-list .book { font-size: 1.4rem; padding: 0.5rem; display: flex; align-items: center;}
-.books-list .book:hover { background-color: var(--hover-background-color); }
-.books-list .book a { text-decoration: none; flex: 1;}
+.group {
+    text-align: center;
+    margin: 0.5rem;
+    padding: 0.1rem;
+    border: 1px solid var(--text-color);
+    border-radius: 5px;
+}
+
+.group-name {
+    font-family: 'styled';
+    font-size: 1.7rem;
+    color: var(--error-color);
+    padding: 0.5rem;
+    background-color: var(--hover-background-color);
+}
+
+.books-list .book {
+    font-size: 1.4rem;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.books-list .book:hover {
+    background-color: var(--hover-background-color);
+}
+
+.books-list .book a {
+    text-decoration: none;
+    flex: 1;
+}
 
 
 /** styles used in the palibhashavatharana 1 book by ven ariyadassana **/
-table.max-width { max-width: 800px; border: 1px solid var(--text-color) }
-table.max-width tr { border: 1px solid var(--text-color) }
-table.max-width td { border: 1px solid var(--text-color); padding: 2px;}
-table.max-width td.separator { background-color: var(--hover-background-color); width: 10px;}
-table.max-width thead { color: var(--error-color); text-align: center;}
+table.max-width {
+    max-width: 800px;
+    border: 1px solid var(--text-color)
+}
+
+table.max-width tr {
+    border: 1px solid var(--text-color)
+}
+
+table.max-width td {
+    border: 1px solid var(--text-color);
+    padding: 2px;
+}
+
+table.max-width td.separator {
+    background-color: var(--hover-background-color);
+    width: 10px;
+}
+
+table.max-width thead {
+    color: var(--error-color);
+    text-align: center;
+}
