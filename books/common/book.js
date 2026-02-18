@@ -4,15 +4,15 @@ $('.TOC-text .material-icons.parent').click(e => {
     icon.text(icon.text() == 'expand_less' ? 'arrow_downward' : 'expand_less');
 });
 
-$(document).keydown(function(e) {
-    switch(e.which) {
+$(document).keydown(function (e) {
+    switch (e.which) {
         case 37: // left
-        $('nav.bottom a.prev').get(0).click();
-        break;
+            $('nav.bottom a.prev').get(0).click();
+            break;
 
         case 39: // right
-        $('nav.bottom a.next').get(0).click();
-        break;
+            $('nav.bottom a.next').get(0).click();
+            break;
 
         default: return; // exit this handler for other keys
     }
@@ -20,7 +20,7 @@ $(document).keydown(function(e) {
 });
 
 const clipb = new ClipboardJS('.share-icon', { //.TOC-text .share-icon
-    text: function(icon) {
+    text: function (icon) {
         const bookFolder = $(icon).parents('[book-folder]:first').attr('book-folder');
         return `https://pitaka.lk/books/${bookFolder}/${$(icon).attr('file-name') || ''}`;
     }
@@ -30,17 +30,17 @@ clipb.on('success', e => showToast('link එක copy කර ගත්තා. ඔ
 function showToast(toastMsg) {
     var toast = $('#toast').text(toastMsg).show();
     // After 3 seconds, remove the show class from DIV
-    setTimeout(function(){ toast.hide(); }, 3000);
+    setTimeout(function () { toast.hide(); }, 3000);
 }
 
 const cssColors = {
     light: {
         '--background-color': '#ffffff',
         '--hover-background-color': '#eeeeee',
-        '--accent-color': 'lightsalmon',
+        '--accent-color': '#FFA07A',
         '--text-color': '#000000',
-        '--info-color': 'blue', // used for links too
-        '--error-color': 'brown',
+        '--info-color': '#0000FF', // used for links too
+        '--error-color': '#A52A2A',
     },
     dark: {
         '--background-color': '#212121',
@@ -48,14 +48,17 @@ const cssColors = {
         '--accent-color': '#2F4F4F',
         '--text-color': '#ffffff',
         '--info-color': '#FFB74D',
-        '--error-color': 'turquoise',
+        '--error-color': '#40E0D0',
     }
 };
 const themeKeyName = 'books-app-theme', bookmarksKeyName = 'books-app-bookmarks'
 const updateColors = () => {
-    const root = document.documentElement, theme = localStorage.getItem(themeKeyName) || 'light' 
+    const root = document.documentElement, theme = localStorage.getItem(themeKeyName) || 'light'
     for (const property in cssColors[theme]) {
         root.style.setProperty(property, cssColors[theme][property]);
+    }
+    if (window.Android && window.Android.setStatusBarColor) { // Update Android Status Bar
+        window.Android.setStatusBarColor(cssColors[theme]['--background-color']);
     }
 }
 
