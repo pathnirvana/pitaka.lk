@@ -1,16 +1,11 @@
 bjt/books
+bjt/newbooks
 dev/passwords.mjs
 dev/books/files
 dev/books/new to be added
+dev/bjt/pdfs
 **/node_modules
 .DS_Store
 .vscode
 ._*
 Android
-bjt/newbooks
-pirith
-pirith-old
-dev/bjt/pdfs
-dev/converter
-dev/static-server
-dev/text-sources
