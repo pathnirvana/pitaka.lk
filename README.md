@@ -1,6 +1,9 @@
-# pitaka.lk-misc
-Static sites served under pitaka.lk, other than the main Tipitaka site
-(which lives in [pathnirvana/pitaka.lk](https://github.com/pathnirvana/pitaka.lk)).
+# pitaka.lk
+Static sites and domain-wide files served under pitaka.lk.
+
+The Tipitaka reader at `pitaka.lk/main` is built from the pitaka flavor of
+[pathnirvana/tipitaka.lk](https://github.com/pathnirvana/tipitaka.lk) (see `dev-docs/pitaka-flavor.md` there);
+pirith is built from [pnfo/pirith](https://github.com/pnfo/pirith).
 
 | Path | Site |
 |---|---|
@@ -11,6 +14,7 @@ Static sites served under pitaka.lk, other than the main Tipitaka site
 | `tools/` | Unicode and misc tools |
 | `static/` | Shared scripts, styles and fonts (also used by the current main site) |
 | `dev/` | Generators and sources for the above |
+| `index.html`, `.well-known/` | Domain root and Android app links |
 
 Full history before October 2026 is in [pathnirvana/pitaka.lk-archive](https://github.com/pathnirvana/pitaka.lk-archive).
 
