@@ -6,10 +6,10 @@
 # and bjt/newbooks (page scans, server only) are never touched.
 set -euo pipefail
 
-HOST=${DEPLOY_HOST:-pitaka.lk}                       # old droplet until the new /main launches, then tipitaka.lk
+HOST=${DEPLOY_HOST:-tipitaka.lk}                     # the droplet of tipitaka.lk and the pitaka.lk reader (dev/migrate.sh)
 ROOT=${DEPLOY_ROOT:-/home/janaka/www/pitaka.lk}
 SITES=(books dhammapada dict tools static bjt .well-known)
-FILES=(index.html "Buddha Jayanthi Tipitaka.html")
+FILES=(index.html robots.txt "Buddha Jayanthi Tipitaka.html")
 
 cd "$(dirname "$0")/.."
 OPTS=(-rltz --checksum --itemize-changes --omit-dir-times --chmod=D755,F644
