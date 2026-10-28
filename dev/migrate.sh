@@ -2,8 +2,9 @@
 # One-time move of pitaka.lk from the old droplet to the tipitaka.lk droplet, where the new reader runs at /main/
 # (pitaka_lk.service: pathnirvana/tipitaka.lk scripts/deploy.sh --flavor pitaka, dev-docs/pitaka-flavor.md Phase 5).
 # Run the steps in order; each can be rerun.
-#   dev/migrate.sh copy    copy ~/www/pitaka.lk without the old main/ (4 GB of bjt scans, books, pirith, ...) from the old
-#                          droplet to the new one, droplet to droplet with this machine's ssh key (agent forwarding)
+#   dev/migrate.sh copy    copy ~/www/pitaka.lk (4.7 GB: bjt scans, books, pirith, ...) from the old droplet to the new
+#                          one, droplet to droplet with this machine's ssh key (agent forwarding). Left behind: the old
+#                          main/, the checkout's .git (4.8 GB), dev/ (old tooling, 1.3 GB) and pirith-old/ - none served
 #   dev/migrate.sh nginx   install the vhost, the node-id map and the certificate of pitaka.lk (with its certbot account,
 #                          so the new droplet renews it), then test the site through the new ip - sudo passwords
 #   ... switch the A record of pitaka.lk to the new ip in DigitalOcean (Networking > Domains) ...
@@ -25,7 +26,7 @@ probe() {
 case "${1:-}" in
   copy)
     ssh-add -l >/dev/null 2>&1 || ssh-add
-    ssh -A "$NEW" "mkdir -p $ROOT && rsync -a --info=progress2 -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude=/main/ janaka@$OLD:$ROOT/ $ROOT/"
+    ssh -A "$NEW" "mkdir -p $ROOT && rsync -a --info=progress2 -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude=/main/ --exclude=/.git/ --exclude=/dev/ --exclude=/pirith-old/ janaka@$OLD:$ROOT/ $ROOT/"
     echo "copied. Then this repo's files: dev/deploy.sh --go"
     ;;
   nginx)
@@ -54,5 +55,5 @@ case "${1:-}" in
     ssh -t "$NEW" "sudo certbot renew --cert-name pitaka.lk --dry-run"
     echo "when this works, the old droplet's pitaka.lk vhost and its certbot renewal can go (sudo certbot delete --cert-name pitaka.lk there)"
     ;;
-  *) sed -n '2,11p' "$0"; exit 1 ;;
+  *) sed -n '2,12p' "$0"; exit 1 ;;
 esac
