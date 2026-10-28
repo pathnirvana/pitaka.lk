@@ -55,5 +55,5 @@ case "${1:-}" in
     ssh -t "$NEW" "sudo certbot renew --cert-name pitaka.lk --dry-run"
     echo "when this works, the old droplet's pitaka.lk vhost and its certbot renewal can go (sudo certbot delete --cert-name pitaka.lk there)"
     ;;
-  *) sed -n '2,12p' "$0"; exit 1 ;;
+  *) sed -n '2,11p' "$0"; exit 1 ;;
 esac
