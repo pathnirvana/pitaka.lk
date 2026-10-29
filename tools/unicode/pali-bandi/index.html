@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pali Touching Letters (Bandi Akuru) | පිටක.lk</title>
+    <meta name="description" content="Write Pali text in Sinhala script with touching letters (bandi akuru) and the special Pali conjuncts. පාලි බැඳි අකුරු.">
+    <link rel="canonical" href="https://pitaka.lk/tools/unicode/pali-bandi/">
+    <link rel="icon" type="image/png" sizes="96x96" href="../../../static/images/favicon-96x96.png">
+    <link rel="stylesheet" href="../lib/site.css">
+    <style>
+        .specials { display: flex; flex-wrap: wrap; gap: 6px; }
+        .specials span { border: 1px solid var(--line); border-radius: 8px; padding: 2px 10px; background: var(--bg); font-size: 1.3rem; }
+        .verse { text-align: center; font-size: 1.35rem; }
+        h3 { font-size: 1.05rem; margin: 16px 0 8px; }
+        fieldset { border: 1px solid var(--line); border-radius: 8px; margin: 12px 0; }
+        fieldset label { display: block; color: var(--ink); }
+    </style>
+</head>
+<body data-page="bandi">
+<main>
+    <h1 data-t="bandiTitle"></h1>
+    <p class="lead" data-t="bandiLead"></p>
+
+    <section class="panel">
+        <label for="input" data-t="yourText"></label>
+        <textarea id="input" spellcheck="false"></textarea>
+        <div class="row" style="margin-top: 12px">
+            <label><input type="checkbox" id="common" checked> <span data-t="commonSpecials"></span></label>
+            <label><input type="checkbox" id="rare"> <span data-t="rareSpecials"></span></label>
+            <label><input type="checkbox" id="reph" checked> <span data-t="repaya"></span></label>
+        </div>
+        <fieldset>
+            <legend data-t="eoTitle"></legend>
+            <label><input type="radio" name="eo" value="keep"> <span data-t="eoKeep"></span></label>
+            <label><input type="radio" name="eo" value="short" checked> <span data-t="eoShort"></span></label>
+            <label><input type="radio" name="eo" value="long"> <span data-t="eoLong"></span> <span class="hint" data-t="eoLongExample"></span></label>
+            <p class="hint" style="margin: 6px 0 0" data-t="eoExplain"></p>
+        </fieldset>
+        <div class="row" style="justify-content: space-between">
+            <label><span data-t="withBandi"></span> · <span data-t="font"></span> <select id="font"></select></label>
+            <span>
+                <button type="button" class="quiet" id="clear" data-t="clear"></button>
+                <button type="button" id="copy" data-t="copy"></button>
+            </span>
+        </div>
+        <div id="output" class="output" lang="pi"></div>
+    </section>
+
+    <section class="panel">
+        <h2 style="margin-top: 0" data-t="specialsTitle"></h2>
+        <p class="hint" data-t="specialsExplain"></p>
+        <h3 data-t="commonHeading"></h3>
+        <div id="common-list" class="specials"></div>
+        <h3 data-t="rareHeading"></h3>
+        <div id="rare-list" class="specials"></div>
+    </section>
+
+    <section class="panel verse" id="verse">
+        <p>අතීතං නාන‍්වාගමෙය්‍ය, නප‍්පටිකඞ‍්ඛෙ අනාගතං; යදතීතං පහීනං තං, අප‍්පත‍්තඤ්‍ච අනාගතං.</p>
+        <p>පච‍්චුප‍්පන‍්නඤ්‍ච යො ධම‍්මං, තත්‍ථ තත්‍ථ විපස‍්සති; අසංහීරං අසංකුප‍්පං, තං විද්‍වා මනුබ්‍රූහයෙ.</p>
+    </section>
+</main>
+<script type="module">
+    import { initSite, copyText, remember } from '../lib/site.js'
+    import { families, loadFamily } from '../lib/fonts.js'
+    import { convertPali, commonSpecials, rareSpecials, specialResult } from '../lib/pali.js'
+
+    initSite()
+    const $ = (id) => document.getElementById(id)
+    const input = $('input'), output = $('output'), fontSel = $('font')
+    // the special conjuncts are drawn by these fonts only
+    const bandiFonts = families.filter((f) => f.bandi)
+    fontSel.innerHTML = bandiFonts.map((f) => `<option value="${f.id}">${f.si} · ${f.family}</option>`).join('')
+    for (const [id, key] of [['common', 'common'], ['rare', 'rare'], ['reph', 'repaya'], ['font', 'bandi-font']]) remember($(id), 'pali-' + key)
+    const eo = document.querySelectorAll('input[name=eo]')
+    try { const v = localStorage.getItem('unicode-tools-pali-eo'); if (v) for (const r of eo) r.checked = r.value === v } catch {}
+
+    function setFont() {
+        const fam = bandiFonts.find((f) => f.id === fontSel.value) || bandiFonts[0]
+        loadFamily(fam)
+        for (const el of [output, $('common-list'), $('rare-list'), $('verse')]) el.style.fontFamily = `'${fam.family}', 'Abhaya Uni UI'`
+    }
+    function render() {
+        const vowels = [...eo].find((r) => r.checked).value
+        try { localStorage.setItem('unicode-tools-pali-eo', vowels) } catch {}
+        output.textContent = convertPali(input.value, { vowels, common: $('common').checked, rare: $('rare').checked, repaya: $('reph').checked })
+    }
+    const list = (specials) => specials.map((s) => `<span>${s[0]}්${s[1]} → ${specialResult(s)}</span>`).join('')
+    $('common-list').innerHTML = list(commonSpecials)
+    $('rare-list').innerHTML = list(rareSpecials)
+
+    input.value = 'නමෝ තස්ස භගවතෝ අරහතෝ සම්මා සම්බුද්ධස්ස\nබ්භෝ ම්පෝ ම්ඵෝ ම්හෝ ය්යෝ ය්හෝ ල්ලෝ ල්හෝ ව්හෝ ස්මෝ ස්වෝ ස්සෝ හ්මෝ හ්වෝ\n'
+        + commonSpecials.map((s) => s[0] + '්' + s[1] + 'ෝ').join(' ') + '\nඅර්ත්ථ ආර්ය්ය න්යාය බ්රූ බ්රහ්මචර්ය්යාව'
+    input.addEventListener('input', render)
+    for (const el of [$('common'), $('rare'), $('reph'), ...eo]) el.addEventListener('change', render)
+    fontSel.addEventListener('change', setFont)
+    $('copy').addEventListener('click', () => copyText(output.textContent))
+    $('clear').addEventListener('click', () => { input.value = ''; render(); input.focus() })
+    setFont()
+    render()
+</script>
+</body>
+</html>

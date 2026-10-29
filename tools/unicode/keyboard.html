@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
+<html lang="si">
+<head>
 	<meta charset="UTF-8">
 	<title>Standard Sinhala Keyboard - Wijesekara</title>
 	<meta name="description" content="Official Keyboard used for typing Sinhala Unicode">
@@ -10,9 +10,12 @@
 	<link rel="icon" type="image/png" sizes="96x96" href="../../static/images/favicon-96x96.png">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
-	<style id="font-face"></style> <!-- filled by script -->
-	<link rel="stylesheet" href="main.css?v=1" />
+	<link rel="stylesheet" href="lib/site.css">
 	<style>
+		.top-container { padding: 0 16px; }
+		div.textbox-title { font-size: larger; margin: 12px 0 4px; }
+		.input { width: 100%; font-size: 1.3rem; }
+		div.section { margin: 15px 0; }
 		#box1:focus { background-color: rgb(187, 241, 187); } 
 		
 		#keyboard { display: flex; flex-flow: column; }
@@ -37,9 +40,8 @@
 	</style>
 </head>
 	
-<body>
+<body data-page="keyboard">
 	<div class="top-container" style="margin: 0 auto; max-width: 800px; align-content: center; text-align: justify;">
-		<div id="top-contents" active="4"></div> <!--filled by script-->
 		<div style="text-align: center; padding: 5px; background-color: lightyellow;">
 			<span>Keyboard Layout යතුරුපුවරුව තෝරන්න</span>
 			<select class="apply-font" onchange="renderLayout(this.value)" id="layout-select" style="font-size: 1.5rem;">
@@ -73,7 +75,7 @@
 		<div id="bottom-bar"></div>
 	</div>
 
-	<script src="./font-face.js"></script>	
+	<script type="module">import { initSite } from './lib/site.js'; initSite()</script>
 	<script language="javascript" type="text/javascript">
 		const keymap = [
 			[
@@ -229,7 +231,6 @@
 			const mapping = layoutMappings[layout]
 			let dest = mapping.main[e.key] 
 			if (!dest) return;
-			console.log(e)
 			if (rightAltPressed || e.altKey) { // (e.ctrlKey && - changed to just alt
 				dest = mapping.alt[dest] || dest // altgr pressed
 			} else if (e.ctrlKey) {

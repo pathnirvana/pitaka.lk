@@ -1,4 +1,0 @@
-# redirect everything to pitaka.lk
-RewriteEngine On
-RewriteBase /
-RewriteRule ^(.*)$ https://pitaka.lk/tools/unicode/$1 [NC,L,R=301]

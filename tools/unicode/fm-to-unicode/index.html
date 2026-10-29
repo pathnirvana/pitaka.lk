@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FM to Unicode Converter - FM, Isi, Word .docx | පිටක.lk</title>
+    <meta name="description" content="Convert Sinhala text and Word (.docx) files typed in FM Abhaya, FM Malithi and Isi fonts to Sinhala Unicode, in your browser. FM අකුරු යුනිකේත බවට හරවන්න.">
+    <link rel="canonical" href="https://pitaka.lk/tools/unicode/fm-to-unicode/">
+    <link rel="icon" type="image/png" sizes="96x96" href="../../../static/images/favicon-96x96.png">
+    <link rel="stylesheet" href="../lib/site.css">
+</head>
+<body data-page="convert">
+<main>
+    <h1 data-t="convertTitle"></h1>
+    <p class="lead" data-t="convertLead"></p>
+
+    <section class="panel">
+        <h2 style="margin-top: 0" data-t="textTitle"></h2>
+        <label for="input" data-t="legacyText"></label>
+        <textarea id="input" spellcheck="false" autocomplete="off" data-t-placeholder="pastePlaceholder"></textarea>
+        <div class="row" style="margin: 12px 0">
+            <label><span data-t="encoding"></span>
+                <select id="enc"><option value="auto" data-t="auto"></option><option value="fm">FM</option><option value="isi">Isi</option></select>
+            </label>
+            <span id="detected" class="badge" hidden></span>
+            <label><span data-t="font"></span> <select id="font"></select></label>
+            <label><input type="checkbox" id="bandi"> <span data-t="applyBandi"></span></label>
+        </div>
+        <div class="row" style="justify-content: space-between">
+            <label data-t="unicodeText"></label>
+            <span>
+                <button type="button" class="quiet" id="clear" data-t="clear"></button>
+                <button type="button" id="copy" data-t="copy"></button>
+            </span>
+        </div>
+        <div id="output" class="output" lang="si"></div>
+        <div class="row" style="margin-top: 8px; justify-content: space-between">
+            <span id="status" class="badge ok"></span>
+            <span class="hint" data-t="clickToKeep"></span>
+        </div>
+        <div id="issues" class="issues"></div>
+    </section>
+
+    <section class="panel">
+        <h2 style="margin-top: 0" data-t="fileTitle"></h2>
+        <div id="drop" class="drop">
+            <span data-t="dropHere"></span>
+            <label class="button quiet" style="margin-left: 6px"><span data-t="chooseFile"></span>
+                <input type="file" id="file" accept=".docx,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
+            </label>
+            <p class="hint" style="margin: 8px 0 0" data-t="fileStays"></p>
+        </div>
+        <p id="file-message" class="badge bad" hidden></p>
+        <div id="file-fonts" hidden>
+            <p><strong id="file-name"></strong></p>
+            <table>
+                <thead><tr><th data-t="legacyFont"></th><th data-t="encoding"></th><th data-t="letters"></th><th data-t="newFont"></th></tr></thead>
+                <tbody></tbody>
+            </table>
+            <p><label><input type="checkbox" id="embed" checked> <span data-t="embed"></span></label></p>
+            <button type="button" id="convert-file" data-t="convertDownload"></button>
+            <p class="hint" data-t="macNote"></p>
+        </div>
+        <div id="file-report" hidden></div>
+    </section>
+</main>
+<script type="module" src="./converter.js"></script>
+</body>
+</html>
