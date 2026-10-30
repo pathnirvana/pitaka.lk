@@ -3,6 +3,7 @@
 // The families come from tools/unicode/lib/fonts.js; the other families in the release are left out.
 import fs from 'node:fs'
 import path from 'node:path'
+import { execFileSync } from 'node:child_process'
 import { unzipSync, zipSync, strFromU8, strToU8 } from '../../tools/unicode/lib/vendor/fflate.js'
 import { families, VERSION } from '../../tools/unicode/lib/fonts.js'
 
@@ -48,8 +49,15 @@ fs.writeFileSync(path.join(out, zipName), zipSync(zip, { level: 9 }))
 
 // fonts no longer published (the old UN- fonts, FMABHAYA.TTF)
 const wanted = new Set([...files.flatMap((f) => [f + '.ttf', f + '.woff2']), zipName])
-for (const f of fs.readdirSync(out)) if (!wanted.has(f)) { fs.rmSync(path.join(out, f)); console.log('removed', f) }
+for (const f of fs.readdirSync(out)) if (!wanted.has(f) && f !== 'web') { fs.rmSync(path.join(out, f)); console.log('removed', f) }
 console.log(`${files.length} fonts and ${zipName} (${Object.keys(zip).length} files) in ${path.relative(repo, out)}`)
+
+// the cut down web fonts of the books and dhammapada sites (web/), made from these (needs fonttools, see the script)
+try {
+    execFileSync(path.join(repo, 'dev/site-lib/make-fonts.sh'), { stdio: 'inherit' })
+} catch (e) {
+    console.log('could not make the web fonts in tools/unicode/fonts/web - run dev/site-lib/make-fonts.sh with fonttools')
+}
 
 function wrapText(s, width = 100) {
     const lines = []

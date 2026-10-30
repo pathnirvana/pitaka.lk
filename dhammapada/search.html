@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <title>සොයන්න | ධම්මපද කතා</title>
+    <meta name="description" content="ධම්මපද ගාථා සහ කතා තුළ වචන සොයන්න.">
+    <link rel="canonical" href="https://pitaka.lk/dhammapada/search.html">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f0e6">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="ධම්මපද කතා">
+    <meta property="og:locale" content="si_LK">
+    <meta property="og:title" content="සොයන්න | ධම්මපද කතා">
+    <meta property="og:description" content="ධම්මපද ගාථා සහ කතා තුළ වචන සොයන්න.">
+    <meta property="og:url" content="https://pitaka.lk/dhammapada/search.html">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Dhammapada">
+    <link rel="apple-touch-icon" href="common/app-logo.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="common/favicon-96x96.png">
+    <link rel="preload" href="/tools/unicode/fonts/web/AbhayaUni-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="common/dhammapada.css">
+    <script>try{var d=document.documentElement,s=localStorage,t=s.getItem('pitaka-theme')||s.getItem('books-app-theme'),f=s.getItem('pitaka-font-scale')||s.getItem('books-font-scale');if(t&&t!='light')d.dataset.theme=t;if(f)d.style.setProperty('--font-scale',f)}catch(e){}if(location.protocol=='file:')d.classList.add('local')</script>
+    <meta name="apple-itunes-app" content="app-id=1517198274">
+    <meta name="robots" content="noindex">
+</head>
+<body>
+<svg class="icon-sprite" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><symbol id="i-home" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></symbol></svg>
+<header class="appbar"><a class="icon-btn" href="index.html" aria-label="ධම්මපද කතා"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-home"/></svg></a><div class="appbar-title">සොයන්න</div><button type="button" class="icon-btn settings-btn" aria-label="කියවීමේ සැකසුම්" aria-expanded="false" aria-controls="settings">Aa</button></header>
+<div class="settings" id="settings" role="dialog" aria-label="කියවීමේ සැකසුම්" hidden>
+<h2>අකුරු ප්‍රමාණය</h2>
+<div class="row"><button type="button" class="size-btn smaller" aria-label="අකුරු කුඩා කරන්න">අ</button><output>100%</output><button type="button" class="size-btn larger" aria-label="අකුරු විශාල කරන්න">අ</button></div>
+<h2>පසුබිම</h2>
+<div class="row"><button type="button" class="theme-choice" data-choice="light" aria-pressed="true">සුදු</button><button type="button" class="theme-choice" data-choice="sepia" aria-pressed="false">පුස්කොළ</button><button type="button" class="theme-choice" data-choice="dark" aria-pressed="false">අඳුරු</button></div>
+</div>
+<main class="page search-page">
+<h1 class="sr-only">සොයන්න</h1>
+<form class="search-box" role="search" onsubmit="return false"><input id="q" type="search" placeholder="සිංහල අකුරෙන් වචනය ලියන්න…" aria-label="සොයන වචනය, සිංහල අකුරෙන්" autocomplete="off" enterkeyhint="search"></form>
+
+<p id="search-status" class="lead" role="status"></p>
+<ol id="results" class="results"></ol>
+<button type="button" id="more" class="more-btn" hidden>තවත් ප්‍රතිඵල</button>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="common/dhammapada.js"></script>
+<script type="module" src="common/search.js"></script>
+</body>
+</html>

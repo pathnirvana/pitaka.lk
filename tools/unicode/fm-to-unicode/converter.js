@@ -1,5 +1,6 @@
 import { initSite, copyText, download, remember, escapeHtml } from '../lib/site.js'
 import { t } from '../lib/i18n.js'
+const tf = (key, vars) => t(key).replace(/\{(\w+)\}/g, (m, k) => vars[k])
 import { families, familyById, loadFamily } from '../lib/fonts.js'
 import { detect, encodings } from '../lib/detect.js'
 import { convertText } from '../lib/text.js'
@@ -111,7 +112,11 @@ async function openFile(file) {
     message(null)
     $('file-fonts').hidden = true
     $('file-report').hidden = true
+    $('result').hidden = true
+    stopping = true
     if (/\.doc$/i.test(file.name)) return message('docOld')
+    if (/\.pdf$/i.test(file.name) || file.type === 'application/pdf') return openPdfFile(file)
+    if (file.type.startsWith('image/')) return openImage(file)
     const bytes = new Uint8Array(await file.arrayBuffer())
     if (bytes[0] !== 0x50 || bytes[1] !== 0x4b) return message('notDocx')
     const { scanDocx } = await import('../lib/docx.js')
@@ -163,4 +168,114 @@ $('convert-file').addEventListener('click', async () => {
         button.disabled = false
         button.textContent = t('convertDownload')
     }
+})
+
+// ---- PDFs and images: the text is read (or OCR'd) page by page into result.pages
+let result = null // { name, pages: [{ paragraphs, ocr }], doc }
+let stopping = false
+const status = (text) => { $('result-status').textContent = text }
+
+function showResult() {
+    const text = result.pages.filter(Boolean).map((p) => p.paragraphs.join('\n')).filter(Boolean).join('\n\n')
+    const issues = findIssues(text)
+    $('result-output').innerHTML = markIssues(text, 0, text.length, issues)
+    $('result-output').style.fontFamily = output.style.fontFamily
+    $('result-issues').innerHTML = issues.slice(0, 60).map((x, k) =>
+        `<button type="button" data-k="${k}" title="${escapeHtml(t('issue_' + x.kind))}">${escapeHtml(text.slice(Math.max(0, x.start - 8), x.end + 8).trim())}</button>`).join('')
+    $('result-note').textContent = result.pages.some((p) => p && p.ocr) ? t('ocrNote') : result.doc ? t('pdfNote') : ''
+    result.text = text
+}
+
+function startResult(name) {
+    result = { name, pages: [] }
+    stopping = false
+    $('result-name').textContent = name
+    $('result').hidden = false
+    $('scanned-row').hidden = true
+    $('ocr-range').hidden = true
+    $('result-output').textContent = ''
+    $('result-issues').textContent = ''
+}
+
+async function openPdfFile(file) {
+    startResult(file.name)
+    const { openPdf, pageText } = await import('../lib/pdf.js')
+    let doc
+    try { doc = await openPdf(new Uint8Array(await file.arrayBuffer())) } catch { $('result').hidden = true; return message('notPdf') }
+    result.doc = doc
+    const n = doc.numPages
+    $('stop').hidden = false
+    for (let i = 1; i <= n && !stopping && result.doc === doc; i++) {
+        status(tf('pdfReading', { i, n }))
+        const page = await pageText(doc, i)
+        result.pages[i - 1] = { paragraphs: page.paragraphs, chars: page.chars }
+        if (i % 10 === 0 || i === n) showResult()
+    }
+    $('stop').hidden = true
+    if (result.doc !== doc) return
+    status(tf('pdfDone', { n: result.pages.length }))
+    showResult()
+    const scanned = result.pages.map((p, i) => (p.chars < 20 ? i + 1 : 0)).filter(Boolean)
+    result.scanned = scanned
+    $('scanned-row').hidden = !scanned.length
+    $('scanned').textContent = tf('scannedPages', { n: scanned.length })
+    $('ocr-range').hidden = false
+    $('ocr-from').max = $('ocr-to').max = n
+    $('ocr-to').value = n
+}
+
+const ocrProgress = (m) => {
+    if (m.status && /loading|initializ/i.test(m.status) && m.progress < 1) status(tf('ocrLoading', { p: Math.round(m.progress * 100) }))
+}
+
+async function ocrPages(numbers) {
+    const doc = result.doc
+    const { renderPage, ocr } = await import('../lib/ocr.js')
+    stopping = false
+    $('stop').hidden = false
+    for (let k = 0; k < numbers.length && !stopping && result.doc === doc; k++) {
+        const i = numbers[k]
+        status(tf('ocrPage', { i, k: k + 1, n: numbers.length }))
+        const canvas = await renderPage(doc, i)
+        result.pages[i - 1] = { paragraphs: await ocr(canvas, ocrProgress), chars: 1, ocr: true }
+        showResult()
+    }
+    $('stop').hidden = true
+    status(t('ocrDone'))
+}
+
+async function openImage(file) {
+    startResult(file.name)
+    status(t('ocrImage'))
+    const { ocr } = await import('../lib/ocr.js')
+    result.pages = [{ paragraphs: await ocr(file, ocrProgress), ocr: true }]
+    status(t('ocrDone'))
+    showResult()
+}
+
+$('stop').addEventListener('click', () => { stopping = true })
+$('ocr-scanned').addEventListener('click', () => { $('scanned-row').hidden = true; ocrPages(result.scanned) })
+$('ocr-go').addEventListener('click', () => {
+    const n = result.doc.numPages
+    const from = Math.max(1, Math.min(n, +$('ocr-from').value || 1)), to = Math.max(from, Math.min(n, +$('ocr-to').value || n))
+    ocrPages(Array.from({ length: to - from + 1 }, (_, k) => from + k))
+})
+$('result-copy').addEventListener('click', () => copyText(result.text))
+const baseName = () => result.name.replace(/\.[^.]+$/, '')
+$('result-txt').addEventListener('click', () => download(baseName() + '-unicode.txt', new Blob([result.text], { type: 'text/plain;charset=utf-8' })))
+$('result-docx').addEventListener('click', async () => {
+    const { textToDocx } = await import('../lib/textdocx.js')
+    const fetchFont = async (file) => new Uint8Array(await (await fetch(`../fonts/${file}.ttf`)).arrayBuffer())
+    const pages = result.pages.filter(Boolean).map((p) => p.paragraphs).filter((p) => p.length)
+    const bytes = await textToDocx(pages, { fontId: fontSel.value, embed: $('embed').checked, fetchFont })
+    download(baseName() + '-unicode.docx', new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }))
+})
+$('result-issues').addEventListener('click', (e) => {
+    const b = e.target.closest('button')
+    const box = $('result-output'), span = b && box.querySelector(`.issue[data-k="${b.dataset.k}"]`)
+    if (!span) return
+    // scroll the box, not the page
+    box.scrollTo({ top: span.offsetTop - box.offsetTop - box.clientHeight / 2, behavior: 'smooth' })
+    box.querySelectorAll('.focus').forEach((s) => s.classList.remove('focus'))
+    span.classList.add('focus')
 })

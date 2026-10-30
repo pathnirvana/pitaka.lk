@@ -18,6 +18,7 @@ export const families = [
     { id: 'bindumathi', family: 'Bindumathi Uni', si: 'බින්ඳුමතී', bandi: true, styles: [{ name: 'Regular', file: 'BindumathiUni-Regular', weight: 400 }] },
     { id: 'imanee', family: 'Imanee Uni', si: 'ඉමාණී', styles: [{ name: 'Regular', file: 'ImaneeUni-Regular', weight: 400 }] },
     { id: 'ganganee', family: 'Ganganee Uni', si: 'ගංඟානී', styles: [{ name: 'Regular', file: 'GanganeeUni-Regular', weight: 400 }] },
+    { id: 'samantha', family: 'Samantha Uni', si: 'සමන්තා', styles: [{ name: 'Regular', file: 'SamanthaUni-Regular', weight: 400 }] },
     { id: 'gurulugomi', family: 'Gurulugomi Uni', si: 'ගුරුළුගෝමි', styles: [{ name: 'Regular', file: 'GurulugomiUni-Regular', weight: 400 }] },
     { id: 'arundathee', family: 'Arundathee Uni', si: 'අරුන්‍දතී', styles: [{ name: 'Regular', file: 'ArundatheeUni-Regular', weight: 400 }] },
     { id: 'alakamanda', family: 'Alakamanda Uni', si: 'ආලකමන්‍දා', styles: [{ name: 'Regular', file: 'AlakamandaUni-Regular', weight: 400 }] },

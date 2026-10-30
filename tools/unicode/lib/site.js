@@ -8,11 +8,11 @@ const pages = [
     ['fonts', '/tools/unicode/sinhala-unicode-fonts/', 'navFonts'],
 ]
 
-// light or dark as the reader picked it last; until then the system setting decides
+// light unless the reader picked dark
 let theme = null
 try { theme = localStorage.getItem('unicode-tools-theme') } catch {}
 if (theme) document.documentElement.dataset.theme = theme
-const isDark = () => (document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark'
+const isDark = () => document.documentElement.dataset.theme === 'dark'
 
 export function initSite() {
     const page = document.body.dataset.page

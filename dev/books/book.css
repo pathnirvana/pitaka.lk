@@ -1,0 +1,99 @@
+/* ---- books site (after dev/site-lib/reader.css) ---- */
+
+/* site index: the books by section */
+.shelf { margin: 20px 0 8px; }
+.shelf h2 { font-size: 1rem; color: var(--muted); font-weight: normal; margin: 0 0 6px 4px; letter-spacing: .02em; }
+.book-list { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.book-list li + li { border-top: 1px solid var(--border); }
+.book-list a { display: flex; align-items: center; gap: 8px; padding: 10px 8px 10px 16px; min-height: 56px; text-decoration: none; color: var(--text); line-height: 1.35; }
+.book-list a:hover { background: var(--surface-2); }
+.book-list .book-text { flex: 1; min-width: 0; }
+.book-name { display: block; font-weight: bold; color: var(--heading); font-size: 1.05em; }
+.book-author { display: block; font-size: .85em; color: var(--muted); }
+.book-list .icon { color: var(--muted); }
+
+/* book index: title page, introduction and the table of contents */
+.book-head { text-align: center; margin: 24px 0 8px; }
+.book-head h1 { font-size: 1.6em; margin: 0; }
+.book-head .lead { margin: 4px 0 0; }
+.front-matter { margin: 16px 0; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+.front-matter summary { cursor: pointer; padding: 10px 16px; min-height: 44px; font-weight: bold; color: var(--heading); list-style: none; display: flex; align-items: center; gap: 6px; }
+.front-matter summary::-webkit-details-marker { display: none; }
+.front-matter summary .icon { transition: transform .2s ease; transform: rotate(90deg); }
+.front-matter[open] summary .icon { transform: rotate(-90deg); }
+.front-matter .front-body { padding: 0 16px 8px; }
+.front-matter p { margin: 0 0 .7em; }
+
+.toc { margin: 8px 0 16px; }
+.toc-row { display: flex; align-items: center; min-height: 48px; border-bottom: 1px solid var(--border); line-height: 1.4; }
+.toc-row > a { flex: 1; min-width: 0; padding: 10px 4px; text-decoration: none; color: var(--text); }
+.toc-row > a:hover { color: var(--link); }
+.toc-row[data-level="1"] > a { font-weight: bold; color: var(--heading); }
+.toc-row[data-level="2"] { padding-left: 16px; }
+.toc-row[data-level="3"] { padding-left: 32px; font-size: .95em; }
+.toc-row[data-level="4"] { padding-left: 48px; font-size: .95em; }
+.toc-toggle, .toc-leaf { flex-shrink: 0; width: 36px; height: 44px; display: inline-flex; align-items: center; justify-content: center; color: var(--muted); }
+.toc-leaf .icon { width: 18px; height: 18px; opacity: .5; }
+.toc-toggle .icon { transition: transform .2s ease; }
+.toc-toggle[aria-expanded="false"] .icon { transform: rotate(-90deg); }
+/* opening and closing a branch: the row heights animate from 0 to their size */
+.toc-children { display: grid; grid-template-rows: 1fr; transition: grid-template-rows .2s ease; }
+.toc-children > .toc-inner { overflow: hidden; min-height: 0; }
+.toc-item.closed > .toc-children { grid-template-rows: 0fr; }
+.toc.no-anim .toc-children, .toc.no-anim .toc-toggle .icon { transition: none; }
+
+/* bookmark star */
+.star { color: var(--muted); }
+.star .on { display: none; }
+.star.active { color: var(--accent); }
+.star.active .on { display: inline; }
+.star.active .off { display: none; }
+.toc-row .star { opacity: .55; }
+.toc-row .star.active { opacity: 1; }
+
+/* sub headings at the end of a chapter */
+.subheadings { margin: 24px 0 8px; padding-top: 4px; border-top: 2px solid var(--border); }
+.subheadings > h2 { font-size: .9rem; color: var(--muted); font-weight: normal; margin: 8px 0 0; }
+
+/* styles from the word documents */
+.gatha { margin: 0.6em 0 0.9em 1.25em; padding-left: 0.9em; border-left: 3px solid var(--accent-soft); color: var(--verse); }
+.gatha > p { margin: 0 !important; text-align: start !important; }
+.subhead { color: var(--heading); font-weight: bold; font-size: 1.1em; margin: 1.2em 0 .4em; }
+.subhead > p { margin: 0 !important; }
+.largefont { font-size: 1.15em; }
+.centered, .centered p { text-align: center !important; }
+.prose ol, .prose ul { padding-left: 1.6em; margin: 0 0 .9em; }
+/* lists made from numbered paragraphs keep their own marker (1. / (අ) / i.) as text, hanging in the margin */
+.prose ol.enum, .prose ul.enum { list-style: none; padding-left: 2.4em; }
+ol.enum > li > .li-num, ul.enum > li > .li-num { display: inline-block; min-width: 2.4em; margin-left: -2.4em; padding-right: .3em; color: var(--heading); }
+.gatha + .gatha { margin-top: -.3em; }
+.prose li { margin-bottom: .35em; }
+.prose li > p { margin: 0 0 .35em; }
+.prose b, .prose strong { color: var(--heading); }
+
+/* jathaka images */
+.image-placeholder { margin: 20px 0; text-align: center; }
+.image-placeholder img { width: 100%; height: auto; display: block; border-radius: 12px; box-shadow: var(--shadow); }
+.image-placeholder .img-label { display: block; margin-top: 8px; font-size: .9rem; line-height: 1.5; color: var(--muted); }
+
+/* gatha numbers in the mahavansa */
+span.gatha-number { font-size: 0.6em; vertical-align: baseline; position: relative; top: -0.6em; margin-left: 1px; }
+
+.prose table { border-collapse: collapse; margin: 0 0 1em; display: block; overflow-x: auto; max-width: 100%; }
+.prose td, .prose th { border: 1px solid var(--border); padding: 6px 10px; text-align: left; vertical-align: top; line-height: 1.5; }
+.prose td > p { margin: 0 !important; text-align: left !important; }
+/* the palibhashavatharana 1 book by ven ariyadassana */
+table.max-width thead { color: var(--heading); text-align: center; }
+table.max-width td.separator { background: var(--surface); width: 10px; }
+
+ol.footnotes { margin: 28px 0 0; padding: 12px 0 0 1.4em; border-top: 1px solid var(--border); font-size: .85em; line-height: 1.6; color: var(--muted); }
+ol.footnotes li p { margin: 0 0 .4em !important; text-align: start !important; }
+a.footnote-ref { text-decoration: none; font-size: .8em; vertical-align: super; line-height: 0; padding: 0 1px; }
+
+/* bookmarks page */
+.bookmark-list { list-style: none; margin: 16px 0; padding: 0; }
+.bookmark-list li { display: flex; align-items: center; gap: 4px; padding: 10px 0; border-bottom: 1px solid var(--border); line-height: 1.45; }
+.bookmark-list .bm-text { flex: 1; min-width: 0; }
+.bookmark-list .bm-book { display: block; font-size: .85em; color: var(--muted); }
+.bookmark-list .bm-date { font-size: .8em; color: var(--muted); }
+.bookmark-list a { text-decoration: none; }

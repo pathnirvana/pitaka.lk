@@ -1,73 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="si">
 <head>
     <meta charset="UTF-8">
-    <title>තරු යෙදූ | බෞද්ධ පොත්</title>
-    <meta name="description" content="යතුරුලියනය කල බෞද්ධ පොත් සහිත මෘදුකාංග ඔබගේ පරිගණකයට සහ ජංගම දුරකතනයට ලබා ගන්න.">
-    <meta property="og:type" content="book">
-    <meta property="og:title" content="තරු යෙදූ මාතෘකා වෙත පිවිසෙන්න"> <!--For facebook link previews -->
+    <title>තරු යෙදූ මාතෘකා | බෞද්ධ පොත්</title>
+    <meta name="description" content="ඔබ තරු යෙදූ පොත් මාතෘකා.">
+    <link rel="canonical" href="https://pitaka.lk/books/bookmarks.html">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f0e6">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="බෞද්ධ පොත්">
+    <meta property="og:locale" content="si_LK">
+    <meta property="og:title" content="තරු යෙදූ මාතෘකා | බෞද්ධ පොත්">
+    <meta property="og:description" content="ඔබ තරු යෙදූ පොත් මාතෘකා.">
+    <meta property="og:url" content="https://pitaka.lk/books/bookmarks.html">
     <meta property="og:image" content="https://pitaka.lk/books/common/og-books-500x300.png">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="500">
     <meta property="og:image:height" content="300">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="twitter:card" content="summary">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Buddhist Books">
+    <link rel="apple-touch-icon" href="common/app-logo.png">
     <link rel="icon" type="image/png" sizes="96x96" href="common/favicon-96x96.png">
-    <link rel="stylesheet" href="common/book.css"/>
-    <style>
-        .bookmarks tr { max-width: 800px; border-collapse: collapse; }
-        /* Alternating row background colors */
-        .bookmarks tbody tr:nth-child(even) { background-color: var(--hover-background-color); }
-        .bookmarks tbody tr:nth-child(odd) { background-color: var(--background-color);  }
-
-        .bookmarks th, .bookmarks td { border: none; padding: 5px 10px; }
-        .bookmarks th { color: var(--error-color); }
-
-        .bookmarks tbody tr:hover { background-color: var(--hover-background-color); }
-        .bookmarks a { text-decoration: none; }
-        .bookmarks .material-icons { padding: 0 0.3rem 0 0.3rem; }
-    </style>
+    <link rel="preload" href="/tools/unicode/fonts/web/AbhayaUni-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="common/book.css">
+    <script>try{var d=document.documentElement,s=localStorage,t=s.getItem('pitaka-theme')||s.getItem('books-app-theme'),f=s.getItem('pitaka-font-scale')||s.getItem('books-font-scale');if(t&&t!='light')d.dataset.theme=t;if(f)d.style.setProperty('--font-scale',f)}catch(e){}if(location.protocol=='file:')d.classList.add('local')</script>
+    <meta name="apple-itunes-app" content="app-id=1516496078">
+    <meta name="robots" content="noindex">
 </head>
 <body>
-    <div book-folder="." style="width: 100%; max-width: 600pt; margin: 0pt auto; height: 100%; display: flex; flex-flow: column; align-content: center;">
-        <div class="title-bar">
-            <a href="./index.html" style="line-height: 1px;"><i class="material-icons title-icon">home</i></a>
-            <span class="title-bar-text">තරු යෙදූ මාතෘකා</span>
-            <i class="material-icons title-icon" id="dark-mode-toggle">dark_mode</i>
-        </div>
-        <div class="notice">සටහන් තැබීමට මාතෘකා ඉදිරියෙන් ඇති තරු ලකුණ <i class="material-icons">star_outline</i> මත ඔබන්න.</div>
-
-        <table class="bookmarks">
-            <thead>
-                <tr>
-                    <th>දිනය</th>                    
-                    <th>පොත / මාතෘකාව</th>
-                </tr>
-            </thead>
-            <tbody id="bookmarksBody">
-            </tbody>
-        </table>
-
-    </div>
-    <div id="toast"></div>
-    <script src="common/jquery-3.4.1.min.js"></script>
-    <script src="common/clipboard.min.js"></script>
-    <script src="common/book.js"></script>
-    <script>
-        // sort by timestamp and then bookname
-        const navigateNext = '<i class="material-icons">keyboard_double_arrow_right</i>'
-        const trs = Object.values(bookmarks).sort((a, b) => b.time - a.time || a.book.name.localeCompare(b.book.name)).map(b => {
-            const titles = b.ids.map((id, i) => `<a href=${getBookmarkHref(b.book.folder, b.ids.slice(0, i + 1))}>${b.headings[i]}</a>`)
-                .join(navigateNext)
-            return `<tr>
-                <td>${new Date(b.time).toISOString().slice(0, 10)}</td>
-                <td><a href="${b.book.folder}/index.html">${b.book.name}</a>${navigateNext}${titles}
-                    <i class="material-icons star-icon" data-bookmark='${JSON.stringify(b)}'>star</i></td>
-            </tr>`
-        }).join('\n')
-
-        document.getElementById('bookmarksBody').innerHTML = trs
-    </script>
+<svg class="icon-sprite" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><symbol id="i-home" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></symbol><symbol id="i-star_outline" viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></symbol></svg>
+<header class="appbar"><a class="icon-btn" href="index.html" aria-label="මුල් පිටුව"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-home"/></svg></a><div class="appbar-title">තරු යෙදූ මාතෘකා</div><button type="button" class="icon-btn settings-btn" aria-label="කියවීමේ සැකසුම්" aria-expanded="false" aria-controls="settings">Aa</button></header>
+<div class="settings" id="settings" role="dialog" aria-label="කියවීමේ සැකසුම්" hidden>
+<h2>අකුරු ප්‍රමාණය</h2>
+<div class="row"><button type="button" class="size-btn smaller" aria-label="අකුරු කුඩා කරන්න">අ</button><output>100%</output><button type="button" class="size-btn larger" aria-label="අකුරු විශාල කරන්න">අ</button></div>
+<h2>පසුබිම</h2>
+<div class="row"><button type="button" class="theme-choice" data-choice="light" aria-pressed="true">සුදු</button><button type="button" class="theme-choice" data-choice="sepia" aria-pressed="false">පුස්කොළ</button><button type="button" class="theme-choice" data-choice="dark" aria-pressed="false">අඳුරු</button></div>
+</div>
+<main class="page">
+<h1 class="sr-only">තරු යෙදූ මාතෘකා</h1>
+<ul class="bookmark-list" id="bookmark-list"></ul>
+<p class="lead" id="no-bookmarks" hidden>තවම තරු යොදා නැත. පසුව කියවීමට මාතෘකාවක් ඉදිරියෙන් ඇති <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-star_outline"/></svg> මත ඔබන්න.</p>
+<template id="star-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></template>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="common/book.js"></script>
 </body>
 </html>

@@ -1,119 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="si">
 <head>
     <meta charset="UTF-8">
-    <title>Dhammapada Stories</title>
-    <meta name="description" content="ධම්මපද කතා සද්ධර්ම සාගර saddhamma sagara">
-
-    <meta property="og:image" content="https://pitaka.lk/dhammapada/common/logo.png"/>
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1000" />
-    <meta property="og:image:height" content="500" />
-    
+    <title>ධම්මපද කතා - ගාථා, සිංහල තේරුම, කතා සහ සිතුවම් | Dhammapada Stories</title>
+    <meta name="description" content="ධම්මපදයේ ගාථා 423 පාලියෙන් හා සිංහල තේරුම සමඟ, ගාථා සජ්ඣායනය, සිතුවම් 423 ක් සහ සද්ධර්ම සාගරයෙන් කතා වස්තු 305.">
+    <link rel="canonical" href="https://pitaka.lk/dhammapada/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f0e6">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ධම්මපද කතා">
+    <meta property="og:locale" content="si_LK">
+    <meta property="og:title" content="ධම්මපද කතා - ගාථා, සිංහල තේරුම, කතා සහ සිතුවම් | Dhammapada Stories">
+    <meta property="og:description" content="ධම්මපදයේ ගාථා 423 පාලියෙන් හා සිංහල තේරුම සමඟ, ගාථා සජ්ඣායනය, සිතුවම් 423 ක් සහ සද්ධර්ම සාගරයෙන් කතා වස්තු 305.">
+    <meta property="og:url" content="https://pitaka.lk/dhammapada/">
+    <meta property="og:image" content="https://pitaka.lk/dhammapada/common/logo.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1000">
+    <meta property="og:image:height" content="500">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Dhammapada">
     <link rel="apple-touch-icon" href="common/app-logo.png">
-    <meta name="mobile-web-app-capable" content="yes">
     <link rel="icon" type="image/png" sizes="96x96" href="common/favicon-96x96.png">
-
-    <link rel="stylesheet" href="common/dhammapada.css"/>
+    <link rel="preload" href="/tools/unicode/fonts/web/AbhayaUni-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="common/dhammapada.css">
+    <script>try{var d=document.documentElement,s=localStorage,t=s.getItem('pitaka-theme')||s.getItem('books-app-theme'),f=s.getItem('pitaka-font-scale')||s.getItem('books-font-scale');if(t&&t!='light')d.dataset.theme=t;if(f)d.style.setProperty('--font-scale',f)}catch(e){}if(location.protocol=='file:')d.classList.add('local')</script>
+    <meta name="apple-itunes-app" content="app-id=1517198274">
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","name":"ධම්මපද කතා","alternateName":"Dhammapada Stories","url":"https://pitaka.lk/dhammapada/","inLanguage":"si"},{"@type":"Book","name":"ධම්මපදය","inLanguage":["si","pi"],"url":"https://pitaka.lk/dhammapada/","hasPart":[{"@type":"Chapter","name":"යමක වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-1.html"},{"@type":"Chapter","name":"අප්‍රමාද වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-2.html"},{"@type":"Chapter","name":"චිත්ත වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-3.html"},{"@type":"Chapter","name":"පුෂ්ප වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-4.html"},{"@type":"Chapter","name":"බාල වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-5.html"},{"@type":"Chapter","name":"පණ්ඩිත වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-6.html"},{"@type":"Chapter","name":"අරහද් වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-7.html"},{"@type":"Chapter","name":"සහස්‍ර වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-8.html"},{"@type":"Chapter","name":"පාප වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-9.html"},{"@type":"Chapter","name":"දණ්ඩ වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-10.html"},{"@type":"Chapter","name":"ජරා වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-11.html"},{"@type":"Chapter","name":"ආත්ම වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-12.html"},{"@type":"Chapter","name":"ලෝක වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-13.html"},{"@type":"Chapter","name":"බුද්ධ වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-14.html"},{"@type":"Chapter","name":"සුඛ වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-15.html"},{"@type":"Chapter","name":"ප්‍රිය වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-16.html"},{"@type":"Chapter","name":"ක්‍රෝධ වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-17.html"},{"@type":"Chapter","name":"මල වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-18.html"},{"@type":"Chapter","name":"ධර්‍මස්ථ වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-19.html"},{"@type":"Chapter","name":"මාර්‍ග වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-20.html"},{"@type":"Chapter","name":"ප්‍රකීර්‍ණක වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-21.html"},{"@type":"Chapter","name":"නිරය වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-22.html"},{"@type":"Chapter","name":"නාග වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-23.html"},{"@type":"Chapter","name":"තෘෂ්ණා වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-24.html"},{"@type":"Chapter","name":"භික්‍ෂු වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-25.html"},{"@type":"Chapter","name":"බ්‍රාහ්මණ වර්‍ගය","url":"https://pitaka.lk/dhammapada/ss/vagga-26.html"}]}]}</script>
 </head>
-<body>
-    <div style="width: 100%; max-width: 800pt; margin: 0pt auto; height: 100%; display: flex; flex-flow: column; align-content: center;">
-        <div style="flex: 1 1; text-align: center; font-weight: bold; font-size: 1.5rem; background-color: lightsalmon; padding: 5pt; ">ධම්මපද කතා</div>
-        <div style="text-align: center; padding: 5pt;">දිනපතා එක කතාව බැගින් කියවන්න. පැරණි ධම්මපද අටුවාව වෙත <a href="index-old.html">මෙතැනින්</a> පිවිසෙන්න.</div>
-        <div class="vagga-links">
-    <a class="vagga-link" id="vagga-1" href="ss/vagga-1.html">
-        <div class="vagga-name">1. යමක වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-2" href="ss/vagga-2.html">
-        <div class="vagga-name">2. අප්‍රමාද වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-3" href="ss/vagga-3.html">
-        <div class="vagga-name">3. චිත්ත වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-4" href="ss/vagga-4.html">
-        <div class="vagga-name">4. පුෂ්ප වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-5" href="ss/vagga-5.html">
-        <div class="vagga-name">5. බාල වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-6" href="ss/vagga-6.html">
-        <div class="vagga-name">6. පණ්ඩිත වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-7" href="ss/vagga-7.html">
-        <div class="vagga-name">7. අරහද් වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-8" href="ss/vagga-8.html">
-        <div class="vagga-name">8. සහස්‍ර වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-9" href="ss/vagga-9.html">
-        <div class="vagga-name">9. පාප වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-10" href="ss/vagga-10.html">
-        <div class="vagga-name">10. දණ්ඩ වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-11" href="ss/vagga-11.html">
-        <div class="vagga-name">11. ජරා වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-12" href="ss/vagga-12.html">
-        <div class="vagga-name">12. ආත්ම වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-13" href="ss/vagga-13.html">
-        <div class="vagga-name">13. ලෝක වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-14" href="ss/vagga-14.html">
-        <div class="vagga-name">14. බුද්ධ වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-15" href="ss/vagga-15.html">
-        <div class="vagga-name">15. සුඛ වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-16" href="ss/vagga-16.html">
-        <div class="vagga-name">16. ප්‍රිය වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-17" href="ss/vagga-17.html">
-        <div class="vagga-name">17. ක්‍රෝධ වර්‍ගය.</div>
-    </a>
-    <a class="vagga-link" id="vagga-18" href="ss/vagga-18.html">
-        <div class="vagga-name">18. මල වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-19" href="ss/vagga-19.html">
-        <div class="vagga-name">19. ධර්‍මස්ථ වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-20" href="ss/vagga-20.html">
-        <div class="vagga-name">20. මාර්‍ග වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-21" href="ss/vagga-21.html">
-        <div class="vagga-name">21. ප්‍රකීර්‍ණක වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-22" href="ss/vagga-22.html">
-        <div class="vagga-name">22. නිරය වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-23" href="ss/vagga-23.html">
-        <div class="vagga-name">23. නාග වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-24" href="ss/vagga-24.html">
-        <div class="vagga-name">24. තෘෂ්ණා වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-25" href="ss/vagga-25.html">
-        <div class="vagga-name">25. භික්‍ෂු වර්‍ගය</div>
-    </a>
-    <a class="vagga-link" id="vagga-26" href="ss/vagga-26.html">
-        <div class="vagga-name">26. බ්‍රාහ්මණ වර්‍ගය</div>
-    </a>
+<body class="index-page">
+<svg class="icon-sprite" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><symbol id="i-search" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></symbol><symbol id="i-share" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></symbol><symbol id="i-android" viewBox="0 0 24 24"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24c-2.86-1.21-6.08-1.21-8.94 0L5.65 5.67c-.19-.29-.58-.38-.87-.2-.28.18-.37.54-.22.83L6.4 9.48C3.3 11.25 1.28 14.44 1 18h22c-.28-3.56-2.3-6.75-5.4-8.52zM7 15.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm10 0c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z"/></symbol><symbol id="i-cloud_off" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4c-1.48 0-2.85.43-4.01 1.17l1.46 1.46C10.21 6.23 11.08 6 12 6c3.04 0 5.5 2.46 5.5 5.5v.5H19c1.66 0 3 1.34 3 3 0 1.13-.64 2.11-1.56 2.62l1.45 1.45C23.16 18.16 24 16.68 24 15c0-2.64-2.05-4.78-4.65-4.96zM3 5.27l2.75 2.74C2.56 8.15 0 10.77 0 14c0 3.31 2.69 6 6 6h11.73l2 2L21 20.73 4.27 4 3 5.27zM7.73 10l8 8H6c-2.21 0-4-1.79-4-4s1.79-4 4-4h1.73z"/></symbol></svg>
+<header class="appbar brand-bar"><div class="appbar-side"></div><div class="appbar-title brand">ධම්මපද කතා</div><div class="appbar-side end"><a class="icon-btn search-link" href="search.html" aria-label="සොයන්න"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg></a><button type="button" class="icon-btn settings-btn" aria-label="කියවීමේ සැකසුම්" aria-expanded="false" aria-controls="settings">Aa</button></div></header>
+<div class="settings" id="settings" role="dialog" aria-label="කියවීමේ සැකසුම්" hidden>
+<h2>අකුරු ප්‍රමාණය</h2>
+<div class="row"><button type="button" class="size-btn smaller" aria-label="අකුරු කුඩා කරන්න">අ</button><output>100%</output><button type="button" class="size-btn larger" aria-label="අකුරු විශාල කරන්න">අ</button></div>
+<h2>පසුබිම</h2>
+<div class="row"><button type="button" class="theme-choice" data-choice="light" aria-pressed="true">සුදු</button><button type="button" class="theme-choice" data-choice="sepia" aria-pressed="false">පුස්කොළ</button><button type="button" class="theme-choice" data-choice="dark" aria-pressed="false">අඳුරු</button></div>
 </div>
-        <div id="content-about" style="font-size: 14px; padding: 10px; text-align: center; background-color: beige;">
-            ධම්මපදයේ වර්ග 26 ක් යටතේ ගාථා 423 ක් ඇත. ඒ ගාථා 423 කට අදාළ පාලියද, ඒවායේ සිංහල පරිවර්තනයන්ද, 
-            ඒ ගාථා වල අර්ථය ඉස්මතු වන පරිදි අඳින ලද චිත්‍ර 423 ක් ද, ඒ ඒ ගාථා වලට අදාළ කතා වස්තුන් 305 ක් ද මේ වෙබ් අඩවියේ මැනවින් පෙළ ගස්වා ඇත.
-            ගාථා වලට අදාළ කතා වස්තු ඛුද්දක නිකායේ ධම්මපද අටුවාව ඇසුරෙන් රචිත සද්ධර්ම සාගර කෘතියෙන් උපුටා ගන්නා ලදී. 
-            එම කෘතියේ පිටපතක් <a href="https://tipitaka.lk/library/656">මෙතැනින්</a> භාගත කරගන්න.
-            <br>
-            ඔබගේ පරිගණකයේ අන්තර්ජාලය නැතිව භාවිතා කිරීම සඳහා <a href="https://tipitaka.lk/library/458">මේ ගොනුව</a> භාගත කරගන්න.
-            Android දුරකථන සඳහා <a href="https://play.google.com/store/apps/details?id=lk.pitaka.dhammapada">මෙම මෘදුකාංගය</a> install කර ගන්න.
-            <br>
-            ෴෴
-        </div>
-    </div>
+<main class="page">
+<h1 class="sr-only">ධම්මපද කතා</h1>
+<p class="lead">ගාථා 423, ඒවායේ සිංහල තේරුම, සජ්ඣායනය, සිතුවම් සහ කතා 305. දිනපතා එක කතාව බැගින් කියවන්න.</p>
+<div class="continue" data-continue="dhammapada/" hidden><template><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></template></div>
+<div class="vagga-grid">
+<a class="vagga-card" id="vagga-1" href="ss/vagga-1.html"><span class="vagga-num">1</span><span class="vagga-text"><span class="vagga-name">යමක වර්‍ගය</span><span class="vagga-range">ගාථා 1–20</span></span></a>
+<a class="vagga-card" id="vagga-2" href="ss/vagga-2.html"><span class="vagga-num">2</span><span class="vagga-text"><span class="vagga-name">අප්‍රමාද වර්‍ගය</span><span class="vagga-range">ගාථා 21–32</span></span></a>
+<a class="vagga-card" id="vagga-3" href="ss/vagga-3.html"><span class="vagga-num">3</span><span class="vagga-text"><span class="vagga-name">චිත්ත වර්‍ගය</span><span class="vagga-range">ගාථා 33–43</span></span></a>
+<a class="vagga-card" id="vagga-4" href="ss/vagga-4.html"><span class="vagga-num">4</span><span class="vagga-text"><span class="vagga-name">පුෂ්ප වර්‍ගය</span><span class="vagga-range">ගාථා 44–59</span></span></a>
+<a class="vagga-card" id="vagga-5" href="ss/vagga-5.html"><span class="vagga-num">5</span><span class="vagga-text"><span class="vagga-name">බාල වර්‍ගය</span><span class="vagga-range">ගාථා 60–75</span></span></a>
+<a class="vagga-card" id="vagga-6" href="ss/vagga-6.html"><span class="vagga-num">6</span><span class="vagga-text"><span class="vagga-name">පණ්ඩිත වර්‍ගය</span><span class="vagga-range">ගාථා 76–89</span></span></a>
+<a class="vagga-card" id="vagga-7" href="ss/vagga-7.html"><span class="vagga-num">7</span><span class="vagga-text"><span class="vagga-name">අරහද් වර්‍ගය</span><span class="vagga-range">ගාථා 90–99</span></span></a>
+<a class="vagga-card" id="vagga-8" href="ss/vagga-8.html"><span class="vagga-num">8</span><span class="vagga-text"><span class="vagga-name">සහස්‍ර වර්‍ගය</span><span class="vagga-range">ගාථා 100–115</span></span></a>
+<a class="vagga-card" id="vagga-9" href="ss/vagga-9.html"><span class="vagga-num">9</span><span class="vagga-text"><span class="vagga-name">පාප වර්‍ගය</span><span class="vagga-range">ගාථා 116–128</span></span></a>
+<a class="vagga-card" id="vagga-10" href="ss/vagga-10.html"><span class="vagga-num">10</span><span class="vagga-text"><span class="vagga-name">දණ්ඩ වර්‍ගය</span><span class="vagga-range">ගාථා 129–145</span></span></a>
+<a class="vagga-card" id="vagga-11" href="ss/vagga-11.html"><span class="vagga-num">11</span><span class="vagga-text"><span class="vagga-name">ජරා වර්‍ගය</span><span class="vagga-range">ගාථා 146–156</span></span></a>
+<a class="vagga-card" id="vagga-12" href="ss/vagga-12.html"><span class="vagga-num">12</span><span class="vagga-text"><span class="vagga-name">ආත්ම වර්‍ගය</span><span class="vagga-range">ගාථා 157–166</span></span></a>
+<a class="vagga-card" id="vagga-13" href="ss/vagga-13.html"><span class="vagga-num">13</span><span class="vagga-text"><span class="vagga-name">ලෝක වර්‍ගය</span><span class="vagga-range">ගාථා 167–178</span></span></a>
+<a class="vagga-card" id="vagga-14" href="ss/vagga-14.html"><span class="vagga-num">14</span><span class="vagga-text"><span class="vagga-name">බුද්ධ වර්‍ගය</span><span class="vagga-range">ගාථා 179–196</span></span></a>
+<a class="vagga-card" id="vagga-15" href="ss/vagga-15.html"><span class="vagga-num">15</span><span class="vagga-text"><span class="vagga-name">සුඛ වර්‍ගය</span><span class="vagga-range">ගාථා 197–208</span></span></a>
+<a class="vagga-card" id="vagga-16" href="ss/vagga-16.html"><span class="vagga-num">16</span><span class="vagga-text"><span class="vagga-name">ප්‍රිය වර්‍ගය</span><span class="vagga-range">ගාථා 209–220</span></span></a>
+<a class="vagga-card" id="vagga-17" href="ss/vagga-17.html"><span class="vagga-num">17</span><span class="vagga-text"><span class="vagga-name">ක්‍රෝධ වර්‍ගය</span><span class="vagga-range">ගාථා 221–234</span></span></a>
+<a class="vagga-card" id="vagga-18" href="ss/vagga-18.html"><span class="vagga-num">18</span><span class="vagga-text"><span class="vagga-name">මල වර්‍ගය</span><span class="vagga-range">ගාථා 235–255</span></span></a>
+<a class="vagga-card" id="vagga-19" href="ss/vagga-19.html"><span class="vagga-num">19</span><span class="vagga-text"><span class="vagga-name">ධර්‍මස්ථ වර්‍ගය</span><span class="vagga-range">ගාථා 256–272</span></span></a>
+<a class="vagga-card" id="vagga-20" href="ss/vagga-20.html"><span class="vagga-num">20</span><span class="vagga-text"><span class="vagga-name">මාර්‍ග වර්‍ගය</span><span class="vagga-range">ගාථා 273–289</span></span></a>
+<a class="vagga-card" id="vagga-21" href="ss/vagga-21.html"><span class="vagga-num">21</span><span class="vagga-text"><span class="vagga-name">ප්‍රකීර්‍ණක වර්‍ගය</span><span class="vagga-range">ගාථා 290–305</span></span></a>
+<a class="vagga-card" id="vagga-22" href="ss/vagga-22.html"><span class="vagga-num">22</span><span class="vagga-text"><span class="vagga-name">නිරය වර්‍ගය</span><span class="vagga-range">ගාථා 306–319</span></span></a>
+<a class="vagga-card" id="vagga-23" href="ss/vagga-23.html"><span class="vagga-num">23</span><span class="vagga-text"><span class="vagga-name">නාග වර්‍ගය</span><span class="vagga-range">ගාථා 320–333</span></span></a>
+<a class="vagga-card" id="vagga-24" href="ss/vagga-24.html"><span class="vagga-num">24</span><span class="vagga-text"><span class="vagga-name">තෘෂ්ණා වර්‍ගය</span><span class="vagga-range">ගාථා 334–359</span></span></a>
+<a class="vagga-card" id="vagga-25" href="ss/vagga-25.html"><span class="vagga-num">25</span><span class="vagga-text"><span class="vagga-name">භික්‍ෂු වර්‍ගය</span><span class="vagga-range">ගාථා 360–382</span></span></a>
+<a class="vagga-card" id="vagga-26" href="ss/vagga-26.html"><span class="vagga-num">26</span><span class="vagga-text"><span class="vagga-name">බ්‍රාහ්මණ වර්‍ගය</span><span class="vagga-range">ගාථා 383–423</span></span></a>
+</div>
+<p class="edition-switch">මෙම කතා සද්ධර්ම සාගර පොතෙනි. පැරණි <a href="index-old.html">ධම්මපද අටුවාවේ කතා</a> ද කියවන්න.</p>
+</main>
+<footer class="note">
+    ධම්මපදයේ වර්ග 26 ක් යටතේ ගාථා 423 ක් ඇත. ඒ ගාථා 423 කට අදාළ පාලියද, ඒවායේ සිංහල පරිවර්තනයන්ද,
+    ඒ ගාථා වල අර්ථය ඉස්මතු වන පරිදි අඳින ලද චිත්‍ර 423 ක් ද, ඒ ඒ ගාථා වලට අදාළ කතා වස්තුන් 305 ක් ද මේ වෙබ් අඩවියේ මැනවින් පෙළ ගස්වා ඇත.
+    ගාථා වලට අදාළ කතා වස්තු ඛුද්දක නිකායේ ධම්මපද අටුවාව ඇසුරෙන් රචිත සද්ධර්ම සාගර කෘතියෙන් උපුටා ගන්නා ලදී.
+    එම කෘතියේ පිටපතක් <a href="https://tipitaka.lk/library/656">මෙතැනින්</a> භාගත කරගන්න.
+    <br>
+    ධර්ම දානය පිණිස බෙදාහැරීමට <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-share"/></svg> මත click කර link එක ලබා ගන්න.
+    <br>
+    අන්තර්ජාලය නැතිව කියවීමට: <a href="https://play.google.com/store/apps/details?id=lk.pitaka.dhammapada"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-android"/></svg> Android</a>
+    · <a href="https://apps.apple.com/app/id1517198274">iPhone / iPad</a>
+    · <a href="https://tipitaka.lk/library/458"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-cloud_off"/></svg> පරිගණකයට</a>
+    <br>
+    <a href="about.html">ධම්මපදය ගැන</a> · <a href="about.html#privacy">Privacy Policy</a>
+</footer>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="common/dhammapada.js"></script>
 </body>
 </html>

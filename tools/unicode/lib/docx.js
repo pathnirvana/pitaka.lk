@@ -258,7 +258,8 @@ const newGuid = () => {
     return `{${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}}`
 }
 
-async function embedFonts(files, used, parser, serializer, fetchFont) {
+// used: Map of family id -> Set of 'Regular' | 'Bold'
+export async function embedFonts(files, used, parser, serializer, fetchFont) {
     const xml = (p, fallback) => parser.parseFromString(files[p] ? strFromU8(files[p]) : fallback, 'application/xml')
     const save = (p, doc) => { files[p] = strToU8(XML_DECL + serializer.serializeToString(doc).replace(/^<\?xml[^>]*\?>\s*/, '')) }
     const ft = xml('word/fontTable.xml', `<w:fonts xmlns:w="${W}" xmlns:r="${R}"/>`)

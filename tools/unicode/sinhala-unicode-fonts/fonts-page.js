@@ -35,6 +35,7 @@ document.querySelectorAll('.card').forEach((c) => observer.observe(c))
 
 // ---- type tester
 const text = $('text'), preview = $('preview'), fontSel = $('t-font')
+if (innerWidth < 640) $('t-size').value = 32 // fits a phone
 fontSel.innerHTML = families.map((f) => `<option value="${f.id}">${f.si} · ${f.family}${f.variable ? ' (variable)' : ''}</option>`).join('')
 
 function state() {

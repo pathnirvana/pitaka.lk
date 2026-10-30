@@ -44,12 +44,13 @@
     <section class="panel">
         <h2 style="margin-top: 0" data-t="fileTitle"></h2>
         <div id="drop" class="drop">
-            <span data-t="dropHere"></span>
+            <span class="drop-text" data-t="dropHere"></span>
             <label class="button quiet" style="margin-left: 6px"><span data-t="chooseFile"></span>
-                <input type="file" id="file" accept=".docx,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
+                <input type="file" id="file" accept=".docx,.doc,.pdf,application/pdf,image/*,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
             </label>
             <p class="hint" style="margin: 8px 0 0" data-t="fileStays"></p>
         </div>
+        <p class="hint" data-t="fileKinds"></p>
         <p id="file-message" class="badge bad" hidden></p>
         <div id="file-fonts" hidden>
             <p><strong id="file-name"></strong></p>
@@ -62,6 +63,27 @@
             <p class="hint" data-t="macNote"></p>
         </div>
         <div id="file-report" hidden></div>
+
+        <div id="result" hidden>
+            <p><strong id="result-name"></strong> <span id="result-status" class="hint"></span>
+                <button type="button" class="quiet" id="stop" data-t="stop" hidden></button></p>
+            <p id="scanned-row" hidden><span id="scanned"></span> <button type="button" id="ocr-scanned" data-t="ocrScanned"></button></p>
+            <details id="ocr-range">
+                <summary data-t="ocrRange"></summary>
+                <p class="row"><label><span data-t="pageFrom"></span> <input type="number" id="ocr-from" min="1" value="1" style="width: 5em"></label>
+                    <label><span data-t="pageTo"></span> <input type="number" id="ocr-to" min="1" value="1" style="width: 5em"> <span data-t="pageUntil"></span></label>
+                    <button type="button" class="quiet" id="ocr-go" data-t="ocrGo"></button></p>
+                <p class="hint" data-t="ocrRangeHint"></p>
+            </details>
+            <div class="row" style="justify-content: flex-end; margin: 8px 0">
+                <button type="button" class="quiet" id="result-txt" data-t="downloadTxt"></button>
+                <button type="button" class="quiet" id="result-docx" data-t="downloadDocx"></button>
+                <button type="button" id="result-copy" data-t="copy"></button>
+            </div>
+            <div id="result-output" class="output scroll" lang="si"></div>
+            <div id="result-issues" class="issues"></div>
+            <p class="hint" id="result-note"></p>
+        </div>
     </section>
 </main>
 <script type="module" src="./converter.js"></script>

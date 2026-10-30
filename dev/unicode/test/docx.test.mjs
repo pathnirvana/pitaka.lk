@@ -62,3 +62,18 @@ test('Unicode text and other fonts are left alone', async () => {
     assert.equal(out.report.runs, 0)
     assert.deepEqual(docxTexts(out.bytes).texts, docxTexts(bytes).texts)
 })
+
+test('text from a PDF or OCR becomes a Word file with the Uni font embedded', async () => {
+    const { textToDocx } = await import('../../../tools/unicode/lib/textdocx.js')
+    const pages = [['පළමු පිටුව', 'A & B < C'], ['දෙවැනි පිටුව']]
+    const bytes = await textToDocx(pages, { fontId: 'malithi', DOMParser, XMLSerializer, fetchFont })
+    const { texts, files } = docxTexts(bytes)
+    assert.deepEqual(texts, ['පළමු පිටුව', 'A & B < C', 'දෙවැනි පිටුව'])
+    const doc = strFromU8(files['word/document.xml'])
+    assert.equal((doc.match(/w:type="page"/g) || []).length, 1)
+    assert.match(strFromU8(files['word/styles.xml']), /w:cs="Malithi Uni"/)
+    assert.match(strFromU8(files['word/fontTable.xml']), /Malithi Uni[\s\S]*embedRegular/)
+    for (const [p, data] of Object.entries(files)) {
+        if (/\.(xml|rels)$/.test(p)) assert.equal(new DOMParser().parseFromString(strFromU8(data), 'application/xml').getElementsByTagName('parsererror').length, 0, p)
+    }
+})

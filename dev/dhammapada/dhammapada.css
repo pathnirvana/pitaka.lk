@@ -1,0 +1,62 @@
+/* ---- dhammapada site (after dev/site-lib/reader.css) ---- */
+
+/* index: the 26 vaggas */
+.vagga-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin: 8px 0 16px; }
+.vagga-card {
+    display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 8px 10px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    text-decoration: none; color: var(--text); line-height: 1.3;
+}
+.vagga-card:hover { border-color: var(--accent); }
+.vagga-num {
+    flex-shrink: 0; width: 34px; height: 34px; border-radius: 17px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--accent-soft); color: var(--heading); font-weight: bold; font-size: .9rem;
+}
+.vagga-text { min-width: 0; }
+.vagga-name { display: block; font-weight: bold; color: var(--heading); }
+.vagga-range { display: block; font-size: .8rem; color: var(--muted); }
+.edition-switch { text-align: center; font-size: .95em; }
+
+/* verses: pali, its sinhala meaning, recitation */
+.pali { color: var(--verse); font-style: italic; }
+.pali p, .sinhala p { margin: 0; }
+.sinhala { margin-top: 6px; }
+.gatha-card .sinhala { text-align: start; }
+audio { display: block; width: 100%; height: 40px; margin: 4px 0 8px; }
+
+/* vagga page: the kathas with their gathas, a gatha opens its katha */
+section.katha { padding: 6px 0 14px; border-bottom: 1px solid var(--border); scroll-margin-top: var(--appbar-h); }
+h2.katha-title { font-size: 1.05em; margin: 10px 0 2px; }
+h2.katha-title a { color: var(--heading); text-decoration: none; }
+.vagga-page .gatha { margin-top: 6px; }
+a.gatha-link { display: flex; gap: 10px; align-items: flex-start; color: inherit; text-decoration: none; padding: 6px 8px; margin: 0 -8px; border-radius: 10px; }
+a.gatha-link:hover { background: var(--surface); }
+.gatha-text { flex: 1; min-width: 0; }
+img.thumb { flex-shrink: 0; width: 72px; height: auto; border-radius: 8px; margin-top: 4px; }
+@media (min-width: 40rem) { img.thumb { width: 120px; } }
+
+/* katha page: each gatha as a card with its painting, then the story */
+.other-edition { font-size: .9em; color: var(--muted); margin: -4px 0 16px; }
+.gatha-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px 14px; margin: 0 0 16px; text-align: center; }
+.gatha-num { font-size: .8rem; color: var(--muted); }
+.painting { margin: 12px -14px -14px; }
+.painting img { display: block; width: 100%; height: auto; border-radius: 0 0 14px 14px; }
+.story { margin-top: 20px; }
+
+/* items within the story text */
+.pali-gatha { margin: .6em 0 .9em 1.25em; padding-left: .9em; border-left: 3px solid var(--accent-soft); color: var(--verse); font-style: italic; }
+.sinhala-kavi { margin: .6em 0 .9em 1.25em; padding-left: .9em; border-left: 3px solid var(--border); }
+.pali-gatha > p, .sinhala-kavi > p { margin: 0 !important; text-align: start !important; }
+.katha-ending { text-align: center; color: var(--heading); margin: 1.2em 0; }
+.katha-ending p { text-align: center !important; }
+.katha-ending::after { content: '෴'; display: block; }
+.story table { border-collapse: collapse; margin-bottom: 1em; display: block; overflow-x: auto; max-width: 100%; }
+.story td { padding: 4px 10px; vertical-align: top; }
+.story td > p { margin: 0 !important; }
+ol.footnotes { margin: 28px 0 0; padding: 12px 0 0 1.4em; border-top: 1px solid var(--border); font-size: .85em; line-height: 1.6; color: var(--muted); }
+ol.footnotes li p { margin: 0 0 .4em !important; text-align: start !important; }
+a.footnote-ref { text-decoration: none; font-size: .8em; vertical-align: super; line-height: 0; }
+
+.about-page h1 { margin-top: 20px; }
+.about-page h2 { font-size: 1.15em; margin-top: 1.6em; }

@@ -31,14 +31,7 @@
     --ui: 'Abhaya Uni UI', system-ui, -apple-system, 'Segoe UI', sans-serif;
     color-scheme: light;
 }
-/* dark: from the system setting unless the reader picked light, or picked dark with the header button */
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme='light']) {
-        --bg: #1b1814; --panel: #24201b; --ink: #ece4d8; --muted: #b3a593; --line: #3b342b;
-        --accent: #f0a04b; --accent-ink: #1b1814; --accent-soft: #3a2c1c; --bad: #ff8a80; --bad-soft: #4a2323;
-        --ok: #81c784; --kept: #b3a593; color-scheme: dark;
-    }
-}
+/* dark only when the reader picks it with the header button; light is the default */
 :root[data-theme='dark'] {
     --bg: #1b1814; --panel: #24201b; --ink: #ece4d8; --muted: #b3a593; --line: #3b342b;
     --accent: #f0a04b; --accent-ink: #1b1814; --accent-soft: #3a2c1c; --bad: #ff8a80; --bad-soft: #4a2323;
@@ -88,6 +81,8 @@ button:disabled { opacity: .5; cursor: default; }
 /* converted output */
 .output { min-height: 9em; white-space: pre-wrap; word-wrap: break-word; padding: 10px; border: 1px solid var(--line); border-radius: 8px;
     background: var(--bg); font-size: 1.25rem; line-height: 1.8; }
+/* a long PDF or OCR result scrolls inside its box instead of growing the page */
+.output.scroll { max-height: 65vh; overflow-y: auto; overscroll-behavior: contain; }
 .output .issue { background: var(--bad-soft); text-decoration: underline wavy var(--bad); text-underline-offset: 4px; }
 .output .issue.focus { outline: 2px solid var(--bad); }
 .output .kept { color: var(--kept); background: repeating-linear-gradient(135deg, transparent 0 4px, var(--accent-soft) 4px 8px); }
@@ -104,3 +99,19 @@ th { color: var(--muted); font-weight: 400; }
 
 .site-footer { border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; text-align: center; padding: 16px; }
 [hidden] { display: none !important; }
+
+/* phones: title and buttons on one line, the three tools as one row of tabs below */
+@media (max-width: 640px) {
+    body { font-size: 16px; }
+    main { padding: 0 12px 40px; }
+    h1 { font-size: 1.4rem; margin-top: 16px; }
+    .panel { padding: 12px; }
+    .site-header .bar { padding: 8px 12px; gap: 8px; }
+    .site-header nav { order: 3; width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+    .site-header nav a { text-align: center; padding: 6px 4px; border-radius: 8px; font-size: .85rem; line-height: 1.3;
+        background: var(--accent-soft); display: flex; align-items: center; justify-content: center; }
+    .lang, .theme { padding: 3px 10px; }
+    .output { font-size: 1.15rem; }
+}
+/* touch screens can't drop files */
+@media (hover: none) { .drop-text { display: none; } }

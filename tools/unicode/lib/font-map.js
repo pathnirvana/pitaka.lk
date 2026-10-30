@@ -2,14 +2,14 @@
 // to its own Uni font. The others go to the published font closest in style (a draft, to be reviewed).
 const sameDesign = [
     [/abhaya|abaya|^fm\W?aba/i, 'abhaya'], [/malithi|malit|malathi/i, 'malithi'], [/bindu/i, 'bindumathi'], [/imanee|imani/i, 'imanee'],
-    [/gangan/i, 'ganganee'], [/gurulu/i, 'gurulugomi'], [/arund/i, 'arundathee'], [/alakamanda/i, 'alakamanda'], [/davas/i, 'davasa'],
+    [/gangan/i, 'ganganee'], [/saman/i, 'samantha'], [/gurulu/i, 'gurulugomi'], [/arund/i, 'arundathee'], [/alakamanda/i, 'alakamanda'], [/davas/i, 'davasa'],
 ]
 const closestStyle = [
     [/agni|gemunu|rajantha|indee/i, 'davasa'], // bold or condensed square shapes
     [/basuru|dharan/i, 'ganganee'], // heavy, round
     [/isiwara|siwa|deran|disapamok/i, 'alakamanda'], // slanted, light
     [/rashmi/i, 'bindumathi'], // light, round
-    [/samantha|saman|sandhy|emanee/i, 'imanee'],
+    [/sandhy|emanee/i, 'imanee'],
 ]
 
 // { id, bold }: legacy bolds are separate fonts (FM AbaBld), so their runs get bold set instead
