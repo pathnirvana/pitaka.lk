@@ -114,7 +114,7 @@ function appbar({ left = '', title, titleHref, brand = false, right = '', search
     const settingsBtn = `<button type="button" class="icon-btn settings-btn" aria-label="කියවීමේ සැකසුම්" aria-expanded="false" aria-controls="settings">Aa</button>`;
     const field = search ? `<form class="appbar-search" action="${search.action}" role="search"${search.page ? ' onsubmit="return false"' : ''}>${icon('search')}` +
         `${search.book ? `<input type="hidden" name="book" value="${search.book}">` : ''}<input type="search" name="q"${search.page ? ' id="q"' : ''} ` +
-        `placeholder="${esc(search.placeholder || 'සොයන්න')}" aria-label="සොයන්න" autocomplete="off" enterkeyhint="search"></form>` : '';
+        `placeholder="${esc(search.placeholder || 'සොයන්න')}" aria-label="සොයන්න" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="search"></form>` : '';
     const titleDiv = `<div class="appbar-title${brand ? ' brand' : ''}${search ? ' app-only' : ''}">${t}</div>`;
     const bar = `<header class="appbar">${left || '<span class="icon-btn"></span>'}${titleDiv}${field}${right}${settingsBtn}</header>`;
     return `${bar}

@@ -37,6 +37,8 @@ function render() {
         badge.textContent = enc ? `${enc.label} ${Math.round(best.score * 100)}%` : t('alreadyUnicode')
         badge.hidden = false
     } else badge.hidden = !text.trim() || !!enc && encSel.value !== 'auto'
+    // show the typed text in the font of its encoding; FM when in doubt
+    input.classList.toggle('isi', !!enc && enc.id === 'isi')
     const r = convertText(text, enc, { keep })
     let out = r.text, words = r.words
     if (bandi.checked) {

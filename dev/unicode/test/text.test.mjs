@@ -26,7 +26,9 @@ test('detects the encoding of paragraphs', () => {
     assert.equal(detect('මෙය දැනටමත් යුනිකේත ය')[0].enc, null)
     // single words: every encoding gives valid Unicode, only one gives Sinhala
     for (const w of ['wdhqfndajdoh', 'fldrKh', ',xld']) assert.equal(detect(w)[0].enc, fm, w)
-    assert.equal(detect('R»Y£')[0].enc, isi)
+    assert.equal(detect('R»Y£ »Y£')[0].enc, isi)
+    // when in doubt, FM: a few keys, or nothing that reads clearly better
+    for (const w of ['a', 'R»Y£', '123', '']) assert.equal(detect(w)[0].enc, fm, w)
 })
 
 test('finds broken sequences', () => {

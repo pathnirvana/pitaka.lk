@@ -8,6 +8,14 @@
     <link rel="canonical" href="https://pitaka.lk/tools/unicode/fm-to-unicode/">
     <link rel="icon" type="image/png" sizes="96x96" href="../../../static/images/favicon-96x96.png">
     <link rel="stylesheet" href="../lib/site.css">
+    <style>
+        /* the input shows what is typed: in FM Abhaya or Isi Abhaya, whichever encoding is in use */
+        @font-face { font-family: 'FM Abhaya Legacy'; src: url(../lib/legacy/fm-abhaya.woff2) format('woff2'); font-display: swap; }
+        @font-face { font-family: 'Isi Abhaya Legacy'; src: url(../lib/legacy/isi-abhaya.woff2) format('woff2'); font-display: swap; }
+        #input { font-family: 'FM Abhaya Legacy', var(--ui); font-size: 1.35rem; }
+        #input.isi { font-family: 'Isi Abhaya Legacy', var(--ui); }
+        #input::placeholder { font-family: var(--ui); font-size: 1rem; }
+    </style>
 </head>
 <body data-page="convert">
 <main>

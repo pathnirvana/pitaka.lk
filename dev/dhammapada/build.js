@@ -242,11 +242,8 @@ function writeVagga(ed, v, stories) {
         return `<section class="katha" id="katha-${k.index}">
 <h2 class="katha-title"><a href="${kathaFile(k)}">${esc(heading)}</a></h2>
 ${k.gathas.map(g => `<div class="gatha" data-gatha="${g.num}">
-${audioTag(g, root)}
-<a class="gatha-link" href="${kathaFile(k)}">
-<div class="gatha-text">${gathaText(g)}</div>
-<img class="thumb" src="${root}thumbs/${g.num}.jpg" width="139" height="150" alt="" loading="lazy" decoding="async">
-</a>
+<div class="gatha-head"><a class="thumb-link" href="${kathaFile(k)}" tabindex="-1" aria-hidden="true"><img class="thumb" src="${root}thumbs/${g.num}.jpg" width="139" height="150" alt="" loading="lazy" decoding="async"></a>${audioTag(g, root)}</div>
+<a class="gatha-link" href="${kathaFile(k)}"><div class="gatha-text">${gathaText(g)}</div></a>
 </div>`).join('\n')}
 </section>`;
     }).join('\n');

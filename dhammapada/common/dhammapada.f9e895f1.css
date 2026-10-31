@@ -271,11 +271,13 @@ section.katha { padding: 6px 0 14px; border-bottom: 1px solid var(--border); scr
 h2.katha-title { font-size: 1.05em; margin: 10px 0 2px; }
 h2.katha-title a { color: var(--heading); text-decoration: none; }
 .vagga-page .gatha { margin-top: 6px; }
-a.gatha-link { display: flex; gap: 10px; align-items: flex-start; color: inherit; text-decoration: none; padding: 6px 8px; margin: 0 -8px; border-radius: 10px; }
+/* a row with the painting (small) and the recitation, the verse below at full width */
+.gatha-head { display: flex; align-items: center; gap: 10px; margin: 8px 0 2px; }
+.gatha-head audio { flex: 1; min-width: 0; margin: 0; }
+.thumb-link { flex-shrink: 0; line-height: 0; }
+img.thumb { width: 48px; height: 52px; object-fit: cover; border-radius: 10px; box-shadow: var(--shadow); }
+a.gatha-link { display: block; color: inherit; text-decoration: none; padding: 6px 8px; margin: 0 -8px; border-radius: 10px; }
 a.gatha-link:hover { background: var(--surface); }
-.gatha-text { flex: 1; min-width: 0; }
-img.thumb { flex-shrink: 0; width: 72px; height: auto; border-radius: 8px; margin-top: 4px; }
-@media (min-width: 40rem) { img.thumb { width: 120px; } }
 
 /* katha page: each gatha as a card with its painting, then the story */
 .other-edition { font-size: .9em; color: var(--muted); margin: -4px 0 16px; }
