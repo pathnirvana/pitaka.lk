@@ -1,6 +1,6 @@
 // Uploads the signed bundle of the books app (/Volumes/2TB/Android/Books, ./gradlew bundleRelease) and releases it on
 // a track (TRACK, default production) with the notes of store-text.mjs; the Play review follows the commit:
-//   node dev/play/play-release.mjs
+//   node dev/play/play-release.mjs [--dry]     (--dry uploads, then drops the edit: nothing is released)
 import { readFileSync } from 'node:fs'
 import { api } from './play.mjs'
 import { store } from './store-text.mjs'
@@ -14,8 +14,13 @@ try {
   console.log('bundle', bundle.versionCode)
   await api('PUT', `${e}/tracks/${TRACK}`, { track: TRACK, releases: [{ status: 'completed', versionCodes: [String(bundle.versionCode)],
     releaseNotes: [{ language: 'en-US', text: store.releaseNotes }] }] })
-  await api('POST', `${e}:commit`)
-  console.log(TRACK, 'committed')
+  if (process.argv.includes('--dry')) {
+    await api('DELETE', e)
+    console.log('dry run: edit dropped')
+  } else {
+    await api('POST', `${e}:commit`)
+    console.log(TRACK, 'committed')
+  }
 } catch (err) {
   await api('DELETE', e).catch(() => {})
   throw err

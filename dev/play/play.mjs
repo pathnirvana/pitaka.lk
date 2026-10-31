@@ -24,8 +24,30 @@ async function auth() {
 export async function api(method, path, body) {
   const upload = body?.bytes
   const url = `https://androidpublisher.googleapis.com/${upload ? 'upload/' : ''}androidpublisher/v3/applications/${PACKAGE}${path}${upload ? '?uploadType=media' : ''}`
+  if (upload && upload.length > CHUNK) return resumable(method, url.replace('uploadType=media', 'uploadType=resumable'), path, body)
   const r = await fetch(url, { method, body: upload ? body.bytes : body && JSON.stringify(body),
     headers: { Authorization: `Bearer ${await auth()}`, 'Content-Type': upload ? body.type : 'application/json' } })
+  const text = await r.text()
+  if (!r.ok) throw new Error(`${method} ${path} -> ${r.status} ${text.slice(0, 1500)}`)
+  return text ? JSON.parse(text) : {}
+}
+
+// a big upload (the bundle) in parts: one request of 256 MB fails with EPIPE
+const CHUNK = 16 << 20
+async function resumable(method, url, path, { bytes, type }) {
+  const start = await fetch(url, { method, headers: { Authorization: `Bearer ${await auth()}`, 'X-Upload-Content-Type': type,
+    'X-Upload-Content-Length': String(bytes.length) } })
+  if (!start.ok) throw new Error(`${method} ${path} (start) -> ${start.status} ${(await start.text()).slice(0, 1500)}`)
+  const session = start.headers.get('location')
+  let r
+  for (let from = 0; from < bytes.length; from += CHUNK) {
+    const to = Math.min(from + CHUNK, bytes.length)
+    r = await fetch(session, { method: 'PUT', body: bytes.subarray(from, to), headers: { 'Content-Range': `bytes ${from}-${to - 1}/${bytes.length}` } })
+    if (r.status != 308 && !r.ok) break
+    if (r.status == 308) await r.arrayBuffer()
+    process.stdout.write(`\r${path}: ${Math.round(to / bytes.length * 100)}%`)
+  }
+  console.log()
   const text = await r.text()
   if (!r.ok) throw new Error(`${method} ${path} -> ${r.status} ${text.slice(0, 1500)}`)
   return text ? JSON.parse(text) : {}
