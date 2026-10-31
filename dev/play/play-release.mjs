@@ -18,7 +18,11 @@ try {
     await api('DELETE', e)
     console.log('dry run: edit dropped')
   } else {
-    await api('POST', `${e}:commit`)
+    // Play sometimes refuses to send an edit for review itself: it is then sent from the console (Publishing overview)
+    await api('POST', `${e}:commit`).catch(err => {
+      if (!/changesNotSentForReview/.test(err.message)) throw err
+      return api('POST', `${e}:commit?changesNotSentForReview=true`).then(() => console.log('not sent for review: send it in the Play console'))
+    })
     console.log(TRACK, 'committed')
   }
 } catch (err) {
