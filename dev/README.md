@@ -11,6 +11,9 @@ Generators and sources for the static sites. Run the scripts from this folder af
 | `apple/build-ios.sh sim\|archive [--upload]` | the iOS app (`apple/project.yml`, XcodeGen): simulator build, or App Store build and TestFlight upload |
 | `node apple/store-screenshots.js` | store screenshots of the books app (Play and App Store sizes) and the Play feature graphic, from a local server |
 | `node apple/asc-screenshots.mjs` | the App Store screenshots and version number of the editable iOS version |
+| `node apple/asc-submit.mjs [--submit]` | the App Store texts (`play/store-text.mjs`) and newest build of that version, and its review submission |
+| `node play/play-listing.mjs [--dry]` | the Google Play texts (`play/store-text.mjs`), screenshots and feature graphic of the books app |
+| `node play/play-release.mjs` | uploads the books app's signed bundle and releases it on production (`TRACK=internal` for a test) |
 | `node site-lib/og-cards.js` | link preview cards (og:image) of the books and the dhammapada index; rebuild the sites after |
 | `GSC_KEY=<key.json> node gsc-report.mjs [/books/ ...]` | Search Console clicks, queries, pages, devices, sitemaps (read-only service account; key outside the repo) |
 | `node books/library-files.js <folder>` | single html file and pdf of a book for the tipitaka.lk library (weasyprint) |
