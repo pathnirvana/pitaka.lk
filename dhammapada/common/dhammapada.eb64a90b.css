@@ -176,6 +176,8 @@ h1, h2, h3, h4 { color: var(--heading); line-height: 1.4; font-weight: bold; }
 
 /* search: not in the apps, where the pages are local files that can not load the index */
 .local .search-link { display: none; }
+.app .app-links { display: none; } /* 'get the app' links */
+.local .web-only { display: none; } /* links to the other site, which the app (file://) does not have yet */
 .search-page { padding-top: 8px; }
 .search-scope { display: flex; gap: 16px; font-size: .9rem; color: var(--muted); margin: 4px 4px 0; }
 .search-scope { flex-wrap: wrap; column-gap: 16px; row-gap: 0; }

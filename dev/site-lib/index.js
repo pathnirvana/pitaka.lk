@@ -101,7 +101,7 @@ function head({ title, description, url, root, siteName, themeColor = "#ffa07a",
 
 // the reading settings are applied before the first paint: light unless chosen in the settings (the old books app
 // theme switch is not carried over), the old books app font size is
-const themeScript = `<script>try{var d=document.documentElement,s=localStorage,t=s.getItem('pitaka-theme'),f=s.getItem('pitaka-font-scale')||s.getItem('books-font-scale');if(t&&t!='light')d.dataset.theme=t;if(f)d.style.setProperty('--font-scale',f)}catch(e){}if(location.protocol=='file:')d.classList.add('local')</script>`; // local: inside the apps
+const themeScript = `<script>try{var d=document.documentElement,s=localStorage,t=s.getItem('pitaka-theme'),f=s.getItem('pitaka-font-scale')||s.getItem('books-font-scale');if(t&&t!='light')d.dataset.theme=t;if(f)d.style.setProperty('--font-scale',f)}catch(e){}if(location.protocol=='file:')d.classList.add('local');if(location.protocol=='app:'||location.hostname=='appassets.androidplatform.net')d.classList.add('app')</script>`; // local: the old apps (file://, no search), app: the apps since 2026 (served by the app, search works)
 
 // ---- page parts shared by the sites (styles in reader.css, behaviour in reader.js)
 const linkButton = (href, iconName, label) => `<a class="icon-btn" href="${href}" aria-label="${esc(label)}">${icon(iconName)}</a>`;

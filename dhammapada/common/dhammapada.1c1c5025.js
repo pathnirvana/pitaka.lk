@@ -7,6 +7,16 @@ const storage = {
     set(key, value) { try { localStorage.setItem(key, value); } catch (e) {} },
 };
 const root = document.documentElement;
+// the apps before 3.0 showed the pages from file://, whose localStorage the apps hand over once (bookmarks, settings):
+// added where this storage has nothing yet, then the page is shown again with them
+(() => {
+    const old = window.Android && window.Android.takeOldStorage ? window.Android.takeOldStorage() : window.pitakaOldStorage;
+    if (!old) return;
+    delete window.pitakaOldStorage;
+    let added = 0;
+    try { const o = JSON.parse(old); for (const k in o) if (storage.get(k) == null) { storage.set(k, o[k]); added++; } } catch (e) {}
+    if (added) location.reload();
+})();
 
 function showToast(msg) {
     const toast = document.getElementById('toast');
@@ -32,10 +42,11 @@ function share(btn) {
 }
 
 // theme and font size
-function updateStatusBar() {
-    if (window.Android && window.Android.setStatusBarColor) { // the books android app colors its status bar to match
-        window.Android.setStatusBarColor(getComputedStyle(root).getPropertyValue('--surface').trim());
-    }
+function updateStatusBar() { // the apps color the status bar to match the top bar
+    const color = getComputedStyle(root).getPropertyValue('--surface').trim();
+    if (window.Android && window.Android.setStatusBarColor) window.Android.setStatusBarColor(color);
+    const ios = window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.statusBar;
+    if (ios) ios.postMessage(color);
 }
 const currentTheme = () => root.dataset.theme || 'light';
 function setTheme(theme) {

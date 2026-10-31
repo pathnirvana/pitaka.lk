@@ -173,10 +173,10 @@ ${body}
 const footer = (extra = '') => `<footer class="note">
     ${extra}ධර්ම දානය පිණිස බෙදාහැරීමට ${icon('share')} මත click කර link එක ලබා ගන්න.
     <br>
-    අන්තර්ජාලය නැතිව කියවීමට: <a href="https://play.google.com/store/apps/details?id=lk.pitaka.dhammapada">${icon('android')} Android</a>
+    <span class="app-links">අන්තර්ජාලය නැතිව කියවීමට: <a href="https://play.google.com/store/apps/details?id=lk.pitaka.dhammapada">${icon('android')} Android</a>
     · <a href="https://apps.apple.com/app/id${IOS_APP}">iPhone / iPad</a>
     · <a href="https://tipitaka.lk/library/458">${icon('cloud_off')} පරිගණකයට</a>
-    <br>
+    <br></span>
     <a href="${'ROOT'}about.html">ධම්මපදය ගැන</a> · <a href="${'ROOT'}about.html#privacy">Privacy Policy</a>
 </footer>`;
 const pageFooter = (root, extra) => footer(extra).replace(/ROOT/g, root);
@@ -184,7 +184,7 @@ const imageMeta = (g, katha) => {
     const { width, height } = paintingSize(g);
     return { url: `${baseUrl}paintings/${g.num}.jpg`, width, height, type: 'image/jpeg', alt: paintingAlt(g, katha) };
 };
-const logoImage = { url: `${baseUrl}common/logo.png`, width: 1000, height: 500, type: 'image/png' };
+const logoImage = { url: `${baseUrl}common/og/dhammapada.jpg`, width: 1200, height: 630, type: 'image/jpeg' }; // dev/site-lib/og-cards.js
 const commonHead = { siteName, themeColor: '#f6f0e6', css: [assets.css], appTitle: 'Dhammapada', extra: `<meta name="apple-itunes-app" content="app-id=${IOS_APP}">` };
 
 // ---- writers

@@ -8,6 +8,10 @@ Generators and sources for the static sites. Run the scripts from this folder af
 | `npm run check` | links and #anchors, titles, descriptions, canonical, one h1, image alt, json-ld of both sites |
 | `npm run deploy` | check, then `deploy.sh` (dry run; `npm run deploy -- --go` to upload) |
 | `./sync-apps.sh` | check, then copy the sites into the Android app projects (dry run; `--go` to copy) |
+| `apple/build-ios.sh sim\|archive [--upload]` | the iOS app (`apple/project.yml`, XcodeGen): simulator build, or App Store build and TestFlight upload |
+| `node apple/store-screenshots.js` | store screenshots of the books app (Play and App Store sizes) and the Play feature graphic, from a local server |
+| `node apple/asc-screenshots.mjs` | the App Store screenshots and version number of the editable iOS version |
+| `node site-lib/og-cards.js` | link preview cards (og:image) of the books and the dhammapada index; rebuild the sites after |
 | `GSC_KEY=<key.json> node gsc-report.mjs [/books/ ...]` | Search Console clicks, queries, pages, devices, sitemaps (read-only service account; key outside the repo) |
 | `node books/library-files.js <folder>` | single html file and pdf of a book for the tipitaka.lk library (weasyprint) |
 
@@ -56,8 +60,17 @@ of `ss/ss*.html` (saddharma sagara) are `h2` headings with the vaggas as `h1`.
 
 ## Images
 `books/jathaka-images/*.jpeg` (1376px) and `dhammapada/paintings/*.jpg` (1000px) are the originals; the builds make a
-1000px `.webp` next to each, which the pages show. The jpgs stay for link previews (og:image) and old browsers - iOS before 14 shows no webp, so the iOS apps
-(iOS 11+) must bundle the jpgs too; `sync-apps.sh` leaves the jpg paintings out of the Android app only.
+1000px `.webp` next to each, which the pages show. The jpgs stay for link previews (og:image) and old browsers; the
+apps (Android, iOS 15+) carry only the webp ones. Pages without a picture of their own use the cards of `og-cards.js`.
 Thumbnails in `dhammapada/thumbs/` are 139x150.
 
 `sitemap-lastmod.json` in each generator folder keeps the date each page last changed, for the sitemap.
+
+## Apps
+One app, "බෞද්ධ පොත්" (Android `lk.pitaka.books`, iOS 1516496078), carries the books and the dhammapada since 3.0.
+The pages are at the same paths as on the web and served by the app (Android `https://appassets.androidplatform.net/`,
+iOS `app://pitaka.lk/`), so search, `/tools` fonts and localStorage work as on the web; the `app` class on `<html>`
+hides the "get the app" links. The apps before 3.0 used `file://`: both apps hand its localStorage (bookmarks,
+settings) over once, and `reader.js` adds it. Android: `sync-apps.sh --go`, bump `versionCode`, then
+`./gradlew bundleRelease` in `/Volumes/2TB/Android/Books` (the pictures and recordings are install-time asset packs).
+The separate Dhammapada app is to get a farewell update that points to the books app.

@@ -1,0 +1,51 @@
+# XcodeGen spec of the iOS app "Sinhala Buddhist Books" (App Store id 1516496078): the books and dhammapada sites of
+# pitaka.lk offline, in a WKWebView. dev/apple/build-ios.sh copies the sites into build/site (the same paths as on the
+# web) and generates Books.xcodeproj from this file.
+name: Books
+options:
+  deploymentTarget: { iOS: "15.0" }
+  createIntermediateGroups: true
+settings:
+  base:
+    PRODUCT_BUNDLE_IDENTIFIER: foundation.path.nirvana.sbb.Sinhala-Buddhist-Books # the existing app's
+    PRODUCT_NAME: Books
+    DEVELOPMENT_TEAM: ${TEAM_ID}
+    CODE_SIGN_STYLE: Automatic
+    MARKETING_VERSION: ${VERSION}
+    CURRENT_PROJECT_VERSION: ${BUILD}
+    SWIFT_VERSION: "5.0"
+    GENERATE_INFOPLIST_FILE: NO
+targets:
+  Books-iOS:
+    type: application
+    platform: iOS
+    sources:
+      - path: Books
+      - path: build/site
+        type: folder
+        buildPhase: resources
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: "1,2" # the app has always been on the iPad too
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SUPPORTS_MACCATALYST: NO
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: YES
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+    info:
+      path: build/Info.plist
+      properties:
+        CFBundleDisplayName: බෞද්ධ පොත්
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        ITSAppUsesNonExemptEncryption: false
+        LSRequiresIPhoneOS: true
+        UIBackgroundModes: [audio] # a dhammapada recitation goes on with the screen off
+        UILaunchScreen: { UIColorName: LaunchBackground }
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+          UISceneConfigurations:
+            UIWindowSceneSessionRoleApplication:
+              - UISceneConfigurationName: Default
+                UISceneDelegateClassName: $(PRODUCT_MODULE_NAME).SceneDelegate
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        UISupportedInterfaceOrientations~ipad: [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]

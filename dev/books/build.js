@@ -22,7 +22,19 @@ const bookList = JSON.parse(fs.readFileSync(__dirname + '/books.json', 'utf8'));
 const books = bookList.filter(b => !b.site);
 const groupNames = ['ත්‍රිපිටකය ආශ්‍රිත පොත්', 'රේරුකානේ චන්දවිමල හිමි', 'වෙනත් පොත්'];
 const assets = writeAssets(path.join(outRoot, 'common'), 'book', `${__dirname}/book.css`, `${__dirname}/book.js`); // hashed names
-const ogImage = { url: `${baseUrl}common/og-books-500x300.png`, width: 500, height: 300, type: 'image/png' };
+// link previews: the cards of dev/site-lib/og-cards.js, or the first picture of a chapter
+const card = (name) => ({ url: `${baseUrl}common/og/${name}.jpg`, width: 1200, height: 630, type: 'image/jpeg' });
+const ogImage = card('books');
+const bookImage = (book) => fs.existsSync(path.join(outRoot, `common/og/${book.folder}.jpg`)) ? card(book.folder) : ogImage;
+function chapterImage(book, node) {
+    for (const el of node.items) for (const img of el.querySelectorAll('img')) {
+        const src = img.getAttribute('src'), w = Number(img.getAttribute('width'));
+        if (src && !/^https?:/.test(src) && /\.(jpe?g|png)$/i.test(src) && w >= 400) return {
+            url: new URL(src, bookUrl(book)).href, width: w, height: Number(img.getAttribute('height')),
+            type: /png$/i.test(src) ? 'image/png' : 'image/jpeg', alt: img.getAttribute('alt') || node.headerText };
+    }
+    return bookImage(book);
+}
 
 const nameAuthor = (book) => [book.name, book.author || book.subtitle].filter(s => s).join(' - ');
 const fileOf = (node) => `${node.ids.join('-')}.html`;
@@ -56,10 +68,10 @@ const bookmarksLink = (root) => linkButton(`${root}bookmarks.html`, 'star', 'ත
 const footer = (extra = '') => `<footer class="note">
     ${extra}ධර්ම දානය පිණිස බෙදාහැරීමට ${icon('share')} මත click කර link එක ලබා ගන්න.
     <br>
-    මෙම පොත් අන්තර්ජාලය නැතිව කියවීමට: <a href="https://play.google.com/store/apps/details?id=lk.pitaka.books">${icon('android')} Android</a>
+    <span class="app-links">මෙම පොත් අන්තර්ජාලය නැතිව කියවීමට: <a href="https://play.google.com/store/apps/details?id=lk.pitaka.books">${icon('android')} Android</a>
     · <a href="https://apps.apple.com/app/id${IOS_APP}">iPhone / iPad</a>
     · <a href="https://tipitaka.lk/library/461">${icon('cloud_off')} පරිගණකයට</a>
-    <br>
+    <br></span>
     ෴
 </footer>`;
 
@@ -251,7 +263,7 @@ ${roots.map(tocEntry).join('\n')}
 </main>
 ${footer(libLinks ? libLinks + '\n    <br>\n    ' : '')}`;
     const headHtml = pageHead({
-        root: '../', url, type: 'book',
+        root: '../', url, type: 'book', image: bookImage(book),
         title: `${nameAuthor(book)} | ${siteName}`,
         description: shorten(frontText.length > 60 ? frontText : `${nameAuthor(book)}. පටුන: ${roots.map(n => n.headerText).join(', ')}`, 155),
         ld: [bookLd(book), breadcrumbLd([[siteName, baseUrl], [book.name, url]])],
@@ -278,7 +290,7 @@ ${pager(prev && { href: fileOf(prev), title: prev.headerText }, next && { href: 
 </main>
 <span hidden data-pagefind-meta="book">${esc(book.name)}</span>`;
     const headHtml = pageHead({
-        root: '../', url,
+        root: '../', url, image: chapterImage(book, node),
         title: `${node.title} | ${book.name}`,
         description: shorten(text.length > 40 ? text : `${node.headerText} - ${book.name}. ${subTitles || text}`, 155),
         ld: [
