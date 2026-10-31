@@ -34,6 +34,7 @@ targets:
     info:
       path: build/Info.plist
       properties:
+        CFBundleName: Sinhala Buddhist Books # not $(PRODUCT_NAME): "Books" is Apple's (ITMS-90129)
         CFBundleDisplayName: බෞද්ධ පොත්
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
