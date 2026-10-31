@@ -210,6 +210,7 @@ function extendMatch({ match, context, cost }, sinh, bits) {
 const maxInputLength = 30 // the beam keeps the work linear in the input length, this only guards against very long inputs
 // returns the sinhala matches for the singlish input ranked by how likely they occur in sinhala (most likely first)
 export function getPossibleMatches(input, { maxMatches = 300 } = {}) {
+	input = input.toLowerCase() // singlish has no capital letters - phone keyboards capitalize the first letter
 	if (input.length > maxInputLength) return [input]
 	const beamWidth = Math.max(2 * maxMatches, 100) // number of partial matches kept at each input position
 

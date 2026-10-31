@@ -20,7 +20,7 @@
     "vkbeautify": "^0.99.3"
   },
   "devDependencies": {
-    "@pnfo/singlish-search": "^1.4.0",
+    "@pnfo/singlish-search": "^1.4.2",
     "pagefind": "^1.3.0",
     "puppeteer-core": "^23.11.1",
     "wawoff2": "^2.0.1"

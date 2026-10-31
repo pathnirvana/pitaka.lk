@@ -35,7 +35,7 @@ async function toSinhala(q) {
     return Promise.all(q.split(/\s+/).map(async (w) => {
         if (!isSinglish(w)) return { w, best: w, alts: [] };
         const lookup = async (spelling) => {
-            const cands = lib.getPossibleMatches(spelling.toLowerCase(), { maxMatches: 150 }); // phone keyboards capitalize
+            const cands = lib.getPossibleMatches(spelling, { maxMatches: 150 }); // 1.4.2+ ignores the capitals of phone keyboards
             const words = new Map((await Promise.all([...new Set(cands.map(c => c[0]))].map(loadShard))).flat());
             return { cands, words, found: cands.filter(c => words.has(c)).sort((a, b) => words.get(b) - words.get(a)) };
         };
