@@ -82,6 +82,18 @@ button { font: inherit; color: inherit; background: none; border: none; padding:
     transition: transform .2s ease;
 }
 .appbar.hidden { transform: translateY(-100%); }
+/* search field in the bar (web); in the apps, which can not search yet, the title instead */
+.appbar-search { flex: 1; min-width: 0; position: relative; margin: 0 6px; }
+.appbar-search .icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: var(--muted); pointer-events: none; }
+.appbar-search input {
+    width: 100%; height: 40px; padding: 0 12px 0 38px; border-radius: 10px;
+    border: 1px solid var(--border); background: var(--bg); color: var(--text); font: inherit; font-size: 1rem;
+}
+.appbar-search input::placeholder { color: var(--muted); opacity: .8; }
+.appbar-search input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.appbar-title.app-only { display: none; }
+.local .appbar-title.app-only { display: block; }
+.local .appbar-search { display: none; }
 .appbar-title {
     flex: 1; min-width: 0; margin: 0 4px;
     font-size: 1rem; font-weight: bold; line-height: 1.3;
@@ -90,11 +102,6 @@ button { font: inherit; color: inherit; background: none; border: none; padding:
 }
 .appbar-title a { color: inherit; text-decoration: none; }
 .appbar-title.brand { font-family: 'Alakamanda Uni Title', 'Abhaya Uni', serif; font-weight: normal; font-size: 1.5rem; text-align: center; margin: 0 8px; }
-/* index pages: the site title in the middle of the bar, whatever the icons on each side */
-.appbar.brand-bar { display: grid; grid-template-columns: 1fr auto 1fr; }
-.appbar-side { display: flex; align-items: center; gap: 2px; } /* never narrower than its icons */
-.appbar-side.end { justify-content: flex-end; }
-@media (max-width: 360px) { .appbar-title.brand { font-size: 1.25rem; margin: 0 2px; } }
 .icon-btn {
     display: inline-flex; align-items: center; justify-content: center;
     min-width: 44px; height: 44px; border-radius: 22px;
@@ -168,16 +175,15 @@ h1, h2, h3, h4 { color: var(--heading); line-height: 1.4; font-weight: bold; }
 
 /* search: not in the apps, where the pages are local files that can not load the index */
 .local .search-link { display: none; }
-.search-box { margin: 16px 0 8px; }
-.search-box input {
-    width: 100%; height: 48px; padding: 0 14px; border-radius: 24px;
-    border: 1px solid var(--border); background: var(--surface); color: var(--text); font: inherit; font-size: 1.05rem;
-}
-.search-box input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.search-page { padding-top: 8px; }
 .search-scope { display: flex; gap: 16px; font-size: .9rem; color: var(--muted); margin: 4px 4px 0; }
 .search-scope { flex-wrap: wrap; column-gap: 16px; row-gap: 0; }
 .search-scope label { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
 .search-scope .book-name { color: var(--heading); font-weight: bold; }
+.singlish-note { font-size: .95rem; color: var(--muted); margin: -8px 0 8px; line-height: 1.6; }
+.singlish-note:empty { display: none; }
+.singlish-note b { color: var(--heading); }
+.alt-btn { display: inline-block; margin: 6px 6px 0 0; padding: 0 14px; min-height: 40px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface); color: var(--link); }
 .results { list-style: none; margin: 0; padding: 0; }
 .results li { border-bottom: 1px solid var(--border); }
 .results a { display: block; padding: 12px 2px; text-decoration: none; color: var(--text); line-height: 1.45; }

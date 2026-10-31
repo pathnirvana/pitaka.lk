@@ -99,19 +99,24 @@ function head({ title, description, url, root, siteName, themeColor = "#ffa07a",
     return '<head>\n    ' + lines.filter(l => l).join('\n    ') + '\n</head>';
 }
 
-// the reading settings are applied before the first paint (light is the default, the books app used books-app-*)
-const themeScript = `<script>try{var d=document.documentElement,s=localStorage,t=s.getItem('pitaka-theme')||s.getItem('books-app-theme'),f=s.getItem('pitaka-font-scale')||s.getItem('books-font-scale');if(t&&t!='light')d.dataset.theme=t;if(f)d.style.setProperty('--font-scale',f)}catch(e){}if(location.protocol=='file:')d.classList.add('local')</script>`; // local: inside the apps
+// the reading settings are applied before the first paint: light unless chosen in the settings (the old books app
+// theme switch is not carried over), the old books app font size is
+const themeScript = `<script>try{var d=document.documentElement,s=localStorage,t=s.getItem('pitaka-theme'),f=s.getItem('pitaka-font-scale')||s.getItem('books-font-scale');if(t&&t!='light')d.dataset.theme=t;if(f)d.style.setProperty('--font-scale',f)}catch(e){}if(location.protocol=='file:')d.classList.add('local')</script>`; // local: inside the apps
 
 // ---- page parts shared by the sites (styles in reader.css, behaviour in reader.js)
 const linkButton = (href, iconName, label) => `<a class="icon-btn" href="${href}" aria-label="${esc(label)}">${icon(iconName)}</a>`;
 const shareButton = (url, title) =>
     `<button type="button" class="icon-btn share" data-url="${esc(url)}" data-title="${esc(title)}" aria-label="link එක බෙදාගන්න">${icon('share')}</button>`;
-function appbar({ left = '', title, titleHref, brand = false, right = '' }) {
+// the top bar: on the web a search field (as on pitaka.lk/main) in place of the title, which is shown in the apps
+// search: {action: the search.html of the site, book: folder to search in, placeholder, page: true on search.html}
+function appbar({ left = '', title, titleHref, brand = false, right = '', search }) {
     const t = titleHref ? `<a href="${titleHref}">${esc(title)}</a>` : esc(title);
     const settingsBtn = `<button type="button" class="icon-btn settings-btn" aria-label="කියවීමේ සැකසුම්" aria-expanded="false" aria-controls="settings">Aa</button>`;
-    const bar = brand // the site title centered: a column of icons on each side
-        ? `<header class="appbar brand-bar"><div class="appbar-side">${left}</div><div class="appbar-title brand">${t}</div><div class="appbar-side end">${right}${settingsBtn}</div></header>`
-        : `<header class="appbar">${left || '<span class="icon-btn"></span>'}<div class="appbar-title">${t}</div>${right}${settingsBtn}</header>`;
+    const field = search ? `<form class="appbar-search" action="${search.action}" role="search"${search.page ? ' onsubmit="return false"' : ''}>${icon('search')}` +
+        `${search.book ? `<input type="hidden" name="book" value="${search.book}">` : ''}<input type="search" name="q"${search.page ? ' id="q"' : ''} ` +
+        `placeholder="${esc(search.placeholder || 'සොයන්න')}" aria-label="සොයන්න" autocomplete="off" enterkeyhint="search"></form>` : '';
+    const titleDiv = `<div class="appbar-title${brand ? ' brand' : ''}${search ? ' app-only' : ''}">${t}</div>`;
+    const bar = `<header class="appbar">${left || '<span class="icon-btn"></span>'}${titleDiv}${field}${right}${settingsBtn}</header>`;
     return `${bar}
 <div class="settings" id="settings" role="dialog" aria-label="කියවීමේ සැකසුම්" hidden>
 <h2>අකුරු ප්‍රමාණය</h2>
@@ -123,19 +128,54 @@ function appbar({ left = '', title, titleHref, brand = false, right = '' }) {
 const continueBox = (want, root = '') => `<div class="continue" data-continue="${want}"${root ? ` data-root="${root}"` : ''} hidden><template>${icon('close')}</template></div>`;
 const searchLink = (href) => `<a class="icon-btn search-link" href="${href}" aria-label="සොයන්න">${icon('search')}</a>`;
 // the search page; scope: label of the 'this book only' choice when the page is opened from a book (?book=)
-const searchBody = ({ left, scope = '' }) => `${appbar({ left, title: 'සොයන්න' })}
+const searchBody = ({ left, scope = '' }) => `${appbar({ left, title: 'සොයන්න', search: { action: 'search.html', page: true, placeholder: 'සිංහලෙන් හෝ singlish' } })}
 <main class="page search-page">
 <h1 class="sr-only">සොයන්න</h1>
-<form class="search-box" role="search" onsubmit="return false"><input id="q" type="search" placeholder="සිංහල අකුරෙන් වචනය ලියන්න…" aria-label="සොයන වචනය, සිංහල අකුරෙන්" autocomplete="off" enterkeyhint="search"></form>
 ${scope}
 <p id="search-status" class="lead" role="status"></p>
 <ol id="results" class="results"></ol>
 <button type="button" id="more" class="more-btn" hidden>තවත් ප්‍රතිඵල</button>
 </main>`;
+// the singlish (sinhala in english letters) library of the search pages, shared by the sites at /static/singlish-search
+function writeSinglish() {
+    const src = path.join(__dirname, '../node_modules/@pnfo/singlish-search'), out = path.join(__dirname, '../../static/singlish-search');
+    fs.mkdirSync(out, { recursive: true });
+    for (const f of ['singlish.js', 'singlish-model.js', 'LICENSE']) {
+        const from = path.join(src, f), to = path.join(out, f);
+        if (!fs.existsSync(to) || !fs.readFileSync(to).equals(fs.readFileSync(from))) fs.copyFileSync(from, to);
+    }
+}
+
 // the pagefind search index of a built site (pages marked data-pagefind-body)
 function writeSearchIndex(siteDir) {
+    writeSinglish();
     fs.rmSync(path.join(siteDir, 'pagefind'), { recursive: true, force: true });
     execFileSync(path.join(__dirname, '../node_modules/.bin/pagefind'), ['--site', siteDir, '--output-subdir', 'pagefind'], { stdio: 'pipe' });
+    writeSearchWords(siteDir);
+}
+// the words of the indexed pages (seen twice or more) with their counts, one file per first letter (search-words/<hex>.txt),
+// so that a singlish word can be turned into the sinhala words really in the texts, loading only a few small files
+function writeSearchWords(siteDir) {
+    const counts = new Map();
+    const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).forEach(e => {
+        const f = path.join(dir, e.name);
+        if (e.isDirectory()) { if (!['pagefind', 'search-words', 'common', 'jathaka-images', 'paintings', 'thumbs', 'recordings', 'Android'].includes(e.name)) walk(f); return; }
+        if (!e.name.endsWith('.html')) return;
+        const m = /<main[^>]*data-pagefind-body[^>]*>([\s\S]*?)<\/main>/.exec(fs.readFileSync(f, 'utf8'));
+        if (m) for (const w of m[1].replace(/<[^>]+>/g, ' ').match(/[\u0D80-\u0DFF\u200C\u200D]+/g) || []) counts.set(w, (counts.get(w) || 0) + 1);
+    });
+    walk(siteDir);
+    const shards = new Map();
+    for (const [w, n] of counts) {
+        if (n < 2) continue;
+        const k = w.codePointAt(0).toString(16);
+        if (!shards.has(k)) shards.set(k, []);
+        shards.get(k).push([w, n]);
+    }
+    const out = path.join(siteDir, 'search-words');
+    fs.rmSync(out, { recursive: true, force: true });
+    fs.mkdirSync(out);
+    for (const [k, list] of shards) fs.writeFileSync(path.join(out, `${k}.txt`), list.sort((a, b) => b[1] - a[1]).map(([w, n]) => `${w} ${n}`).join('\n') + '\n');
 }
 
 const pager = (prev, next, [prevLabel, nextLabel] = ['පෙර', 'ඊළඟ']) => (prev || next) ? `<nav class="pager" aria-label="පිටු අතර යාම" data-pagefind-ignore>
@@ -145,13 +185,23 @@ ${next ? `<a class="next" rel="next" href="${next.href}"><span class="pager-labe
 const crumbs = (items) => `<nav class="crumbs" aria-label="පිහිටීම">${items.map(([text, href]) => `<a href="${href}">${esc(text)}</a>`).join(icon('navigate_next'))}</nav>`;
 
 // common/<name>.css and .js of a site: the shared reader files followed by the site's own
+// the file names carry a hash of the content (book.3f2a1c.css), so a browser never uses an old copy with new pages:
+// the old site was served without cache headers and browsers kept its css for weeks. returns {css, js, search} names
 function writeAssets(commonDir, name, siteCss, siteJs) {
     const read = (f) => fs.readFileSync(f, 'utf8');
-    const write = (f, text) => { if (!fs.existsSync(f) || read(f) != text) fs.writeFileSync(f, text); };
     const generated = (src) => `/* generated by the build from dev/site-lib/reader.* and ${path.relative(path.join(__dirname, '..'), src)} - edit those */\n`;
-    write(path.join(commonDir, `${name}.css`), generated(siteCss) + read(path.join(__dirname, 'reader.css')) + '\n' + read(siteCss));
-    write(path.join(commonDir, `${name}.js`), generated(siteJs) + read(path.join(__dirname, 'reader.js')) + '\n' + read(siteJs));
-    write(path.join(commonDir, 'search.js'), generated(path.join(__dirname, 'search.js')) + read(path.join(__dirname, 'search.js')));
+    const files = {
+        css: [name, 'css', generated(siteCss) + read(path.join(__dirname, 'reader.css')) + '\n' + read(siteCss)],
+        js: [name, 'js', generated(siteJs) + read(path.join(__dirname, 'reader.js')) + '\n' + read(siteJs)],
+        search: ['search', 'js', generated(path.join(__dirname, 'search.js')) + read(path.join(__dirname, 'search.js'))],
+    };
+    const names = {};
+    for (const [key, [base, ext, text]] of Object.entries(files)) {
+        names[key] = `${base}.${require('crypto').createHash('md5').update(text).digest('hex').slice(0, 8)}.${ext}`;
+        for (const f of fs.readdirSync(commonDir)) if (new RegExp(`^${base}(\\.[0-9a-f]{8})?\\.${ext}$`).test(f) && f != names[key]) fs.unlinkSync(path.join(commonDir, f));
+        if (!fs.existsSync(path.join(commonDir, names[key]))) fs.writeFileSync(path.join(commonDir, names[key]), text);
+    }
+    return names;
 }
 
 // lastmod comes from the content hash of each page so it only changes when the page changes

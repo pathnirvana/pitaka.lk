@@ -8,6 +8,7 @@ Generators and sources for the static sites. Run the scripts from this folder af
 | `npm run check` | links and #anchors, titles, descriptions, canonical, one h1, image alt, json-ld of both sites |
 | `npm run deploy` | check, then `deploy.sh` (dry run; `npm run deploy -- --go` to upload) |
 | `./sync-apps.sh` | check, then copy the sites into the Android app projects (dry run; `--go` to copy) |
+| `GSC_KEY=<key.json> node gsc-report.mjs [/books/ ...]` | Search Console clicks, queries, pages, devices, sitemaps (read-only service account; key outside the repo) |
 | `node books/library-files.js <folder>` | single html file and pdf of a book for the tipitaka.lk library (weasyprint) |
 
 `site-lib/` has what both generators share: the page `<head>` (description, canonical, open graph, json-ld),
@@ -16,7 +17,8 @@ the top bar with the reading settings, the svg icons, the sitemap writer and the
 ## Styles, scripts and fonts
 `books/common/book.css|js` and `dhammapada/common/dhammapada.css|js` are generated: each is `site-lib/reader.css|js`
 (the shared theme - light, sepia and dark, light by default - typography, top bar, settings, pager) followed by the
-site's own `books/book.css|js` or `dhammapada/dhammapada.css|js`. Edit those and rebuild.
+site's own `books/book.css|js` or `dhammapada/dhammapada.css|js`. Edit those and rebuild. The generated files carry a
+hash of their content in the name (`book.dccaa540.css`), so browsers never pair new pages with an old cached copy.
 The fonts are shared with the unicode tools: Abhaya Uni (regular and bold) and Alakamanda Uni (site titles), cut down
 to Sinhala and Latin-1 without hinting into `tools/unicode/fonts/web/` (105, 119 and 66 KB) by `site-lib/make-fonts.sh`,
 which `unicode/sync-fonts.mjs` runs after updating the fonts. The pages load them from `/tools/unicode/fonts/web/`;

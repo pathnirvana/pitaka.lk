@@ -20,6 +20,7 @@ const baseUrl = `${SITE}/books/`;
 const siteName = 'බෞද්ධ පොත්';
 const bookList = JSON.parse(fs.readFileSync(__dirname + '/books.json', 'utf8'));
 const groupNames = ['ත්‍රිපිටකය ආශ්‍රිත පොත්', 'රේරුකානේ චන්දවිමල හිමි', 'වෙනත් පොත්'];
+const assets = writeAssets(path.join(outRoot, 'common'), 'book', `${__dirname}/book.css`, `${__dirname}/book.js`); // hashed names
 const ogImage = { url: `${baseUrl}common/og-books-500x300.png`, width: 500, height: 300, type: 'image/png' };
 
 const nameAuthor = (book) => [book.name, book.author || book.subtitle].filter(s => s).join(' - ');
@@ -39,13 +40,13 @@ ${headHtml}
 ${iconSprite(body)}
 ${body}
 <div id="toast" role="status" aria-live="polite"></div>
-<script src="${root}common/book.js"></script>
+<script src="${root}common/${assets.js}"></script>
 </body>
 </html>
 `;
 }
 const pageHead = ({ extra = '', ...opts }) => head({
-    siteName, themeColor: '#f6f0e6', css: ['book.css'], appTitle: 'Buddhist Books', image: ogImage,
+    siteName, themeColor: '#f6f0e6', css: [assets.css], appTitle: 'Buddhist Books', image: ogImage,
     extra: `<meta name="apple-itunes-app" content="app-id=${IOS_APP}">${extra}`, ...opts,
 });
 
@@ -232,7 +233,7 @@ function writeBookIndex(book, roots, front) {
         lib.html ? `මෙම පොත සම්පූර්ණ එක වෙබ් පිටුවක් ලෙස <a href="https://tipitaka.lk/library/${lib.html}">මෙතනින්</a> කියවන්න.` : '',
         (lib.pdf || lib.altPdf) ? `PDF පොත <a href="https://tipitaka.lk/library/${lib.pdf || lib.altPdf}">මෙතනින්</a>.` : '',
     ].filter(s => s).join(' ');
-    const body = `${appbar({ left: linkButton('../index.html', 'home', 'මුල් පිටුව'), title: book.name, right: searchLink(`../search.html?book=${book.folder}`) + bookmarksLink('../') })}
+    const body = `${appbar({ left: linkButton('../index.html', 'home', 'මුල් පිටුව'), title: book.name, right: bookmarksLink('../'), search: { action: '../search.html', book: book.folder, placeholder: 'මෙම පොතේ සොයන්න' } })}
 <main class="page">
 <div class="book-head"><h1>${esc(book.name)}</h1>${book.author || book.subtitle ? `<p class="lead">${esc(book.author || book.subtitle)}</p>` : ''}</div>
 ${continueBox(`books/${book.folder}`, '../')}
@@ -262,7 +263,7 @@ function writeChapter(book, node, prev, next) {
     const header = node.header.cloneNode(true);
     const text = node.items.map(textOf).join(' ');
     const subTitles = node.children.map(c => c.headerText).join(', ');
-    const body = `${appbar({ left: linkButton(`index.html#${node.ids.join('-')}`, 'toc', 'පටුන'), title: book.name, titleHref: 'index.html', right: searchLink(`../search.html?book=${book.folder}`) })}
+    const body = `${appbar({ left: linkButton(`index.html#${node.ids.join('-')}`, 'toc', 'පටුන'), title: book.name, titleHref: 'index.html', search: { action: '../search.html', book: book.folder, placeholder: 'මෙම පොතේ සොයන්න' } })}
 ${crumbs([[siteName, '../index.html'], [book.name, `index.html#${node.ids.join('-')}`], ...anc.map(a => [a.headerText, fileOf(a)])])}
 <main class="page prose" data-headings="${esc(JSON.stringify([...anc, node].map(n => n.headerText)))}" data-pagefind-body data-pagefind-filter="book:${book.folder}">
 <div class="page-title"><h1>${header.innerHTML.trim()}</h1>${starButton(node)}${shareButton(url, node.headerText)}</div>
@@ -295,7 +296,7 @@ function writeTopIndex() {
 ${bookList.filter(b => b.group == gi + 1).map(b => `<li><a href="${b.folder}/index.html"><span class="book-text"><span class="book-name">${esc(b.name)}</span>${gi != 1 && (b.author || b.subtitle) ? `<span class="book-author">${esc(b.author || b.subtitle)}</span>` : ''}</span>${icon('navigate_next')}</a></li>`).join('\n')}
 </ul>
 </section>`).join('\n');
-    const body = `${appbar({ left: linkButton('https://tipitaka.lk/library/', 'library_books', 'පුස්තකාලය') + bookmarksLink(''), title: siteName, brand: true, right: searchLink('search.html') })}
+    const body = `${appbar({ left: linkButton('https://tipitaka.lk/library/', 'library_books', 'පුස්තකාලය') + bookmarksLink(''), title: siteName, brand: true, search: { action: 'search.html' } })}
 <main class="page">
 <h1 class="sr-only">${siteName}</h1>
 <p class="lead">සිංහල බෞද්ධ පොත් ${bookList.length} ක් සම්පූර්ණයෙන් කියවන්න. පොතක් තෝරා පටුනෙන් පරිච්ඡේදයට පිවිසෙන්න.</p>
@@ -314,7 +315,7 @@ ${footer()}`;
 }
 
 function writeBookmarks() {
-    const body = `${appbar({ left: linkButton('index.html', 'home', 'මුල් පිටුව'), title: 'තරු යෙදූ මාතෘකා' })}
+    const body = `${appbar({ left: linkButton('index.html', 'home', 'මුල් පිටුව'), title: 'තරු යෙදූ මාතෘකා', search: { action: 'search.html' } })}
 <main class="page">
 <h1 class="sr-only">තරු යෙදූ මාතෘකා</h1>
 <ul class="bookmark-list" id="bookmark-list"></ul>
@@ -339,7 +340,7 @@ function writeSearchPage() {
         title: `සොයන්න | ${siteName}`, description: `බෞද්ධ පොත් ${bookList.length} තුළ වචන සොයන්න.`,
         extra: '\n    <meta name="robots" content="noindex">',
     });
-    fs.writeFileSync(path.join(outRoot, 'search.html'), pageHtml({ headHtml, body, root: '' }).replace('</body>', '<script type="module" src="common/search.js"></script>\n</body>'));
+    fs.writeFileSync(path.join(outRoot, 'search.html'), pageHtml({ headHtml, body, root: '' }).replace('</body>', `<script type="module" src="common/${assets.search}"></script>\n</body>`));
 }
 
 // ---- build
@@ -353,7 +354,6 @@ for (const book of bookList) {
 writeTopIndex();
 writeBookmarks();
 writeSearchPage();
-writeAssets(path.join(outRoot, 'common'), 'book', `${__dirname}/book.css`, `${__dirname}/book.js`);
 writeSearchIndex(outRoot);
 if (!only.length) { // the sitemap needs all the pages
     const n = writeSitemap(`${outRoot}/sitemap.xml`, written, `${__dirname}/sitemap-lastmod.json`);
