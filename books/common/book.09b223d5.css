@@ -176,6 +176,7 @@ h1, h2, h3, h4 { color: var(--heading); line-height: 1.4; font-weight: bold; }
 
 /* search: not in the apps, where the pages are local files that can not load the index */
 .local .search-link { display: none; }
+.local .web-only { display: none; } /* links to the other site, which the app (file://) does not have yet */
 .search-page { padding-top: 8px; }
 .search-scope { display: flex; gap: 16px; font-size: .9rem; color: var(--muted); margin: 4px 4px 0; }
 .search-scope { flex-wrap: wrap; column-gap: 16px; row-gap: 0; }
@@ -239,6 +240,23 @@ h1, h2, h3, h4 { color: var(--heading); line-height: 1.4; font-weight: bold; }
     body { background: #fff; color: #000; font-size: 12pt; }
 }
 
+/* bookmark star */
+.star { color: var(--muted); }
+.star .on { display: none; }
+.star.active { color: var(--accent); }
+.star.active .on { display: inline; }
+.star.active .off { display: none; }
+.toc-row .star { opacity: .55; }
+.toc-row .star.active { opacity: 1; }
+
+/* bookmarks page */
+.bookmark-list { list-style: none; margin: 16px 0; padding: 0; }
+.bookmark-list li { display: flex; align-items: center; gap: 4px; padding: 10px 0; border-bottom: 1px solid var(--border); line-height: 1.45; }
+.bookmark-list .bm-text { flex: 1; min-width: 0; }
+.bookmark-list .bm-book { display: block; font-size: .85em; color: var(--muted); }
+.bookmark-list .bm-date { font-size: .8em; color: var(--muted); }
+.bookmark-list a { text-decoration: none; }
+
 /* ---- books site (after dev/site-lib/reader.css) ---- */
 
 /* site index: the books by section */
@@ -283,15 +301,6 @@ h1, h2, h3, h4 { color: var(--heading); line-height: 1.4; font-weight: bold; }
 .toc-item.closed > .toc-children { grid-template-rows: 0fr; }
 .toc.no-anim .toc-children, .toc.no-anim .toc-toggle .icon { transition: none; }
 
-/* bookmark star */
-.star { color: var(--muted); }
-.star .on { display: none; }
-.star.active { color: var(--accent); }
-.star.active .on { display: inline; }
-.star.active .off { display: none; }
-.toc-row .star { opacity: .55; }
-.toc-row .star.active { opacity: 1; }
-
 /* sub headings at the end of a chapter */
 .subheadings { margin: 24px 0 8px; padding-top: 4px; border-top: 2px solid var(--border); }
 .subheadings > h2 { font-size: .9rem; color: var(--muted); font-weight: normal; margin: 8px 0 0; }
@@ -330,11 +339,3 @@ table.max-width td.separator { background: var(--surface); width: 10px; }
 ol.footnotes { margin: 28px 0 0; padding: 12px 0 0 1.4em; border-top: 1px solid var(--border); font-size: .85em; line-height: 1.6; color: var(--muted); }
 ol.footnotes li p { margin: 0 0 .4em !important; text-align: start !important; }
 a.footnote-ref { text-decoration: none; font-size: .8em; vertical-align: super; line-height: 0; padding: 0 1px; }
-
-/* bookmarks page */
-.bookmark-list { list-style: none; margin: 16px 0; padding: 0; }
-.bookmark-list li { display: flex; align-items: center; gap: 4px; padding: 10px 0; border-bottom: 1px solid var(--border); line-height: 1.45; }
-.bookmark-list .bm-text { flex: 1; min-width: 0; }
-.bookmark-list .bm-book { display: block; font-size: .85em; color: var(--muted); }
-.bookmark-list .bm-date { font-size: .8em; color: var(--muted); }
-.bookmark-list a { text-decoration: none; }

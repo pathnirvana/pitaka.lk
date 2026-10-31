@@ -99,7 +99,7 @@ if (appbar) {
 }
 // continue reading: the page and scroll position last read of each book (or dhammapada edition), shown on the index pages
 // pages read: <body data-progress="books/kunala-jathaka" data-progress-path="kunala-jathaka/3.html" data-progress-title data-progress-label>
-// index pages: <div class="continue" data-continue="books/" (a prefix) or "books/kunala-jathaka" data-root="../" hidden>
+// index pages: <div class="continue" data-continue="books/ dhammapada/" (prefixes) or "books/kunala-jathaka" data-root="<to the pitaka.lk root>" hidden>
 const progressKey = 'pitaka-progress';
 const allProgress = () => { try { return JSON.parse(storage.get(progressKey) || '{}'); } catch (e) { return {}; } };
 const reading = document.body.dataset.progress ? document.body.dataset : null;
@@ -125,13 +125,13 @@ if (reading) {
 }
 document.querySelectorAll('.continue[data-continue]').forEach(box => {
     const want = box.dataset.continue, esc = (s) => String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-    const items = Object.entries(allProgress()).filter(([k]) => want.endsWith('/') ? k.startsWith(want) : k == want)
+    const items = Object.entries(allProgress()).filter(([k]) => want.split(' ').some(w => w.endsWith('/') ? k.startsWith(w) : k == w))
         .map(([key, v]) => ({ ...v, key })).sort((a, b) => b.time - a.time).slice(0, 3);
     if (!items.length) return;
     const close = box.querySelector('template').innerHTML;
     box.innerHTML = `<h2>නැවතුණු තැනින් කියවන්න</h2>` + items.map(v => {
         const pct = Math.round(v.pos * 100);
-        return `<div class="continue-item"><a class="continue-card" href="${box.dataset.root || ''}${esc(v.path)}#continue"><span class="continue-title">${esc(v.title)}</span>` +
+        return `<div class="continue-item"><a class="continue-card" href="${box.dataset.root}${esc(v.key.split('/')[0])}/${esc(v.path)}#continue"><span class="continue-title">${esc(v.title)}</span>` +
             `<span class="continue-meta">${esc(v.label)}${pct ? ` · ${pct}%` : ''}</span><span class="continue-bar"><span style="width:${Math.max(pct, 2)}%"></span></span></a>` +
             `<button type="button" class="continue-dismiss" data-key="${esc(v.key)}" aria-label="ලැයිස්තුවෙන් ඉවත් කරන්න">${close}</button></div>`;
     }).join('');
@@ -146,6 +146,58 @@ document.addEventListener('click', (e) => { // remove a book from the continue r
     const box = btn.closest('.continue');
     btn.closest('.continue-item').remove();
     if (!box.querySelector('.continue-item')) box.hidden = true;
+});
+
+// bookmarks (the stars), shared by the sites: {key: {headings, book: {name, folder}, time, ids | path}} in localStorage
+// a book page: key and href '<folder>/<ids>.html' within books/, the headings come from the table of contents (button data-ids)
+// other pages (dhammapada): key and href the path from the pitaka.lk root, e.g. 'dhammapada/ss/katha-5.html' (button data-path, data-headings, data-label)
+const bookmarksKey = 'books-app-bookmarks';
+const bookmarks = (() => { try { return JSON.parse(storage.get(bookmarksKey) || '{}'); } catch (e) { return {}; } })();
+const bookmarkKey = (btn) => btn.dataset.path || `${document.body.dataset.folder}/${btn.dataset.ids}.html`;
+const bookmarkHref = (key, b, toRoot) => toRoot + (b.path ? b.path : 'books/' + key);
+function bookmarkInfo(btn) {
+    const d = btn.dataset;
+    if (d.path) return { path: d.path, headings: JSON.parse(d.headings), book: { name: d.label, folder: d.path.split('/')[0] } };
+    const headings = [];
+    for (let item = btn.closest('.toc-item'); item; item = item.parentElement.closest('.toc-item')) {
+        headings.unshift(item.querySelector('.toc-row > a').textContent.trim());
+    }
+    const main = document.querySelector('main[data-headings]'); // headings of this page come before its sub headings
+    if (main && (btn.closest('.subheadings') || !headings.length)) headings.unshift(...JSON.parse(main.dataset.headings));
+    return { ids: d.ids.split('-').map(Number), headings, book: { name: document.body.dataset.book, folder: document.body.dataset.folder } };
+}
+function toggleBookmark(btn) {
+    const key = btn.dataset.key || bookmarkKey(btn);
+    if (bookmarks[key]) {
+        delete bookmarks[key];
+        btn.classList.remove('active');
+        showToast('එම මාතෘකාවේ තරුව ඉවත් කළා.');
+        if (btn.closest('.bookmark-list')) btn.closest('li').remove();
+    } else {
+        bookmarks[key] = { ...bookmarkInfo(btn), time: Date.now() };
+        btn.classList.add('active');
+        showToast('තරුවක් එකතු කළා. ඒවා මුල් පිටුවේ ★ තුළ ඇත.');
+    }
+    storage.set(bookmarksKey, JSON.stringify(bookmarks));
+}
+function renderBookmarksPage(list) { // bookmarks.html, latest first
+    const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const star = document.getElementById('star-icon').innerHTML;
+    const items = Object.entries(bookmarks).sort(([, a], [, b]) => b.time - a.time || a.book.name.localeCompare(b.book.name));
+    list.innerHTML = items.map(([key, b]) => {
+        const path = b.headings.slice(0, -1).map(esc).join(' › ');
+        return `<li><a class="bm-text" href="${esc(bookmarkHref(key, b, list.dataset.root))}">${esc(b.headings[b.headings.length - 1])}
+            <span class="bm-book">${esc(b.book.name)}${path ? ' › ' + path : ''} · <span class="bm-date">${new Date(b.time).toISOString().slice(0, 10)}</span></span></a>
+            <button type="button" class="icon-btn star active" aria-label="තරුව ඉවත් කරන්න" data-key="${esc(key)}">${star}</button></li>`;
+    }).join('\n');
+    document.getElementById('no-bookmarks').hidden = items.length > 0;
+}
+document.querySelectorAll('button.star:not([data-key])').forEach(btn => { if (bookmarks[bookmarkKey(btn)]) btn.classList.add('active'); });
+const bookmarkList = document.getElementById('bookmark-list');
+if (bookmarkList) renderBookmarksPage(bookmarkList);
+document.addEventListener('click', (e) => {
+    const btn = e.target.closest('button.star');
+    if (btn) toggleBookmark(btn);
 });
 
 updateStatusBar();

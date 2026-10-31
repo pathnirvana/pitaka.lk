@@ -15,7 +15,7 @@ const fs = require('fs'), path = require('path');
 const assert = require('assert');
 const { JSDOM } = require('jsdom');
 const { SITE, esc, shorten, icon, iconSprite, breadcrumbLd, head, writeSitemap, webpVersion, imageSize,
-    linkButton, shareButton, appbar, pager, crumbs, writeAssets, splitPadas, searchLink, searchBody, writeSearchIndex, continueBox } = require('../site-lib');
+    linkButton, shareButton, appbar, pager, crumbs, writeAssets, splitPadas, searchLink, searchBody, writeSearchIndex, continueBox, starButton, bookmarksBody, searchScope } = require('../site-lib');
 
 const outRoot = path.join(__dirname, '../../dhammapada');
 const assets = writeAssets(path.join(outRoot, 'common'), 'dhammapada', `${__dirname}/dhammapada.css`, `${__dirname}/dhammapada.js`); // hashed names
@@ -62,6 +62,11 @@ const editions = {
     },
 };
 const otherEdition = (ed) => ed.key == 'ss' ? editions.atuwa : editions.ss;
+// the search field of every page searches the dhammapada first (the search page can widen it to the books, search.js)
+const searchIn = (root) => ({ action: root + 'search.html', book: 'dhammapada', placeholder: 'ධම්මපදයේ සොයන්න' });
+const bookmarksLink = (root) => linkButton(`${root}bookmarks.html`, 'star', 'තරු යෙදූ මාතෘකා');
+const kathaStar = (ed, k, heading) => starButton({ path: `dhammapada/${ed.dir}${kathaFile(k)}`, headings: [`${k.vagga.num}. ${k.vagga.name}`, heading], label: `${siteName} - ${ed.name}` });
+const vaggaStar = (ed, v) => starButton({ path: `dhammapada/${ed.dir}${vaggaFile(v)}`, headings: [`${v.num}. ${v.name}`], label: `${siteName} - ${ed.name}` });
 
 const parseHtml = (file) => new JSDOM(fs.readFileSync(file, 'utf8')).window.document;
 const isEmptyP = (el) => el.tagName == 'P' && !el.textContent.trim() && !el.querySelector('img');
@@ -195,10 +200,10 @@ function writeKatha(ed, k, story) {
     const prev = allKathas[k.index - 2], next = allKathas[k.index];
     const url = baseUrl + ed.dir + kathaFile(k);
     const storyText = story.items.map(el => el.textContent).join(' ');
-    const body = `${appbar({ left: linkButton(`${vaggaFile(v)}#katha-${k.index}`, 'arrow_upward', v.name), title: v.name, titleHref: `${vaggaFile(v)}#katha-${k.index}`, search: { action: root + 'search.html' } })}
+    const body = `${appbar({ left: linkButton(`${vaggaFile(v)}#katha-${k.index}`, 'arrow_upward', v.name), title: v.name, titleHref: `${vaggaFile(v)}#katha-${k.index}`, search: searchIn(root) })}
 ${crumbs([[ed.key == 'ss' ? siteName : ed.name, `${ed.indexFromEd}#vagga-${v.num}`], [`${v.num}. ${v.name}`, `${vaggaFile(v)}#katha-${k.index}`]])}
-<main class="page" data-pagefind-body data-pagefind-filter="edition:${ed.key}">
-<div class="page-title"><h1>${esc(heading)}</h1>${shareButton(url, heading)}</div>
+<main class="page" data-pagefind-body data-pagefind-filter="book:dhammapada">
+<div class="page-title"><h1>${esc(heading)}</h1>${kathaStar(ed, k, heading)}${shareButton(url, heading)}</div>
 <p class="other-edition" data-pagefind-ignore>මෙම කතාව <a href="${root}${otherEdition(ed).dir}${kathaFile(k)}">${otherEdition(ed).from}</a> ද කියවන්න.</p>
 ${k.gathas.map((g, i) => `<section class="gatha-card" data-gatha="${g.num}">
 <div class="gatha-num" data-pagefind-ignore>ගාථා ${g.num}</div>
@@ -212,7 +217,7 @@ ${story.footnotes.length ? `<ol class="footnotes">\n${story.footnotes.map(li => 
 </div>
 ${pager(prev && { href: kathaFile(prev), title: kathaHeading(prev, ed.stories[prev.index - 1]) }, next && { href: kathaFile(next), title: kathaHeading(next, ed.stories[next.index - 1]) })}
 </main>
-<span hidden data-pagefind-meta="book">${siteName} - ${ed.name}</span>
+<span hidden data-pagefind-meta="book">${siteName} - ${ed.name}</span><span hidden data-pagefind-filter="edition:${ed.key}"></span>
 ${pageFooter(root)}`;
     const headHtml = head({
         ...commonHead, root, url,
@@ -240,16 +245,16 @@ function writeVagga(ed, v, stories) {
     const kathas = v.kathas.map(k => {
         const heading = kathaHeading(k, stories[k.index - 1]);
         return `<section class="katha" id="katha-${k.index}">
-<h2 class="katha-title"><a href="${kathaFile(k)}">${esc(heading)}</a></h2>
+<div class="katha-head"><h2 class="katha-title"><a href="${kathaFile(k)}">${esc(heading)}</a></h2>${kathaStar(ed, k, heading)}</div>
 ${k.gathas.map(g => `<div class="gatha" data-gatha="${g.num}">
 <div class="gatha-head"><a class="thumb-link" href="${kathaFile(k)}" tabindex="-1" aria-hidden="true"><img class="thumb" src="${root}thumbs/${g.num}.jpg" width="139" height="150" alt="" loading="lazy" decoding="async"></a>${audioTag(g, root)}</div>
 <a class="gatha-link" href="${kathaFile(k)}"><div class="gatha-text">${gathaText(g)}</div></a>
 </div>`).join('\n')}
 </section>`;
     }).join('\n');
-    const body = `${appbar({ left: linkButton(`${ed.indexFromEd}#vagga-${v.num}`, 'home', 'මුල් පිටුව'), title: ed.key == 'ss' ? siteName : ed.name, titleHref: `${ed.indexFromEd}#vagga-${v.num}`, search: { action: root + 'search.html' } })}
+    const body = `${appbar({ left: linkButton(`${ed.indexFromEd}#vagga-${v.num}`, 'home', 'මුල් පිටුව'), title: ed.key == 'ss' ? siteName : ed.name, titleHref: `${ed.indexFromEd}#vagga-${v.num}`, search: searchIn(root) })}
 <main class="page">
-<div class="page-title"><h1 id="vagga-${v.num}">${v.num}. ${esc(v.name)}</h1>${shareButton(url, v.name)}</div>
+<div class="page-title"><h1 id="vagga-${v.num}">${v.num}. ${esc(v.name)}</h1>${vaggaStar(ed, v)}${shareButton(url, v.name)}</div>
 <p class="lead">ගාථා ${g1}–${g2} · කතා ${v.kathas.length} · කතාව කියවීමට සහ සිතුවම් බැලීමට ගාථාව මත ඔබන්න.</p>
 ${kathas}
 ${pager(prev && { href: vaggaFile(prev), title: `${prev.num}. ${prev.name}` }, next && { href: vaggaFile(next), title: `${next.num}. ${next.name}` })}
@@ -273,11 +278,11 @@ const countsText = `ධම්මපදයේ වර්ග ${NUM_VAGGAS} ක් �
 
 function writeMainIndex() { // saddharma sagara edition
     const url = baseUrl;
-    const body = `${appbar({ title: siteName, brand: true, search: { action: 'search.html' } })}
+    const body = `${appbar({ left: bookmarksLink(''), title: siteName, brand: true, search: searchIn('') })}
 <main class="page">
 <h1 class="sr-only">${siteName}</h1>
 <p class="lead">ගාථා ${NUM_GATHAS}, ඒවායේ සිංහල තේරුම, සජ්ඣායනය, සිතුවම් සහ කතා ${NUM_KATHAS}. දිනපතා එක කතාව බැගින් කියවන්න.</p>
-${continueBox('dhammapada/')}
+${continueBox('dhammapada/', '../')}
 ${vaggaGrid('ss/')}
 <p class="edition-switch">මෙම කතා සද්ධර්ම සාගර පොතෙනි. පැරණි <a href="index-old.html">ධම්මපද අටුවාවේ කතා</a> ද කියවන්න.</p>
 </main>
@@ -299,11 +304,11 @@ ${pageFooter('', `${countsText}
 
 function writeAtuwaIndex() {
     const url = baseUrl + 'index-old.html';
-    const body = `${appbar({ left: linkButton('index.html', 'home', siteName), title: 'ධම්මපද අටුවා කතා', brand: true, search: { action: 'search.html' } })}
+    const body = `${appbar({ left: linkButton('index.html', 'home', siteName), title: 'ධම්මපද අටුවා කතා', brand: true, right: bookmarksLink(''), search: searchIn('') })}
 <main class="page">
 <h1 class="sr-only">ධම්මපද අටුවා කතා</h1>
 <p class="lead">ගාථා ${NUM_GATHAS} සහ ඛුද්දක නිකායේ ධම්මපද අටුවාවෙන් උපුටා ගත් කතා ${NUM_KATHAS}. ඒ පිළිබඳ වැඩි විස්තර <a href="about.html">මෙතැනින්</a>.</p>
-${continueBox('dhammapada/')}
+${continueBox('dhammapada/', '../')}
 ${vaggaGrid('')}
 <p class="edition-switch">අලුතින් එකතු කළ <a href="index.html">සද්ධර්ම සාගර පොතේ කතා</a> ද කියවන්න.</p>
 </main>
@@ -320,7 +325,7 @@ ${pageFooter('', countsText + '\n    <br>\n    ')}`;
 
 function writeAbout() {
     const url = baseUrl + 'about.html';
-    const body = `${appbar({ left: linkButton('index.html', 'home', siteName), title: 'ධම්මපදය ගැන', search: { action: 'search.html' } })}
+    const body = `${appbar({ left: linkButton('index.html', 'home', siteName), title: 'ධම්මපදය ගැන', search: searchIn('') })}
 <main class="page prose about-page">
 <h1>ධම්මපදය ගැන</h1>
 ${fs.readFileSync(__dirname + '/about.html', 'utf8').trim()}
@@ -336,13 +341,23 @@ ${fs.readFileSync(__dirname + '/about.html', 'utf8').trim()}
 }
 
 function writeSearchPage() {
-    const body = searchBody({ left: linkButton('index.html', 'home', siteName) });
+    const body = searchBody({ left: linkButton('index.html', 'home', siteName), scope: searchScope({ dhammapada: siteName }), merge: '../books/' });
     const headHtml = head({
         ...commonHead, root: '', url: baseUrl + 'search.html',
-        title: `සොයන්න | ${siteName}`, description: 'ධම්මපද ගාථා සහ කතා තුළ වචන සොයන්න.',
+        title: `සොයන්න | ${siteName}`, description: 'ධම්මපද ගාථා සහ කතා තුළ සහ බෞද්ධ පොත් තුළ වචන සොයන්න.',
         extra: commonHead.extra + '\n    <meta name="robots" content="noindex">',
     });
     fs.writeFileSync(path.join(outRoot, 'search.html'), pageHtml({ headHtml, body, root: '' }).replace('</body>', `<script type="module" src="common/${assets.search}"></script>\n</body>`));
+}
+
+function writeBookmarks() {
+    const body = bookmarksBody({ left: linkButton('index.html', 'home', siteName), search: searchIn(''), toRoot: '../' });
+    const headHtml = head({
+        ...commonHead, root: '', url: baseUrl + 'bookmarks.html',
+        title: `තරු යෙදූ මාතෘකා | ${siteName}`, description: 'ඔබ තරු යෙදූ ධම්මපද කතා.',
+        extra: commonHead.extra + '\n    <meta name="robots" content="noindex">',
+    });
+    fs.writeFileSync(path.join(outRoot, 'bookmarks.html'), pageHtml({ headHtml, body, root: '' }));
 }
 
 // ---- build
@@ -355,6 +370,7 @@ for (const ed of Object.values(editions)) {
 writeMainIndex();
 writeAtuwaIndex();
 writeAbout();
+writeBookmarks();
 writeSearchPage();
 writeSearchIndex(outRoot);
 // the old saddharma sagara index, now the main index

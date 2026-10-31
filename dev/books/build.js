@@ -13,12 +13,13 @@ const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const assert = require('assert');
 const { JSDOM } = require('jsdom');
 const { SITE, esc, shorten, icon, iconSprite, breadcrumbLd, head, writeSitemap, webpVersion, imageSize,
-    linkButton, shareButton, appbar, pager, crumbs, writeAssets, splitPadas, searchLink, searchBody, writeSearchIndex, continueBox } = require('../site-lib');
+    linkButton, shareButton, appbar, pager, crumbs, writeAssets, splitPadas, searchLink, searchBody, writeSearchIndex, continueBox, bookmarksBody, searchScope } = require('../site-lib');
 
 const outRoot = path.join(__dirname, '../../books');
 const baseUrl = `${SITE}/books/`;
 const siteName = 'බෞද්ධ පොත්';
-const bookList = JSON.parse(fs.readFileSync(__dirname + '/books.json', 'utf8'));
+const bookList = JSON.parse(fs.readFileSync(__dirname + '/books.json', 'utf8')); // entries with a 'site' are other sites listed with the books (dhammapada)
+const books = bookList.filter(b => !b.site);
 const groupNames = ['ත්‍රිපිටකය ආශ්‍රිත පොත්', 'රේරුකානේ චන්දවිමල හිමි', 'වෙනත් පොත්'];
 const assets = writeAssets(path.join(outRoot, 'common'), 'book', `${__dirname}/book.css`, `${__dirname}/book.js`); // hashed names
 const ogImage = { url: `${baseUrl}common/og-books-500x300.png`, width: 500, height: 300, type: 'image/png' };
@@ -208,7 +209,7 @@ function writeBook(book) {
     return nodes.length;
 }
 const ancestors = (node) => { const a = []; for (let p = node.parent; p; p = p.parent) a.unshift(p); return a; };
-const bookUrl = (book) => `${baseUrl}${book.folder}/`;
+const bookUrl = (book) => book.site ? new URL(book.site, baseUrl).href : `${baseUrl}${book.folder}/`;
 const bookLd = (book) => ({
     '@type': 'Book', name: book.name, inLanguage: 'si', url: bookUrl(book), bookFormat: 'https://schema.org/EBook',
     ...(book.author ? { author: { '@type': 'Person', name: book.author } } : {}),
@@ -236,7 +237,7 @@ function writeBookIndex(book, roots, front) {
     const body = `${appbar({ left: linkButton('../index.html', 'home', 'මුල් පිටුව'), title: book.name, right: bookmarksLink('../'), search: { action: '../search.html', book: book.folder, placeholder: 'මෙම පොතේ සොයන්න' } })}
 <main class="page">
 <div class="book-head"><h1>${esc(book.name)}</h1>${book.author || book.subtitle ? `<p class="lead">${esc(book.author || book.subtitle)}</p>` : ''}</div>
-${continueBox(`books/${book.folder}`, '../')}
+${continueBox(`books/${book.folder}`, '../../')}
 ${front.items.length ? `<details class="front-matter"${frontText.length < 800 ? ' open' : ''}>
 <summary>${icon('navigate_next')}පොත ගැන</summary>
 <div class="front-body prose">
@@ -293,14 +294,14 @@ function writeTopIndex() {
     const shelves = groupNames.map((name, gi) => `<section class="shelf">
 <h2>${esc(name)}</h2>
 <ul class="book-list">
-${bookList.filter(b => b.group == gi + 1).map(b => `<li><a href="${b.folder}/index.html"><span class="book-text"><span class="book-name">${esc(b.name)}</span>${gi != 1 && (b.author || b.subtitle) ? `<span class="book-author">${esc(b.author || b.subtitle)}</span>` : ''}</span>${icon('navigate_next')}</a></li>`).join('\n')}
+${bookList.filter(b => b.group == gi + 1).map(b => `<li${b.site ? ' class="web-only"' : ''}><a href="${b.site ? b.site : b.folder + '/'}index.html"><span class="book-text"><span class="book-name">${esc(b.name)}</span>${gi != 1 && (b.author || b.subtitle) ? `<span class="book-author">${esc(b.author || b.subtitle)}</span>` : ''}</span>${icon('navigate_next')}</a></li>`).join('\n')}
 </ul>
 </section>`).join('\n');
     const body = `${appbar({ left: linkButton('https://tipitaka.lk/library/', 'library_books', 'පුස්තකාලය') + bookmarksLink(''), title: siteName, brand: true, search: { action: 'search.html' } })}
 <main class="page">
 <h1 class="sr-only">${siteName}</h1>
 <p class="lead">සිංහල බෞද්ධ පොත් ${bookList.length} ක් සම්පූර්ණයෙන් කියවන්න. පොතක් තෝරා පටුනෙන් පරිච්ඡේදයට පිවිසෙන්න.</p>
-${continueBox('books/')}
+${continueBox('books/ dhammapada/', '../')}
 ${shelves}
 </main>
 ${footer()}`;
@@ -315,13 +316,7 @@ ${footer()}`;
 }
 
 function writeBookmarks() {
-    const body = `${appbar({ left: linkButton('index.html', 'home', 'මුල් පිටුව'), title: 'තරු යෙදූ මාතෘකා', search: { action: 'search.html' } })}
-<main class="page">
-<h1 class="sr-only">තරු යෙදූ මාතෘකා</h1>
-<ul class="bookmark-list" id="bookmark-list"></ul>
-<p class="lead" id="no-bookmarks" hidden>තවම තරු යොදා නැත. පසුව කියවීමට මාතෘකාවක් ඉදිරියෙන් ඇති ${icon('star_outline')} මත ඔබන්න.</p>
-<template id="star-icon">${icon('star')}</template>
-</main>`;
+    const body = bookmarksBody({ left: linkButton('index.html', 'home', 'මුල් පිටුව'), search: { action: 'search.html' }, toRoot: '../' });
     const headHtml = pageHead({
         root: '', url: baseUrl + 'bookmarks.html',
         title: `තරු යෙදූ මාතෘකා | ${siteName}`,
@@ -333,11 +328,10 @@ function writeBookmarks() {
 
 function writeSearchPage() {
     const names = Object.fromEntries(bookList.map(b => [b.folder, b.name]));
-    const scope = `<div class="search-scope" id="scope" data-books="${esc(JSON.stringify(names))}"><label><input type="radio" name="scope" value="book" checked> <span><span class="book-name"></span> තුළ පමණක්</span></label><label><input type="radio" name="scope" value="all"> සියලු පොත්</label></div>`;
-    const body = searchBody({ left: linkButton('index.html', 'home', 'මුල් පිටුව'), scope });
+    const body = searchBody({ left: linkButton('index.html', 'home', 'මුල් පිටුව'), scope: searchScope(names), merge: '../dhammapada/' });
     const headHtml = pageHead({
         root: '', url: baseUrl + 'search.html',
-        title: `සොයන්න | ${siteName}`, description: `බෞද්ධ පොත් ${bookList.length} තුළ වචන සොයන්න.`,
+        title: `සොයන්න | ${siteName}`, description: `බෞද්ධ පොත් ${bookList.length} තුළ සහ ධම්මපද කතා තුළ වචන සොයන්න.`,
         extra: '\n    <meta name="robots" content="noindex">',
     });
     fs.writeFileSync(path.join(outRoot, 'search.html'), pageHtml({ headHtml, body, root: '' }).replace('</body>', `<script type="module" src="common/${assets.search}"></script>\n</body>`));
@@ -345,9 +339,9 @@ function writeSearchPage() {
 
 // ---- build
 const only = process.argv.slice(2);
-only.forEach(f => assert(bookList.some(b => b.folder == f), `unknown book ${f}`));
+only.forEach(f => assert(books.some(b => b.folder == f), `unknown book ${f}`));
 let pages = 0;
-for (const book of bookList) {
+for (const book of books) {
     if (only.length && !only.includes(book.folder)) continue;
     pages += writeBook(book);
 }

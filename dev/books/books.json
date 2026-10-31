@@ -1,5 +1,6 @@
 [
     {"name":"පන්සිය පණස් ජාතකය","subtitle":"ජාතක අටුවාව","folder":"pansiya-panas-jathaka","group":1,"library":{"folder":"වෙනත්"}},
+    {"name":"ධම්මපද කතා","subtitle":"ගාථා, සිංහල තේරුම, සජ්ඣායනය, සිතුවම් සහ කතා","folder":"dhammapada","site":"../dhammapada/","group":1},
     {"name":"මහාවංශය","subtitle":"සිංහල පරිවර්තනය","folder":"mahavanshaya","group":1,"library":{"folder":"ඉපැරණි පොත්","html":1176,"pdf":1177,"altPdf":60}},
     {"name":"පැරණි බුදුසිරිත","subtitle":"සම්පිණ්ඩිතමහානිදානය","folder":"sampinditha-mahanidanaya","group":1,"library":{"folder":"වෙනත්","html":1174,"pdf":1175,"altPdf":768}},
     {"name":"ගෞතම බුද්ධ චරිතය","author":"බළන්ගොඩ ආනන්ද මෛත්‍රෙය හිමි","folder":"buddha-charithaya","group":1,"library":{"folder":"වෙනත්","html":1028,"pdf":1029}},

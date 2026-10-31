@@ -27,7 +27,8 @@ audio { display: block; width: 100%; height: 40px; margin: 4px 0 8px; }
 
 /* vagga page: the kathas with their gathas, a gatha opens its katha */
 section.katha { padding: 6px 0 14px; border-bottom: 1px solid var(--border); scroll-margin-top: var(--appbar-h); }
-h2.katha-title { font-size: 1.05em; margin: 10px 0 2px; }
+.katha-head { display: flex; align-items: flex-start; gap: 4px; }
+h2.katha-title { flex: 1; min-width: 0; font-size: 1.05em; margin: 10px 0 2px; }
 h2.katha-title a { color: var(--heading); text-decoration: none; }
 .vagga-page .gatha { margin-top: 6px; }
 /* a row with the painting (small) and the recitation, the verse below at full width */

@@ -125,11 +125,26 @@ function appbar({ left = '', title, titleHref, brand = false, right = '', search
 <div class="row"><button type="button" class="theme-choice" data-choice="light" aria-pressed="true">සුදු</button><button type="button" class="theme-choice" data-choice="sepia" aria-pressed="false">පුස්කොළ</button><button type="button" class="theme-choice" data-choice="dark" aria-pressed="false">අඳුරු</button></div>
 </div>`;
 }
-const continueBox = (want, root = '') => `<div class="continue" data-continue="${want}"${root ? ` data-root="${root}"` : ''} hidden><template>${icon('close')}</template></div>`;
+// continue reading on an index page: want is a space separated list of progress keys or key prefixes ('books/ dhammapada/'),
+// toRoot the path from the page to the pitaka.lk root (the saved paths are within each site)
+const continueBox = (want, toRoot) => `<div class="continue" data-continue="${want}" data-root="${toRoot}" hidden><template>${icon('close')}</template></div>`;
+// a bookmark star for a page outside a book's table of contents (reader.js): path from the pitaka.lk root, headings from the top
+const starButton = ({ path, headings, label }) => `<button type="button" class="icon-btn star" data-path="${path}" data-headings="${esc(JSON.stringify(headings))}" data-label="${esc(label)}" aria-label="තරුවක් යොදන්න">${icon('star_outline', 'off')}${icon('star', 'on')}</button>`;
+// the body of a site's bookmarks.html (rendered by reader.js), toRoot as in continueBox
+const bookmarksBody = ({ left, search, toRoot }) => `${appbar({ left, title: 'තරු යෙදූ මාතෘකා', search })}
+<main class="page">
+<h1 class="sr-only">තරු යෙදූ මාතෘකා</h1>
+<ul class="bookmark-list" id="bookmark-list" data-root="${toRoot}"></ul>
+<p class="lead" id="no-bookmarks" hidden>තවම තරු යොදා නැත. පසුව කියවීමට මාතෘකාවක් ඉදිරියෙන් ඇති ${icon('star_outline')} මත ඔබන්න.</p>
+<template id="star-icon">${icon('star')}</template>
+</main>`;
 const searchLink = (href) => `<a class="icon-btn search-link" href="${href}" aria-label="සොයන්න">${icon('search')}</a>`;
 // the search page; scope: label of the 'this book only' choice when the page is opened from a book (?book=)
-const searchBody = ({ left, scope = '' }) => `${appbar({ left, title: 'සොයන්න', search: { action: 'search.html', page: true, placeholder: 'සිංහලෙන් හෝ singlish' } })}
-<main class="page search-page">
+// the choice between one book (?book=, names: {folder: name}) and all books on the search page (search.js)
+const searchScope = (names) => `<div class="search-scope" id="scope" data-books="${esc(JSON.stringify(names))}"><label><input type="radio" name="scope" value="book" checked> <span><span class="book-name"></span> තුළ පමණක්</span></label><label><input type="radio" name="scope" value="all"> සියලු පොත්</label></div>`;
+// merge: the folder of another site whose search index is searched too (search.js), relative to this page
+const searchBody = ({ left, scope = '', merge = '' }) => `${appbar({ left, title: 'සොයන්න', search: { action: 'search.html', page: true, placeholder: 'සිංහලෙන් හෝ singlish' } })}
+<main class="page search-page"${merge ? ` data-merge="${merge}"` : ''}>
 <h1 class="sr-only">සොයන්න</h1>
 ${scope}
 <p id="search-status" class="lead" role="status"></p>
@@ -273,4 +288,4 @@ function imageSize(file) {
 }
 
 module.exports = { SITE, esc, shorten, icon, iconSprite, jsonLd, breadcrumbLd, head, writeSitemap, webpVersion, imageSize,
-    linkButton, shareButton, appbar, pager, crumbs, writeAssets, splitPadas, searchLink, searchBody, writeSearchIndex, continueBox };
+    linkButton, shareButton, appbar, pager, crumbs, writeAssets, splitPadas, searchLink, searchBody, writeSearchIndex, continueBox, starButton, bookmarksBody, searchScope };

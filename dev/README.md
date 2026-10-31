@@ -27,8 +27,13 @@ the apps, whose pages are local files, get a copy in `common/` from `sync-apps.s
 
 **Search**: the builds index the chapter and story pages (`data-pagefind-body`) with [pagefind](https://pagefind.app)
 into `books/pagefind/` and `dhammapada/pagefind/` (not in git), searched by `search.html` (`site-lib/search.js`).
-It needs the pages served over http(s), so the apps hide it for now. **Continue reading**: `reader.js` keeps the page
-and scroll position last read of each book / edition in localStorage and shows them on the index pages.
+Each search page also searches the other site's index (pagefind `mergeIndex`, `data-merge`), so both find books and
+dhammapada; the dhammapada pages carry the pagefind filter `book:dhammapada` like a book. It needs the pages served over
+http(s), so the apps hide it for now. **Continue reading**: `reader.js` keeps the page and scroll position last read of
+each book / edition in localStorage and shows them on the index pages (the books index shows the dhammapada too).
+**Bookmarks** (the stars, `reader.js`) are shared by both sites: `books/bookmarks.html` and `dhammapada/bookmarks.html`
+list them all. The dhammapada is listed among the books (`books.json` entry with `site`), hidden in the apps until the
+books app carries the dhammapada too.
 
 Test on phones: `node site-lib/check.js` checks the markup; the pages must also fit a 320px wide screen and the
 settings, bookmarks and table of contents must work by touch (most readers use phones and the apps).

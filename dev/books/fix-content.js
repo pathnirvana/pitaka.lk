@@ -19,7 +19,7 @@ const SKIP = { 'mahavanshaya': 'all', 'palibhashavatharanaya-1': 'all', 'pansiya
 
 const args = process.argv.slice(2), write = args.includes('--write');
 const only = args.filter(a => !a.startsWith('--'));
-const books = JSON.parse(fs.readFileSync(path.join(__dirname, 'books.json'), 'utf8')).map(b => b.folder)
+const books = JSON.parse(fs.readFileSync(path.join(__dirname, 'books.json'), 'utf8')).filter(b => !b.site).map(b => b.folder)
     .filter(f => (!only.length || only.includes(f)) && SKIP[f] != 'all');
 
 const norm = s => s.replace(/[\s ]+/g, ' ').trim();
