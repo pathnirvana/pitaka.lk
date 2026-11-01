@@ -34,7 +34,7 @@ rsync "${OPTS[@]}" --delete-excluded --include='/paintings/' --include='/paintin
   dhammapada/ "$ANDROID/Books/dhammapada_media_asset/src/main/assets/dhammapada/"
 
 # the old dhammapada app: the fonts from common/ (its pages can not reach /tools)
-rsync "${OPTS[@]}" --exclude='/paintings/*.jpg' --exclude=/pagefind/ --exclude=/search-words/ --exclude=/common/og/ --filter='P common/*.woff2' \
+rsync "${OPTS[@]}" --delete-excluded --exclude='/paintings/*.jpg' --exclude=/pagefind/ --exclude=/search-words/ --exclude=/common/og/ --filter='P common/*.woff2' \
   --filter='P /farewell.html' --filter='P /farewell-books.png' dhammapada/ "$ANDROID/Dhammapada/app/src/main/assets/"
 rsync "${FONTS[@]}" dev/dhammapada/farewell.html dev/dhammapada/farewell-books.png "$ANDROID/Dhammapada/app/src/main/assets/"
 rsync "${FONTS[@]}" tools/unicode/fonts/web/ "$ANDROID/Dhammapada/app/src/main/assets/common/"
