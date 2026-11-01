@@ -64,6 +64,7 @@ body {
     -webkit-tap-highlight-color: transparent;
     overflow-wrap: break-word; /* long pali compounds on narrow phones */
 }
+@media (max-width: 40rem) { body { line-height: 1.5; } } /* phones: a wider spacing looks loose on a narrow column */
 a { color: var(--link); text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
 img { max-width: 100%; height: auto; }
 button { font: inherit; color: inherit; background: none; border: none; padding: 0; cursor: pointer; }
@@ -153,7 +154,7 @@ button { font: inherit; color: inherit; background: none; border: none; padding:
 .crumbs .icon { width: 16px; height: 16px; opacity: .6; }
 
 /* reading column */
-.page { max-width: 42rem; margin: 0 auto; padding: 0 16px; }
+.page { max-width: 50rem; margin: 0 auto; padding: 0 16px; }
 .prose p { margin: 0 0 0.9em; }
 @media (min-width: 40rem) { .prose p { text-align: justify; } }
 h1, h2, h3, h4 { color: var(--heading); line-height: 1.4; font-weight: bold; }
