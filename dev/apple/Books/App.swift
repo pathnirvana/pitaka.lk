@@ -217,7 +217,7 @@ final class BundleSchemeHandler: NSObject, WKURLSchemeHandler {
         case "png": return "image/png"
         case "jpg", "jpeg": return "image/jpeg"
         case "webp": return "image/webp"
-        case "mp3": return "audio/mpeg"
+        case "m4a": return "audio/mp4"
         case "woff2": return "font/woff2"
         case "wasm": return "application/wasm"
         default: return "application/octet-stream" // pagefind's index files

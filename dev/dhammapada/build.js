@@ -146,7 +146,7 @@ function paintingFigure(g, root, katha, { lazy = true } = {}) {
 const sizes = {};
 const paintingSize = (g) => sizes[g.num] ||= imageSize(`${outRoot}/paintings/${g.num}.jpg`);
 const paintingAlt = (g, katha) => `ධම්මපද ගාථා ${g.num} සිතුවම - ${katha.vagga.name}`;
-const audioTag = (g, root) => `<audio controls preload="none" data-gatha="${g.num}" src="${root}recordings/${g.num}.mp3" aria-label="ගාථා ${g.num} සජ්ඣායනය"></audio>`;
+const audioTag = (g, root) => `<audio controls preload="none" data-gatha="${g.num}" src="${root}recordings/${g.num}.m4a" aria-label="ගාථා ${g.num} සජ්ඣායනය"></audio>`;
 const gathaText = (g) => `<div class="pali" lang="pi" data-pagefind-weight="3">\n${g.pali.map(l => `<p>${esc(l)}</p>`).join('\n')}\n</div>
 <div class="sinhala">\n${g.sinhala.map(l => `<p>${esc(l)}</p>`).join('\n')}\n</div>`;
 
@@ -229,7 +229,7 @@ ${pageFooter(root)}`;
                 '@type': 'Article', headline: heading, inLanguage: 'si', url,
                 image: `${baseUrl}paintings/${k.gathas[0].num}.jpg`,
                 isPartOf: { '@type': 'Book', name: ed.name, url: ed.indexUrl },
-                audio: k.gathas.map(g => ({ '@type': 'AudioObject', name: `ධම්මපද ගාථා ${g.num}`, contentUrl: `${baseUrl}recordings/${g.num}.mp3`, encodingFormat: 'audio/mpeg' })),
+                audio: k.gathas.map(g => ({ '@type': 'AudioObject', name: `ධම්මපද ගාථා ${g.num}`, contentUrl: `${baseUrl}recordings/${g.num}.m4a`, encodingFormat: 'audio/mp4' })),
             },
             breadcrumbLd([[ed.name, ed.indexUrl], [v.name, baseUrl + ed.dir + vaggaFile(v)], [heading, url]]),
         ],

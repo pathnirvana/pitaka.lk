@@ -6,7 +6,8 @@
 # assets/tools/unicode/fonts/web/, assets/static/singlish-search/), served by the app at https://appassets.androidplatform.net/,
 # so search works; the pictures and recordings in two install-time asset packs. Link preview cards and the jpgs (webp shown)
 # are left out. The iOS app (dev/apple) copies the same files into its bundle.
-# Dhammapada app (old, until its farewell update): the pages from file:///android_asset/ as before, without search.
+# Dhammapada app (old; 3.0 is its farewell version): the pages from file:///android_asset/ as before, without search, and
+# farewell.html, its first page, which leads to the books app.
 set -euo pipefail
 
 ANDROID=${ANDROID_DIR:-/Volumes/2TB/Android}
@@ -27,12 +28,14 @@ rsync "${OPTS[@]}" --exclude=/Android --exclude=/jathaka-images/ --exclude=/comm
 rsync "${OPTS[@]}" --exclude=/paintings/ --exclude=/thumbs/ --exclude=/recordings/ --exclude=/common/og/ --exclude=/common/logo.png dhammapada/ "$B/dhammapada/"
 rsync "${OPTS[@]}" --include='*.woff2' --exclude='*' tools/unicode/fonts/web/ "$B/tools/unicode/fonts/web/"
 rsync "${OPTS[@]}" static/singlish-search/ "$B/static/singlish-search/"
-rsync "${OPTS[@]}" --include='*.webp' --exclude='*' books/jathaka-images/ "$ANDROID/Books/jathaka_images_asset/src/main/assets/books/jathaka-images/"
+rsync "${OPTS[@]}" --delete-excluded --include='*.webp' --exclude='*' books/jathaka-images/ "$ANDROID/Books/jathaka_images_asset/src/main/assets/books/jathaka-images/"
 rm -rf "$ANDROID/Books/jathaka_images_asset/src/main/assets/jathaka-images" # before 3.0
-rsync "${OPTS[@]}" --include='/paintings/' --include='/paintings/*.webp' --include='/thumbs/' --include='/thumbs/*.jpg' --include='/recordings/' --include='/recordings/*.mp3' --exclude='*' \
+rsync "${OPTS[@]}" --delete-excluded --include='/paintings/' --include='/paintings/*.webp' --include='/thumbs/' --include='/thumbs/*.jpg' --include='/recordings/' --include='/recordings/*.m4a' --exclude='*' \
   dhammapada/ "$ANDROID/Books/dhammapada_media_asset/src/main/assets/dhammapada/"
 
 # the old dhammapada app: the fonts from common/ (its pages can not reach /tools)
-rsync "${OPTS[@]}" --exclude='/paintings/*.jpg' --exclude=/pagefind/ --exclude=/search-words/ --exclude=/common/og/ --filter='P common/*.woff2' dhammapada/ "$ANDROID/Dhammapada/app/src/main/assets/"
+rsync "${OPTS[@]}" --exclude='/paintings/*.jpg' --exclude=/pagefind/ --exclude=/search-words/ --exclude=/common/og/ --filter='P common/*.woff2' \
+  --filter='P /farewell.html' --filter='P /farewell-books.png' dhammapada/ "$ANDROID/Dhammapada/app/src/main/assets/"
+rsync "${FONTS[@]}" dev/dhammapada/farewell.html dev/dhammapada/farewell-books.png "$ANDROID/Dhammapada/app/src/main/assets/"
 rsync "${FONTS[@]}" tools/unicode/fonts/web/ "$ANDROID/Dhammapada/app/src/main/assets/common/"
 if [[ "${1:-}" != "--go" ]]; then echo "(dry run - rerun with --go to copy, then bump versionCode in the app/build.gradle)"; fi

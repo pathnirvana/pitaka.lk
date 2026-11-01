@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!-- the first page of the farewell version (3.0) of the old Dhammapada Android app (lk.pitaka.dhammapada): the Dhammapada
+     is now in the books app. dev/sync-apps.sh copies it (and the books app's logo) into that app; Farewell is its bridge. -->
+<html lang="si">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ධම්මපද කතා දැන් බෞද්ධ පොත් යෙදුමේ</title>
+<style>
+  @font-face { font-family: Abhaya; src: url('common/AbhayaUni-Regular.woff2') format('woff2'); font-weight: 400 }
+  @font-face { font-family: Abhaya; src: url('common/AbhayaUni-Bold.woff2') format('woff2'); font-weight: 700 }
+  html, body { margin: 0; background: #fdfbf7; color: #29231c }
+  body { font: 19px/1.6 Abhaya, serif; min-height: 100vh; display: flex; align-items: center; justify-content: center }
+  main { max-width: 460px; padding: 32px 20px; text-align: center }
+  img { width: 112px; height: 112px; border-radius: 50%; box-shadow: 0 4px 14px rgba(0, 0, 0, .15) }
+  h1 { font-size: 1.45em; line-height: 1.35; color: #9a3d12; margin: 20px 0 12px }
+  p { margin: 0 0 14px; text-align: left }
+  ul { text-align: left; margin: 0 0 18px; padding-left: 1.2em }
+  .button { display: block; margin: 24px 0 14px; padding: 14px 18px; border-radius: 12px; background: #c2621f; color: #fff;
+    font-weight: 700; font-size: 1.05em; text-decoration: none }
+  .stay { color: #6b6155; font-size: .95em }
+  .stay a { color: #9a3d12 }
+</style>
+</head>
+<body>
+<main>
+  <img src="farewell-books.png" alt="බෞද්ධ පොත්">
+  <h1>ධම්මපද කතා දැන් “බෞද්ධ පොත්” යෙදුමේ</h1>
+  <p>ධම්මපද ගාථා, සිංහල තේරුම, සජ්ඣායනා, සිතුවම් සහ කතා සියල්ල දැන් “බෞද්ධ පොත්” යෙදුමේ, තවත් පොත් 45 ක් සමඟ ඇත. එහි:</p>
+  <ul>
+    <li>සියලු පොත් තුළ සිංහලෙන් හෝ singlish වලින් සොයන්න</li>
+    <li>කැමති කතා තරුවකින් සුරකින්න</li>
+    <li>නැවතුණු තැනින් කියවන්න</li>
+  </ul>
+  <p>මෙම යෙදුම තවදුරටත් යාවත්කාලීන නොකෙරේ. “බෞද්ධ පොත්” ස්ථාපනය කළ පසු මෙය ඉවත් කළ හැක.</p>
+  <a class="button" id="books" href="https://play.google.com/store/apps/details?id=lk.pitaka.books">“බෞද්ධ පොත්” ලබා ගන්න</a>
+  <p class="stay" style="text-align:center"><a href="index.html">මෙහිම කියවන්න</a></p>
+</main>
+<script>
+  // in the app: open the books app when it is installed, or its Play page
+  var books = document.getElementById('books');
+  if (window.Android && Android.setStatusBarColor) Android.setStatusBarColor('#fdfbf7'); // dark icons, as on the other pages
+  if (window.Farewell) {
+    if (Farewell.booksInstalled()) books.textContent = '“බෞද්ධ පොත්” විවෘත කරන්න';
+    books.addEventListener('click', function (e) { e.preventDefault(); Farewell.openBooks(); });
+  }
+</script>
+</body>
+</html>

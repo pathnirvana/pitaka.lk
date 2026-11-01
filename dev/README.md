@@ -14,6 +14,7 @@ Generators and sources for the static sites. Run the scripts from this folder af
 | `node apple/asc-submit.mjs [--submit]` | the App Store texts (`play/store-text.mjs`) and newest build of that version, and its review submission |
 | `node play/play-listing.mjs [--dry]` | the Google Play texts (`play/store-text.mjs`), screenshots and feature graphic of the books app |
 | `node play/play-release.mjs` | uploads the books app's signed bundle and releases it on production (`TRACK=internal` for a test) |
+| `node play/dhammapada-farewell.mjs [--dry]` | the farewell release of the old Dhammapada app (it opens on `dhammapada/farewell.html`, leading to the books app) and its listing notice |
 | `node site-lib/og-cards.js` | link preview cards (og:image) of the books and the dhammapada index; rebuild the sites after |
 | `GSC_KEY=<key.json> node gsc-report.mjs [/books/ ...]` | Search Console clicks, queries, pages, devices, sitemaps (read-only service account; key outside the repo) |
 | `node books/library-files.js <folder>` | single html file and pdf of a book for the tipitaka.lk library (weasyprint) |
