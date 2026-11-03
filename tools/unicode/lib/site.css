@@ -81,8 +81,6 @@ button:disabled { opacity: .5; cursor: default; }
 /* converted output */
 .output { min-height: 9em; white-space: pre-wrap; word-wrap: break-word; padding: 10px; border: 1px solid var(--line); border-radius: 8px;
     background: var(--bg); font-size: 1.25rem; line-height: 1.8; }
-/* a long PDF or OCR result scrolls inside its box instead of growing the page */
-.output.scroll { max-height: 65vh; overflow-y: auto; overscroll-behavior: contain; }
 .output .issue { background: var(--bad-soft); text-decoration: underline wavy var(--bad); text-underline-offset: 4px; }
 .output .issue.focus { outline: 2px solid var(--bad); }
 .output .kept { color: var(--kept); background: repeating-linear-gradient(135deg, transparent 0 4px, var(--accent-soft) 4px 8px); }
