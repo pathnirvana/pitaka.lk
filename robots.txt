@@ -4,4 +4,5 @@ Allow: /
 Sitemap: https://pitaka.lk/main/sitemap.xml
 Sitemap: https://pitaka.lk/books/sitemap.xml
 Sitemap: https://pitaka.lk/dhammapada/sitemap.xml
+Sitemap: https://pitaka.lk/bjt/sitemap.xml
 Sitemap: https://pitaka.lk/tools/sitemap.xml

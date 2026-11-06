@@ -5,8 +5,9 @@
   "scripts": {
     "build:books": "node books/build.js",
     "build:dhammapada": "node dhammapada/build.js",
-    "build": "npm run build:books && npm run build:dhammapada",
-    "check": "node site-lib/check.js books dhammapada",
+    "build:bjt": "node bjt/build.js",
+    "build": "npm run build:books && npm run build:dhammapada && npm run build:bjt",
+    "check": "node site-lib/check.js books dhammapada bjt",
     "deploy": "npm run check && ./deploy.sh"
   },
   "author": "",

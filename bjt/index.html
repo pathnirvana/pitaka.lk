@@ -1,236 +1,97 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
+<html lang="si">
+<head>
     <meta charset="UTF-8">
-    <meta name="google-site-verification" content="3q30uQ1_gO_dEVjUO6EsTgpovt8MHTyY75774HmTSb0" />
-    <title>Buddha Jayanthi Tripitaka</title>
-    <meta name="description" content="බුද්ධ ජයන්ති ත්‍රිපිටකය Software Computer Search">
-    <meta property="og:image" content="https://pitaka.lk/static/images/og-bjt-500x300.png">
+    <title>බුද්ධ ජයන්ති ත්‍රිපිටකය | Buddha Jayanthi Tripitaka</title>
+    <meta name="description" content="බුද්ධ ජයන්ති ත්‍රිපිටකයේ ස්කෑන් කළ වෙළුම් 57, පාළි සහ සිංහල පිටු පසෙක් පසෙක, පටුනෙන් හෝ සූත්‍රයේ නමින් සොයා කියවන්න. Buddha Jayanthi Tripitaka online.">
+    <link rel="canonical" href="https://pitaka.lk/bjt/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f0e6">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="බුද්ධ ජයන්ති ත්‍රිපිටකය">
+    <meta property="og:locale" content="si_LK">
+    <meta property="og:title" content="බුද්ධ ජයන්ති ත්‍රිපිටකය | Buddha Jayanthi Tripitaka">
+    <meta property="og:description" content="බුද්ධ ජයන්ති ත්‍රිපිටකයේ ස්කෑන් කළ වෙළුම් 57, පාළි සහ සිංහල පිටු පසෙක් පසෙක, පටුනෙන් හෝ සූත්‍රයේ නමින් සොයා කියවන්න. Buddha Jayanthi Tripitaka online.">
+    <meta property="og:url" content="https://pitaka.lk/bjt/">
+    <meta property="og:image" content="https://pitaka.lk/bjt/common/og-bjt-500x300.png">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="500">
     <meta property="og:image:height" content="300">
-
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta property="og:image:alt" content="බුද්ධ ජයන්ති ත්‍රිපිටකය">
+    <meta name="twitter:card" content="summary">
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" type="image/png" sizes="96x96" href="../static/images/favicon-96x96.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" href="../static/styles/common_styles.css?v=2" />
-    <link rel="stylesheet" href="../static/styles/tree_style.css?v=2" />
-    <link rel="stylesheet" href="../static/styles/font-awesome.css?v=1"/>
-    <link rel="stylesheet" href="../static/styles/search.css?v=2"/>
-    <link rel="stylesheet" href="./styles.css?v=2" />
-    <link rel="stylesheet" href="../static/dialog/multi-select.css"/>
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-46817481-7', 'auto');
-        ga('send', 'pageview');
-        window.onerror = function (msg, url, lineNo, columnNo, error) {
-            showToast(msg + ' : ' + url + ' : ' + lineNo, 5000);
-            return false;
-        }
-    </script>
-    <style>
-        i.ss-hide { font-style: normal; }
-        @media screen and (max-width: 400pt) {
-            .ss-hide { display: none; }
-        }
-    </style>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" href="common/app-logo.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="common/favicon-96x96.png">
+    <link rel="preload" href="/tools/unicode/fonts/web/AbhayaUni-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="common/bjt.da2b6480.css">
+    <script>try{var d=document.documentElement,s=localStorage,t=s.getItem('pitaka-theme'),f=s.getItem('pitaka-font-scale')||s.getItem('books-font-scale'),n=s.getItem('pitaka-font');if(t&&t!='light')d.dataset.theme=t;if(n&&n!='abhaya')d.dataset.font=n;if(f)d.style.setProperty('--font-scale',f)}catch(e){}if(location.protocol=='file:')d.classList.add('local');if(location.protocol=='app:'||location.hostname=='appassets.androidplatform.net')d.classList.add('app')</script>
+    <meta name="google-site-verification" content="3q30uQ1_gO_dEVjUO6EsTgpovt8MHTyY75774HmTSb0">
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","name":"බුද්ධ ජයන්ති ත්‍රිපිටකය","alternateName":"Buddha Jayanthi Tripitaka","url":"https://pitaka.lk/bjt/","inLanguage":["si","pi"]}]}</script>
 </head>
 <body>
-    <div style="text-align: center; margin:0 auto; max-width: 1000pt; height: 100%; display: flex; flex-flow: column; overflow: hidden;">
-
-        <div style="flex: 0 1 auto;">
-            <div class="title-bar">
-                <i id="tree-toggle" class="fa fa-sitemap" tip="සූත්‍ර නාමාවලිය අරින්න වහන්න"></i>
-                <div style="flex: 1 1;">බුද්ධ ජයන්ති ත්‍රිපිටකය</div>
-                <i id="menu-toggle" class="fa fa-bars"></i>
-            </div>
-            <div id="search-bar-div">
-                <a id="select-num-columns" class="button" tip="තනි තීරුව හෝ තීරු දෙකක්ද යන්න"><i class="fa fa-columns fa-fw" style="display: none;"></i><i class="fa fa-window-maximize fa-fw"></i></a>
-                <input class="search-bar" type="text" placeholder="සොයන්න">
-                <a id="search-settings-button" class="button" tip="සෙවුම පොත් කිහිපයකට සීමා කරන්න" onclick="showBookSelectDialog(SF.name)"><i class="fa fa-wrench fa-lg"></i></a>
-                <a id="text-view-button" class="button tipright" tip="සූත්‍ර අන්තර්ගතය වෙත පිවිසෙන්න"><i class="fa fa-file-text-o fa-lg"></i><i class="ss-hide"> අන්තර්ගතය</i></a>
-                <a id="bookmark-button" class="button tipright" tip="තරුයෙදූ සූත්‍ර ලැයිස්තුව පෙන්වන්න"><i class="fa fa-star fa-lg" style="color: rgb(228, 194, 0);"></i><i class="ss-hide"> තරුයෙදූ</i></a>
-
-                <div id="menu-list" style="right: 0; top: 0;">
-                    <a class="menu-list-item" href="intro.html?goto=about"><i class="fa fa-male fa-fw"></i> අප ගැන</a>
-                    <a class="menu-list-item" id="dark-toggle"><span class="lightT"><i class="fa fa-lightbulb-o fa-fw"></i> ආලෝකමත් තිරය</span><span class="darkT"><i class="fa fa-moon-o fa-fw"></i> අඳුරු රාත්‍රී තිරය</span></a>
-                    <a class="menu-list-item" href="intro.html?goto=usage"><i class="fa fa-question-circle fa-fw"></i> භාවිතයට උපදෙස්</a>
-                    <a class="menu-list-item" href="intro.html?goto=download"><i class="fa fa-download fa-fw"></i> භාගත කරන්න</a>
-                    <a class="menu-list-item" href="https://pitaka.lk/main"><i class="fa fa-file-text-o fa-fw"></i> සරල ත්‍රිපිටකය</a>
-                    <a class="menu-list-item" href="https://pitaka.lk/dict"><i class="fa fa-leaf fa-fw"></i> පාළි-සිංහල ශබ්දකෝෂය</a>
-                    <!--<a class="menu-list-item" href="./bjt"><i class="fa fa-book fa-fw" style="color: darkgreen;"></i> බුද්ධ ජයන්ති ත්‍රිපිටකය</a>-->
-                    <a class="menu-list-item" href="https://pitaka.lk/books"><i class="fa fa-pagelines fa-fw"></i> බෞද්ධ පොත් සංචිතය</a>
-                    <a class="menu-list-item" href="https://pitaka.lk/dhammapada"><i class="fa fa-paw fa-fw"></i> ධම්මපද කතා වස්තු</a>
-                    <a class="menu-list-item" href="https://www.facebook.com/pitaka.lk"><i class="fa fa-facebook fa-fw"></i> Facebook පිටුව</a>
-                </div>
-            </div>
-        </div>
-        
-        <div id="contents-area" style="flex: 1 1 auto; display: flex; flex-flow: row nowrap; overflow: auto;" >
-            <!--this tree would be populated by the entries in searchIndex-->
-            <div id="tree-window" style="text-align: left; display: none; flex: 0 1 auto; overflow-y: auto; height: 100%;">
-                <div id="left-tree" class="pitaka-tree">
-                    <ul id="three-pitaka-ul"></ul>
-                </div>
-            </div>
-
-            <div id="search-area" style="flex: 1 1 auto; overflow-y: auto; width: 100%;">
-                <div id="search-status">සෙවීම සඳහා උඩ කොටුවේ නම type කරන්න.</div>
-                <div id="search-filter-status"></div>
-                <table id="search-results" class="results-table">
-                    <thead>
-                        <tr>
-                            <td style="white-space: nowrap;"><span class="sort-action" by="book">
-                                <a class="button" tip="වැඩිවන පිළිවෙලට පෙළගස්වන්න" order="asc"><i class="fa fa-sort-numeric-asc fa-fw"></i></a>
-                                <a class="button" tip="අඩුවන පිළිවෙලට පෙළගස්වන්න" order="desc"><i class="fa fa-sort-numeric-desc fa-fw"></i></a></span>
-                            </td>
-                            <td><i class="fa fa-search fa-fw"></i> නම<span class="sort-action" by="name">
-                                <a class="button" tip="වැඩිවන පිළිවෙලට පෙළගස්වන්න" order="asc"><i class="fa fa-sort-alpha-asc fa-fw"></i></a>
-                                <a class="button" tip="අඩුවන පිළිවෙලට පෙළගස්වන්න" order="desc"><i class="fa fa-sort-alpha-desc fa-fw"></i></a></span>
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-
-            <div id="bookmark-area" style="flex: 1 1 auto; overflow-y: auto; width: 100%;">
-                <div id="bookmark-status"></div>
-                <table id="bookmark-list" class="results-table">
-                    <thead>
-                        <tr><td style="white-space: nowrap;">පොත</td><td><i class="fa fa-search fa-fw"></i> නම</td></tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-
-            <div style="flex: 1 1 auto; overflow-y: auto;">
-                <div id="image-area"  style="display: none;">
-                    <a class="page-navigation top"><i class="fa fa-angle-up"></i> කළින් පිටුවට <i class="fa fa-angle-up"></i></a>
-                    <a class="page-navigation bottom"><i class="fa fa-angle-down"></i> ඊළඟ පිටුවට <i class="fa fa-angle-down"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-<div id="toast"></div>
-
-<!-- dialog box -->
-<div id="dialog-overlay" onclick="closeDialog()"></div>
-<div id="dialog-box">
-    <div class="dialog-content">
-        <div id="dialog-message"></div> 
-    </div>
+<svg class="icon-sprite" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><symbol id="i-home" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></symbol><symbol id="i-expand_more" viewBox="0 0 24 24"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></symbol><symbol id="i-star_outline" viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></symbol><symbol id="i-share" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></symbol><symbol id="i-arrow_back" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></symbol><symbol id="i-arrow_forward" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></symbol></svg>
+<header class="appbar"><a class="icon-btn" href="./" aria-label="පටුන"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-home"/></svg></a><div class="appbar-title app-only">බුද්ධ ජයන්ති ත්‍රිපිටකය</div><form class="appbar-search" action="./" role="search" onsubmit="return false"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg><input type="search" name="q" id="q" placeholder="සූත්‍රයක නම සොයන්න" aria-label="සොයන්න" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="search"></form><button type="button" class="icon-btn settings-btn" aria-label="කියවීමේ සැකසුම්" aria-expanded="false" aria-controls="settings">Aa</button></header>
+<div class="settings" id="settings" role="dialog" aria-label="කියවීමේ සැකසුම්" hidden>
+<h2>අකුරු ප්‍රමාණය</h2>
+<div class="row"><button type="button" class="size-btn smaller" aria-label="අකුරු කුඩා කරන්න">අ</button><output>100%</output><button type="button" class="size-btn larger" aria-label="අකුරු විශාල කරන්න">අ</button></div>
+<h2>අකුරු</h2>
+<div class="row"><button type="button" class="font-choice" data-choice="abhaya" aria-pressed="true">අභය</button><button type="button" class="font-choice" data-choice="nayana" aria-pressed="false">නයන</button></div>
+<h2>පසුබිම</h2>
+<div class="row"><button type="button" class="theme-choice" data-choice="light" aria-pressed="true">සුදු</button><button type="button" class="theme-choice" data-choice="sepia" aria-pressed="false">පුස්කොළ</button><button type="button" class="theme-choice" data-choice="dark" aria-pressed="false">අඳුරු</button></div>
 </div>
-
-<script src="../static/scripts/jquery-3.4.1.min.js"></script>
-<script src="../static/scripts/underscore-min.js"></script>
-<script src="../static/scripts/clipboard.min.js"></script>
-<script src="../static/scripts/utilities.js?v=1"></script>
-<script src="../static/scripts/pitakaTree.js?v=1"></script>
-<script src="../static/scripts/singlish.js?v=1"></script>
-<script src="scripts/searchIndex.js?v=1"></script>
-<script src="scripts/bjtTree.js?v=1"></script>
-<script src="scripts/books.js?v=1"></script>
-<script src="scripts/bookList.js?v=1"></script>
-<script src="scripts/search.js?v=1"></script>
-<script src="../static/dialog/jquery.multi-select.js"></script>
-<script src="../static/dialog/dialog_select_book.js"></script>
-<script>
-    function showSearchArea() {
-        console.log('show search area');
-        $('#search-area, #search-settings-button').show();
-        $('#image-area, #select-num-columns').hide();
-        $('#bookmark-area').hide();
-    }
-    function showTextArea() {
-        console.log('show text area');
-        $('#search-area, #search-settings-button').hide();
-        $('#image-area, #select-num-columns').show();
-        $('#bookmark-area').hide();
-    }
-    function showBookmarkArea() {
-        console.log('show bookmark area');
-        $('#search-area, #search-settings-button').hide();
-        $('#image-area, #select-num-columns').hide();
-        $('#bookmark-area').show();
-    }
-    $( document ).ready( function() {
-        populateTree(); // load entries in the searchIndex to tree
-        $('.pitaka-tree').pitakaTree();
-        initSearchBar();
-
-        $('#menu-toggle').mousedown(function (e) {
-            $('#menu-list').animate({height: 'toggle'}, 200);
-            //$('#menu-list').css({top:$('#search-bar-div').position().top, right:$('#search-bar-div').position().left});
-            e.stopPropagation();
-        });
-        $('#tree-toggle').mousedown(function(e) {
-            $('#tree-window').animate({width: 'toggle'}, 250);
-            //$('#tree-window').css({top:$('#search-bar-div').position().top, left:$('#search-bar-div').position().left});
-            e.stopPropagation();
-        });
-        $('#menu-list, #tree-window').mousedown(function(e) {
-            e.stopPropagation();
-        });
-        $('body').mousedown(function() {
-            $('#menu-list').animate({height: 'hide'}, 200);
-            $('#tree-window').animate({width: 'hide'}, 250);
-        });
-
-        handleResize(); // do initial set
-        $(window).resize(handleResize);
-
-        $('#image-area').on('click', '.page-navigation', function() {
-            if ($(this).hasClass('top')) prevButtonClick();
-            else if ($(this).hasClass('bottom')) nextButtonClick();
-            else sideButtonClick();
-        });
-
-        $('#select-num-columns').click(selectNumColumns);
-
-        $('#search-results-button').click(function () {
-            showSearchArea();
-        });
-
-        // set startup location if specified in url params
-        navigateStartupLocation();
-
-        const clipb = new ClipboardJS('span.page-link', {
-            text: function(icon) {
-                var bjtLink = createBJTLink(curBookId, $(icon).parent().attr('page-id'));
-                return bjtLink;
-            }
-        });
-        clipb.on('success', function(e) { showToast('link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.'); });
-        
-        $('#text-view-button').click(function (e) {
-            showTextArea();
-        });
-        $('#bookmark-button').click(function (e) {
-            displayBookmarks();
-            showBookmarkArea();
-        });
-        $('.search-bar').click(function () { // show search area
-            showSearchArea();
-        });
-        
-        $('span.sort-action').on('click', 'a', function () {
-            var by = $(this).parent().attr('by');
-            var order = $(this).attr('order');
-            refreshCurrentSearchDisplay(by, order);
-        });
-        autoSetDarkMode();
-        
-        // diable tooltips that interfere in phones
-        //$('[tip]').hover(showToolTip, hideToolTip);
-    });
-</script>
+<main class="page" id="home">
+<h1>බුද්ධ ජයන්ති ත්‍රිපිටකය</h1>
+<p class="lead">ස්කෑන් කළ බුද්ධ ජයන්ති ත්‍රිපිටක වෙළුම් 57, පාළි සහ සිංහල පිටු පසෙක් පසෙක. සූත්‍රයක හෝ කොටසක නම ඉහළින් සොයන්න, නැතහොත් පහත පටුනෙන් තෝරන්න.</p>
+<div id="search-area" hidden>
+<div class="search-scope"><label for="scope">සොයන්නේ</label> <select id="scope"><option value="">සියලු පිටක</option><option value="0">විනයපිටක</option><option value="1229">සුත්තපිටක</option><option value="7670">අභිධර්මපිටක</option></select></div>
+<p id="search-status" class="lead" role="status"></p>
+<ol id="results" class="bjt-list"></ol>
+</div>
+<section id="stars" hidden>
+<h2>තරු යෙදූ මාතෘකා</h2>
+<ol id="star-list" class="bjt-list"></ol>
+</section>
+<div id="contents">
+<section class="pitaka">
+<h2>විනයපිටක</h2>
+<ul class="toc-tree"><li data-i="1"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=1&amp;p=2">පාරාජිකපාළි</a></div></li><li data-i="271"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=2&amp;p=2">පාචිත්තියපාළි</a></div></li><li data-i="604"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=4&amp;p=2">මහාවග්ගපාළි</a></div></li><li data-i="904"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=6&amp;p=2">චුල්ලවග්ගපාළි</a></div></li><li data-i="1000"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=8&amp;p=2">පරිවාරපාළි</a></div></li></ul>
+</section>
+<section class="pitaka">
+<h2>සුත්තපිටක</h2>
+<ul class="toc-tree"><li data-i="1230"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=10&amp;p=2">දීඝනිකාය</a></div></li><li data-i="1268"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=13&amp;p=2">මජ්ඣිමනිකාය</a></div></li><li data-i="1439"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=16&amp;p=2">සංයුත්තනිකාය</a></div></li><li data-i="3783"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=22&amp;p=2">අඞ්ගුත්තරනිකාය</a></div></li><li data-i="5162"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=28&amp;p=2">ඛුද්දකනිකාය</a></div></li></ul>
+</section>
+<section class="pitaka">
+<h2>අභිධර්මපිටක</h2>
+<ul class="toc-tree"><li data-i="7671"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=45&amp;p=2">ධම්මසඞ්ගණිප්පකරණ</a></div></li><li data-i="7853"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=46&amp;p=2">විභඞ්ගප්පකරණ</a></div></li><li data-i="7971"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=48&amp;p=2">කථාවත්ථුප්පකරණ</a></div></li><li data-i="8212"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=51&amp;p=2">ධාතුකථා</a></div></li><li data-i="8234"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=51&amp;p=240">පුග්ගල පඤ්ඤත්ති</a></div></li><li data-i="8263"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=52&amp;p=2">යමකප්පකරණ</a></div></li><li data-i="8493"><div class="toc-item"><button type="button" class="icon-btn toggle" aria-expanded="false" aria-label="ඇතුළත"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></button><a href="./?b=55&amp;p=2">පට්ඨානප්පකරණ</a></div></li></ul>
+</section>
+</div>
+<nav class="bjt-links" aria-label="තවත්">
+<a href="intro.html?goto=usage">භාවිතයට උපදෙස්</a>
+<a href="intro.html?goto=download">PDF සහ app භාගත කරන්න</a>
+<a href="intro.html?goto=about">මේ ගැන</a>
+<a href="https://tipitaka.lk">tipitaka.lk – අකුරු වලින් ත්‍රිපිටකය</a>
+<a href="../books/">බෞද්ධ පොත්</a>
+</nav>
+</main>
+<main class="reader" id="reader" hidden>
+<div class="reader-bar">
+<nav class="crumbs" id="where" aria-label="පිහිටීම"></nav>
+<div class="reader-tools">
+<div class="sides" role="group" aria-label="පෙන්වන පිටු"><button type="button" data-side="pali" aria-pressed="false">පාළි</button><button type="button" data-side="both" aria-pressed="true">දෙකම</button><button type="button" data-side="sinh" aria-pressed="false">සිංහල</button></div>
+<button type="button" class="icon-btn bjt-star" id="reader-star" aria-label="තරුවක් යොදන්න" hidden><svg class="icon off" aria-hidden="true" focusable="false"><use href="#i-star_outline"/></svg><svg class="icon on" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></button>
+<button type="button" class="icon-btn share" id="reader-share" aria-label="link එක බෙදාගන්න"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-share"/></svg></button>
+</div>
+</div>
+<div class="sr-only" id="reader-title" role="heading" aria-level="1">බුද්ධ ජයන්ති ත්‍රිපිටකය</div>
+<nav class="pager spread-pager" aria-label="පිටු අතර යාම"><a class="prev" rel="prev" href="./"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow_back"/></svg>පෙර පිටුව</a><span class="page-nums" id="page-nums"></span><a class="next" rel="next" href="./">ඊළඟ පිටුව<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow_forward"/></svg></a></nav>
+<div class="spread" id="spread"></div>
+<nav class="pager spread-pager" aria-label="පිටු අතර යාම"><a class="prev" href="./"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow_back"/></svg>පෙර පිටුව</a><span></span><a class="next" href="./">ඊළඟ පිටුව<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow_forward"/></svg></a></nav>
+</main>
+<template id="star-icons"><svg class="icon off" aria-hidden="true" focusable="false"><use href="#i-star_outline"/></svg><svg class="icon on" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></template>
+<template id="expand-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-expand_more"/></svg></template>
+<div id="bjt-data" data-src="common/toc.0ebc2b2d.json" hidden></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="common/bjt.76841b9c.js"></script>
 </body>
 </html>

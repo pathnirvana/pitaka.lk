@@ -1,0 +1,53 @@
+/* the Buddha Jayanthi Tipitaka viewer (dev/bjt/build.js, bjt.js) */
+.page h1 { font-size: 1.5em; margin: 20px 0 8px; }
+.pitaka h2 { font-size: 1.15em; margin: 24px 0 6px; }
+
+/* the contents tree, the search results and the stars */
+.toc-tree, .bjt-list { list-style: none; margin: 0; padding: 0; }
+.toc-tree .toc-tree { padding-left: 22px; border-left: 1px solid var(--border); margin-left: 21px; }
+.toc-item { display: flex; align-items: center; gap: 2px; min-height: 44px; }
+.toc-item a { flex: 1; min-width: 0; padding: 8px 4px; text-decoration: none; color: var(--text); line-height: 1.4; }
+.toc-item a:hover { color: var(--link); }
+.pitaka > .toc-tree > li > .toc-item a { font-weight: bold; color: var(--heading); }
+.toc-item .toggle .icon { transition: transform .2s ease; transform: rotate(-90deg); }
+.toc-item .toggle[aria-expanded="true"] { background: none; }
+.toc-item .toggle[aria-expanded="true"] .icon { transform: none; }
+.toggle-space { width: 44px; flex-shrink: 0; }
+.page-no { font-size: .8rem; color: var(--muted); padding: 0 4px; }
+.bjt-star { color: var(--muted); opacity: .55; }
+.bjt-star .on { display: none; }
+.bjt-star.active { color: var(--accent); opacity: 1; }
+.bjt-star.active .on { display: inline; }
+.bjt-star.active .off { display: none; }
+.bjt-list li { border-bottom: 1px solid var(--border); padding: 4px 0 8px; }
+.bjt-list .toc-item a { font-weight: bold; color: var(--link); }
+.bjt-list .where { font-size: .85rem; color: var(--muted); padding: 0 4px; line-height: 1.5; }
+#stars h2 { font-size: 1.15em; margin: 20px 0 4px; }
+.search-scope { display: flex; align-items: center; gap: 8px; margin: 4px 0; font-size: .9rem; color: var(--muted); }
+.search-scope select { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; }
+.bjt-links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 32px 0 24px; padding-top: 14px; border-top: 1px solid var(--border); font-size: .9rem; }
+
+/* the pages */
+.reader { max-width: 100rem; margin: 0 auto; padding: 0 8px 24px; }
+.reader-bar { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.reader-bar .crumbs { flex: 1 1 16rem; min-width: 0; border: none; padding-left: 4px; }
+.reader-tools { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+.sides { display: flex; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-right: 4px; }
+.sides button { padding: 6px 12px; font-size: .9rem; min-height: 40px; color: var(--muted); }
+.sides button + button { border-left: 1px solid var(--border); }
+.sides button[aria-pressed="true"] { background: var(--accent-soft); color: var(--heading); font-weight: bold; }
+@media (max-width: 50rem) { .sides [data-side="both"] { display: none; } }
+.spread-pager { grid-template-columns: auto 1fr auto; align-items: center; margin: 6px 0; }
+.spread-pager .next { grid-column: 3; }
+.spread-pager a, .spread-pager .next { display: inline-flex; flex-direction: row; align-items: center; justify-content: center; gap: 4px; padding: 6px 12px; min-height: 44px; font-size: .9rem; color: var(--link); text-decoration: none; }
+.spread-pager a.off { visibility: hidden; }
+.page-nums { text-align: center; font-size: .85rem; color: var(--muted); }
+.spread { display: flex; gap: 8px; justify-content: center; }
+.bjt-page { flex: 1 1 0; min-width: 0; max-width: 56rem; margin: 0; text-align: center; }
+.spread[data-side="pali"] .sinh, .spread[data-side="sinh"] .pali { display: none; }
+.bjt-page img { display: block; width: 100%; height: auto; background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+.bjt-page figcaption { font-size: .8rem; color: var(--muted); padding: 4px; }
+/* the scans are white paper: tinted with the theme, inverted in the dark one */
+:root[data-theme="sepia"] .bjt-page img { mix-blend-mode: multiply; background: none; }
+:root[data-theme="dark"] .bjt-page img { filter: invert(1) hue-rotate(180deg) brightness(.85) contrast(.95); background: #000; }
+@media print { .reader-bar, .spread-pager { display: none !important; } }
