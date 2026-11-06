@@ -2,6 +2,8 @@
    where the pages are local files, that url fails and the copy in common/ put there by dev/sync-apps.sh is used */
 @font-face { font-family: 'Abhaya Uni'; src: url('/tools/unicode/fonts/web/AbhayaUni-Regular.woff2') format('woff2'), url('AbhayaUni-Regular.woff2') format('woff2'); font-weight: normal; font-display: swap; }
 @font-face { font-family: 'Abhaya Uni'; src: url('/tools/unicode/fonts/web/AbhayaUni-Bold.woff2') format('woff2'), url('AbhayaUni-Bold.woff2') format('woff2'); font-weight: bold; font-display: swap; }
+@font-face { font-family: 'Nayana Uni'; src: url('/tools/unicode/fonts/web/NayanaUni-Regular.woff2') format('woff2'), url('NayanaUni-Regular.woff2') format('woff2'); font-weight: normal; font-display: swap; }
+@font-face { font-family: 'Nayana Uni'; src: url('/tools/unicode/fonts/web/NayanaUni-Bold.woff2') format('woff2'), url('NayanaUni-Bold.woff2') format('woff2'); font-weight: bold; font-display: swap; }
 /* only the letters of the site titles (make-fonts.sh) */
 @font-face { font-family: 'Alakamanda Uni Title'; src: url('/tools/unicode/fonts/web/AlakamandaUni-Title.woff2') format('woff2'), url('AlakamandaUni-Title.woff2') format('woff2'); font-display: swap; }
 
@@ -20,6 +22,7 @@
     --verse: #7d3a14;
     --shadow: 0 1px 2px rgba(70, 45, 20, .08), 0 3px 10px rgba(70, 45, 20, .06);
     --font-scale: 1;
+    --font: 'Abhaya Uni'; /* the reading font, chosen in the settings (<html data-font>) */
     --appbar-h: 52px;
     color-scheme: light;
 }
@@ -51,12 +54,13 @@
     --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 3px 10px rgba(0, 0, 0, .3);
     color-scheme: dark;
 }
+:root[data-font="nayana"] { --font: 'Nayana Uni'; }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body {
     margin: 0;
-    font-family: 'Abhaya Uni', 'Noto Serif Sinhala', 'Iskoola Pota', serif;
+    font-family: var(--font), 'Abhaya Uni', 'Noto Serif Sinhala', 'Iskoola Pota', serif;
     font-size: calc(1.1875rem * var(--font-scale));
     line-height: 1.6;
     color: var(--text);
@@ -138,7 +142,12 @@ button { font: inherit; color: inherit; background: none; border: none; padding:
 .theme-choice[data-choice="light"] { background: #fdfbf7; color: #29231c; }
 .theme-choice[data-choice="sepia"] { background: #f4ead5; color: #3a2d1f; }
 .theme-choice[data-choice="dark"] { background: #161412; color: #e8e1d5; }
-.theme-choice[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.font-choice {
+    flex: 1; height: 48px; border-radius: 10px; border: 2px solid var(--border); background: var(--surface); font-size: 1.15rem;
+}
+.font-choice[data-choice="abhaya"] { font-family: 'Abhaya Uni', serif; }
+.font-choice[data-choice="nayana"] { font-family: 'Nayana Uni', serif; }
+.theme-choice[aria-pressed="true"], .font-choice[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 
 /* breadcrumb: one line that scrolls sideways */
 .crumbs {

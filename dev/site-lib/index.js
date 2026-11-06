@@ -99,9 +99,9 @@ function head({ title, description, url, root, siteName, themeColor = "#ffa07a",
     return '<head>\n    ' + lines.filter(l => l).join('\n    ') + '\n</head>';
 }
 
-// the reading settings are applied before the first paint: light unless chosen in the settings (the old books app
+// the reading settings (theme, font size, font) are applied before the first paint: light unless chosen in the settings (the old books app
 // theme switch is not carried over), the old books app font size is
-const themeScript = `<script>try{var d=document.documentElement,s=localStorage,t=s.getItem('pitaka-theme'),f=s.getItem('pitaka-font-scale')||s.getItem('books-font-scale');if(t&&t!='light')d.dataset.theme=t;if(f)d.style.setProperty('--font-scale',f)}catch(e){}if(location.protocol=='file:')d.classList.add('local');if(location.protocol=='app:'||location.hostname=='appassets.androidplatform.net')d.classList.add('app')</script>`; // local: the old apps (file://, no search), app: the apps since 2026 (served by the app, search works)
+const themeScript = `<script>try{var d=document.documentElement,s=localStorage,t=s.getItem('pitaka-theme'),f=s.getItem('pitaka-font-scale')||s.getItem('books-font-scale'),n=s.getItem('pitaka-font');if(t&&t!='light')d.dataset.theme=t;if(n&&n!='abhaya')d.dataset.font=n;if(f)d.style.setProperty('--font-scale',f)}catch(e){}if(location.protocol=='file:')d.classList.add('local');if(location.protocol=='app:'||location.hostname=='appassets.androidplatform.net')d.classList.add('app')</script>`; // local: the old apps (file://, no search), app: the apps since 2026 (served by the app, search works)
 
 // ---- page parts shared by the sites (styles in reader.css, behaviour in reader.js)
 const linkButton = (href, iconName, label) => `<a class="icon-btn" href="${href}" aria-label="${esc(label)}">${icon(iconName)}</a>`;
@@ -121,6 +121,8 @@ function appbar({ left = '', title, titleHref, brand = false, right = '', search
 <div class="settings" id="settings" role="dialog" aria-label="කියවීමේ සැකසුම්" hidden>
 <h2>අකුරු ප්‍රමාණය</h2>
 <div class="row"><button type="button" class="size-btn smaller" aria-label="අකුරු කුඩා කරන්න">අ</button><output>100%</output><button type="button" class="size-btn larger" aria-label="අකුරු විශාල කරන්න">අ</button></div>
+<h2>අකුරු</h2>
+<div class="row"><button type="button" class="font-choice" data-choice="abhaya" aria-pressed="true">අභය</button><button type="button" class="font-choice" data-choice="nayana" aria-pressed="false">නයන</button></div>
 <h2>පසුබිම</h2>
 <div class="row"><button type="button" class="theme-choice" data-choice="light" aria-pressed="true">සුදු</button><button type="button" class="theme-choice" data-choice="sepia" aria-pressed="false">පුස්කොළ</button><button type="button" class="theme-choice" data-choice="dark" aria-pressed="false">අඳුරු</button></div>
 </div>`;

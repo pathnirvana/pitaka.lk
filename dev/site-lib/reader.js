@@ -1,6 +1,6 @@
 // shared by the books and dhammapada sites (the builds put it in front of each site's own script):
-// reading settings (theme, font size), share, toast, arrow keys, the top bar that hides on scroll
-const themeKey = 'pitaka-theme', fontKey = 'pitaka-font-scale';
+// reading settings (theme, font size, font), share, toast, arrow keys, the top bar that hides on scroll
+const themeKey = 'pitaka-theme', fontKey = 'pitaka-font-scale', fontFamilyKey = 'pitaka-font';
 const storage = {
     get(key) { try { return localStorage.getItem(key); } catch (e) { return null; } },
     set(key, value) { try { localStorage.setItem(key, value); } catch (e) {} },
@@ -40,7 +40,7 @@ function share(btn) {
     copyText(url).then(() => showToast('link එක copy කර ගත්තා. ඔබට අවශ්‍ය තැන paste කරන්න.'), () => showToast(url));
 }
 
-// theme and font size
+// theme, font size and font
 function updateStatusBar() { // the apps color the status bar to match the top bar
     const color = getComputedStyle(root).getPropertyValue('--surface').trim();
     if (window.Android && window.Android.setStatusBarColor) window.Android.setStatusBarColor(color);
@@ -52,6 +52,12 @@ function setTheme(theme) {
     if (theme == 'light') delete root.dataset.theme; else root.dataset.theme = theme;
     storage.set(themeKey, theme);
     updateStatusBar();
+    updateSettings();
+}
+const currentFont = () => root.dataset.font || 'abhaya';
+function setFont(font) {
+    if (font == 'abhaya') delete root.dataset.font; else root.dataset.font = font;
+    storage.set(fontFamilyKey, font);
     updateSettings();
 }
 const fontScale = () => parseFloat(getComputedStyle(root).getPropertyValue('--font-scale')) || 1;
@@ -66,6 +72,7 @@ function updateSettings() {
     if (!panel) return;
     panel.querySelector('output').textContent = Math.round(fontScale() * 100) + '%';
     panel.querySelectorAll('.theme-choice').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.choice == currentTheme())));
+    panel.querySelectorAll('.font-choice').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.choice == currentFont())));
 }
 function toggleSettings(open) {
     const panel = document.getElementById('settings'), btn = document.querySelector('.settings-btn');
@@ -83,6 +90,7 @@ document.addEventListener('click', (e) => {
     if (btn.classList.contains('share')) share(btn);
     else if (btn.classList.contains('settings-btn')) toggleSettings();
     else if (btn.classList.contains('theme-choice')) setTheme(btn.dataset.choice);
+    else if (btn.classList.contains('font-choice')) setFont(btn.dataset.choice);
     else if (btn.classList.contains('larger')) changeFontScale(0.1);
     else if (btn.classList.contains('smaller')) changeFontScale(-0.1);
 });
