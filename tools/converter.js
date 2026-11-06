@@ -7,6 +7,7 @@ function createConsoCombi(combinations, consonants) {
     for (const combi of combinations) for (const conso of consonants) {
         const cc = [conso[0] + combi[2], combi[0] + conso[1] + combi[1]];
         if (conso.length > 2) cc.push(conso[2]);
+        else if (combi.length > 3) cc.push(combi[3]); // a vowel sign converted one way only
         out.push(cc);
     }
     return out;
@@ -143,9 +144,9 @@ const th_specials = [
     ['උ', 'อุ'],
     ['ඌ', 'อู'],
     ['එ', 'เอ'],
-    // ['ඒ', 'ē', '??'], //normal thai uses the short form
+    ['ඒ', 'เอ', 0], // thai uses the short form
     ['ඔ', 'โอ'],
-    //['ඕ', 'ō', '??'] //normal thai uses the short form
+    ['ඕ', 'โอ', 0], // thai uses the short form
 
     /* special replacements */
     ['ඞ්', 'งฺ'], // not used in combi
@@ -215,9 +216,9 @@ const th_combinations = [
     ['', 'ุ', 'ු'], //කු
     ['', 'ู', 'ූ'], //කූ
     ['เ', '', 'ෙ'], //කෙ
-    // ['เ', '', 'ේ'], //කේ - non pali
+    ['เ', '', 'ේ', 0], //කේ - non pali: thai has one e, so only from sinhala
     ['โ', '', 'ො'], //කො
-    // ['โ', '', 'ෝ'], //කෝ - non pali
+    ['โ', '', 'ෝ', 0], //කෝ - non pali: thai has one o, so only from sinhala
 	['ไ', '', 'ෛ'], ['ใ', '', 'ෛ'], //කෛ - only 20 thai words use ใ
 
     ['เ', 'า', 'ෞ'],  // non pali begin  
