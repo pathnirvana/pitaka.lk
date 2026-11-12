@@ -80,3 +80,8 @@ table.max-width td.separator { background: var(--surface); width: 10px; }
 ol.footnotes { margin: 28px 0 0; padding: 12px 0 0 1.4em; border-top: 1px solid var(--border); font-size: .85em; line-height: 1.6; color: var(--muted); }
 ol.footnotes li p { margin: 0 0 .4em !important; text-align: start !important; }
 a.footnote-ref { text-decoration: none; font-size: .8em; vertical-align: super; line-height: 0; padding: 0 1px; }
+
+/* books from the OCR of scanned prints: fifth level headings, notes under tables, scan page anchors */
+.prose h5 { font-size: 1em; color: var(--heading); margin: 1.1em 0 .4em; }
+.prose p.footnote { font-size: .85em; color: var(--muted); }
+span.pg { display: none; }
