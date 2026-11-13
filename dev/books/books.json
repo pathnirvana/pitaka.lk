@@ -34,7 +34,7 @@
     {"name":"නිර්වාණ විනිශ්චය","author":"රේරුකානේ චන්දවිමල හිමි","folder":"nirvana-vinishchaya","group":2,"library":{"folder":"rrk","html":1043,"pdf":1044},"pdf":{"mainStart":"ප්‍රථම පරිච්ඡේදය"}},
     {"name":"පට්ඨාන මහා පකරණ සන්නය","author":"රේරුකානේ චන්දවිමල හිමි","folder":"pattana-pakarana-sannaya","group":2,"library":{"folder":"rrk","html":1169,"pdf":1170},"pdf":{"mainStart":"පට්ඨාන මහා පකරණ සන්නය"}},
     {"name":"පොහොය වර්ණනාව","author":"මාපලගම සෝමිස්සර හිමි","folder":"pohoya-varnanava","group":3,"library":{"folder":"වෙනත්","html":1024,"pdf":769},"pdf":{"mainStart":"1. දුරුතු පෝය"}},
-    {"name":"කර්ම විපාක","author":"රිදියගම සුධම්මාභිවංශ හිමි","folder":"karma-vipaka","group":3,"library":{"folder":"වෙනත්","html":1025,"altPdf":534},"pdf":{"mainStart":"සංසාරය"}},
+    {"name":"කර්ම විපාක","author":"රිදියගම සුධම්මාභිවංශ හිමි","folder":"karma-vipaka","group":3,"library":{"folder":"වෙනත්","html":1025,"pdf":1320,"altPdf":534},"pdf":{"mainStart":"සංසාරය"}},
     {"name":"රසවාහිනී","author":"රන්ජිත් වනරත්න","folder":"rasawahini","group":3,"library":{"folder":"ඉපැරණි පොත්","html":1026,"pdf":64,"keepPdf":true}},
     {"name":"සීහළවත්ථු","author":"ධම්මනන්දි හිමි, පොල්වත්තේ බුද්ධදත්ත හිමි","folder":"sihala-vaththu","group":3,"library":{"folder":"ඉපැරණි පොත්","html":1034,"pdf":74},"pdf":{"mainStart":"සීහළවත්ථු"}},
     {"name":"ත්‍රිපිටක, අටුවා, ටීකා හා පාළි","author":"දිද්දෙණියේ අරියදස්සන හිමි","folder":"atuwa-tika-pali","group":3,"library":{"folder":"වෙනත්","html":1035,"pdf":603,"keepPdf":true}},
