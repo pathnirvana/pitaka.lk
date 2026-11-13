@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Web fonts for the books and dhammapada sites (Abhaya Uni; Nayana Uni is put in tools/unicode/fonts/web as it is), made from the published Uni fonts in tools/unicode/fonts into tools/unicode/fonts/web:
+# Web fonts for the books and dhammapada sites (Abhaya Uni; Seela is cut the same way by hand from the sinhala-unicode build, build-2026/fonts/Seela-*.ttf), made from the published Uni fonts in tools/unicode/fonts into tools/unicode/fonts/web:
 # Sinhala, Latin-1 and punctuation only, and no hinting (phones ignore it; it is 60% of the file).
 # Needs fonttools: python3 -m venv /tmp/ft && /tmp/ft/bin/pip install fonttools brotli && PYFTSUBSET=/tmp/ft/bin/pyftsubset dev/site-lib/make-fonts.sh
 # dev/unicode/sync-fonts.mjs runs this after updating the fonts. The sites load them from /tools/unicode/fonts/web/ and
