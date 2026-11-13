@@ -27,6 +27,8 @@ const zip = {}
 for (const [name, data] of Object.entries(src)) {
     const rel = name.slice(top.length)
     if (/\.(ttf|woff2)$/.test(rel)) { if (keep(rel)) zip[name] = data; continue }
+    const vcss = rel.match(/^webfonts\/(.+)-variable\.css$/)  // the CSS of a variable font left out
+    if (vcss && !keep(`${vcss[1]}-Variable.ttf`)) continue
     if (rel === 'webfonts/fonts.css') {
         // drop the @font-face rules of the families left out
         const css = strFromU8(data).split(/(?=@font-face)/).filter((rule) => !/src: url\("([^"]+)"/.test(rule) || keep(rule.match(/src: url\("([^"]+)"/)[1])).join('')
@@ -39,6 +41,14 @@ for (const [name, data] of Object.entries(src)) {
         const text = strFromU8(data)
             .replace(/Families: [\s\S]*?\.\n/, (m) => wrapText('Families: ' + list + '.') + '\n')
             .replace(/\(\d+ fonts\)/, `(${statics} fonts)`)
+            .replace(/^(  variable\/  ).*$/m, (m, lead) => lead + families.filter((f) => f.variable).map((f) => f.variable.file + '.ttf').join(', '))
+            // the release's note on its two variable families, when only Abhaya Uni's is published here
+            .replace(/  Abhaya Uni and Nayana Uni come two ways:[\s\S]*?variable fonts\.\n/, (m) => families.some((f) => f.id === 'nayana') ? m : [
+                '  Abhaya Uni comes two ways: the four static fonts in ttf/ (Regular, Bold, Condensed Regular,',
+                '  Condensed Bold) or one variable font in variable/ (weights 400 to 800, and the condensed width).',
+                '  Install one or the other, not both: they share the family name. Word and most office software',
+                '  work best with the static fonts; design software and websites can use the variable font.',
+            ].join('\n') + '\n')
         zip[name] = strToU8(text)
         continue
     }

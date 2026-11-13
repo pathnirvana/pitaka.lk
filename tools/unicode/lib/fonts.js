@@ -12,7 +12,7 @@ export const families = [
             { name: 'Condensed Bold', file: 'AbhayaUniCondensed-Bold', weight: 700, family: 'Abhaya Uni Condensed' },
         ],
         // [wdth,wght] in the build, renamed because brackets break download links
-        variable: { file: 'AbhayaUni-Variable', weight: [400, 700], stretch: [75, 100] },
+        variable: { file: 'AbhayaUni-Variable', weight: [400, 800], stretch: [75, 100] },
     },
     { id: 'malithi', family: 'Malithi Uni', si: 'මලිති', bandi: true, styles: [{ name: 'Regular', file: 'MalithiUni-Regular', weight: 400 }] },
     { id: 'bindumathi', family: 'Bindumathi Uni', si: 'බින්ඳුමතී', bandi: true, styles: [{ name: 'Regular', file: 'BindumathiUni-Regular', weight: 400 }] },
