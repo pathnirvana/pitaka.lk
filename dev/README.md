@@ -5,7 +5,8 @@ Generators and sources for the static sites. Run the scripts from this folder af
 |---|---|
 | `npm run build:books` | `books/` from `books/input/*.html` and `books/books.json` (`node books/build.js <folder>...` for some books) |
 | `npm run build:dhammapada` | `dhammapada/` from `dhammapada/gatha.txt`, `dhammapada_full.html`, `ss/ss1-3.html`, `about.html` |
-| `npm run check` | links and #anchors, titles, descriptions, canonical, one h1, image alt, json-ld of both sites |
+| `npm run build:bjt` | `bjt/` (the Buddha Jayanthi page viewer) from `bjt/data.json` |
+| `npm run check` | links and #anchors, titles, descriptions, canonical, one h1, image alt, json-ld of the three sites |
 | `npm run deploy` | check, then `deploy.sh` (dry run; `npm run deploy -- --go` to upload) |
 | `./sync-apps.sh` | check, then copy the sites into the Android app projects (dry run; `--go` to copy) |
 | `apple/build-ios.sh sim\|archive [--upload]` | the iOS app (`apple/project.yml`, XcodeGen): simulator build, or App Store build and TestFlight upload |
@@ -16,6 +17,8 @@ Generators and sources for the static sites. Run the scripts from this folder af
 | `node play/play-release.mjs` | uploads the books app's signed bundle and releases it on production (`TRACK=internal` for a test) |
 | `node play/dhammapada-farewell.mjs [--dry]` | the farewell release of the old Dhammapada app (it opens on `dhammapada/farewell.html`, leading to the books app) and its listing notice |
 | `node site-lib/og-cards.js` | link preview cards (og:image) of the books and the dhammapada index; rebuild the sites after |
+| `node reviews/fetch-reviews.mjs` | all ratings and reviews of our apps on both stores into `reviews/data/` (not in git); rerun to add new ones |
+| `node reviews/show.mjs <app\|all> [--since date] [--stars 1-3] [--version 3.0] [--all] [--json]` | those reviews, one line each, newest first |
 | `GSC_KEY=<key.json> node gsc-report.mjs [/books/ ...]` | Search Console clicks, queries, pages, devices, sitemaps (read-only service account; key outside the repo) |
 | `node books/library-files.js <folder>` | single html file and pdf of a book for the tipitaka.lk library (weasyprint) |
 
@@ -27,9 +30,9 @@ the top bar with the reading settings, the svg icons, the sitemap writer and the
 (the shared theme - light, sepia and dark, light by default - typography, top bar, settings, pager) followed by the
 site's own `books/book.css|js` or `dhammapada/dhammapada.css|js`. Edit those and rebuild. The generated files carry a
 hash of their content in the name (`book.dccaa540.css`), so browsers never pair new pages with an old cached copy.
-The fonts are shared with the unicode tools: Abhaya Uni (regular and bold) and Alakamanda Uni (site titles), cut down
-to Sinhala and Latin-1 without hinting into `tools/unicode/fonts/web/` (105, 119 and 66 KB) by `site-lib/make-fonts.sh`,
-which `unicode/sync-fonts.mjs` runs after updating the fonts. The pages load them from `/tools/unicode/fonts/web/`;
+The fonts are in `tools/unicode/fonts/web/`, cut down to Sinhala and Latin-1 without hinting (about 80 KB each):
+Abhaya Uni, regular and bold, made by `site-lib/make-fonts.sh` (which `unicode/sync-fonts.mjs` runs after updating the
+fonts), and Seela (cut the same way from the sinhala-unicode build), which readers can choose in the reading settings instead (`<html data-font>`, `--font`). The pages load them from `/tools/unicode/fonts/web/`;
 the apps, whose pages are local files, get a copy in `common/` from `sync-apps.sh`. The UN-* ttf fonts in
 `books/common` are only for `print-pdf.css` (library pdfs).
 
@@ -45,6 +48,14 @@ books app carries the dhammapada too.
 
 Test on phones: `node site-lib/check.js` checks the markup; the pages must also fit a 320px wide screen and the
 settings, bookmarks and table of contents must work by touch (most readers use phones and the apps).
+
+## Buddha Jayanthi Tipitaka (bjt/)
+The scanned pages of the 57 volumes, served from `bjt/newbooks/` (3.9 GB, only on the server; `deploy.sh` leaves them
+alone). `bjt/data.json` has the volumes (image name prefix and the offset from printed page to image number) and the 8706
+titles of their contents as a tree `[book, name, parent, page]`. `bjt/index.html` is one page: the contents, the search by
+title (Sinhala or singlish) and the stars, and the pages of a volume at `?b=<volume>&p=<page>` (even pages pali, odd
+sinhala; both side by side on wide screens). The stars are toc indexes in localStorage `bjt-bookmarks`, as in the old
+viewer, so the order of the titles must not change. `intro.html` has the help, downloads and about (`?goto=`).
 
 ## Sources
 The html files in `books/input/` and `dhammapada/` have been corrected by hand over the years, so they, not the
@@ -78,3 +89,15 @@ hides the "get the app" links. The apps before 3.0 used `file://`: both apps han
 settings) over once, and `reader.js` adds it. Android: `sync-apps.sh --go`, bump `versionCode`, then
 `./gradlew bundleRelease` in `/Volumes/2TB/Android/Books` (the pictures and recordings are install-time asset packs).
 The separate Dhammapada app is to get a farewell update that points to the books app.
+
+## Store reviews
+`reviews/fetch-reviews.mjs` keeps every rating and review of every app of both store accounts in `reviews/data/<app>.jsonl`,
+one json record a line, newest first: `id, app, store (play|appstore), appId, created, updated, rating, title, text, version,
+language, territory, device, author, reply {text, date}`. `reviews/data/apps.json` lists the apps (key, name, Play package,
+App Store id) with their counts and the newest review. The app keys (`books`, `pirith`, `sarala`, `tipitaka-atuwa`,
+`buddhajayanthi`, `tipitaka-app`, `pali-dictionary`, ...) are in `APPS` of the script; iOS-only apps go by bundle id.
+Play: the monthly review reports of the Play Console (bucket `pubsite_prod_7901566601510270633`, every rating since 2016,
+a day or two behind; only the changed files are downloaded again) and the reviews api for the last 7 days. App Store: the
+App Store Connect api (only reviews with text; ratings alone are not available). The data stays out of git: the repo is
+public and App Store reviews carry nicknames. A reading of all reviews by app, with the features asked for (Nov 2026):
+https://claude.ai/artifact/9UXNXwXfBcnyBry7SVLdbg

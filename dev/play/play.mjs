@@ -7,17 +7,18 @@ export const PACKAGE = process.env.PACKAGE || 'lk.pitaka.books'
 const KEY = JSON.parse(readFileSync(process.env.PLAY_KEY || '/Volumes/2TB/node/misc-projects/sinhala-ocr/play-console-api-key.json'))
 const b64 = o => Buffer.from(JSON.stringify(o)).toString('base64url')
 
-let token
-async function auth() {
-  if (token) return token
+const tokens = {}
+/** an access token of the service account, for the androidpublisher api or another scope (devstorage.read_only) */
+export async function auth(scope = 'https://www.googleapis.com/auth/androidpublisher') {
+  if (tokens[scope]) return tokens[scope]
   const now = Math.floor(Date.now() / 1000)
-  const unsigned = `${b64({ alg: 'RS256', typ: 'JWT' })}.${b64({ iss: KEY.client_email, scope: 'https://www.googleapis.com/auth/androidpublisher',
+  const unsigned = `${b64({ alg: 'RS256', typ: 'JWT' })}.${b64({ iss: KEY.client_email, scope,
     aud: KEY.token_uri, iat: now, exp: now + 3600 })}`
   const jwt = `${unsigned}.${createSign('RSA-SHA256').update(unsigned).sign(KEY.private_key).toString('base64url')}`
   const r = await fetch(KEY.token_uri, { method: 'POST', body: new URLSearchParams({ grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer', assertion: jwt }) })
   const json = await r.json()
   if (!r.ok) throw new Error(`token: ${JSON.stringify(json)}`)
-  return token = json.access_token
+  return tokens[scope] = json.access_token
 }
 
 /** body: an object (json) or { bytes, type } (an upload, path then goes to the upload endpoint) */
