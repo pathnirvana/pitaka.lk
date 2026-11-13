@@ -8,7 +8,7 @@ set -euo pipefail
 
 HOST=${DEPLOY_HOST:-tipitaka.lk}                     # the droplet of tipitaka.lk and the pitaka.lk reader (dev/migrate.sh)
 ROOT=${DEPLOY_ROOT:-/home/janaka/www/pitaka.lk}
-SITES=(books dhammapada dict tools static bjt .well-known)
+SITES=(books dhammapada tools static bjt .well-known) # dict moved to arutha.lk (2026-11)
 FILES=(index.html robots.txt "Buddha Jayanthi Tipitaka.html")
 
 cd "$(dirname "$0")/.."
