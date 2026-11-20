@@ -20,6 +20,8 @@ for (const enc of [fm, isi]) {
             if (legacy === null) continue // has touching letters or conjuncts the encoding can't write
             checked++
             // a word that was already wrong (decomposed or doubled signs) may come back corrected
+            // FM writes ක්‍රු with the stroke of ක්‍රැ, as on paper, so it reads back as ක්‍රැ
+            if (enc.id === 'fm' && /්‍ර[ුූ]/.test(w)) continue
             if (toUnicode(legacy, enc) !== w && !findIssues(w).length) wrong.push(`${w} ${legacy} ${toUnicode(legacy, enc)}`)
         }
         assert.ok(checked > words.length * 0.95, `only ${checked} of ${words.length} words written in ${enc.id}`)
@@ -54,6 +56,15 @@ test('fm: fixes of the old converter', () => {
     assert.equal(toUnicode('µ', fm, { fontName: 'FM Derana' }), 'i') // FM Derana puts roman numerals here
     assert.equal(toUnicode('l%Þ', fm), 'ක්‍රදා')
     assert.equal(toUnicode('Cd', fm), 'ක්‍ා') // left for the validator to flag
+})
+
+test('fm: the key that draws each letter correctly', () => {
+    const cases = {
+        'කුකූ ගුගූ ඟු තුතූ භුභූ ශුශූ': 'l=l+ .=.+ `.= ;=;+ N=N+ Y=Y+', 'මු නූ සු': 'uq kQ iq', 'ක්‍රු ප්‍රූ රු': 'l%e m%E re',
+        'ඦ ඣ ඵි ඵී ඨ් ත්‍ථි විද්‍යා': '`c ® Ý Ú GA †‘ úoHd',
+    }
+    for (const [uni, legacy] of Object.entries(cases)) assert.equal(fromUnicode(uni, fm), legacy, uni)
+    for (const [legacy, uni] of Object.entries({ 'l=': 'කු', '`c': 'ඦ', '`P': 'ඦ', 'Ý': 'ඵි', '†‘': 'ත්‍ථි', 'úµd': 'විද්‍යා' })) assert.equal(toUnicode(legacy, fm), uni, legacy)
 })
 
 test('isi: vowel letters typed with signs', () => {

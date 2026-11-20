@@ -22,8 +22,12 @@ function compile(enc, fontName) {
     const maxLen = Math.max(...[...map.keys()].map((k) => k.length))
     // reverse: Unicode -> the first legacy key that produces it (tables list the preferred key first)
     const reverse = new Map()
-    for (const [k, u] of map) if (!reverse.has(u) && !/^\s+$/.test(u)) reverse.set(u, k)
-    const c = { enc, map, maxLen, reverse }
+    const readOnly = new Set(enc.readOnly || [])
+    for (const [k, u] of map) if (!reverse.has(u) && !/^\s+$/.test(u) && !readOnly.has(k)) reverse.set(u, k)
+    // after: letter + sign -> the key for the sign there (කු has another papilla than මු)
+    const after = new Map()
+    for (const [sign, k, prevs] of enc.after || []) for (const p of prevs) after.set(p + sign, k)
+    const c = { enc, map, maxLen, reverse, after }
     compiled.set(key, c)
     return c
 }
@@ -102,6 +106,8 @@ export function fromUnicode(text, enc, { fontName } = {}) {
         }
         let out = ''
         for (let i = 0; i < units.length; ) {
+            const shaped = i > 0 ? c.after.get(units[i - 1] + units[i]) : undefined
+            if (shaped !== undefined) { out += shaped; i++; continue }
             let n = units.length - i
             for (; n > 0; n--) {
                 const k = c.reverse.get(units.slice(i, i + n).join(''))

@@ -1,11 +1,13 @@
 // FM fonts (FM Abhaya, FM Malithi, FM Bindumathi ... by Pushpananda Ekanayake): one keymap for the whole family.
 // Ported from the old fm_to_unicode.htm and checked against the glyphs of six FM fonts. Where several keys give
-// the same Unicode, the first one listed is the one fromUnicode() writes.
+// the same Unicode, the first one listed is the one fromUnicode() writes. Which key draws a letter correctly was
+// checked by drawing every syllable in the FM fonts and in Abhaya Uni and comparing the pictures (the Liyamu
+// keyboard's tools/fm-forms-check.py).
 import { KOMBU, REPAYA } from '../convert.js'
 
 const consonants = {
     'l': 'ක', 'L': 'ඛ', '.': 'ග', '>': 'ඝ', 'X': 'ඞ', '`.': 'ඟ', '`y': 'ඟ', 'Õ': 'ඟ',
-    'p': 'ච', 'P': 'ඡ', 'c': 'ජ', 'CO': 'ඣ', '®': 'ඣ', '[': 'ඤ', '`Co': 'ඤ', '{': 'ඥ', '`P': 'ඦ',
+    'p': 'ච', 'P': 'ඡ', 'c': 'ජ', '®': 'ඣ', 'CO': 'ඣ', '[': 'ඤ', '`Co': 'ඤ', '{': 'ඥ', '`c': 'ඦ', '`P': 'ඦ', // ඦ is the sanyaka of ජ (c); `P is read too
     'g': 'ට', 'G': 'ඨ', 'v': 'ඩ', 'V': 'ඪ', 'K': 'ණ', '~': 'ඬ', '`v': 'ඬ',
     ';': 'ත', ':': 'ථ', 'o': 'ද', 'O': 'ධ', 'k': 'න', '|': 'ඳ', '`o': 'ඳ',
     'm': 'ප', 'M': 'ඵ', 'n': 'බ', 'N': 'භ', 'u': 'ම', 'U': 'ඹ',
@@ -26,7 +28,7 @@ const ligatures = {
     'û': 'ඤු', 'ü': 'ඤූ', 'Ø': 'ඤා', '×': 'ඥා',
     '¯': 'ඣි', 'ˉ': 'ඣි', '°': 'ඣී', 'À': 'ඨි', 'Á': 'ඨී', 'ý': 'ඡි', 'Â': 'ඡී', 'þ': 'ඡ්',
     'Å': 'ඛි', 'Ç': 'ඛී', 'Ä': 'ඛ්', 'Î': 'ඪි', 'Ð': 'ඪී', 'Ñ': 'චි', 'Ö': 'චී', 'É': 'ච්',
-    'Ó': 'ථි', 'Ò': 'ථී', 'ð': 'ජි', 'Ô': 'ජී', 'Ê': 'ජ්', 'Ú': 'ඵී', 'Ý': 'ඵී',
+    'Ó': 'ථි', 'Ò': 'ථී', 'ð': 'ජි', 'Ô': 'ජී', 'Ê': 'ජ්', 'Ý': 'ඵි', 'Ú': 'ඵී',
     'á': 'ටි', 'à': 'ටී', 'Ü': 'ට්', 'ç': 'ඬි', '`ä': 'ඬි', 'é': 'ඬී', '`ã': 'ඬී', 'å': 'ඬ්', '`Ù': 'ඬ්',
     'ä': 'ඩි', 'ã': 'ඩී', 'â': 'ඩ්', 'ê': 'ධි', 'ë': 'ධී', 'è': 'ධ්', 'ì': 'බි', 'î': 'බී', 'í': 'බ්',
     'ñ': 'මි', 'ó': 'මී', 'ï': 'ම්', 'ô': 'ඹි', 'ö': 'ඹී', 'ò': 'ඹ්', 'ú': 'වි', 'ù': 'වී', 'õ': 'ව්',
@@ -41,7 +43,7 @@ const vowels = {
 
 const signs = {
     'd': 'ා', 'e': 'ැ', 'E': 'ෑ', 's': 'ි', 'S': 'ී', 'q': 'ු', 'Q': 'ූ', 'D': 'ෘ', 'DD': 'ෲ', '!': 'ෟ', '!!': 'ෳ',
-    'a': '්', '¶': '්', 'x': 'ං', '#': 'ඃ', 'H': '්‍ය', '%': '්‍ර', ' ’': 'ී', ' ‘': 'ි',
+    'a': '්', '¶': '්', 'x': 'ං', '#': 'ඃ', 'H': '්‍ය', '%': '්‍ර', ' ’': 'ී', ' ‘': 'ි', '’': 'ී', '‘': 'ි', // ‘ ’: the narrow ispillas
     'f': KOMBU, '_': REPAYA, 'œ': REPAYA + '්‍ය',
 }
 
@@ -63,6 +65,16 @@ export default {
         [/a{2,}/g, 'a'], [/q{2,}/g, 'q'], [/Q{2,}/g, 'Q'], [/s{2,}/g, 's'], [/S{2,}/g, 'S'], [/%{2,}/g, '%'],
     ],
     map: { ...consonants, ...ligatures, ...vowels, ...signs, ...symbols },
+    // read but never written: µ is ද්‍ය in most FM fonts, but another glyph in the old FM Abhaya and a roman numeral
+    // in FM Derana and FM Arjun, while oH draws ද්‍ය in all of them
+    readOnly: ['µ', 'μ'],
+    // [sign, key, letters]: the sign is written with this key after these letters (a consonant or a ්‍ + consonant join)
+    after: [
+        ['ු', '=', ['ක', 'ග', 'ඟ', 'ත', 'භ', 'ශ']], ['ූ', '+', ['ක', 'ග', 'ඟ', 'ත', 'භ', 'ශ']], // the papilla that turns back
+        // after a rakaransaya the papilla is the stroke of ැ, as in රු: ක්‍රු and ක්‍රැ are the same in FM text
+        ['ු', 'e', ['්‍ර']], ['ූ', 'E', ['්‍ර']],
+        ['්', 'A', ['ඨ']], ['ි', '‘', ['්‍ථ']], ['ී', '’', ['්‍ථ']],
+    ],
     // FM Derana puts the roman numerals one place earlier than the other FM fonts
     variants: [{ fontNames: [/derana/i], map: { 'µ': 'i', 'μ': 'i', '¶': 'v', '·': 'x', '∙': 'x' } }],
     post: [[/ක්‍ඳා/g, 'ඤා']], // ඤා typed as ක් + ඳා
