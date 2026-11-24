@@ -19,6 +19,8 @@ Generators and sources for the static sites. Run the scripts from this folder af
 | `node site-lib/og-cards.js` | link preview cards (og:image) of the books and the dhammapada index; rebuild the sites after |
 | `node reviews/fetch-reviews.mjs` | all ratings and reviews of our apps on both stores into `reviews/data/` (not in git); rerun to add new ones |
 | `node reviews/show.mjs <app\|all> [--since date] [--stars 1-3] [--version 3.0] [--all] [--json]` | those reviews, one line each, newest first |
+| `python3 -I reviews/draft.py <app> [--show] [--held]` | drafts replies to the app's unanswered reviews into `reviews/data/replies/<app>.json`: a thank-you in the review's language, or the reply of `custom_<app>.py` there for a review with feedback |
+| `node reviews/reply.mjs <app> [--go] [--only id] [--limit n]` | posts the replies drafted in `reviews/data/replies/<app>.json` to both stores (lists them without `--go`) |
 | `GSC_KEY=<key.json> node gsc-report.mjs [/books/ ...]` | Search Console clicks, queries, pages, devices, sitemaps (read-only service account; key outside the repo) |
 | `node books/library-files.js <folder>` | single html file and pdf of a book for the tipitaka.lk library (weasyprint) |
 

@@ -29,7 +29,8 @@ const appOf = (store, id) => Object.keys(APPS).find(k => APPS[k][store] == id) ?
 const reviews = {} // app -> Map(id -> review)
 for (const f of existsSync(DATA) ? readdirSync(DATA).filter(f => f.endsWith('.jsonl')) : [])
   reviews[f.slice(0, -6)] = new Map(readFileSync(DATA + f, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l)).map(r => [r.id, r]))
-const put = r => (reviews[r.app] ??= new Map()).set(r.id, { ...reviews[r.app].get(r.id), ...r })
+// a reply posted by reply.mjs is kept until the store reports show it (they run a day or two behind)
+const put = r => { const old = (reviews[r.app] ??= new Map()).get(r.id); reviews[r.app].set(r.id, { ...old, ...r, reply: r.reply ?? old?.reply ?? null }) }
 const dateOf = ms => ms ? new Date(+ms).toISOString() : null
 
 // App Store
